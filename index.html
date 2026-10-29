@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-10-29.8">
+<meta name="zone-build" content="2026-10-29.9">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2794,7 +2794,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const md=T1.slice(5).replace(/^0/,"").replace("-0","-").replace("-","/");
     clean(ROW["Week Events"]).split(/\n+/).forEach(l=>{ let m=l.trim().match(/^\w{3} (\d{1,2}\/\d{1,2}) · ([^·]+) · (.+)$/); let isWork=false;
       if(!m){ const f=l.trim().split("|"); if(f.length>=3&&f[0]===T1){ m=[null,md,f[1],f[2]]; isWork=f[3]==="work"; } } if(!m||m[1]!==md) return; const r=parseRange(m[2]); if(!r) return; const name=m[3].trim();
-      if(isWork){ out.push({s:r.start,e:Math.max(r.end,r.start+.25),name,c:RC.blue,k:"work"}); return; }
+      if(isWork){ if(out.some(x=>x.k==="work")||/work blocks?/i.test(name)) return; /* Oct 29: the day's work summary line never stands in for the named meetings */ out.push({s:r.start,e:Math.max(r.end,r.start+.25),name,c:RC.blue,k:"work"}); return; }
       const rec=typeof famFind==="function"?famFind(name,T1):null; const own=rec?famOwnerNow(rec):""; if(own===OTHER()) return; const us=own==="both"||/\b(dinner|date|tiny|papi|victoria|movie)\b/i.test(name);
       out.push({s:r.start,e:Math.max(r.end,r.start+.25),name,c:/birdie|walk/i.test(name)?RC.green:us?RC.pink:RC.violet,k:us?"us":"you"}); });
     return out.sort((a,b)=>a.s-b.s); }
