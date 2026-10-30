@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-10-30.2">
+<meta name="zone-build" content="2026-10-30.3">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2086,6 +2086,19 @@ body.zn.zn-night .zn-wkrow2{border-color:rgba(255,255,255,.12)}body.zn.zn-night 
 .zn-usnext2{background:linear-gradient(160deg,#FFD6E8,#FFE9D6 60%,#F4EEFF) !important}
 body.zn.zn-night .zn-feedrow{border-color:rgba(255,255,255,.12)}body.zn.zn-night .zn-usnext2{background:linear-gradient(160deg,rgba(255,163,203,.22),rgba(255,180,138,.08)) !important;color:#F3EEFF}body.zn.zn-night .zn-usnext2 .zn-date,body.zn.zn-night .zn-usnext2 .zn-vibe,body.zn.zn-night .zn-usnext2 .zn-usbig *{color:#F3EEFF}
 body.zn #view-us > #usNote{ display:none !important; } /* Oct 30: notes live in Between us now */
+/* Oct 30 · sprint 1 of the review */
+body.zn{ --zn-muted:#5F5B78; } body.zn.zn-night{ --zn-muted:rgba(243,238,255,.78); }
+body.zn .zn-rtx span, body.zn .zn-ttx span, body.zn .zn-feedtx span, body.zn .zn-plantx span, body.zn .zn-ptsub, body.zn .zn-hr, body.zn .zn-empty, body.zn .zn-evs, body.zn .zn-pint span, body.zn .zn-ptime, body.zn .zn-why, body.zn .zn-sofar, body.zn .zn-k, body.zn .zn-rslot{ font-weight:400 !important; opacity:1 !important; color:var(--zn-muted) !important; }
+body.zn .zn-k, body.zn .zn-rslot{ font-weight:600 !important; }
+body.zn .zn-btn, body.zn .zn-pill.zn-dark, body.zn .set .btn:not(.ghost), body.zn .set .top .btn, body.zn .set .plus{ background:#1F2340 !important; color:#FFE27A !important; border:0 !important; border-radius:999px !important; }
+body.zn .set .plus{ border-radius:14px !important; }
+body.zn.zn-night .zn-btn, body.zn.zn-night .zn-pill.zn-dark, body.zn.zn-night .set .btn:not(.ghost), body.zn.zn-night .set .top .btn, body.zn.zn-night .set .plus{ background:#F3EEFF !important; color:#1F2340 !important; }
+body.zn.zn-night .zn-card, body.zn.zn-night .zn-glass, body.zn.zn-night .zn-ptile{ -webkit-backdrop-filter:blur(10px) saturate(1.1); backdrop-filter:blur(10px) saturate(1.1); }
+body.zn #znToday > .zn-mast .zn-md{ display:none; }
+body.zn #main{ padding-bottom:calc(140px + env(safe-area-inset-bottom,0px)) !important; }
+body.zn .zn-prep .zn-rtx b, body.zn .zn-tonight2 .zn-rtx b{ display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; white-space:normal; }
+body.zn.zn-night .zn-ringbase{ stroke:rgba(255,255,255,.14); } body.zn.zn-night .zn-ringbase.ahead{ stroke:rgba(255,255,255,.35); }
+body.zn .zn-rgo, body.zn .zn-pill, body.zn .zn-chip{ display:inline-flex; align-items:center; justify-content:center; line-height:1.15; }
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -2510,9 +2523,13 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   async function writeToday(props,opts){
     if(!mcp) throw {code:"not_granted"};
     const id=pageId(ROW&&ROW.url); if(!id||!LIVE) throw {code:"no_row"};
-    await mcp.callTool(SERVER,"notion-update-page",{page_id:id,command:"update_properties",properties:props,allow_async:false});
-    Object.assign(ROW,props); if(!(opts&&opts.silent)) savedPing();
+    // Oct 30: optimistic. The screen changes now; the save follows; a failed save puts the old values back.
+    const prev={}; Object.keys(props).forEach(k=>prev[k]=ROW[k]); Object.assign(ROW,props); znSoon();
+    try{ await mcp.callTool(SERVER,"notion-update-page",{page_id:id,command:"update_properties",properties:props,allow_async:false}); }
+    catch(e){ Object.keys(prev).forEach(k=>{ if(prev[k]===undefined) delete ROW[k]; else ROW[k]=prev[k]; }); znSoon(); throw e; }
+    if(!(opts&&opts.silent)) savedPing();
   }
+  let ZN_SOON=null; function znSoon(){ clearTimeout(ZN_SOON); ZN_SOON=setTimeout(()=>{ try{ renderLog(); }catch(e){} try{ znRender(); }catch(e){} try{ if(!ME_SHEET) znMe(); }catch(e){} },0); }
   let pingT=null;
   function savedPing(){ let p=$("#savedPing"); if(!p){ p=el("div","savedping","Saved ✓"); p.id="savedPing"; p.setAttribute("role","status"); $("#layer").append(p); } p.classList.add("on"); clearTimeout(pingT); pingT=setTimeout(()=>p.classList.remove("on"),1400); }
   function writeErr(e){ const c=e&&e.code; if(c==="timeout"||c==="notion_timeout") return "Notion was slow to answer, so that didn't save. Try again."; return c==="no_row"?"Today's brief hasn't landed yet, so there's nowhere to save this. It arrives at 4:30am.":c==="not_granted"||c==="not_in_manifest"?"Allow Notion editing for this page when Claude asks, then try again.":c==="needs_reauth"?"Reconnect Notion in your connector settings, then try again.":"Couldn't save to Notion. Try again in a moment."; }
@@ -3114,7 +3131,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     // Oct 29: This week is one line and seven rings (how much of the day's practices and routines got done); a full day got the rainbow. Tap for the grid.
     const hero=znCard("zn-mehero zn-mehero2","","This week"); const ks=rows.map(([k])=>k); const dayPct=week.map(d=>{ if(d.k>T) return null; const done=ks.filter(k=>(k==="read"?readState(d.k):dotState(d.r,k))===1).length; return ks.length?done/ks.length:0; });
     hero.innerHTML=`<svg width="0" height="0" aria-hidden="true" style="position:absolute"><defs><linearGradient id="znRainbow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF6B6B"/><stop offset=".25" stop-color="#FFB347"/><stop offset=".5" stop-color="#D6EC63"/><stop offset=".75" stop-color="#7FB6E8"/><stop offset="1" stop-color="#B98CFF"/></linearGradient></defs></svg><div class="zn-h"><span class="zn-ht">This week</span><span class="zn-hr">${znEsc(WD_MONTHS[new Date(wkStart+"T12:00:00Z").getUTCMonth()].slice(0,3))} ${new Date(wkStart+"T12:00:00Z").getUTCDate()}–${new Date(addDays(wkStart,6)+"T12:00:00Z").getUTCDate()} · tap for the grid</span></div><p class="zn-meline">${znEsc(lineBits.join(" ")||"A fresh week.")}</p>
-      <div class="zn-wk7">${week.map((d,i)=>{ const p=dayPct[i]; const r=15; const c=2*Math.PI*r; const full=p!=null&&p>=0.999; return `<span class="${d.k===T?"today":""}${full?" full":""}"><svg viewBox="0 0 40 40" width="38" height="38" aria-label="${DAYS_LONG[new Date(d.k+"T12:00:00Z").getUTCDay()]}: ${p==null?"ahead":Math.round(p*100)+"% done"}"><circle cx="20" cy="20" r="${r}" fill="none" stroke="rgba(31,35,64,.1)" stroke-width="6"/>${p!=null&&p>0?`<circle cx="20" cy="20" r="${r}" fill="none" stroke="${full?"url(#znRainbow)":"#1F2340"}" stroke-width="6" stroke-dasharray="${(c*p).toFixed(1)} ${c.toFixed(1)}" stroke-linecap="round" transform="rotate(-90 20 20)"/>`:""}${full?`<text x="20" y="24.5" text-anchor="middle" font-size="12">✦</text>`:""}</svg><b>${DAYS_LONG[new Date(d.k+"T12:00:00Z").getUTCDay()].slice(0,1)}</b></span>`; }).join("")}</div>`;
+      <div class="zn-wk7">${week.map((d,i)=>{ const p=dayPct[i]; const r=15; const c=2*Math.PI*r; const full=p!=null&&p>=0.999; return `<span class="${d.k===T?"today":""}${full?" full":""}"><svg viewBox="0 0 40 40" width="38" height="38" aria-label="${DAYS_LONG[new Date(d.k+"T12:00:00Z").getUTCDay()]}: ${p==null?"ahead":Math.round(p*100)+"% done"}"><circle class="zn-ringbase${p==null?" ahead":""}" cx="20" cy="20" r="${r}" fill="none" stroke="rgba(31,35,64,.1)" stroke-width="${p==null?3:6}"${p==null?' stroke-dasharray="1.5 5.5" stroke-linecap="round"':""}/>${p!=null&&p>0?`<circle cx="20" cy="20" r="${r}" fill="none" stroke="${full?"url(#znRainbow)":"#1F2340"}" stroke-width="6" stroke-dasharray="${(c*p).toFixed(1)} ${c.toFixed(1)}" stroke-linecap="round" transform="rotate(-90 20 20)"/>`:""}${full?`<text x="20" y="24.5" text-anchor="middle" font-size="12">✦</text>`:""}</svg><b>${DAYS_LONG[new Date(d.k+"T12:00:00Z").getUTCDay()].slice(0,1)}</b></span>`; }).join("")}</div>`;
     hero.setAttribute("role","button"); hero.tabIndex=0; hero.style.cursor="pointer"; const gridSheet=()=>{ const g=el("div","zn-rsheet"); g.innerHTML=`<div class="zn-wkhead"><span></span>${week.map(d=>`<span class="${d.k===T?"on":""}">${DAYS_LONG[new Date(d.k+"T12:00:00Z").getUTCDay()].slice(0,3)}</span>`).join("")}</div>${rows.map(([k,l])=>`<div class="zn-wkrow"><span>${l}</span>${week.map(d=>{ const s2=d.k>T?0:(k==="read"?readState(d.k):dotState(d.r,k)); return `<i class="${s2===1?"on":s2===2?"half":""}${d.k===T?" today":""}" style="--c:${(practiceDefs().find(x=>x.k===k)||{}).c||PCOL[k]||"#9AA0B8"}"></i>`; }).join("")}</div>`).join("")}<div class="zn-wklegend"><span>● done</span><span>○ partly</span><span class="r">today ringed</span></div>`; openSheet({kicker:"This week",title:"Day by day",body:[g],from:hero}); };
     hero.addEventListener("click",gridSheet); hero.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); gridSheet(); } }); host.append(hero);
     try{ host.append(znRoutinesCard()); }catch(e){ console.error("routines",e); }
@@ -3189,7 +3206,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const rd=num(ROW.Readiness), sl=num(ROW["Sleep Score"]), stp=num(ROW.Steps); if(rd!=null||sl!=null||stp!=null){ const bc=znCard("zn-body","","Body, this morning"); const sp=(k,c)=>{ const vals=last14.map(d=>num(d.r&&d.r[k])); const pts=vals.map((v,i)=>v==null?null:[i,v]).filter(Boolean); if(pts.length<2) return ""; const ys=pts.map(p=>p[1]); const mn=Math.min(...ys),mx=Math.max(...ys),s=Math.max(1,mx-mn); return `<svg width="100%" height="22" viewBox="0 0 80 22" preserveAspectRatio="none" aria-hidden="true"><polyline points="${pts.map(p=>`${(p[0]/13*80).toFixed(1)},${(20-(p[1]-mn)/s*18).toFixed(1)}`).join(" ")}" fill="none" stroke="${c}" stroke-width="2"/></svg>`; };
       bc.innerHTML=znH("Body, this morning","Oura")+`<div class="zn-bgrid3">${[["Sleep",sl,sp("Sleep Score",PCOL.taper),"sleep score"],["Readiness",rd,sp("Readiness",PCOL.hands),"readiness"],["Steps",stp!=null?stp.toLocaleString():null,sp("Steps",PCOL.water),"steps"]].filter(x=>x[1]!=null).map(([k,v,s,l])=>`<div><span class="zn-k">${k}</span><b>${v}</b>${s}<span class="zn-gsub">${l}</span></div>`).join("")}</div>`; host.append(bc); }
     // ---------- records ----------
-    try{ const all=recAll().slice(0,3); const rc=znCard("zn-records","","Records"); rc.innerHTML=znH("Records"); const lb=el("button","zn-pill zn-dark","Log one"); lb.type="button"; lb.addEventListener("click",()=>{ const old=$("#rfRecords button"); if(old) old.click(); else show("you"); }); rc.querySelector(".zn-h").append(lb); if(all.length){ const ul=el("div","zn-reclist"); all.forEach(r=>{ const d=el("div"); const dd2=new Date(String(r.t).slice(0,10)+"T12:00:00Z"); d.textContent=`${r.n} · ${DAYS_LONG[dd2.getUTCDay()].slice(0,3)} ${dd2.getUTCMonth()+1}/${dd2.getUTCDate()}`; ul.append(d); }); rc.append(ul); } else rc.append(el("p","zn-empty","Nothing logged yet.")); host.append(rc); }catch(e){}
+    if(false) try{ const all=recAll().slice(0,3); const rc=znCard("zn-records","","Records"); rc.innerHTML=znH("Records"); const lb=el("button","zn-pill zn-dark","Log one"); lb.type="button"; lb.addEventListener("click",()=>{ const old=$("#rfRecords button"); if(old) old.click(); else show("you"); }); rc.querySelector(".zn-h").append(lb); if(all.length){ const ul=el("div","zn-reclist"); all.forEach(r=>{ const d=el("div"); const dd2=new Date(String(r.t).slice(0,10)+"T12:00:00Z"); d.textContent=`${r.n} · ${DAYS_LONG[dd2.getUTCDay()].slice(0,3)} ${dd2.getUTCMonth()+1}/${dd2.getUTCDate()}`; ul.append(d); }); rc.append(ul); } else rc.append(el("p","zn-empty","Nothing logged yet.")); host.append(rc); }catch(e){}
     { const bm=document.querySelector('meta[name="zone-build"]'); const bl=el("p","zn-empty",`Zone build ${bm?bm.content:"?"}`); bl.style.cssText="text-align:center;opacity:.55;font-size:12px;margin:18px 0 90px"; host.append(bl); } // Oct 25: which version this phone is running
   }
   // the shelf card on Me: jackets on a ledge, pace, nights, a kept line
@@ -3224,7 +3241,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     let next=null; if(W){ const nowM=n*60; for(const d of W.days){ for(const e of (d.shared||[])){ if(e.s===-1) continue; if(d.date===W.today&&e.s<nowM-30) continue; next={d,e}; break; } if(next) break; } }
     const freeDays=W?W.days.filter(d=>d.date>=T&&d.status==="both free"):[]; const nextFree=freeDays[0];
     const hero=znCard("zn-hero zn-usnext2","","Together, next"); hero.innerHTML=`<div class="zn-hrow"><span class="zn-date">Together <i>next</i></span>${calOK()?`<button type="button" class="zn-pill zn-dark" id="znUsPlan">+ Plan</button>`:""}</div>
-      <div class="zn-usbig"><b>${next?znEsc(next.e.title):(nextFree?"Nothing planned yet":"A full week")}</b><span>${next?znEsc(`${next.d.date===T?"Tonight":next.d.label}${next.e.s>=0?" · "+znMins(next.e.s):""}`):(nextFree?`Free together ${nextFree.date===T?"tonight":znEsc(nextFree.label)}`:"")}</span></div>
+      <div class="zn-usbig"><b>${next?znEsc(next.e.title):!W?"Your week together":(nextFree?"Nothing planned yet":"A busy week")}</b><span>${next?znEsc(`${next.d.date===T?"Tonight":next.d.label}${next.e.s>=0?" · "+znMins(next.e.s):""}`):(nextFree?`Free together ${nextFree.date===T?"tonight":znEsc(nextFree.label)}`:"")}</span></div>
       ${W?`<div class="zn-userail">${W.days.slice(0,7).map(d=>{ const dd=new Date(d.date+"T12:00:00Z"); const st=String(d.status||""); const cls=st==="together"?"together":st==="both free"?"both-free":st==="both busy"?"both-busy":st.includes("claire")?"claire-busy":st.includes("victoria")?"victoria-busy":""; return `<span class="${d.date===T?"today":""}" title="${znEsc(st)}"><u class="zn-evedot ${cls}"></u><b>${DAYS_LONG[dd.getUTCDay()].slice(0,3)}</b></span>`; }).join("")}</div>`:""}
       <p class="zn-vibe">${znEsc(W?(freeDays.length?`${freeDays.length} free evening${freeDays.length===1?"":"s"} together this week${nextFree?`. ${nextFree.date===T?"Tonight":nextFree.label} is open.`:"."}`:"No free evenings together this week."):"Your shared week shows up after the next morning briefs.")}</p>`;
     const pb=hero.querySelector("#znUsPlan"); if(pb) pb.addEventListener("click",()=>openAddEvent(pb,{whose:"us"})); host.append(hero);
@@ -3237,7 +3254,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
         if(meet){ first=ww[0][1]; last=ww[ww.length-1][2]; } else { try{ const wb=JSON.parse(clean(r["Work Blocks"])||"[]"); const tb=wb.filter(b=>String(b.start||"").slice(0,10)===T); meet=tb.length; if(meet){ first=new Date(tb[0].start).toLocaleTimeString("en-US",{timeZone:TZ,hour:"numeric",minute:"2-digit"}); last=new Date(tb[tb.length-1].end).toLocaleTimeString("en-US",{timeZone:TZ,hour:"numeric",minute:"2-digit"}); } }catch(e){} }
         const hh=s=>{ const [h,m]=String(s).split(":").map(Number); return isNaN(h)?s:hToLabel(h+(m||0)/60); };
         pc.append(row("💼",meet?`${meet} meeting${meet===1?"":"s"}`:"No meetings today",meet&&first?`${hh(first)} – ${hh(last)}`:""));
-        const today=W&&W.days.find(d=>d.date===T); const st=today?String(today.status||""):""; pc.append(row("🌙","Tonight",st==="together"?"plans together":st==="both free"?"free, like you":st.includes(other)?"she’s busy":st==="both busy"?"you’re both busy":"no word yet"));
+        const today=W&&W.days.find(d=>d.date===T); const st=today?String(today.status||""):""; pc.append(row("🌙","Tonight",st==="together"?"plans together":st==="both free"?"free, like you":st.includes(other)?"she’s busy":st==="both busy"?"you’re both busy":"nothing on either calendar"));
         const bk=(BOOKS||[]).find(b=>b.who===NAME(other)&&b.s==="Reading")||(BOOKS||[]).find(b=>b.who==="Both"&&b.s==="Reading"); if(bk) pc.append(row("📖",bk.t,`${bk.a||""}${bk.p!=null?" · "+bk.p+"%":""}${bk.lr?" · read "+(bk.lr===T?"today":bk.lr===addDays(T,-1)?"last night":bk.lr):""}`));
         const gt=clean(r.Gita); if(gt){ try{ const g=JSON.parse(gt); if(g&&g.word) pc.append(row("🪷",`Her word today: ${g.word}`,g.title||"")); }catch(e){} }
       }
@@ -3401,7 +3418,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function znPlanRender(){ const host=$("#znPlan"); if(!host) return; if(!znOn()||!ROW){ host.hidden=true; return; } host.hidden=false; host.replaceChildren();
     const T=TODAY(); if(!ZN_PLAN.day||ZN_PLAN.day<T) ZN_PLAN.day=T; const days=znPlanDays();
     const mh=el("div","zn-mast zn-card"); mh.innerHTML=`<span class="zn-mt">Plan</span>`; const addb=el("button","zn-pill","+ Event"); addb.type="button"; addb.disabled=!calOK(); addb.addEventListener("click",()=>openAddEvent(addb)); mh.append(addb); host.append(mh);
-    const seg=el("div","zn-seg"); [["week","Week"],["projects","Projects"],["waiting","Waiting"],["list","All tasks"]].forEach(([k,l])=>{ const b=el("button",null,l); b.type="button"; b.setAttribute("aria-pressed",String(ZN_PLAN.seg===k)); b.addEventListener("click",()=>{ ZN_PLAN.seg=k; znPlanRender(); }); seg.append(b); }); host.append(seg);
+    const seg=el("div","zn-seg"); [["week","Week"],["projects","Projects"],["waiting","With Alice"],["list","All tasks"]].forEach(([k,l])=>{ const b=el("button",null,l); b.type="button"; b.setAttribute("aria-pressed",String(ZN_PLAN.seg===k)); b.addEventListener("click",()=>{ ZN_PLAN.seg=k; znPlanRender(); }); seg.append(b); }); host.append(seg);
     if(ZN_PLAN.seg==="list"){ try{ host.append(znTasksView()); }catch(e){ console.error("tasks",e); } return; } // Oct 27: tasks live here now, not on the old List page
     if(ZN_PLAN.seg==="projects") return znProjects(host); if(ZN_PLAN.seg==="waiting") return znWaiting(host);
     // ---------- the week ----------
@@ -3444,7 +3461,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       sec.append(rail); host.append(sec); }
   }
   function znProjects(host){ const pj={}; LIST.filter(it=>isTask(it)&&forClaire(it)&&it.project).forEach(it=>{ (pj[it.project]=pj[it.project]||[]).push(it); });
-    const names=Object.keys(pj); if(!names.length){ host.append(znCard("","<p class='zn-empty'>No projects yet. Add [Project] to a task to start one.</p>")); return; }
+    const names=Object.keys(pj); if(!names.length){ host.append(znCard("","<p class='zn-empty'>No projects yet. A project groups related tasks; give a task a project and it shows up here.</p>")); return; }
     names.forEach((nm,i)=>{ const its=pj[nm]; const done=its.filter(x=>x.status==="Done").length; const c=znCard("zn-pcard",""); c.style.background=`linear-gradient(170deg, ${[ZC.mint,ZC.sky,ZC.pnk,ZC.lil,ZC.lim][i%5]}, rgba(255,255,255,.85))`; c.innerHTML=znH(nm,`${done} of ${its.length}`)+`<i class="zn-pbar"><i style="width:${Math.round(done/its.length*100)}%"></i></i>`;
       its.filter(x=>x.status==="Open").sort((a,b)=>(a.due||"9999").localeCompare(b.due||"9999")).forEach(it=>{ const r=el("div","zn-trow"); const cb=el("button","zn-cb2"); cb.type="button"; cb.setAttribute("aria-label","Done: "+it.name); cb.disabled=!mcp; cb.addEventListener("click",async()=>{ cb.disabled=true; await setDone(it,true); znPlanRender(); }); const tx=el("button","zn-tt2"); tx.type="button"; tx.append(el("b",null,it.name),el("span",null,[it.est?`${it.est} min`:"",it.due?dueLabel(it.due):"",it.sched?"placed":""].filter(Boolean).join(" · "))); tx.addEventListener("click",()=>openListItem(it,tx)); r.append(cb,tx); c.append(r); });
       host.append(c); }); }
@@ -3613,8 +3630,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     c.innerHTML=znH(`${DAYS_LONG[d1.getUTCDay()]}`,meets.length?`${meets.length} meeting${meets.length===1?"":"s"} · ${Math.round(hours*2)/2} h${b2b.length?" · back-to-backs":""}`:"no meetings");
     const sec=(label)=>{ const h=el("div","zn-rslot"); h.textContent=label; c.append(h); };
     const line=(ic,name,sub,right,go)=>{ const r=el(opts.rowsAsButtons?"button":"div","zn-prow2"); if(opts.rowsAsButtons) r.type="button"; r.innerHTML=`<span class="zn-pic2">${ic}</span><span class="zn-rtx"><b>${znEsc(name)}</b>${sub?`<span>${znEsc(sub)}</span>`:""}</span>${right?`<span class="zn-ptime">${znEsc(right)}</span>`:""}`; if(go) r.addEventListener("click",go); c.append(r); return r; };
-    if(meets.length){ sec("Meetings"); meets.forEach((m,i)=>line("💼",shortName(m.name),i===0?"first of the day":b2b.includes(i)?"straight after the last one":"",`${hToLabel(m.s)}–${hToLabel(m.e)}`)); }
-    if(evs.length){ sec("Also"); evs.forEach(e=>line("📅",shortName(e.name),"",e.s!=null?hToLabel(e.s):"")); }
+    if(meets.length){ sec("Meetings"); meets.forEach((m,i)=>line("💼",String(m.name).replace(/^💼\s*/,""),i===0?"first of the day":b2b.includes(i)?"straight after the last one":"",`${hToLabel(m.s)}–${hToLabel(m.e)}`)); }
+    if(evs.length){ sec("Also"); evs.forEach(e=>line("📅",String(e.name).replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,""),"",e.s!=null?hToLabel(e.s):"")); }
     if(due.length){ sec("Due tomorrow"); due.slice(0,5).forEach(it=>line(AREA_IC[it.area]||"✓",it.name,it.area||"",it.star?"★":"")); }
     sec("Tomorrow’s Top 3"); if(top.length){ top.slice(0,3).forEach((x,i)=>line(String(i+1),x,"","")); } else c.append(el("p","zn-empty","Nothing picked yet."));
     const pk=el("button","zn-pill zn-dark",top.length?"Change the Top 3":"Pick the Top 3"); pk.type="button"; pk.disabled=!mcp||!LIVE; pk.addEventListener("click",()=>znPickTop3(T1,due,pk)); c.append(pk);
@@ -3722,8 +3739,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const D3=parseDay(); const done3=new Set(listOf("Top 3 Done").map(x=>x.toLowerCase()));
     const picks=[...D3.tasks.map(t3=>({title:t3.title,sub:`${fmtH(t3.r.start)}–${fmtH(t3.r.end)}`})),...D3.untimed.map(u=>({title:u.title,sub:u.note||""})),...D3.unplaced.map(u=>({title:u.replace(/\s*\(it comes after a step that didn't fit\)$/i,""),sub:"no clean window today"})),...(typeof extraPicks==="function"?extraPicks(D3):[]).map(x=>({title:x,sub:""}))].slice(0,5);
     if(picks.length&&!wk||!wk){ const dn=picks.filter(x=>done3.has(x.title.toLowerCase())).length; const top=znCard("zn-top","","Top three");
-      top.innerHTML=znH("Top three",picks.length?`${dn} of ${picks.length}`:"nothing picked yet");
-      if(!picks.length){ const b=el("button","zn-btn","Pick today’s top three"); b.type="button"; b.disabled=!mcp; b.addEventListener("click",()=>openPickToday(b)); top.append(b); }
+      top.innerHTML=znH("Top 3",picks.length?`${dn} of ${picks.length}`:"nothing picked yet");
+      if(!picks.length){ const b=el("button","zn-btn","Pick today’s Top 3"); b.type="button"; b.disabled=!mcp; b.addEventListener("click",()=>openPickToday(b)); top.append(b); }
       picks.forEach(x=>{ const isD=done3.has(x.title.toLowerCase()); const r=el("div","zn-chk"+(isD?" done":"")); const cb=el("button","zn-cb",isD?"✓":""); cb.type="button"; cb.disabled=!mcp; cb.setAttribute("aria-pressed",String(isD)); cb.setAttribute("aria-label",(isD?"Undo: ":"Done: ")+x.title);
         cb.addEventListener("click",async()=>{ cb.disabled=true; if(!isD) cb.textContent="✓"; try{ await setInList("Top 3 Done",x.title,!isD,"\n"); syncListDone(x.title,!isD); renderWeekday(); znRender(); }catch(e){ toast(writeErr(e)); cb.disabled=false; } });
         const tx=el("span","zn-ct"); tx.append(el("b",null,x.title)); if(x.sub) tx.append(el("span",null,x.sub)); r.append(cb,tx); top.append(r); });
@@ -6352,10 +6369,10 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       if(!okR||!okP) rc.append(el("p","hint","Couldn't load this from Notion, so editing is off to protect it. Close and reopen Settings to try again.")); }
 
     if(!mcp) inner.append(el("p","note","Open this in Claude to change settings."));
-    if(PERSON.person==="claire"){ const sc=section("c-you","📒","Logbook records","One per line: an emoji, a space, the name. These become the one-tap buttons in the Logbook."); const ta=el("textarea","field"); ta.rows=5; ta.value=clean(SET.Records&&SET.Records.value); ta.setAttribute("aria-label","Record types, one per line");
+    if(false){ const sc=section("c-you","📒","Logbook records","One per line: an emoji, a space, the name. These become the one-tap buttons in the Logbook."); const ta=el("textarea","field"); ta.rows=5; ta.value=clean(SET.Records&&SET.Records.value); ta.setAttribute("aria-label","Record types, one per line");
       const sv=el("button","btn sm","Save"); sv.type="button"; sv.disabled=!mcp; sv.addEventListener("click",async()=>{ sv.disabled=true; try{ await saveSetting("Records",ta.value.split(/\n/).map(x=>x.trim()).filter(Boolean)); toast("Saved"); renderRecords(); }catch(e){ toast(writeErr(e)); } sv.disabled=false; });
       sc.append(ta,sv); }
-    { const u=usage(); const sc=section("c-you","📊","What you open","Counted on this device only, so we can retire what you never use."); const ul=el("ul","mlist");
+    if(false){ const u=usage(); const sc=section("c-you","📊","What you open","Counted on this device only, so we can retire what you never use."); const ul=el("ul","mlist");
       const rows=u?Object.entries(u.n).sort((a,b)=>b[1]-a[1]).slice(0,14):[]; rows.forEach(([k,v])=>ul.append(el("li",null,`${k.replace(/^tile:/,"More · ").replace(/^tab:/,"Tab · ").replace(/^mini:/,"Practice · ").replace(/^line:/,"Status line · ").replace(/^intent:/,"Intention · ")} — ${v}`)));
       if(!rows.length) ul.append(el("li",null,"Nothing counted yet."));
       sc.append(ul); if(u&&u.since) sc.append(el("p","hint",`Since ${u.since}.`)); }
