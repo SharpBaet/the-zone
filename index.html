@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-10-30.1">
+<meta name="zone-build" content="2026-10-30.2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2080,6 +2080,12 @@ body.zn.zn-night .set .zn-switch{ background:rgba(255,255,255,.2); } body.zn.zn-
 body.zn .set .err{ color:#B0244F; } body.zn.zn-night .set .err{ color:#FFD1E0; } body.zn .set .top .btn{ width:auto; }
 .zn-wkrows{display:flex;flex-direction:column}.zn-wkrow2{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;padding:8px 0;border-top:1px solid rgba(31,35,64,.08);color:inherit;text-align:left;font:inherit;cursor:pointer;border-radius:0}.zn-wkrow2:first-child{border-top:0}.zn-wkrow2.sel{background:rgba(31,35,64,.05);border-radius:14px;padding-left:6px;padding-right:6px}.zn-wkd{width:40px;height:40px;border-radius:12px;background:rgba(31,35,64,.06);display:inline-flex;flex-direction:column;align-items:center;justify-content:center;flex:none;line-height:1}.zn-wkd b{font:700 15px 'Plus Jakarta Sans',sans-serif}.zn-wkd span{font:600 9.5px 'Plus Jakarta Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;opacity:.6;margin-top:2px}.zn-wkrow2.sel .zn-wkd{background:#1F2340;color:#FFE27A}.zn-wkrow2.sel .zn-wkd span{opacity:.8}.zn-wkrow2 .zn-rtx b{font:700 14px 'Plus Jakarta Sans',sans-serif}.zn-wkrow2 .zn-rtx span{font:500 12px 'Plus Jakarta Sans',sans-serif;opacity:.65}.zn-wkmeter{width:46px;height:6px;border-radius:999px;background:rgba(31,35,64,.08);overflow:hidden;flex:none}.zn-wkmeter i{display:block;height:100%;background:#B9A6F5;border-radius:999px}.zn-wkrow2.heavy .zn-wkmeter i{background:#FFD25A}.zn-wkrow2 .zn-evedot{flex:none}
 body.zn.zn-night .zn-wkrow2{border-color:rgba(255,255,255,.12)}body.zn.zn-night .zn-wkrow2.sel{background:rgba(255,255,255,.08)}body.zn.zn-night .zn-wkd{background:rgba(255,255,255,.1)}body.zn.zn-night .zn-wkrow2.sel .zn-wkd{background:#F3EEFF}body.zn.zn-night .zn-wkrow2.sel .zn-wkd b,body.zn.zn-night .zn-wkrow2.sel .zn-wkd span{color:#1F2340 !important}body.zn.zn-night .zn-wkmeter{background:rgba(255,255,255,.14)}
+.zn-usbig{margin:8px 0 12px}.zn-usbig b{display:block;font:400 30px/1.1 'Fraunces',Georgia,serif}.zn-usbig span{font:600 13px 'Plus Jakarta Sans',sans-serif;opacity:.75}.zn-userail{display:flex;justify-content:space-between;margin:6px 0 10px}.zn-userail span{display:flex;flex-direction:column;align-items:center;gap:6px;font:600 11px 'Plus Jakarta Sans',sans-serif;opacity:.7}.zn-userail span.today{opacity:1}.zn-userail .zn-evedot{width:14px;height:14px;border-radius:7px;display:block}
+.zn-herline{font:italic 400 18px/1.35 'Fraunces',Georgia,serif;margin:6px 0 8px}
+.zn-feedrow{display:flex;gap:10px;padding:10px 0;border-top:1px solid rgba(31,35,64,.08)}.zn-who{width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font:700 13px 'Plus Jakarta Sans',sans-serif;flex:none}.zn-who.v{background:#FFA3CB;color:#1F2340}.zn-who.c{background:#B9A6F5;color:#1F2340}.zn-feedtx{display:flex;flex-direction:column;gap:2px}.zn-feedtx b{font:500 14.5px/1.35 'Plus Jakarta Sans',sans-serif}.zn-feedtx span{font:500 11.5px 'Plus Jakarta Sans',sans-serif;opacity:.6}
+.zn-usnext2{background:linear-gradient(160deg,#FFD6E8,#FFE9D6 60%,#F4EEFF) !important}
+body.zn.zn-night .zn-feedrow{border-color:rgba(255,255,255,.12)}body.zn.zn-night .zn-usnext2{background:linear-gradient(160deg,rgba(255,163,203,.22),rgba(255,180,138,.08)) !important;color:#F3EEFF}body.zn.zn-night .zn-usnext2 .zn-date,body.zn.zn-night .zn-usnext2 .zn-vibe,body.zn.zn-night .zn-usnext2 .zn-usbig *{color:#F3EEFF}
+body.zn #view-us > #usNote{ display:none !important; } /* Oct 30: notes live in Between us now */
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -3197,19 +3203,69 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     else { const e=el("p","zn-empty","Nothing on the go. Tap + to add a book."); c.append(e); }
     const other=bkOther(); const theirs=BOOKS.find(x=>x.s==="Reading"&&x.who===other); const both=BOOKS.find(x=>x.s==="Reading"&&x.who==="Both"); if(theirs||both){ const us=el("div","zn-shus"); us.innerHTML=`${theirs?`${znEsc(other)} is reading <i>${znEsc(theirs.t)}</i>${bkProg(theirs,other)?` · ${bkProg(theirs,other)}%`:""}`:""}${theirs&&both?" · ":""}${both?`together: <i>${znEsc(both.t)}</i>`:""}`; us.addEventListener("click",()=>show("us")); c.append(us); }
     return c; }
+  // Oct 30: the Us tab around three jobs: plan together (Together next, Plans, Date ideas), keep up with each other (Victoria/Claire today),
+  // share what's fun (Between us, the shelf, tonight's games). Rendered from Us Week (zone-us), Us · List, the Ideas row, the other
+  // person's own Daily Log row (all fair game, by agreement) and the UsFeed row.
+  let PARTNER={at:0,row:null,date:""};
+  const INDEX_OF={claire:"3f4ef44532cf81e881d7f26e66698eb6",victoria:"3fbef44532cf81a88fdff0739517ddb6"};
+  async function partnerRow(){ const T=TODAY(); if(PARTNER.date===T&&Date.now()-PARTNER.at<10*60*1000) return PARTNER.row; if(!mcp) return null;
+    try{ const ix=await mcp.callTool(SERVER,"notion-fetch",{id:INDEX_OF[OTHER()]}); const pr=parseProps(ix&&ix.payload); const idx=JSON.parse(clean(pr&&pr.Value)||"{}"); const r0=(idx.rows||[]).find(r=>r.d===T); if(!r0) { PARTNER={at:Date.now(),row:null,date:T}; return null; }
+      const pg=await mcp.callTool(SERVER,"notion-fetch",{id:r0.id}); const row=parseProps(pg&&pg.payload); PARTNER={at:Date.now(),row,date:T}; return row; }catch(e){ console.error("partner",e); return null; } }
+  function usFeed(){ const out=String(SET.UsFeed&&SET.UsFeed.value||"").replace(/\\/g,"").split(/\n+/).map(l=>{ const a=l.split("|"); return a.length>=4?{from:a[0].trim(),t:a[1].trim(),kind:a[2].trim(),text:a.slice(3).join("|").trim()}:null; }).filter(Boolean);
+    try{ usNotes().forEach(n=>{ if(!out.some(x=>x.t===n.t&&x.from===n.from)) out.push({from:n.from,t:n.t,kind:"note",text:n.text}); }); }catch(e){}
+    try{ (BOOKS||[]).forEach(b=>{ if(b.fn&&b.fn>=addDays(TODAY(),-14)){ const who=b.who==="Victoria"?"victoria":b.who==="Claire"?"claire":""; if(who) out.push({from:who,t:b.fn+"T21:00:00",kind:"book",text:`Finished ${b.t}${b.r?" · "+"★".repeat(Math.round(b.r))+"":""}`}); } }); }catch(e){}
+    return out.sort((a,b)=>String(b.t).localeCompare(String(a.t))); }
+  async function usSend(kind,text){ const lines=String(SET.UsFeed&&SET.UsFeed.value||"").split(/\n+/).filter(Boolean).slice(-79); lines.push(`${ME()}|${new Date().toISOString()}|${kind}|${String(text).replace(/\|/g,"/").replace(/\n/g," ")}`); await saveSetting("UsFeed",lines); SET.UsFeed={value:lines.join("\n")}; }
   function znUs(){ const host=$("#znUs"); if(!host) return; if(!znOn()||!ROW){ host.hidden=true; return; } host.hidden=false; host.replaceChildren();
-    const W=typeof usWeek==="function"?usWeek():null; const me=bkMe(), other=bkOther(); const T=TODAY();
-    host.append((()=>{ const m=el("div","zn-mast zn-card"); m.innerHTML=`<span class="zn-mt">Us</span><span class="zn-md">${znEsc(W&&typeof usSubLine==="function"?usSubLine(W).slice(0,40):"")}</span>`; return m; })());
-    // tonight / next together
-    let next=null; if(W){ const nowM=nowH()*60; for(const d of W.days){ for(const e of (d.shared||[])){ if(e.s===-1) continue; if(d.date===W.today&&e.s<nowM-30) continue; next={d,e}; break; } if(next) break; } }
-    const tn=znCard("zn-usnext","","Next together"); if(next){ const when=next.d.date===T?"tonight":next.d.label; tn.innerHTML=`<span class="zn-k">${znEsc(String(when).toUpperCase())}${next.e.s>=0?" · "+znEsc(znMins(next.e.s).toUpperCase()):""}</span><div class="zn-usbig">${znEsc(next.e.title)}</div>`; }
-    else { const freeE=W&&W.days.find(d=>d.status==="both free"&&d.date>=T); tn.innerHTML=`<span class="zn-k">NEXT TOGETHER</span><div class="zn-usbig">${freeE?"Nothing planned yet":"A full week"}</div>${freeE?`<span class="zn-rnsub">Free together ${freeE.date===T?"tonight":znEsc(freeE.label)}</span>`:""}`; }
-    const acts=el("div","zn-hows"); const ib=el("button","zn-pill","Ideas for a date"); ib.type="button"; ib.addEventListener("click",()=>{ $(".zn-ideas")?.scrollIntoView({behavior:"smooth",block:"start"}); }); acts.append(ib); tn.append(acts); host.append(tn);
+    const W=typeof usWeek==="function"?usWeek():null; const me=ME(), other=OTHER(); const T=TODAY(); const n=nowH();
+    const row=(ic,name,sub,right)=>{ const r=el("div","zn-prow2"); r.innerHTML=`<span class="zn-pic2">${ic}</span><span class="zn-rtx"><b>${znEsc(name)}</b>${sub?`<span>${znEsc(sub)}</span>`:""}</span>${right?`<span class="zn-ptime">${znEsc(right)}</span>`:""}`; return r; };
+    host.append((()=>{ const m=el("div","zn-mast zn-card"); m.innerHTML=`<span class="zn-mt">Us</span><span class="zn-md">${znEsc(new Date(T+"T12:00:00Z").toLocaleDateString("en-US",{timeZone:"UTC",weekday:"short",day:"numeric",month:"short"}).toUpperCase())}</span>`; return m; })());
+    // 1. Together, next: the same hero shape as Today, in the Us pink
+    let next=null; if(W){ const nowM=n*60; for(const d of W.days){ for(const e of (d.shared||[])){ if(e.s===-1) continue; if(d.date===W.today&&e.s<nowM-30) continue; next={d,e}; break; } if(next) break; } }
+    const freeDays=W?W.days.filter(d=>d.date>=T&&d.status==="both free"):[]; const nextFree=freeDays[0];
+    const hero=znCard("zn-hero zn-usnext2","","Together, next"); hero.innerHTML=`<div class="zn-hrow"><span class="zn-date">Together <i>next</i></span>${calOK()?`<button type="button" class="zn-pill zn-dark" id="znUsPlan">+ Plan</button>`:""}</div>
+      <div class="zn-usbig"><b>${next?znEsc(next.e.title):(nextFree?"Nothing planned yet":"A full week")}</b><span>${next?znEsc(`${next.d.date===T?"Tonight":next.d.label}${next.e.s>=0?" · "+znMins(next.e.s):""}`):(nextFree?`Free together ${nextFree.date===T?"tonight":znEsc(nextFree.label)}`:"")}</span></div>
+      ${W?`<div class="zn-userail">${W.days.slice(0,7).map(d=>{ const dd=new Date(d.date+"T12:00:00Z"); const st=String(d.status||""); const cls=st==="together"?"together":st==="both free"?"both-free":st==="both busy"?"both-busy":st.includes("claire")?"claire-busy":st.includes("victoria")?"victoria-busy":""; return `<span class="${d.date===T?"today":""}" title="${znEsc(st)}"><u class="zn-evedot ${cls}"></u><b>${DAYS_LONG[dd.getUTCDay()].slice(0,3)}</b></span>`; }).join("")}</div>`:""}
+      <p class="zn-vibe">${znEsc(W?(freeDays.length?`${freeDays.length} free evening${freeDays.length===1?"":"s"} together this week${nextFree?`. ${nextFree.date===T?"Tonight":nextFree.label} is open.`:"."}`:"No free evenings together this week."):"Your shared week shows up after the next morning briefs.")}</p>`;
+    const pb=hero.querySelector("#znUsPlan"); if(pb) pb.addEventListener("click",()=>openAddEvent(pb,{whose:"us"})); host.append(hero);
+    // 2. the other person's day, from her own brief
+    const pc=znCard("zn-herday","",`${NAME(other)} today`); pc.innerHTML=znH(`${NAME(other)} today`,"from her brief")+`<p class="zn-empty">Looking…</p>`; host.append(pc);
+    partnerRow().then(r=>{ pc.replaceChildren(); pc.innerHTML=znH(`${NAME(other)} today`,r?"from her brief":"no brief yet today");
+      if(!r){ pc.append(el("p","zn-empty",`${NAME(other)}’s brief hasn’t landed yet.`)); }
+      else { const vibe=clean(r.Vibe).trim(); if(vibe) pc.append(el("p","zn-herline",`“${vibe}”`));
+        const ww=clean(r["Work Week"]).split(/\n+/).map(l=>l.split("|")).filter(f=>f[0]===T&&f.length>=4); let meet=ww.length, first="", last="";
+        if(meet){ first=ww[0][1]; last=ww[ww.length-1][2]; } else { try{ const wb=JSON.parse(clean(r["Work Blocks"])||"[]"); const tb=wb.filter(b=>String(b.start||"").slice(0,10)===T); meet=tb.length; if(meet){ first=new Date(tb[0].start).toLocaleTimeString("en-US",{timeZone:TZ,hour:"numeric",minute:"2-digit"}); last=new Date(tb[tb.length-1].end).toLocaleTimeString("en-US",{timeZone:TZ,hour:"numeric",minute:"2-digit"}); } }catch(e){} }
+        const hh=s=>{ const [h,m]=String(s).split(":").map(Number); return isNaN(h)?s:hToLabel(h+(m||0)/60); };
+        pc.append(row("💼",meet?`${meet} meeting${meet===1?"":"s"}`:"No meetings today",meet&&first?`${hh(first)} – ${hh(last)}`:""));
+        const today=W&&W.days.find(d=>d.date===T); const st=today?String(today.status||""):""; pc.append(row("🌙","Tonight",st==="together"?"plans together":st==="both free"?"free, like you":st.includes(other)?"she’s busy":st==="both busy"?"you’re both busy":"no word yet"));
+        const bk=(BOOKS||[]).find(b=>b.who===NAME(other)&&b.s==="Reading")||(BOOKS||[]).find(b=>b.who==="Both"&&b.s==="Reading"); if(bk) pc.append(row("📖",bk.t,`${bk.a||""}${bk.p!=null?" · "+bk.p+"%":""}${bk.lr?" · read "+(bk.lr===T?"today":bk.lr===addDays(T,-1)?"last night":bk.lr):""}`));
+        const gt=clean(r.Gita); if(gt){ try{ const g=JSON.parse(gt); if(g&&g.word) pc.append(row("🪷",`Her word today: ${g.word}`,g.title||"")); }catch(e){} }
+      }
+      const acts=el("div","zn-hows"); const hb=el("button","zn-chip","💛 Send a heart"); hb.type="button"; hb.disabled=!mcp; hb.addEventListener("click",async()=>{ hb.disabled=true; try{ await usSend("heart","💛"); toast(`Sent ${NAME(other)} a heart`); znUs(); }catch(e){ toast(writeErr(e)); hb.disabled=false; } });
+      const nb=el("button","zn-chip","Leave a note"); nb.type="button"; nb.addEventListener("click",()=>{ const f=$("#znUsSend"); if(f){ f.scrollIntoView({behavior:"smooth",block:"center"}); f.focus(); } }); acts.append(hb,nb); pc.append(acts); });
+    // 3. Plans: Us · List, two lanes
+    const items=[...US_LOCAL.filter(x=>!(W&&W.list.some(y=>y.n===x.n))),...(W?W.list:[])].filter(x=>x.s!=="Done"&&x.k!=="Idea");
+    const soon=items.filter(x=>x.due&&x.due<=addDays(T,14)).sort((a,b)=>a.due.localeCompare(b.due)), later=items.filter(x=>!(x.due&&x.due<=addDays(T,14)));
+    const pl=znCard("zn-usplans","","Plans"); pl.innerHTML=znH("Plans","Us · List · both of us");
+    const lane=(label,arr)=>{ const h=el("div","zn-rslot"); h.textContent=label; pl.append(h); if(!arr.length){ pl.append(el("p","zn-empty",label==="Soon"?"Nothing with a date yet.":"Nothing here yet.")); return; } arr.forEach(x=>{ const dd=x.due?new Date(x.due+"T12:00:00Z"):null; const r=row(x.a==="Birdie"?"🐕":x.a==="Home"?"🏡":"💕",x.n,`${x.by?x.by+" added":"shared"}${x.a&&x.a!=="Us"?" · "+x.a:""}`,dd?(x.due===T?"today":x.due===addDays(T,1)?"tomorrow":DAYS_LONG[dd.getUTCDay()].slice(0,3)+" "+dd.getUTCDate()):""); r.style.cursor="pointer"; r.addEventListener("click",()=>{ try{ usPlan(x,r); }catch(e){} }); pl.append(r); }); };
+    lane("Soon",soon); lane("Someday",later);
+    const addw=el("div","zn-tfield"); addw.style.marginTop="10px"; const ai=el("input"); ai.type="text"; ai.placeholder="Add a plan for us… (say when: Saturday, Nov 20)"; ai.setAttribute("aria-label","Add a plan"); const ab=el("button","zn-pill zn-dark","Add"); ab.type="button"; ab.disabled=!mcp;
+    const addPlan=async()=>{ const v=ai.value.trim(); if(!v||!mcp) return; const p=parseCapture(v); ab.disabled=true; const tmp={id:"",n:p.name||v,k:"To-do",a:"Us",by:NAME(me),s:"Open",due:p.due||""}; US_LOCAL.unshift(tmp); znUs();
+      try{ await mcp.callTool(SERVER,"notion-create-pages",{parent:{data_source_id:US_LIST_DSID},pages:[{properties:{Name:tmp.n,Kind:"To-do",Area:"Us",Status:"Open","Added By":NAME(me),...(p.due?{"date:Due:start":p.due}:{})}}],allow_async:false}); toast("Added for you both"); }catch(e){ US_LOCAL=US_LOCAL.filter(x=>x!==tmp); znUs(); toast(writeErr(e)); } };
+    ab.addEventListener("click",addPlan); ai.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); addPlan(); } }); addw.append(ai,ab); pl.append(addw); host.append(pl);
+    // 4. Date ideas (the scout's card, unchanged)
     try{ znIdeas(host); }catch(e){ console.error("ideas",e); }
-    // the week's evenings
-    if(W&&W.days){ const wk=znCard("zn-usweek","","Evenings this week"); const free=W.days.filter(d=>d.status==="both free").length; wk.innerHTML=znH("Evenings this week",`${free} free together`); const row=el("div","zn-moons");
-      W.days.slice(0,7).forEach(d=>{ const dd=new Date(d.date+"T12:00:00Z"); const st=String(d.status||""); const col=st==="together"?ZC.pnk:st==="both free"?ZC.mint:st==="both busy"?"rgba(31,35,64,.18)":"#FFE27A"; const lab=st==="together"?((d.shared||[]).find(e=>e)?.title||"together"):st==="both free"?"free":st==="both busy"?"busy":`${st.replace(" busy","")} busy`; const c=el("div","zn-moon"); c.innerHTML=`<span>${DAYS_LONG[dd.getUTCDay()].slice(0,3)}</span><i style="background:${col};${d.date===T?"box-shadow:0 0 14px "+col:""}"></i><em>${znEsc(String(lab).slice(0,14))}</em>`; row.append(c); }); wk.append(row); host.append(wk); } }
-  // Us: the date scout's ideas, for both of you (Oct 24): pick one and it goes on the Fam calendar in one tap
+    // 5. Between us: the feed
+    const fd=znCard("zn-usfeed","","Between us"); fd.innerHTML=znH("Between us","what we sent each other"); const feed=usFeed().slice(0,12);
+    if(!feed.length) fd.append(el("p","zn-empty","Nothing yet. Send the first thing."));
+    feed.forEach(x=>{ const r=el("div","zn-feedrow"); const when=(()=>{ const d=new Date(x.t); if(isNaN(d)) return ""; const dstr=d.toLocaleDateString("en-CA",{timeZone:TZ}); return dstr===T?d.toLocaleTimeString("en-US",{timeZone:TZ,hour:"numeric",minute:"2-digit"}).toLowerCase():dstr===addDays(T,-1)?"yesterday":d.toLocaleDateString("en-US",{timeZone:TZ,weekday:"long"}); })();
+      const kind=x.kind==="heart"?"a heart":x.kind==="book"?"from the shelf":x.kind==="share"?"shared":"a note"; r.innerHTML=`<span class="zn-who ${x.from==="victoria"?"v":"c"}">${x.from==="victoria"?"V":"C"}</span><span class="zn-feedtx"><b>${x.kind==="heart"?"💛":znEsc(x.text)}</b><span>${kind}${when?" · "+when:""}</span></span>`; fd.append(r); });
+    const sw=el("div","zn-tfield"); sw.style.marginTop="10px"; const si=el("input"); si.type="text"; si.id="znUsSend"; si.placeholder=`Send ${NAME(other)} something…`; si.setAttribute("aria-label","Send a note"); const sb=el("button","zn-pill zn-dark","Send"); sb.type="button"; sb.disabled=!mcp;
+    const send=async()=>{ const v=si.value.trim(); if(!v) return; sb.disabled=true; try{ await usSend("note",v); si.value=""; toast(`Sent to ${NAME(other)}`); znUs(); }catch(e){ toast(writeErr(e)); sb.disabled=!mcp; } }; sb.addEventListener("click",send); si.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); send(); } }); sw.append(si,sb); fd.append(sw); host.append(fd);
+    // 6. tonight's games in the leagues you follow (from zone-us)
+    { const G=(W&&W.today===T&&Array.isArray(W.tonight))?W.tonight.filter(g=>g.state!=="post"||n*60-g.s<240):[]; if(G.length){ const gc=znCard("zn-usgames","","Tonight’s games"); gc.innerHTML=znH("Tonight’s games",`${G.length} in your leagues`); G.slice(0,6).forEach(g=>{ const hid=typeof znHide==="function"&&znHide(`${T}:${g.name}`); gc.append(row(g.e||"🏟️",`${g.name}${g.mine?" ★":""}`,[g.lg,g.state==="pre"?g.tv:(hid?"score hidden":g.score)].filter(Boolean).join(" · "),g.state==="in"?"LIVE":g.state==="post"?"Final":znMins(g.s))); }); host.append(gc); } }
+  }
+    // Us: the date scout's ideas, for both of you (Oct 24): pick one and it goes on the Fam calendar in one tap
   function znIdeas(host){ const ideas=typeof dateIdeas==="function"?dateIdeas():[]; const h=dateHist(); const T=TODAY();
     const c=znCard("zn-ideas","","Ideas for a date"); const live=ideas.filter(x=>(h[x.title.toLowerCase()]||{}).status!=="passed"); const picked=ideas.filter(x=>(h[x.title.toLowerCase()]||{}).status==="picked");
     c.innerHTML=znH("Ideas for a date",live.length?`${live.length} scouted · both of you can pick`:"the scout looks every morning");
@@ -5524,11 +5580,11 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       try{ await queueCal("me",sl.d,sl.s,sl.e,10,it.name); const iso=`${sl.d}T${hm(sl.s)}:00`; await listUpdate(it,{"date:Scheduled:start":iso},{sched:iso});
         toast(`On your calendar in a few minutes · ${dayWord(sl.d)} ${hLabel(sl.s)}`); close&&close(); }
       catch(e){ go.disabled=false; go.textContent="Put it on my calendar"; toast(writeErr(e)); } }); }
-  function openAddEvent(from){ if(!calOK()){ toast("Adding events works from Claire's Zone for now"); return; }
+  function openAddEvent(from,pre){ pre=pre||{}; if(!calOK()){ toast("Adding events works from Claire's Zone for now"); return; }
     const wrap=el("div","schd"); const L=(t,i)=>{ const l=el("label","note",t); l.append(i); return l; }; const inp=(type,v)=>{ const i=el("input","field"); i.type=type; i.value=v||""; return i; };
     const nm=inp("text"); nm.placeholder="Dinner out"; const n0=Math.min(22,Math.ceil(nowH()+1)); const di=inp("date",TODAY()), si=inp("time",hm(n0)), ei=inp("time",hm(Math.min(23.5,n0+1)));
     const seg=(name,opts,val)=>{ const g=el("div","schseg"); g.setAttribute("role","radiogroup"); g.setAttribute("aria-label",name); let cur=val; const bs=opts.map(([v,l])=>{ const b=el("button","chip",l); b.type="button"; b.setAttribute("role","radio"); b.setAttribute("aria-checked",String(v===val)); b.addEventListener("click",()=>{ cur=v; bs.forEach(x=>x.setAttribute("aria-checked",String(x===b))); warn(); }); g.append(b); return b; }); return {g,get:()=>cur}; };
-    const whose=seg("Whose",[["me","Mine"],["us","Fam · Us"],["victoria","Fam · Victoria"]],"me"); const rem=seg("Remind me",[["none","None"],["30","30 min before"],["60","1 hr before"],["morning","Morning of"]],"30");
+    const whose=seg("Whose",[["me","Mine"],["us","Fam · Us"],["victoria","Fam · Victoria"]],pre.whose||"me"); if(pre.title) nm.value=pre.title; if(pre.date) di.value=pre.date; const rem=seg("Remind me",[["none","None"],["30","30 min before"],["60","1 hr before"],["morning","Morning of"]],"30");
     const grid=el("div","lgrid"); grid.append(L("Day",di),L("Starts",si),L("Ends",ei));
     const w=el("p","schwarn"); w.hidden=true;
     const toH=v=>{ const [a,b]=String(v||"").split(":").map(Number); return isNaN(a)?null:a+(b||0)/60; };
@@ -6169,7 +6225,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   }
 
   // ---------- settings (Zone Settings rows in Notion) ----------
-  let SET_IDS={Readings:"408ef44532cf8125898bf5cbdb916013",Practices:"408ef44532cf81b78bb3e5cdce65b0c7",Routines:"408ef44532cf814d94d8f1572b2f23bf",Projects:"404ef44532cf81cd986ad119b1582265",Spoilers:"403ef44532cf817dbb73e0e0dd899c4f",SideB:"3f5ef44532cf815ba112dbf14db7253e",Ideas:"3edef44532cf8108818beacc24050e9a",DateHist:"3edef44532cf81a8a7a3cf8ca3386fd0",Birdie:"3edef44532cf81858110cb880c558c6f",Camp:"3edef44532cf81b489eed481651e4ed3",Pathway:"3edef44532cf81f39292ef101818d4bb",Teams:"3ecef44532cf814fba26ca32c2753c83",Podcasts:"3ecef44532cf81418a0aca49032829fb",News:"3ecef44532cf8166b0bfeec8dec0856a",Habits:"3ecef44532cf81609ea0df88aaa1a023",TimeOff:"3faef44532cf81789d09fe58b4f4f226",Appts:"3fbef44532cf81c49c39d9f513795764",Records:"3feef44532cf812dbb3bcde7b9d4fe2d",FamOwners:"3ffef44532cf819284abc0153a93d6da",UsNotes:"3ffef44532cf815f871dea8776750e48",UsWeek:"3ffef44532cf8183b142f35deea1fc68",BirdieToday:"3ffef44532cf81328d53cd4a402fd5be",FamEvents:"400ef44532cf81388a07de29c80af48e"};
+  let SET_IDS={UsFeed:"409ef44532cf81c2adabc4f6dd78dfe1",Readings:"408ef44532cf8125898bf5cbdb916013",Practices:"408ef44532cf81b78bb3e5cdce65b0c7",Routines:"408ef44532cf814d94d8f1572b2f23bf",Projects:"404ef44532cf81cd986ad119b1582265",Spoilers:"403ef44532cf817dbb73e0e0dd899c4f",SideB:"3f5ef44532cf815ba112dbf14db7253e",Ideas:"3edef44532cf8108818beacc24050e9a",DateHist:"3edef44532cf81a8a7a3cf8ca3386fd0",Birdie:"3edef44532cf81858110cb880c558c6f",Camp:"3edef44532cf81b489eed481651e4ed3",Pathway:"3edef44532cf81f39292ef101818d4bb",Teams:"3ecef44532cf814fba26ca32c2753c83",Podcasts:"3ecef44532cf81418a0aca49032829fb",News:"3ecef44532cf8166b0bfeec8dec0856a",Habits:"3ecef44532cf81609ea0df88aaa1a023",TimeOff:"3faef44532cf81789d09fe58b4f4f226",Appts:"3fbef44532cf81c49c39d9f513795764",Records:"3feef44532cf812dbb3bcde7b9d4fe2d",FamOwners:"3ffef44532cf819284abc0153a93d6da",UsNotes:"3ffef44532cf815f871dea8776750e48",UsWeek:"3ffef44532cf8183b142f35deea1fc68",BirdieToday:"3ffef44532cf81328d53cd4a402fd5be",FamEvents:"400ef44532cf81388a07de29c80af48e"};
   const US_LIST_DSID="3919678d-54b1-412e-b81a-9984b46b0ad5"; // Us · List (shared)
   const RECORDS_DSID="ac26887b-3cf5-4496-b4ac-6a22685a6fd3"; // The Zone · Zone Records (one row per logged occurrence)
   const SET={}; // key -> {value, check}
@@ -6312,8 +6368,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   async function loadSettings(keys){ if(!keys) LOADED.clear(); if(!mcp) return; await Promise.all(Object.entries(SET_IDS).filter(([k])=>!keys||keys.includes(k)).map(async([k,id])=>{ if(!id) return; try{ const r=await mcp.callTool(SERVER,"notion-fetch",{id}); const pr=parseProps(r&&r.payload); if(pr&&typeof pr.Value==="string"){ SET[k]={value:clean(pr.Value),check:clean(pr.Check)}; LOADED.add(k); } }catch(e){} })); }
   // Oct 29: the settings the day's screens depend on are loaded once at start (they used to load only when the gear was opened, so targets,
   // bottle size, the why lines, the Practices and Routines rows and the Spoilers list were all defaults until then)
-  let SET_PRIMED=false; const PRIME_KEYS=["Practices","Routines","Projects","Spoilers","Readings"];
-  function primeSettings(){ if(SET_PRIMED||!mcp) return; SET_PRIMED=true; loadSettings(PRIME_KEYS).then(()=>{ try{ znMe(); }catch(e){} try{ znRender(); }catch(e){} }); }
+  let SET_PRIMED=false; const PRIME_KEYS=["Practices","Routines","Projects","Spoilers","Readings","UsFeed","UsWeek","Ideas","DateHist","UsNotes"];
+  function primeSettings(){ if(SET_PRIMED||!mcp) return; SET_PRIMED=true; loadSettings(PRIME_KEYS).then(()=>{ try{ znMe(); }catch(e){} try{ znRender(); }catch(e){} try{ znUs(); }catch(e){} }); }
 
   // ---------- render all ----------
   // ---------- what the Zone changed on its own today, each with Undo ----------
