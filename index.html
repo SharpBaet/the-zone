@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-10-29.9">
+<meta name="zone-build" content="2026-10-29.10">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -6215,19 +6215,19 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const mv=topicBlock("More of",more,"Like AI and tech"); const lv=topicBlock("Less of",less,"Like celebrity news");
     const nDirty=saveBar(nc,()=>saveSetting("News",[...more.map(x=>"More: "+x),...less.map(x=>"Less: "+x)]),"News"); mv.ul.onDirty=nDirty; lv.ul.onDirty=nDirty;
 
-    // habits
-    const habits=habitsList();
-    const hc=section("c-you","✅","Habits","Your own daily habits. They show up right away in Today's practices and in the You tab's habit grid.");
-    let hDirty=()=>{};
-    const hv=listView(hc,habits,(li,h,i,redraw)=>{ const em=el("input","em"); em.value=h.emoji; em.maxLength=4; em.setAttribute("aria-label","Emoji for "+h.name); em.addEventListener("input",()=>{ h.emoji=em.value.trim(); hDirty(); });
-        const nm=el("input","hname"); nm.value=h.name; nm.setAttribute("aria-label","Habit name"); nm.addEventListener("input",()=>{ h.name=nm.value.trim(); hDirty(); });
-        const up=el("button","mini","↑"); up.type="button"; up.disabled=i===0; up.setAttribute("aria-label","Move up"); up.addEventListener("click",()=>{ [habits[i-1],habits[i]]=[habits[i],habits[i-1]]; redraw(true); });
-        const dn=el("button","mini","↓"); dn.type="button"; dn.disabled=i===habits.length-1; dn.setAttribute("aria-label","Move down"); dn.addEventListener("click",()=>{ [habits[i+1],habits[i]]=[habits[i],habits[i+1]]; redraw(true); });
-        li.style.paddingLeft="8px"; li.append(em,nm,up,dn); });
-    const he=el("input","field em"); he.placeholder="📚"; he.maxLength=4; he.setAttribute("aria-label","Emoji");
-    const hn=el("input","field"); hn.placeholder="New habit, like Read 10 pages"; hn.setAttribute("aria-label","New habit");
-    addRow(hc,[he,hn],()=>{ const n=hn.value.trim(); if(!n) return; habits.push({emoji:he.value.trim()||"✅",name:n}); hn.value=""; he.value=""; hv.redraw(true); hn.focus(); });
-    hDirty=saveBar(hc,()=>saveSetting("Habits",habits.map(h=>`${h.emoji||"✅"} · ${h.name}`)),"Habits"); hv.ul.onDirty=hDirty;
+    // Oct 29: Routines & practices replace the old Habits list here. One place to see, remove and reorder what Me runs on; "+ New" opens the same sheet as Me.
+    { const rc=section("c-you","✦","Routines & practices","Routines are ticked once a day; practices are measured. Both live on Me. Changes show up right away.");
+      const RD=routineDefs(), PD=practiceDefs(); const okR=LOADED.has("Routines"), okP=LOADED.has("Practices");
+      const list=(label,defs,okFlag,rowOf,save)=>{ const h=el("div","label",label); rc.append(h); if(!defs.length){ rc.append(el("p","note","Nothing here yet.")); return; } const ul=el("ul","list");
+        defs.forEach((d,i)=>{ const li=el("li"); li.append(rowOf(d)); const up=el("button","mini","↑"); up.type="button"; up.disabled=i===0||!okFlag; up.setAttribute("aria-label","Move up"); up.addEventListener("click",async()=>{ const L=defs.slice(); [L[i-1],L[i]]=[L[i],L[i-1]]; await save(L); openSettings(); });
+          const dn=el("button","mini","↓"); dn.type="button"; dn.disabled=i===defs.length-1||!okFlag; dn.setAttribute("aria-label","Move down"); dn.addEventListener("click",async()=>{ const L=defs.slice(); [L[i+1],L[i]]=[L[i],L[i+1]]; await save(L); openSettings(); });
+          const rm=el("button","mini","✕"); rm.type="button"; rm.disabled=!okFlag; rm.setAttribute("aria-label","Remove "+d.name); rm.addEventListener("click",async()=>{ if(!confirm(`Remove ${d.name}? What you've logged stays in the log.`)) return; await save(defs.filter(x=>x.k!==d.k)); openSettings(); try{ znMe(); znRender(); }catch(e){} });
+          li.append(up,dn,rm); ul.append(li); }); rc.append(ul); };
+      const saveR=L=>saveSetting("Routines",L.map(d=>[d.k,d.name,d.icon,d.slot,d.days,d.action||""].join("|"))); const saveP=L=>saveSetting("Practices",L.map(d=>[d.k,d.name,d.type,d.icon,d.target||"",d.unit||""].join("|")));
+      list("Routines",RD,okR,d=>{ const s=el("span","hname"); s.textContent=`${d.icon} ${d.name} · ${d.slot}${d.days!=="all"?" · "+d.days:""}${d.action?" · "+d.action:""}`; return s; },saveR);
+      list("Practices",PD,okP,d=>{ const s=el("span","hname"); s.textContent=`${d.icon} ${d.name} · ${({count:"a daily count",check:"yes or no",streak:"clean days",taper:"taper",sit:"the sit"})[d.type]||d.type}${d.type==="count"?" · target "+pTarget(d)+(d.unit?" "+d.unit:""):""}`; return s; },saveP);
+      const nb=el("button","btn","+ New routine or practice"); nb.type="button"; nb.disabled=!mcp; nb.addEventListener("click",()=>znNewSheet(nb)); rc.append(nb);
+      if(!okR||!okP) rc.append(el("p","hint","Couldn't load this from Notion, so editing is off to protect it. Close and reopen Settings to try again.")); }
 
     if(!mcp) inner.append(el("p","note","Open this in Claude to change settings."));
     if(PERSON.person==="claire"){ const sc=section("c-you","📒","Logbook records","One per line: an emoji, a space, the name. These become the one-tap buttons in the Logbook."); const ta=el("textarea","field"); ta.rows=5; ta.value=clean(SET.Records&&SET.Records.value); ta.setAttribute("aria-label","Record types, one per line");
