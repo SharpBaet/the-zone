@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-10-29.10">
+<meta name="zone-build" content="2026-10-29.11">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2023,6 +2023,8 @@ body.zn-night .zn-hero-night .zn-qcard{background:rgba(255,255,255,.1)}body.zn-n
 .zn-plans{margin-top:14px;border-top:1px solid color-mix(in srgb, currentColor 18%, transparent);padding-top:6px}.zn-plan{padding:10px 0;border-bottom:1px solid color-mix(in srgb, currentColor 12%, transparent)}.zn-plan:last-child{border-bottom:0}.zn-planrow{display:flex;align-items:center;gap:12px}.zn-plantx{flex:1;display:flex;flex-direction:column;gap:2px;color:inherit}.zn-plantx b{font:700 15px "Plus Jakarta Sans",sans-serif}.zn-plantx span{font:500 12.5px "Plus Jakarta Sans",sans-serif;opacity:.75}.zn-plan:not(.on) .zn-plantx{opacity:.55}.zn-switch{width:50px;height:30px;border-radius:999px;border:0;background:color-mix(in srgb, currentColor 22%, transparent);position:relative;flex:none;cursor:pointer}.zn-switch i{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .15s}.zn-switch[aria-checked="true"]{background:#D6EC63}.zn-switch[aria-checked="true"] i{left:23px}.zn-switch:disabled{opacity:.5}.zn-planbooks{margin-top:8px}
 body.zn.zn-night #tomCard,body.zn.zn-night #coCard,body.zn.zn-night #gitaCheck{display:none !important}
 @media (min-width:1000px){ body.zn #view-today.spread:not([hidden]){ display:block !important } body.zn #main.wrap{ max-width:640px; padding-left:16px; padding-right:16px } } /* Oct 29: the zn pages are one centered column on wide screens until there is a desktop design */
+.zn-sofar{font:italic 500 14px/1.45 'Plus Jakarta Sans',sans-serif;color:#F3EEFF;opacity:.85;margin:6px 0 10px}.zn-qlogs .zn-chip.on{opacity:.6}
+@media (min-width:1000px){ body.zn #main.wrap{ max-width:1040px } body.zn #znToday,body.zn #znPlan,body.zn #znUs,body.zn #znMe{ display:grid; grid-template-columns:1fr 1fr; gap:14px; align-items:start } body.zn #znToday > *,body.zn #znPlan > *,body.zn #znUs > *,body.zn #znMe > *{ margin:0 !important } body.zn #znToday > .zn-mast,body.zn #znToday > .zn-hero,body.zn #znToday > .zn-else,body.zn #znPlan > .zn-mast,body.zn #znPlan > .zn-seg,body.zn #znUs > .zn-mast,body.zn #znMe > .zn-mast,body.zn #znMe > .zn-seclab,body.zn #znMe > .zn-ptiles,body.zn #znMe > .zn-empty{ grid-column:1 / -1 } body.zn #znToday > .zn-wids{ grid-column:1 / -1 } body.zn .zn-else{ display:grid; grid-template-columns:1fr 1fr; gap:14px } body.zn .zn-else > .zn-seclab{ grid-column:1 / -1 } body.zn #znMe > .zn-ptiles{ grid-template-columns:repeat(4,1fr) } }
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -3262,13 +3264,18 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // Oct 27: the tasks view inside Plan (the "All tasks" segment), replacing the old List page. One list grouped by when; add at the top
   // (parseCapture reads dates and kinds out of the sentence, the chips override); done and star from the row. Everything the + button or the
   // Shortcut captures lands in Inbox here; starring moves it to Today, which Today's own card already reads.
-  function znTasksView(){ const T=TODAY(), T7=addDays(T,7); const open=LIST.filter(it=>it.status!=="Done"&&forClaire(it)&&!(it.snooze&&it.snooze>T)); const done=LIST.filter(it=>it.status==="Done"&&it.doneOn>=addDays(T,-3)).sort((a,b)=>b.doneOn.localeCompare(a.doneOn));
-    const wrap=el("div","zn-tasks"); const st={kind:"To-do",when:""};
+  // Oct 29: the task Add card, shared by Plan's tasks view and the capture sheet
+  function znAddTaskCard(onAdded){ const T=TODAY(); const st={kind:"To-do",when:""}; const wrap=el("div");
     const add=znCard("zn-tadd","","Add"); const fld=el("div","zn-tfield"); const inp=el("input"); inp.type="text"; inp.placeholder="Add a task… (say when: Friday, tomorrow, 3pm)"; inp.setAttribute("aria-label","New task"); const go=el("button","zn-pill zn-dark","Add"); go.type="button"; go.disabled=!mcp; fld.append(inp,go); add.append(fld);
     const chips=el("div","zn-hows"); const mk=(lab,on,fn)=>{ const b=el("button","zn-chip"+(on?" on":""),lab); b.type="button"; b.addEventListener("click",()=>{ fn(); draw(); }); return b; };
-    const draw=()=>{ chips.replaceChildren(); ["To-do","Reminder","Note","Idea"].forEach(kd=>chips.append(mk(kd,st.kind===kd,()=>{ st.kind=kd; }))); chips.append(el("span","zn-tsep")); [["Today",T],["Tomorrow",addDays(T,1)]].forEach(([l,d])=>chips.append(mk(l,st.when===d,()=>{ st.when=st.when===d?"":d; }))); const pick=mk(st.when&&st.when!==T&&st.when!==addDays(T,1)?dueLabel(st.when):"Pick a day",!!(st.when&&st.when!==T&&st.when!==addDays(T,1)),()=>{ const v=prompt("Due (YYYY-MM-DD)",st.when||T); if(v&&/^\d{4}-\d{2}-\d{2}$/.test(v)) st.when=v; }); chips.append(pick); }; draw(); add.append(chips); wrap.append(add);
-    const submit=async()=>{ const raw=inp.value.trim(); if(!raw) return; go.disabled=true; try{ const p=parseCapture(raw); if(st.kind!=="To-do"||!p.kind) p.kind=st.kind; if(st.when) p.due=st.when; if(!p.area) p.area="Personal"; const ok=await listCreate(p,"Plan"); if(ok){ inp.value=""; st.when=""; toast(`Added · ${p.name}`); znPlanRender(); } }catch(e){ toast(writeErr(e)); } go.disabled=!mcp; };
+    const draw=()=>{ chips.replaceChildren(); ["To-do","Reminder","Note","Idea"].forEach(kd=>chips.append(mk(kd,st.kind===kd,()=>{ st.kind=kd; }))); chips.append(el("span","zn-tsep")); [["Today",T],["Tomorrow",addDays(T,1)]].forEach(([l,d])=>chips.append(mk(l,st.when===d,()=>{ st.when=st.when===d?"":d; }))); const pick=mk(st.when&&st.when!==T&&st.when!==addDays(T,1)?dueLabel(st.when):"Pick a day",!!(st.when&&st.when!==T&&st.when!==addDays(T,1)),()=>{ const v=prompt("Due (YYYY-MM-DD)",st.when||T); if(v&&/^\d{4}-\d{2}-\d{2}$/.test(v)) st.when=v; }); chips.append(pick); }; draw(); add.append(chips);
+    const submit=async()=>{ const raw=inp.value.trim(); if(!raw) return; go.disabled=true; try{ const p=parseCapture(raw); if(st.kind!=="To-do"||!p.kind) p.kind=st.kind; if(st.when) p.due=st.when; if(!p.area) p.area="Personal"; const ok=await listCreate(p,"Plan"); if(ok){ inp.value=""; st.when=""; toast(`Added · ${p.name}`); draw(); onAdded&&onAdded(); } }catch(e){ toast(writeErr(e)); } go.disabled=!mcp; };
     go.addEventListener("click",submit); inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); submit(); } });
+    return add;
+  }
+  function znTasksView(){ const T=TODAY(), T7=addDays(T,7); const open=LIST.filter(it=>it.status!=="Done"&&forClaire(it)&&!(it.snooze&&it.snooze>T)); const done=LIST.filter(it=>it.status==="Done"&&it.doneOn>=addDays(T,-3)).sort((a,b)=>b.doneOn.localeCompare(a.doneOn));
+    const wrap=el("div","zn-tasks");
+    wrap.append(znAddTaskCard(()=>znPlanRender()));
     const groups=[["Today",it=>isTask(it)&&(it.star||(it.due&&it.due<=T))],["Up next",it=>isTask(it)&&it.due&&it.due>T&&it.due<=T7],["Inbox · no date yet",it=>isTask(it)&&!it.due&&!it.star],["Notes & ideas",it=>!isTask(it)]];
     groups.forEach(([name,f])=>{ const rows=open.filter(f).sort((a,b)=>(a.due||"9").localeCompare(b.due||"9")); const c=znCard("zn-tgroup","",name); c.innerHTML=znH(name,rows.length?String(rows.length):"nothing");
       if(!rows.length) c.append(el("p","zn-empty",name==="Today"?"Nothing starred or due today.":"Nothing here."));
@@ -3448,6 +3455,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const first=tom[0];
     { const tp=clean(ROW.Tomorrow).split(/\n+/).map(l=>l.replace(/^\s*(\d+[.)]|[-•*])\s*/,"").trim()).filter(l=>l&&!/^none$/i.test(l)); rows.push({ic:"🎯",tx:tp.length?`Tomorrow’s Top 3 · ${tp.length} picked`:"Tomorrow’s Top 3",st:tp.length?"change":"pick",done:false,go:b=>{ const due=LIST.filter(it=>it.status!=="Done"&&forClaire(it)&&isTask(it)&&(it.due===addDays(T,1)||it.focus===addDays(T,1))); znPickTop3(addDays(T,1),due,b); }}); }
     const left=rows.filter(r=>!r.done); c.classList.add("zn-tonight2"); c.innerHTML=`<span class="zn-k">TONIGHT · ${left.length?`${left.length} LEFT`:"ALL LANDED"}</span>`;
+    { const sofar=clean(ROW.Evening).split(/\n+/).map(x=>x.trim()).find(x=>x.startsWith("🌗")); if(sofar) c.append(el("p","zn-sofar",sofar.replace(/^🌗\s*(Today so far:?\s*)?/i,""))); } // Oct 29: the Day Wrap's "today so far" line
     // Oct 29: finished rows leave; the rest get room: icon tile, name, detail, a real button
     left.forEach(r=>{ const b=el("button","zn-bedrow"); b.type="button"; const [name,...rest]=String(r.tx).split(" · "); b.innerHTML=`<span class="zn-ric2">${r.ic}</span><span class="zn-rtx"><b>${znEsc(name)}</b>${rest.length?`<span>${znEsc(rest.join(" · "))}</span>`:""}</span><span class="zn-pill zn-dark zn-rgo">${znEsc(r.st)}</span>`; if(!mcp||!LIVE) b.disabled=true; b.addEventListener("click",()=>{ try{ r.go(b); }catch(e){} }); c.append(b); });
     if(!left.length) c.append(el("p","zn-evs","Nothing left to land. The night is yours."));
@@ -3531,7 +3539,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const heroN=znCard("zn-hero zn-hero-night",`<div class="zn-hrow"><span class="zn-date">${DN} <i>night</i></span>${th?`<button type="button" class="zn-pill" id="znWxN">${th}°${tl?` · low ${tl}`:""}</button>`:""}</div>
         <div class="zn-hgrid"><div class="zn-dial">${znDial(tom,n,220,true,[DAYS_LONG[d1.getUTCDay()],first?`first · ${hToLabel(first.s)} ${shortName(first.name)}`:"nothing on the clock",""],`Tomorrow as a dial: ${tom.map(x=>x.name+" at "+hToLabel(x.s)).join(", ")||"nothing scheduled"}`)}</div>
         <div class="zn-side"><div class="zn-qcard"><span class="zn-k">${left.length?`${left.length} left tonight`:"all landed"}</span>${left.slice(0,3).map(x=>`<button type="button" class="zn-qrow2 zn-qgo"><span class="zn-qi">·</span><span>${znEsc(x)}</span><em></em></button>`).join("")}${!left.length?`<button type="button" class="zn-qrow2"><span class="zn-qi">✦</span><span>The night is yours</span><em></em></button>`:""}</div></div></div>
-        <p class="zn-vibe">${wk?(wk==="fri"?"The weekend’s here.":"An easy night."):"Land the day, then let it go."}</p>`,"Tonight at a glance");
+        <p class="zn-vibe">${(()=>{ const ev=clean(ROW.Evening).split(/\n+/).map(x=>x.trim()).filter(Boolean); return znEsc(ev[0]||(wk?(wk==="fri"?"The weekend’s here.":"An easy night."):"Land the day, then let it go.")); })()}</p>`,"Tonight at a glance"); /* Oct 29: the Day Wrap's headline */
       heroN.querySelectorAll(".zn-qgo").forEach(q=>q.addEventListener("click",()=>bed.scrollIntoView({behavior:"smooth",block:"start"})));
       box.append(heroN,bed); try{ box.append(znTomorrowPrep(tom,T1,{glass:true})); }catch(e){ console.error("prep",e); }
       NIGHT_TC=null; }
@@ -5270,16 +5278,17 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // ---------- quick log ----------
   const MOODS=[["😵‍💫","fried"],["😮‍💨","meh"],["😐","neutral"],["🙂","good"],["🤩","glowing"]];
   // the same quick-log buttons, lifted into a sheet from the header and put back when it closes
-  $("#logBtn").addEventListener("click",()=>{ const q=$("#qlogSlot"); const home=q.parentNode, next=q.nextSibling; const hint=el("p","hint",LIVE?"Each tap saves to today's log right away.":"Logging opens once today's brief lands at 4:30am.");
-    // quick capture: a thought straight onto tomorrow's top 3
-    const cap=el("div","capture"); cap.append(el("div","label","Add to your list"));
-    const row=el("div","addrow"); const inp=el("input","field"); inp.placeholder="Like: call the vet Fri #birdie, or note: idea for the CSP deck"; inp.setAttribute("aria-label","Add to your list"); inp.disabled=!mcp;
-    const add=el("button","plus","+"); add.type="button"; add.setAttribute("aria-label","Add to your list"); add.disabled=!mcp; add.style.setProperty("--c","var(--plan)");
-    let alsoTom=false; const tb=el("button","chip","Also a top 3 for tomorrow"); tb.type="button"; tb.setAttribute("aria-pressed","false"); tb.disabled=!LIVE; tb.addEventListener("click",()=>{ alsoTom=!alsoTom; tb.setAttribute("aria-pressed",String(alsoTom)); tb.textContent=alsoTom?"✓ Also a top 3 for tomorrow":"Also a top 3 for tomorrow"; });
-    const go=async()=>{ const v=inp.value.trim(); if(!v) return; const p=parseCapture(v); if(!p.name) return; add.disabled=true;
-      if(await listCreate(p,"Quick add")){ inp.value=""; if(alsoTom&&LIVE) await addToTomorrow([p.name],"On your list and tomorrow's top 3"); else toast(`Added to your list · ${p.kind}${p.due?" · "+dueLabel(p.due):""}`); } add.disabled=false; inp.focus(); };
-    add.addEventListener("click",go); inp.addEventListener("keydown",e=>{ if(e.key==="Enter") go(); }); row.append(inp,add); cap.append(row,tb);
-    openSheet({kicker:"Quick add",title:"",body:[cap,el("div","label","Log today"),q,hint],color:"var(--you)",from:$("#logBtn"),onClose:()=>home.insertBefore(q,next)}); });
+  $("#logBtn").addEventListener("click",()=>{ // Oct 29: one capture sheet. The same Add as Plan's tasks on top; the day's quick logs below, in the Routines/Practices vocabulary.
+    const body=[]; try{ body.push(znAddTaskCard(()=>{ try{ znPlanRender(); }catch(e){} })); }catch(e){ console.error("add card",e); }
+    if(LIVE&&ROW){ const lg=el("div","zn-hows zn-qlogs"); const tick=(label,on,fn)=>{ const b=el("button","zn-chip"+(on?" on":""),label); b.type="button"; b.disabled=!mcp||on; b.addEventListener("click",async()=>{ b.disabled=true; try{ await fn(); toast(`${label} ✓`); renderLog(); znRender(); try{ znMe(); }catch(e){} b.classList.add("on"); b.textContent=label+" ✓"; }catch(e){ toast(writeErr(e)); b.disabled=false; } }); lg.append(b); };
+      routineDefs().filter(rtDays).filter(d=>d.action!=="walk"&&d.action!=="guided").forEach(d=>tick(`${d.icon} ${d.name}`,rtDone(ROW,d),()=>rtSet(d,true)));
+      const F=(()=>{ const P=practiceDefs(); const k=prGet("feature"); return P.find(x=>x.k===k&&x.type==="count")||P.find(x=>x.k==="water")||P.find(x=>x.type==="count")||null; })();
+      if(F){ const v=pval(ROW,F)||0; const step=F.k==="water"?Math.max(1,Number(prGet("bottle","water"))||4):1; const b=el("button","zn-chip",`${F.icon} ${F.name} +${F.k==="water"?"bottle":"1"} · ${v}`); b.type="button"; b.disabled=!mcp; b.addEventListener("click",async()=>{ b.disabled=true; try{ await (F.k==="water"?writeToday({Water:v+step},{silent:true}):plogSet(F.k,v+step)); toast(`${F.name} · ${v+step} ${F.unit}`); renderLog(); znRender(); b.textContent=`${F.icon} ${F.name} +${F.k==="water"?"bottle":"1"} · ${v+step}`; }catch(e){ toast(writeErr(e)); } b.disabled=!mcp; }); lg.append(b); }
+      const wb=el("button","zn-chip","🐕 Birdie walk +1"); wb.type="button"; wb.disabled=!mcp; wb.addEventListener("click",()=>{ const q=$("#qWalk"); if(q) q.click(); }); lg.append(wb);
+      const mb=el("button","zn-chip","🙂 Mood"); mb.type="button"; mb.disabled=!mcp; mb.addEventListener("click",()=>{ const q=$("#qMood"); if(q) q.click(); }); lg.append(mb);
+      body.push(el("div","label","Log today"),lg); }
+    else body.push(el("p","hint","Logging opens once today's brief lands at 4:30am."));
+    openSheet({kicker:"Capture",title:"",body,color:"var(--you)",from:$("#logBtn")}); });
   function renderLog(){
     const r=ROW||{}; $("#qWaterV").textContent=String(num(r.Water)||0); $("#qWalkV").textContent=String(num(r.Walks)||0);
     $("#qWater").setAttribute("aria-label",`Log a glass of water, ${num(r.Water)||0} so far`); $("#qWalk").setAttribute("aria-label",`Log a Birdie walk, ${num(r.Walks)||0} so far`);
