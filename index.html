@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-10-29.11">
+<meta name="zone-build" content="2026-10-29.12">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2025,6 +2025,36 @@ body.zn.zn-night #tomCard,body.zn.zn-night #coCard,body.zn.zn-night #gitaCheck{d
 @media (min-width:1000px){ body.zn #view-today.spread:not([hidden]){ display:block !important } body.zn #main.wrap{ max-width:640px; padding-left:16px; padding-right:16px } } /* Oct 29: the zn pages are one centered column on wide screens until there is a desktop design */
 .zn-sofar{font:italic 500 14px/1.45 'Plus Jakarta Sans',sans-serif;color:#F3EEFF;opacity:.85;margin:6px 0 10px}.zn-qlogs .zn-chip.on{opacity:.6}
 @media (min-width:1000px){ body.zn #main.wrap{ max-width:1040px } body.zn #znToday,body.zn #znPlan,body.zn #znUs,body.zn #znMe{ display:grid; grid-template-columns:1fr 1fr; gap:14px; align-items:start } body.zn #znToday > *,body.zn #znPlan > *,body.zn #znUs > *,body.zn #znMe > *{ margin:0 !important } body.zn #znToday > .zn-mast,body.zn #znToday > .zn-hero,body.zn #znToday > .zn-else,body.zn #znPlan > .zn-mast,body.zn #znPlan > .zn-seg,body.zn #znUs > .zn-mast,body.zn #znMe > .zn-mast,body.zn #znMe > .zn-seclab,body.zn #znMe > .zn-ptiles,body.zn #znMe > .zn-empty{ grid-column:1 / -1 } body.zn #znToday > .zn-wids{ grid-column:1 / -1 } body.zn .zn-else{ display:grid; grid-template-columns:1fr 1fr; gap:14px } body.zn .zn-else > .zn-seclab{ grid-column:1 / -1 } body.zn #znMe > .zn-ptiles{ grid-template-columns:repeat(4,1fr) } }
+/* Oct 29: night reaches every tab. Under body.zn-night every zn card is dark glass; colored cards keep a whisper of their tint; text goes light. */
+body.zn.zn-night #znPlan .zn-card:not(.zn-glass), body.zn.zn-night #znUs .zn-card:not(.zn-glass), body.zn.zn-night #znMe .zn-card:not(.zn-glass), body.zn.zn-night #znToday .zn-card:not(.zn-glass):not(.zn-hero):not(.zn-mast){ background:rgba(255,255,255,.08) !important; border:1px solid rgba(255,255,255,.12); color:#F3EEFF !important; box-shadow:none !important; }
+body.zn.zn-night #znPlan .zn-card:not(.zn-glass) *, body.zn.zn-night #znUs .zn-card:not(.zn-glass) *, body.zn.zn-night #znMe .zn-card:not(.zn-glass) *{ color:inherit; }
+body.zn.zn-night #znMe .zn-gsmall, body.zn.zn-night #znUs .zn-usnext, body.zn.zn-night #znUs .zn-shelfcard, body.zn.zn-night #znMe .zn-shelfcard{ background:linear-gradient(160deg, rgba(255,255,255,.14), rgba(255,255,255,.06)) !important; }
+body.zn.zn-night .zn-seclab, body.zn.zn-night .zn-seclab span, body.zn.zn-night .zn-k, body.zn.zn-night .zn-rslot, body.zn.zn-night .zn-hr, body.zn.zn-night .zn-ht, body.zn.zn-night .zn-mast, body.zn.zn-night .zn-mast *{ color:#F3EEFF; }
+body.zn.zn-night .zn-k, body.zn.zn-night .zn-seclab, body.zn.zn-night .zn-rslot, body.zn.zn-night .zn-hr{ opacity:.7; }
+body.zn.zn-night .zn-chip{ background:rgba(255,255,255,.12); color:#F3EEFF; } body.zn.zn-night .zn-chip.on{ background:#F3EEFF; color:#1F2340; }
+body.zn.zn-night .zn-pill{ background:rgba(255,255,255,.14); color:#F3EEFF; } body.zn.zn-night .zn-pill.zn-dark{ background:#F3EEFF; color:#1F2340; }
+body.zn.zn-night .zn-seg button{ background:rgba(255,255,255,.1); color:#F3EEFF; } body.zn.zn-night .zn-seg button[aria-selected="true"], body.zn.zn-night .zn-seg button.on{ background:#F3EEFF; color:#1F2340; }
+body.zn.zn-night input.zn-fin, body.zn.zn-night .zn-tfield input, body.zn.zn-night .zn-wbox textarea, body.zn.zn-night #znUs input, body.zn.zn-night #znUs textarea{ background:rgba(255,255,255,.1) !important; color:#F3EEFF !important; } body.zn.zn-night #znUs input::placeholder, body.zn.zn-night .zn-tfield input::placeholder{ color:rgba(243,238,255,.55); }
+body.zn.zn-night .zn-rrow, body.zn.zn-night .zn-trow, body.zn.zn-night .zn-prow2, body.zn.zn-night .zn-prompt, body.zn.zn-night .zn-plan{ border-color:rgba(255,255,255,.12); }
+body.zn.zn-night .zn-rchk{ border-color:rgba(255,255,255,.4); color:#F3EEFF; } body.zn.zn-night .zn-rrow.on .zn-rchk{ background:#F3EEFF; color:#1F2340; border-color:#F3EEFF; }
+body.zn.zn-night .zn-ric, body.zn.zn-night .zn-pic, body.zn.zn-night .zn-pic2{ background:rgba(255,255,255,.1); }
+body.zn.zn-night .zn-ptile{ background:color-mix(in srgb, var(--c) 26%, #15122E) !important; color:#F3EEFF !important; } body.zn.zn-night .zn-ptile *{ color:#F3EEFF; } body.zn.zn-night .zn-ptile .zn-pbigv{ color:color-mix(in srgb, var(--c) 70%, #FFFFFF) !important; } body.zn.zn-night .zn-ptile .zn-pic{ background:color-mix(in srgb, var(--c) 40%, #15122E); }
+body.zn.zn-night .zn-wk7 svg circle[stroke="#1F2340"]{ stroke:#F3EEFF; } body.zn.zn-night .zn-wk7 b{ color:#F3EEFF; }
+body.zn.zn-night .zn-mini i, body.zn.zn-night .zn-s30 i{ filter:brightness(1.2); }
+body.zn.zn-night .zn-wkrow i:not(.on):not(.half){ background:rgba(255,255,255,.12); }
+body.zn.zn-night .zn-tdue{ background:rgba(255,255,255,.14); } body.zn.zn-night .zn-tdue.late{ background:rgba(255,120,160,.3); color:#FFD1E0; }
+body.zn.zn-night .zn-pbar{ background:rgba(255,255,255,.12); }
+body.zn.zn-night .zn-why{ color:#F3EEFF; opacity:.8; }
+body.zn.zn-night .zn-empty, body.zn.zn-night .zn-evs{ color:#F3EEFF; opacity:.75; }
+body.zn.zn-night #znOurShelf .zn-card, body.zn.zn-night #znUs .zn-usnote, body.zn.zn-night [id^="zn"] .zn-card.zn-side, body.zn.zn-night .zn-card.zn-together, body.zn.zn-night .zn-card.zn-house{ background:linear-gradient(160deg, rgba(255,255,255,.14), rgba(255,255,255,.06)) !important; border:1px solid rgba(255,255,255,.12); color:#F3EEFF !important; box-shadow:none !important; } body.zn.zn-night #znOurShelf .zn-card *{ color:inherit; }
+body.zn.zn-night .zn-card .zn-pill.zn-dark, body.zn.zn-night .zn-card .zn-pill.zn-dark *, body.zn.zn-night .zn-card .zn-btn, body.zn.zn-night .zn-rgo{ color:#1F2340 !important; background:#F3EEFF !important; }
+body.zn.zn-night .zn-card .zn-pill:not(.zn-dark){ color:#F3EEFF !important; }
+body.zn.zn-night .zn-ptile .zn-pq .zn-chip{ background:color-mix(in srgb, var(--c) 75%, #FFFFFF) !important; color:#1F2340 !important; }
+body.zn.zn-night #znOurShelf input, body.zn.zn-night #znOurShelf textarea, body.zn.zn-night #znUs .zn-card input, body.zn.zn-night #znUs .zn-card textarea{ background:rgba(255,255,255,.1) !important; color:#F3EEFF !important; }
+body.zn.zn-night #znOurShelf input::placeholder, body.zn.zn-night #znUs .zn-card input::placeholder{ color:rgba(243,238,255,.55) !important; }
+body.zn.zn-night .zn-card .zn-pbar, body.zn.zn-night .zn-card progress{ background:rgba(255,255,255,.14); }
+body.zn.zn-night #usNote{ background:rgba(255,255,255,.08) !important; border:1px solid rgba(255,255,255,.12); color:#F3EEFF !important; } body.zn.zn-night #usNote *{ color:#F3EEFF; } body.zn.zn-night #usNote input, body.zn.zn-night #usNote textarea{ background:rgba(255,255,255,.1) !important; } body.zn.zn-night #usNote input::placeholder{ color:rgba(243,238,255,.55); } body.zn.zn-night #usNoteGo{ background:#F3EEFF !important; color:#1F2340 !important; }
+body.zn.zn-night #view-us > section#usNote:not([hidden]), body.zn.riso.zn-night #view-us > section#usNote:not([hidden]){ background:rgba(255,255,255,.08) !important; border:1px solid rgba(255,255,255,.12) !important; box-shadow:none !important; }
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
