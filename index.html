@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-10-29.12">
+<meta name="zone-build" content="2026-10-30.1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2055,6 +2055,31 @@ body.zn.zn-night #znOurShelf input::placeholder, body.zn.zn-night #znUs .zn-card
 body.zn.zn-night .zn-card .zn-pbar, body.zn.zn-night .zn-card progress{ background:rgba(255,255,255,.14); }
 body.zn.zn-night #usNote{ background:rgba(255,255,255,.08) !important; border:1px solid rgba(255,255,255,.12); color:#F3EEFF !important; } body.zn.zn-night #usNote *{ color:#F3EEFF; } body.zn.zn-night #usNote input, body.zn.zn-night #usNote textarea{ background:rgba(255,255,255,.1) !important; } body.zn.zn-night #usNote input::placeholder{ color:rgba(243,238,255,.55); } body.zn.zn-night #usNoteGo{ background:#F3EEFF !important; color:#1F2340 !important; }
 body.zn.zn-night #view-us > section#usNote:not([hidden]), body.zn.riso.zn-night #view-us > section#usNote:not([hidden]){ background:rgba(255,255,255,.08) !important; border:1px solid rgba(255,255,255,.12) !important; box-shadow:none !important; }
+/* Oct 30: Settings joins the app's palette. Light cards on the day gradient; glass on the night sky. The sheet keeps its own variables, so this only re-points them. */
+body.zn .set{ --bg:#F3EEFF; --card:rgba(255,255,255,.8); --tile:rgba(31,35,64,.06); --line:rgba(31,35,64,.12); --bar:rgba(31,35,64,.08); --ink:#1F2340; --muted:#6A6680; --accent:#8C7AE6; --on-c:#1F2340; --display:'Fraunces',Georgia,serif; --body:'Plus Jakarta Sans',system-ui,sans-serif; background:linear-gradient(160deg,#EFE6FF 0%,#F7F2F7 45%,#FFEBDD 100%) !important; color:#1F2340; }
+body.zn .set .card{ background:var(--card) !important; border:0 !important; box-shadow:0 6px 18px rgba(31,35,64,.06) !important; border-radius:24px !important; color:var(--ink); }
+body.zn .set .top h1{ font:400 30px 'Fraunces',Georgia,serif; color:var(--ink); }
+body.zn .set .sethead h2{ font:400 20px/1.25 'Fraunces',Georgia,serif; color:var(--ink); }
+body.zn .set .hint, body.zn .set .note, body.zn .set p{ color:var(--muted); }
+body.zn .set .chip{ border-radius:999px; border:1px solid var(--line); background:var(--tile); color:var(--ink); font:600 13px 'Plus Jakarta Sans',sans-serif; }
+body.zn .set .chip[aria-pressed="true"]{ background:#1F2340; color:#FFE27A; border-color:#1F2340; }
+body.zn .set .btn, body.zn .set button.btn{ border-radius:999px; background:#1F2340; color:#FFE27A; border:0; font:700 14px 'Plus Jakarta Sans',sans-serif; }
+body.zn .set .btn.ghost{ background:var(--tile); color:var(--ink); }
+body.zn .set .field, body.zn .set input, body.zn .set select, body.zn .set textarea{ border:0; border-radius:14px; background:var(--tile); color:var(--ink); }
+body.zn .set .mini{ border-radius:10px; background:var(--tile); color:var(--ink); border:0; }
+body.zn .set .list li{ border-color:var(--line); }
+body.zn .set .k, body.zn .set .label{ color:var(--muted); }
+body.zn .set .zn-switch{ background:rgba(31,35,64,.18); } body.zn .set .zn-switch[aria-checked="true"]{ background:#1F2340; } body.zn .set .zn-plantx span{ color:var(--muted); }
+body.zn.zn-night .set{ --card:rgba(255,255,255,.08); --tile:rgba(255,255,255,.1); --line:rgba(255,255,255,.14); --bar:rgba(255,255,255,.1); --ink:#F3EEFF; --muted:rgba(243,238,255,.72); --accent:#D6EC63; background:radial-gradient(90% 60% at 15% -10%,#3E2A7A 0%,transparent 55%),radial-gradient(70% 55% at 90% 20%,#5A2A5E 0%,transparent 55%),linear-gradient(180deg,#0A0A1F 0%,#141236 50%,#1B1640 100%) !important; color:#F3EEFF; }
+body.zn.zn-night .set .card{ box-shadow:none !important; border:1px solid rgba(255,255,255,.12) !important; }
+body.zn.zn-night .set .chip[aria-pressed="true"], body.zn.zn-night .set .btn, body.zn.zn-night .set button.btn{ background:#F3EEFF; color:#1F2340; border-color:#F3EEFF; }
+body.zn.zn-night .set .btn.ghost{ background:var(--tile); color:var(--ink); }
+body.zn.zn-night .set .zn-switch{ background:rgba(255,255,255,.2); } body.zn.zn-night .set .zn-switch[aria-checked="true"]{ background:#D6EC63; }
+/* Oct 30: the hero's quick-link card keeps a sane width on desktop */
+@media (min-width:1000px){ body.zn .zn-hero .zn-hgrid{ grid-template-columns:minmax(260px,320px) minmax(0,1fr); } body.zn .zn-hero .zn-side{ max-width:360px; } }
+body.zn .set .err{ color:#B0244F; } body.zn.zn-night .set .err{ color:#FFD1E0; } body.zn .set .top .btn{ width:auto; }
+.zn-wkrows{display:flex;flex-direction:column}.zn-wkrow2{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;padding:8px 0;border-top:1px solid rgba(31,35,64,.08);color:inherit;text-align:left;font:inherit;cursor:pointer;border-radius:0}.zn-wkrow2:first-child{border-top:0}.zn-wkrow2.sel{background:rgba(31,35,64,.05);border-radius:14px;padding-left:6px;padding-right:6px}.zn-wkd{width:40px;height:40px;border-radius:12px;background:rgba(31,35,64,.06);display:inline-flex;flex-direction:column;align-items:center;justify-content:center;flex:none;line-height:1}.zn-wkd b{font:700 15px 'Plus Jakarta Sans',sans-serif}.zn-wkd span{font:600 9.5px 'Plus Jakarta Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;opacity:.6;margin-top:2px}.zn-wkrow2.sel .zn-wkd{background:#1F2340;color:#FFE27A}.zn-wkrow2.sel .zn-wkd span{opacity:.8}.zn-wkrow2 .zn-rtx b{font:700 14px 'Plus Jakarta Sans',sans-serif}.zn-wkrow2 .zn-rtx span{font:500 12px 'Plus Jakarta Sans',sans-serif;opacity:.65}.zn-wkmeter{width:46px;height:6px;border-radius:999px;background:rgba(31,35,64,.08);overflow:hidden;flex:none}.zn-wkmeter i{display:block;height:100%;background:#B9A6F5;border-radius:999px}.zn-wkrow2.heavy .zn-wkmeter i{background:#FFD25A}.zn-wkrow2 .zn-evedot{flex:none}
+body.zn.zn-night .zn-wkrow2{border-color:rgba(255,255,255,.12)}body.zn.zn-night .zn-wkrow2.sel{background:rgba(255,255,255,.08)}body.zn.zn-night .zn-wkd{background:rgba(255,255,255,.1)}body.zn.zn-night .zn-wkrow2.sel .zn-wkd{background:#F3EEFF}body.zn.zn-night .zn-wkrow2.sel .zn-wkd b,body.zn.zn-night .zn-wkrow2.sel .zn-wkd span{color:#1F2340 !important}body.zn.zn-night .zn-wkmeter{background:rgba(255,255,255,.14)}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -3326,10 +3351,12 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     // ---------- the week ----------
     try{ let tom=[]; try{ tom=risoTomItems().map(x=>({...x,k:x.k==="work"?"work":x.k})); }catch(e){} host.append(znTomorrowPrep(tom,addDays(TODAY(),1),{})); }catch(e){ console.error("prep",e); } // Oct 29
     const loads=days.map(d=>dayLoad(d)); const wkc=znCard("zn-week","","This week"); wkc.innerHTML=znH("This week","meetings · due · evenings");
-    const cols=el("div","zn-wkcols");
-    loads.forEach(L=>{ const dd=new Date(L.d+"T12:00:00Z"); const sel=L.d===ZN_PLAN.day; const eve=znEveFor(L.d); const c=el("button","zn-wkcol"+(sel?" sel":"")); c.type="button"; c.setAttribute("aria-pressed",String(sel)); c.setAttribute("aria-label",`${DAYS_LONG[dd.getUTCDay()]} ${dd.getUTCDate()}: ${Math.round(L.meet*2)/2} hours of meetings, ${L.due.length} due${eve?", "+eve+" tonight":""}`);
-      const pct=Math.min(100,Math.round(L.meet/8*100)); const heavy=L.tight||L.meet>5;
-      c.innerHTML=`<span>${DAYS_LONG[dd.getUTCDay()].slice(0,3)}</span><b>${dd.getUTCDate()}</b><i class="zn-cap"><i style="height:${pct}%;background:${heavy?"#FFE27A":ZC.lil}${heavy?";box-shadow:0 0 12px #FFD25A":""}"></i></i><em class="${L.due.length>=3?"hot":""}">${L.due.length||"·"}</em><u class="zn-evedot ${eve.replace(/\s+/g,"-")}"></u>`;
+    // Oct 30: the week as rows in the app's row language (date tile, day, what it holds, a small meeting meter), not bar columns
+    const cols=el("div","zn-wkrows");
+    loads.forEach(L=>{ const dd=new Date(L.d+"T12:00:00Z"); const sel=L.d===ZN_PLAN.day; const eve=znEveFor(L.d); const hrs=Math.round(L.meet*2)/2; const pct=Math.min(100,Math.round(L.meet/8*100)); const heavy=L.tight||L.meet>5;
+      const bits=[hrs?`${hrs} h of meetings`:(L.d===T||dd.getUTCDay()%6?"no meetings":"weekend"),L.due.length?`${L.due.length} due`:"",eve?eve.replace(/-/g," "):""].filter(Boolean);
+      const c=el("button","zn-wkrow2"+(sel?" sel":"")+(heavy?" heavy":"")); c.type="button"; c.setAttribute("aria-pressed",String(sel)); c.setAttribute("aria-label",`${DAYS_LONG[dd.getUTCDay()]} ${dd.getUTCDate()}: ${bits.join(", ")}`);
+      c.innerHTML=`<span class="zn-wkd"><b>${dd.getUTCDate()}</b><span>${DAYS_LONG[dd.getUTCDay()].slice(0,3)}</span></span><span class="zn-rtx"><b>${L.d===T?"Today":L.d===addDays(T,1)?"Tomorrow":DAYS_LONG[dd.getUTCDay()]}</b><span>${znEsc(bits.join(" · "))}</span></span><span class="zn-wkmeter" aria-hidden="true"><i style="width:${pct}%"></i></span>${eve?`<u class="zn-evedot ${eve.replace(/\s+/g,"-")}"></u>`:""}`;
       c.addEventListener("click",()=>{ ZN_PLAN.day=L.d; znPlanRender(); }); cols.append(c); });
     wkc.append(cols); const tight=loads.find(L=>L.tight); if(tight){ const dd=new Date(tight.d+"T12:00:00Z"); const nb=el("button","zn-note",`${tight.d===T?"Today":DAYS_LONG[dd.getUTCDay()]} won’t fit: ${tight.due.length} due, ${Math.round(tight.openH*2)/2}h open. Even it out`); nb.type="button"; nb.addEventListener("click",()=>openFixDay(tight,nb)); wkc.append(nb); }
     host.append(wkc);
