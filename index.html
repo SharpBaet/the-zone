@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-10-31.9"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-10-31.10"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2196,6 +2196,13 @@ body.zn.zn-dayon .zn-card.zn-mast{background:none !important;border:0 !important
 .zn-railheart{ position:absolute; top:-12px; left:50%; transform:translateX(-50%); font-style:normal; font-size:11px; color:#E0457B; }
 .zn-evechip{ background:rgba(255,163,203,.35) !important; color:#1F2340 !important; }
 body.zn.zn-night .zn-railheart{ color:#FFB4CF; } body.zn.zn-night .zn-evechip{ background:rgba(255,163,203,.22) !important; color:#F3EEFF !important; }
+/* Oct 31: the tab bar and + in "Prism" (Claire's pick): frosted glass like the cards, the selected tab and the + carry the sun's rainbow */
+body.zn .bottom{ background:rgba(255,255,255,.7) !important; -webkit-backdrop-filter:blur(20px) saturate(1.4); backdrop-filter:blur(20px) saturate(1.4); border:1px solid rgba(255,255,255,.75) !important; box-shadow:0 10px 30px rgba(80,60,140,.16) !important; }
+body.zn .bottom .tab{ color:rgba(31,35,64,.62) !important; }
+body.zn .bottom .tab[aria-selected="true"]{ background:linear-gradient(120deg,#FFC9DD,#FFE7A6 30%,#C9F0DC 55%,#C7E0FF 78%,#DCCBFF) !important; color:#1F2340 !important; box-shadow:0 3px 12px rgba(160,120,220,.25); }
+body.zn .zn-fab{ background:linear-gradient(135deg,#FFC9DD,#FFE7A6 30%,#C9F0DC 55%,#C7E0FF 78%,#DCCBFF) !important; color:#1F2340 !important; border:1px solid rgba(255,255,255,.8) !important; box-shadow:0 10px 26px rgba(160,120,220,.3) !important; }
+body.zn.zn-night .bottom{ background:rgba(30,26,64,.55) !important; border:1px solid rgba(255,255,255,.16) !important; box-shadow:0 10px 30px rgba(0,0,0,.35) !important; }
+body.zn.zn-night .bottom .tab{ color:rgba(243,238,255,.7) !important; } body.zn.zn-night .bottom .tab[aria-selected="true"]{ color:#1F2340 !important; }
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
