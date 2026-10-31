@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-10-31.3"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-10-31.4"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2142,6 +2142,11 @@ body.zn .sheet .shead .k{ color:#5B49B8 !important; }
 body.zn .zn-s30l{ opacity:1 !important; color:#5F5B78 !important; } body.zn.zn-night .zn-ptile .zn-s30l{ color:rgba(243,238,255,.8) !important; }
 body.zn .zn-seclab2{ opacity:1 !important; } body.zn .zn-seclab2 > span{ color:var(--zn-muted) !important; opacity:1 !important; }
 body.zn .zn-seclab{ opacity:1 !important; color:var(--zn-muted) !important; }
+/* Oct 31: Zone Radio · Us player */
+.zn-podrow{display:flex;align-items:center;gap:12px;margin:8px 0 10px}.zn-podplay{width:52px;height:52px;border-radius:50%;border:0;background:#1F2340;color:#FFE27A;font:700 18px 'Plus Jakarta Sans',sans-serif;display:inline-flex;align-items:center;justify-content:center;flex:none;cursor:pointer}
+.zn-podbar{display:flex;align-items:center;gap:10px;margin:0 0 8px}.zn-podbar input{flex:1;accent-color:#8C7AE6}.zn-podt{font:500 12px 'Plus Jakarta Sans',sans-serif;color:var(--zn-muted);white-space:nowrap}
+.zn-podch .zn-chip.on{background:#1F2340 !important;color:#FFE27A !important}
+body.zn.zn-night .zn-podplay, body.zn.zn-night #znUs .zn-card .zn-podplay{background:#F3EEFF !important;color:#1F2340 !important} body.zn.zn-night .zn-podplay span{color:#1F2340 !important} body.zn .zn-podplay span{color:inherit} body.zn.zn-night .zn-podbar input{accent-color:#C9B8F0} body.zn.zn-night .zn-podch .zn-chip.on{background:#F3EEFF !important;color:#1F2340 !important}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -3325,6 +3330,24 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     try{ (BOOKS||[]).forEach(b=>{ if(b.fn&&b.fn>=addDays(TODAY(),-14)){ const who=b.who==="Victoria"?"victoria":b.who==="Claire"?"claire":""; if(who) out.push({from:who,t:b.fn+"T21:00:00",kind:"book",text:`Finished ${b.t}${b.r?" · "+"★".repeat(Math.round(b.r))+"":""}`}); } }); }catch(e){}
     return out.sort((a,b)=>String(b.t).localeCompare(String(a.t))); }
   async function usSend(kind,text){ const lines=String(SET.UsFeed&&SET.UsFeed.value||"").split(/\n+/).filter(Boolean).slice(-79); lines.push(`${ME()}|${new Date().toISOString()}|${kind}|${String(text).replace(/\|/g,"/").replace(/\n/g," ")}`); await saveSetting("UsFeed",lines); SET.UsFeed={value:lines.join("\n")}; }
+  // Oct 31: the bedtime episode's player. One audio element for the whole app, so re-rendering Us never interrupts playback.
+  let US_POD={at:0,data:null};
+  const usAudio=()=>{ if(!window.__usAudio){ const a=new Audio(); a.preload="none"; window.__usAudio=a; } return window.__usAudio; };
+  const mmss=s=>{ s=Math.max(0,Math.round(s||0)); return `${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`; };
+  async function znUsPod(card){ if(typeof APP==="undefined"||!APP.sb) return;
+    try{ if(!US_POD.data||Date.now()-US_POD.at>5*60*1000){ const s=await APP.sb.auth.getSession(); const tk=s&&s.data&&s.data.session&&s.data.session.access_token; if(!tk) return; const r=await fetch(APP.url+"/functions/v1/zone-usfeed",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:"{}"}); const j=await r.json(); if(!r.ok||!j.ok) return; US_POD={at:Date.now(),data:j}; } }catch(e){ return; }
+    const D=US_POD.data, ep=D&&D.episodes&&D.episodes[0]; if(!ep) return; const T=TODAY(); const label=ep.date===T?"tonight":ep.date===addDays(T,-1)?"last night":new Date(ep.date+"T12:00:00Z").toLocaleDateString("en-US",{timeZone:"UTC",weekday:"long"});
+    const A=usAudio(); const same=A.dataset.src===ep.url;
+    card.hidden=false; card.innerHTML=znH("Zone Radio · Us",`${label} · ${Math.round((ep.seconds||0)/60)} min`)+`<div class="zn-podrow"><button type="button" class="zn-podplay" aria-label="Play"><span aria-hidden="true">▶</span></button><span class="zn-rtx"><b>${znEsc(ep.title)}</b><span>${znEsc(ep.summary||"")}</span></span></div><div class="zn-podbar"><input type="range" min="0" max="${Math.max(1,Math.round(ep.seconds||1))}" value="0" step="1" aria-label="Position"><span class="zn-podt">0:00 / ${mmss(ep.seconds)}</span></div><div class="zn-hows zn-podch"></div><div class="zn-hows"><button type="button" class="zn-chip zn-podcopy">Copy podcast link</button></div>`;
+    const play=card.querySelector(".zn-podplay"), bar=card.querySelector("input"), tl=card.querySelector(".zn-podt"), chs=card.querySelector(".zn-podch");
+    const sync=()=>{ const on=A.dataset.src===ep.url&&!A.paused; play.innerHTML=`<span aria-hidden="true">${on?"❚❚":"▶"}</span>`; play.setAttribute("aria-label",on?"Pause":"Play"); if(A.dataset.src===ep.url){ bar.value=String(Math.round(A.currentTime||0)); tl.textContent=`${mmss(A.currentTime)} / ${mmss(ep.seconds)}`; } chs.querySelectorAll("button").forEach((b,i)=>{ const c=(ep.chapters||[])[i], nx=(ep.chapters||[])[i+1]; const cur=A.dataset.src===ep.url&&A.currentTime>=c.start&&(!nx||A.currentTime<nx.start); b.classList.toggle("on",cur); }); };
+    const load=()=>{ if(A.dataset.src!==ep.url){ A.src=ep.url; A.dataset.src=ep.url; try{ if("mediaSession" in navigator) navigator.mediaSession.metadata=new MediaMetadata({title:ep.title,artist:"Zone Radio · Us",album:"The Zone"}); }catch(e){} } };
+    play.addEventListener("click",()=>{ load(); if(A.paused) A.play().catch(e=>toast("Couldn’t play: "+(e.message||e))); else A.pause(); });
+    bar.addEventListener("input",()=>{ load(); A.currentTime=Number(bar.value); sync(); });
+    (ep.chapters||[]).forEach(c=>{ const b=el("button","zn-chip",c.title); b.type="button"; b.addEventListener("click",()=>{ load(); A.currentTime=c.start; A.play().catch(()=>{}); }); chs.append(b); });
+    card.querySelector(".zn-podcopy").addEventListener("click",async()=>{ try{ await navigator.clipboard.writeText(D.feed); toast("Copied. In Podcasts: Library → ⋯ → Follow a Show by URL"); }catch(e){ toast("Couldn’t copy"); } });
+    ["play","pause","timeupdate","ended"].forEach(ev=>{ A.addEventListener(ev,()=>{ if(card.isConnected) sync(); }); });
+    if(same) sync(); }
   function znUs(){ const host=$("#znUs"); if(!host) return; if(!znOn()||!ROW){ host.hidden=true; return; } host.hidden=false; host.replaceChildren();
     const W=typeof usWeek==="function"?usWeek():null; const me=ME(), other=OTHER(); const T=TODAY(); const n=nowH();
     const row=(ic,name,sub,right)=>{ const r=el("div","zn-prow2"); r.innerHTML=`<span class="zn-pic2">${ic}</span><span class="zn-rtx"><b>${znEsc(name)}</b>${sub?`<span>${znEsc(sub)}</span>`:""}</span>${right?`<span class="zn-ptime">${znEsc(right)}</span>`:""}`; return r; };
@@ -3337,6 +3360,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       ${W?`<div class="zn-userail">${W.days.slice(0,7).map(d=>{ const dd=new Date(d.date+"T12:00:00Z"); const st=String(d.status||""); const cls=st==="together"?"together":st==="both free"?"both-free":st==="both busy"?"both-busy":st.includes("claire")?"claire-busy":st.includes("victoria")?"victoria-busy":""; return `<span class="${d.date===T?"today":""}" title="${znEsc(st)}"><u class="zn-evedot ${cls}"></u><b>${DAYS_LONG[dd.getUTCDay()].slice(0,3)}</b></span>`; }).join("")}</div>`:""}
       <p class="zn-vibe">${znEsc(W?(freeDays.length?`${freeDays.length} free evening${freeDays.length===1?"":"s"} together this week${nextFree?`. ${nextFree.date===T?"Tonight":nextFree.label} is open.`:"."}`:"No free evenings together this week."):"Your shared week shows up after the next morning briefs.")}</p>`;
     const pb=hero.querySelector("#znUsPlan"); if(pb) pb.addEventListener("click",()=>openAddEvent(pb,{whose:"us"})); host.append(hero);
+    // Oct 31: Zone Radio · Us, playable right here. The episode list comes from zone-usfeed (signed-in only; the feed's address stays off GitHub).
+    { const pc2=znCard("zn-uspod","","Tonight's episode"); pc2.hidden=true; host.append(pc2); znUsPod(pc2); }
     // 2. the other person's day, from her own brief
     const pc=znCard("zn-herday","",`${NAME(other)} today`); pc.innerHTML=znH(`${NAME(other)} today`,"from her brief")+`<p class="zn-empty">Looking…</p>`; host.append(pc);
     partnerRow().then(r=>{ pc.replaceChildren(); pc.innerHTML=znH(`${NAME(other)} today`,r?"from her brief":"no brief yet today");
@@ -6485,7 +6510,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
         else { const tst=el("button","zn-pill","Send a test"); tst.type="button"; tst.addEventListener("click",async()=>{ tst.disabled=true; try{ await post("test",{}); toast("Sent"); }catch(e){ toast(String(e.message||e)); } tst.disabled=false; });
           const off=el("button","zn-pill","Turn off on this phone"); off.type="button"; off.addEventListener("click",async()=>{ off.disabled=true; try{ await post("unsubscribe",{endpoint:sub.endpoint}); await sub.unsubscribe(); toast("Off for this phone"); draw(); }catch(e){ toast(String(e.message||e)); off.disabled=false; } }); btns.append(tst,off); } };
       draw();
-      const KEYS=[["brief","Your Zone is ready","after 6am, with the day’s line"],["meeting","Meetings","10 minutes before each one"],["water","Water check","3pm, only if you’re under half"],["tonight","Tonight","9pm, only if something’s left"],["fixed","Morning repairs","when the Zone fixed something overnight"]];
+      const KEYS=[["brief","Your Zone is ready","after 6am, with the day’s line"],["meeting","Meetings","10 minutes before each one"],["water","Water check","3pm, only if you’re under half"],["tonight","Tonight","9pm, only if something’s left"],["fixed","Morning repairs","when the Zone fixed something overnight"],["us","Tonight’s episode","about 8pm, Zone Radio · Us for the two of you"]];
       const cur={}; setLines("Notify").forEach(l=>{ const [k,v]=l.split("|"); if(k) cur[k.trim()]=(v||"on").trim()!=="off"; });
       const wrapN=el("div","zn-plans"); KEYS.forEach(([k,name,sub])=>{ const onNow=cur[k]!==false; const r=el("div","zn-plan"+(onNow?" on":"")); const row=el("div","zn-planrow"); row.innerHTML=`<span class="zn-plantx"><b>${znEsc(name)}</b><span>${znEsc(sub)}</span></span>`; const sw=el("button","zn-switch"); sw.type="button"; sw.setAttribute("role","switch"); sw.setAttribute("aria-checked",String(onNow)); sw.setAttribute("aria-label",name); sw.append(el("i")); sw.disabled=!LOADED.has("Notify");
         sw.addEventListener("click",async()=>{ sw.disabled=true; cur[k]=!(cur[k]!==false); try{ await saveSetting("Notify",KEYS.map(([kk])=>`${kk}|${cur[kk]!==false?"on":"off"}`)); sw.setAttribute("aria-checked",String(cur[k])); r.classList.toggle("on",cur[k]); }catch(e){ cur[k]=!cur[k]; toast(writeErr(e)); } sw.disabled=false; }); row.append(sw); r.append(row); wrapN.append(r); });
