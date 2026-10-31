@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-10-31.5"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-10-31.6"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2157,6 +2157,40 @@ body.zn #znOurShelf > .zn-seclab{ display:none; }
 .zn-ourshelf .zn-crail{ margin-top:8px; }
 body.zn.zn-night .zn-shrow{ border-color:rgba(255,255,255,.12); } body.zn.zn-night .zn-shnone{ background:rgba(255,255,255,.1); }
 body.zn.zn-night .zn-card.zn-mast, body.zn.zn-night #znPlan .zn-mast.zn-card:not(.zn-glass), body.zn.zn-night #znUs .zn-mast.zn-card:not(.zn-glass), body.zn.zn-night #znMe .zn-mast.zn-card:not(.zn-glass), body.zn.zn-night #znToday .zn-mast.zn-card:not(.zn-glass):not(.zn-hero){ background:none !important; border:0 !important; box-shadow:none !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important; } /* Oct 31: page titles are not cards */
+/* Oct 31: the day sky, the galaxy's daytime sibling (direction C, "Prism", chosen by Claire). The sky moves through dawn, morning, midday,
+   afternoon and golden hour by the real sunrise and sunset; the sun travels its arc throwing faint rainbow rays, glints twinkle around it,
+   three color clouds drift, and a small butterfly crosses now and then. Cards turn to frosted glass. Reduce-motion holds everything still. */
+.zn-daysky{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;transition:background 2s ease}
+.zn-daysky.dawn{background:linear-gradient(180deg,#F7C3B0 0%,#F5D3E2 42%,#E4DCF7 100%)}
+.zn-daysky.morning{background:linear-gradient(180deg,#C9DEFF 0%,#E6DFFF 45%,#FFEEDF 100%)}
+.zn-daysky.midday{background:linear-gradient(180deg,#B9D8FF 0%,#D9E6FF 40%,#F2ECFF 100%)}
+.zn-daysky.afternoon{background:linear-gradient(180deg,#D3D5FF 0%,#F0DAF0 45%,#FFE3CC 100%)}
+.zn-daysky.golden{background:linear-gradient(180deg,#FFC39B 0%,#F7B2C0 46%,#D5C1F2 100%)}
+.zn-sun{position:absolute;left:var(--sx);top:var(--sy);width:360px;height:360px;margin:-180px 0 0 -180px;border-radius:50%;background:radial-gradient(circle,rgba(255,247,222,.95) 0%,rgba(255,228,170,.5) 26%,rgba(255,228,170,0) 64%)}
+.zn-blob{position:absolute;border-radius:50%;filter:blur(46px);opacity:.5;animation:znDrift 40s ease-in-out infinite alternate}
+.zn-blob.a{left:-18%;top:34%;width:72%;height:34%;background:#BFA8FF}
+.zn-blob.b{right:-22%;top:58%;width:78%;height:38%;background:#FFC1A0;animation-duration:55s}
+.zn-blob.c{left:18%;top:84%;width:62%;height:30%;background:#AEE0CB;animation-duration:48s}
+@keyframes znDrift{from{transform:translate(0,0) scale(1)}to{transform:translate(6%,-5%) scale(1.08)}}
+.zn-rays{position:absolute;left:var(--sx);top:var(--sy);width:900px;height:900px;margin:-450px 0 0 -450px;border-radius:50%;background:repeating-conic-gradient(from 10deg,rgba(255,170,200,.12) 0 4deg,rgba(255,255,255,0) 4deg 14deg,rgba(255,220,150,.11) 14deg 17deg,rgba(255,255,255,0) 17deg 27deg,rgba(160,215,255,.11) 27deg 31deg,rgba(255,255,255,0) 31deg 42deg,rgba(200,175,255,.12) 42deg 46deg,rgba(255,255,255,0) 46deg 60deg);-webkit-mask:radial-gradient(circle,#000 8%,rgba(0,0,0,.6) 30%,transparent 60%);mask:radial-gradient(circle,#000 8%,rgba(0,0,0,.6) 30%,transparent 60%);animation:znSpin 160s linear infinite}
+@keyframes znSpin{to{transform:rotate(360deg)}}
+.zn-glint{position:absolute;width:14px;height:14px;animation:znGlint 5s ease-in-out infinite;animation-delay:var(--o);opacity:0}
+.zn-glint::before{content:"";position:absolute;inset:0;background:var(--g);clip-path:polygon(50% 0,58% 42%,100% 50%,58% 58%,50% 100%,42% 58%,0 50%,42% 42%)}
+@keyframes znGlint{0%,70%,100%{opacity:0;transform:scale(.4) rotate(0)}80%{opacity:.95;transform:scale(1) rotate(20deg)}}
+.zn-fly{position:absolute;left:-8%;top:24%;width:26px;animation:znFlyB 60s linear infinite;animation-delay:-14s}
+.zn-fly svg{display:block}.zn-fly .w{transform-origin:13px 12px;animation:znWing .28s ease-in-out infinite alternate}
+@keyframes znWing{to{transform:scaleX(.35)}}
+@keyframes znFlyB{0%{left:-8%;top:30%}25%{top:18%}50%{top:26%}75%{top:14%}100%{left:108%;top:22%}}
+@media (prefers-reduced-motion:reduce){.zn-blob,.zn-rays,.zn-glint,.zn-fly .w{animation:none}.zn-fly{display:none}.zn-glint{opacity:.6}}
+body.zn.zn-dayon{background:transparent !important}
+body.zn.zn-dayon #main,body.zn.zn-dayon header,body.zn.zn-dayon .bottom,body.zn.zn-dayon #layer{position:relative;z-index:1} body.zn.zn-dayon #main{background:transparent !important}
+body.zn.zn-dayon .zn-card:not(.zn-hero):not(.zn-mast), body.zn.zn-dayon #usNote{background:rgba(255,255,255,.5) !important;background-image:none !important;-webkit-backdrop-filter:blur(16px) saturate(1.35);backdrop-filter:blur(16px) saturate(1.35);border:1px solid rgba(255,255,255,.6) !important;box-shadow:0 8px 24px rgba(31,35,64,.06) !important}
+body.zn.zn-dayon #znToday .zn-recov, body.zn.zn-dayon #znToday .zn-readnow, body.zn.zn-dayon #znMe .zn-gsmall, body.zn.zn-dayon #znMe .zn-recov{background:rgba(226,238,218,.66) !important}
+body.zn.zn-dayon #znToday .zn-water{background:rgba(214,232,248,.66) !important}
+body.zn.zn-dayon .zn-wids > *{-webkit-backdrop-filter:blur(16px) saturate(1.35);backdrop-filter:blur(16px) saturate(1.35)}
+body.zn.zn-dayon .zn-ptile{background:color-mix(in srgb, var(--c) 34%, rgba(255,255,255,.55)) !important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+body.zn.zn-dayon .zn-tabbar, body.zn.zn-dayon nav.tabs{-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+body.zn.zn-dayon .zn-card.zn-mast{background:none !important;border:0 !important;box-shadow:none !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -3774,6 +3808,16 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const go=el("button","zn-btn","Keep"); go.type="button"; go.addEventListener("click",async()=>{ const lines=ins.map(f=>f.value.trim()).filter(Boolean); go.disabled=true; try{ await writeToday({Tomorrow:lines.length?lines.map((l,i)=>`${i+1}. ${l}`).join("\n"):"none"}); toast(lines.length?"Tomorrow is set":"Cleared"); close&&close(); znRender(); try{ znPlanRender(); }catch(e){} }catch(e){ toast(writeErr(e)); go.disabled=false; } }); w.append(go);
     const close=openSheet({kicker:"Tomorrow",title:"Top 3",body:[w],from}); }
   // Oct 29: the galaxy behind the night. Nebulae, a Milky Way band, ~170 stars twinkling on their own timing, a shooting star now and then.
+  // Oct 31: the day sky (direction C, "Prism"). Phases follow the real sunrise and sunset (SUN), the sun's place follows the hour.
+  function znDaySky(on){ let sky=document.querySelector(".zn-daysky"); if(!on){ if(sky) sky.remove(); document.body.classList.remove("zn-dayon"); return; }
+    const h=nowH(); const set=(typeof SUN!=="undefined"&&SUN&&SUN.set)||18.5, rise=(typeof SUN!=="undefined"&&SUN&&SUN.rise)||7.3;
+    const ph=h<rise+1.2?"dawn":h<11?"morning":h<14.5?"midday":h<set-1.25?"afternoon":"golden";
+    const f=Math.max(0,Math.min(1,(h-rise+0.5)/(set-rise+1))); const sx=(10+f*80).toFixed(1)+"%", sy=(30-Math.sin(f*Math.PI)*24).toFixed(1)+"%";
+    if(!sky){ sky=el("div","zn-daysky"); sky.setAttribute("aria-hidden","true"); sky.append(el("div","zn-sun"),el("div","zn-rays"),el("div","zn-blob a"),el("div","zn-blob b"),el("div","zn-blob c"));
+      const gs=["#FFD36E","#FFB3CF","#A9CFFF","#C8B6FF","#AEE0CB","#FFFFFF"]; for(let i=0;i<7;i++){ const g=el("i","zn-glint"); const a=i/7*Math.PI*2, r=70+(i%3)*40; g.style.cssText=`left:calc(var(--sx) + ${Math.round(Math.cos(a)*r)}px);top:calc(var(--sy) + ${Math.round(Math.sin(a)*r*.7)}px);--g:${gs[i%gs.length]};--o:${(i*.7).toFixed(1)}s`; sky.append(g); }
+      const fl=el("div","zn-fly"); fl.innerHTML='<svg viewBox="0 0 26 24" width="26" height="24" aria-hidden="true"><g class="w"><path d="M13 12C9 4 2 3 3 9c1 4 6 4 10 3z" fill="#FFB3CF"/><path d="M13 12C17 4 24 3 23 9c-1 4-6 4-10 3z" fill="#C8B6FF"/><path d="M13 12c-4 2-8 7-5 9 2 1 4-3 5-9z" fill="#FFD9B8"/><path d="M13 12c4 2 8 7 5 9-2 1-4-3-5-9z" fill="#A9CFFF"/></g><path d="M13 7v11" stroke="#4A4767" stroke-width="1.4" stroke-linecap="round"/></svg>'; sky.append(fl);
+      document.body.prepend(sky); }
+    sky.className="zn-daysky "+ph; sky.style.setProperty("--sx",sx); sky.style.setProperty("--sy",sy); document.body.classList.add("zn-dayon"); }
   function znSky(on){ let sky=document.querySelector(".zn-sky"); if(!on){ if(sky) sky.remove(); document.body.classList.remove("zn-skyon"); return; } if(sky) return; sky=el("div","zn-sky"); sky.setAttribute("aria-hidden","true"); sky.append(el("div","zn-neb a"),el("div","zn-neb b"),el("div","zn-neb c"),el("div","zn-way"));
     let seed=Number(TODAY().replace(/-/g,""))%1000+7; const rnd=()=>{ seed=(seed*9301+49297)%233280; return seed/233280; };
     for(let i=0;i<170;i++){ const r0=rnd(); const s=el("i","zn-star"+(r0<.06?" big":"")+(rnd()<.25?" warm":rnd()<.3?" cool":"")); const sz=r0<.06?3.4:r0<.3?2.2:1.3; s.style.cssText=`left:${(rnd()*100).toFixed(1)}%;top:${(rnd()*100).toFixed(1)}%;width:${sz}px;height:${sz}px;--d:${(2+rnd()*4).toFixed(1)}s;--o:${(-rnd()*6).toFixed(1)}s`; sky.append(s); }
@@ -3815,7 +3859,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const T1=addDays(T,1), d1=new Date(T1+"T12:00:00Z"), first=tom[0];
       // Oct 29: the night keeps the day's bones. The hero is the same hero (tomorrow's dial, a side list of what's left), then one Tonight
       // card, then tomorrow prepared. Tiles, teams and headlines rest. A galaxy sky behind it all.
-      znSky(true);
+      znSky(true); try{ znDaySky(false); }catch(e){}
       const bed=znBeforeBed(open,tom,wk); const left=[...bed.querySelectorAll(".zn-bedrow:not(.zn-done)")].map(b=>(b.querySelector(".zn-rtx b")||b.querySelector("span")||{}).textContent||"");
       const tw=clean(ROW["Tomorrow Weather"]); const th=(tw.match(/high\s*(\d+)/i)||[])[1], tl=(tw.match(/low\s*(\d+)/i)||[])[1];
       const heroN=znCard("zn-hero zn-hero-night",`<div class="zn-hrow"><span class="zn-date">${DN} <i>night</i></span>${th?`<button type="button" class="zn-pill" id="znWxN">${th}°${tl?` · low ${tl}`:""}</button>`:""}</div>
@@ -3825,7 +3869,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       heroN.querySelectorAll(".zn-qgo").forEach(q=>q.addEventListener("click",()=>bed.scrollIntoView({behavior:"smooth",block:"start"})));
       box.append(heroN,bed); try{ box.append(znTomorrowPrep(tom,T1,{glass:true})); }catch(e){ console.error("prep",e); }
       NIGHT_TC=null; }
-    else { NIGHT_TC=null; znSky(false); }
+    else { NIGHT_TC=null; znSky(false); try{ znDaySky(true); }catch(e){} }
     // ---------- hero: the dial with now and next ----------
     const cur=items.find(x=>x.s<=n&&x.e>n), nx=items.find(x=>x.s>n);
     const center=[znClock(n),nx?shortName(nx.name):"all clear",nx?`in ${znDur(Math.round((nx.s-n)*60))}`:""];
