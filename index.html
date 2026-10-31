@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-10-31.2"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-10-31.3"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2132,6 +2132,16 @@ body.zn.zn-night .sheet .zn-pill.zn-del{ background:transparent !important; colo
 body.zn.zn-night .sheet input, body.zn.zn-night .sheet textarea, body.zn.zn-night .sheet .zn-fin{ background:rgba(31,35,64,.06) !important; color:#1F2340 !important; } body.zn.zn-night .sheet input::placeholder, body.zn.zn-night .sheet textarea::placeholder{ color:rgba(31,35,64,.45) !important; }
 body.zn.zn-night .sheet .zn-rtx b, body.zn.zn-night .sheet .zn-ttx b, body.zn.zn-night .sheet .zn-hstats b, body.zn.zn-night .sheet .zn-why{ color:#1F2340 !important; }
 body.zn.zn-night .sheet .zn-ln{ color:#4A4767; } body.zn.zn-night .sheet .label, body.zn.zn-night .sheet .zn-k{ color:#5F5B78 !important; }
+/* Oct 31: accessibility pass, contrast (all measured with axe, WCAG AA) */
+body.zn:not(.zn-night) .zn-pbigv{ color:color-mix(in srgb, var(--c) 42%, #1F2340) !important; opacity:1 !important; } body.zn:not(.zn-night) .zn-pbigv small{ color:color-mix(in srgb, var(--c) 25%, #1F2340) !important; opacity:1 !important; }
+body.zn .zn-psheet .zn-chip.on, body.zn .sheet .zn-psheet .zn-chip.on{ background:color-mix(in srgb, var(--c) 45%, #FFFFFF) !important; color:#1F2340 !important; }
+body.zn.zn-night .zn-filters .zn-chip.on{ background:#F3EEFF !important; color:#1F2340 !important; }
+body.zn:not(.zn-night) .zn-ptile .zn-pq .zn-chip, body.zn:not(.zn-night) .zn-ptile .zn-pq{ opacity:1 !important; } body.zn:not(.zn-night) .zn-ptile .zn-pq .zn-chip{ background:color-mix(in srgb, var(--c) 32%, #1F2340) !important; color:#FFFFFF !important; }
+body.zn .zn-rc span{ opacity:1 !important; color:#221F45 !important; }
+body.zn .sheet .shead .k{ color:#5B49B8 !important; }
+body.zn .zn-s30l{ opacity:1 !important; color:#5F5B78 !important; } body.zn.zn-night .zn-ptile .zn-s30l{ color:rgba(243,238,255,.8) !important; }
+body.zn .zn-seclab2{ opacity:1 !important; } body.zn .zn-seclab2 > span{ color:var(--zn-muted) !important; opacity:1 !important; }
+body.zn .zn-seclab{ opacity:1 !important; color:var(--zn-muted) !important; }
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -2164,7 +2174,7 @@ body.zn.zn-night .sheet .zn-ln{ color:#4A4767; } body.zn.zn-night .sheet .label,
     </div>
   </header>
   <div class="briefmiss" id="briefMiss" role="alert" hidden><b>⚠️ This morning's brief hasn't arrived</b>You're seeing yesterday's. Make retries a failed step automatically for about 15 minutes. If this banner is still here, start a chat with Claude and say <i>the brief didn't run</i>.</div>
-  <div class="health" id="health" aria-label="Morning runs"></div>
+  <div class="health" id="health" role="group" aria-label="Morning runs"></div>
   <div id="alert"></div>
 
   <div class="skel" id="skel" aria-hidden="true">
@@ -3734,8 +3744,10 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   const P={brief:'<rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7M3 13h18"/>',     cal:'<rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M16 3v4M8 3v4M3 10h18"/>',     drop:'<path d="M12 3.5s6 6.4 6 10.8a6 6 0 0 1-12 0C6 9.9 12 3.5 12 3.5z"/>',     check:'<path d="M5 12.5l4.2 4.2L19 7"/>', book:'<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5zM5 19.5A1.5 1.5 0 0 0 6.5 21H19"/>',     moon:'<path d="M19.5 14.5A7.5 7.5 0 1 1 9.5 4.5a6 6 0 0 0 10 10z"/>', sit:'<circle cx="12" cy="5" r="2"/><path d="M12 8v4.5M6.5 17.5c1.8-2.7 3.6-3.8 5.5-3.8s3.7 1.1 5.5 3.8M4 20h16"/>',     move:'<circle cx="15" cy="4.5" r="1.8"/><path d="M9 21l2.5-6 3 2.2V21M7 11.5l4.2-3.2 3.2 2.2 3.4-1"/>', target:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".8"/>',     paw:'<circle cx="7" cy="9.5" r="1.7"/><circle cx="12" cy="6.5" r="1.7"/><circle cx="17" cy="9.5" r="1.7"/><path d="M8 16.5c0-2.4 1.9-4 4-4s4 1.6 4 4c0 2-1.8 3-4 3s-4-1-4-3z"/>',     plus:'<path d="M12 5v14M5 12h14"/>', pill:'<path d="M10 4.5l9.5 9.5a3.5 3.5 0 0 1-5 5L5 9.5a3.5 3.5 0 0 1 5-5zM7.5 12L12 7.5"/>', leaf:'<path d="M5 19c0-8 6-14 14-14 0 8-6 14-14 14zM5 19l7-7"/>',     note:'<rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M9 8h6M9 12h6M9 16h3"/>', ball:'<circle cx="12" cy="12" r="8"/><path d="M4 12h16M12 4c3 3.2 3 12.8 0 16M12 4c-3 3.2-3 12.8 0 16"/>', sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/>'};
   const MAP={"💼":"brief","📅":"cal","💧":"drop","✓":"check","📖":"book","📘":"book","🌙":"moon","🧘":"sit","🤸":"move","🎯":"target","🐕":"paw","✚":"plus","💊":"pill","🌿":"leaf","📓":"note","🪷":"sit","⚽":"ball","🏈":"ball","🏀":"ball","☀️":"sun"};
   function znIco(n){ return P[n]?`<svg class="zn-ln" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n]}</svg>`:""; }
+  // Oct 31: charts and dials speak to VoiceOver: an SVG with text becomes one labelled image (its text, in order); decorative SVGs are hidden
+  function znA11ySvg(root){ (root||document).querySelectorAll("#main svg:not([data-a11y])").forEach(s=>{ s.setAttribute("data-a11y","1"); if(s.closest("button,[role=button]")||s.getAttribute("aria-hidden")==="true"||s.getAttribute("role")==="img") return; const words=[...s.querySelectorAll("text")].map(x=>x.textContent.trim()).filter(Boolean); if(words.length){ s.setAttribute("role","img"); const card=s.closest(".zn-card"); const h=card&&card.querySelector(".zn-ht,.zn-date,.zn-k"); s.setAttribute("aria-label",`${h?h.textContent.trim()+": ":""}${words.join(", ")}`); } else s.setAttribute("aria-hidden","true"); }); }
   function znIconize(root){ (root||document).querySelectorAll(".zn-qi,.zn-pic2,.zn-ric2,.zn-ric").forEach(x=>{ if(x.querySelector("svg")) return; const k=x.textContent.trim(); if(MAP[k]) x.innerHTML=znIco(MAP[k]); }); }
-  { let ZI=null; const mo=new MutationObserver(()=>{ clearTimeout(ZI); ZI=setTimeout(()=>znIconize(document),20); }); const go=()=>mo.observe(document.body,{childList:true,subtree:true}); if(document.body) go(); else document.addEventListener("DOMContentLoaded",go); }
+  { let ZI=null; const mo=new MutationObserver(()=>{ clearTimeout(ZI); ZI=setTimeout(()=>{ znIconize(document); try{ znA11ySvg(document); }catch(e){} },20); }); const go=()=>mo.observe(document.body,{childList:true,subtree:true}); if(document.body) go(); else document.addEventListener("DOMContentLoaded",go); }
   // Oct 30: Done today. What's finished gathers in one strip under the tiles, and the cards it came from step aside.
   function znDoneStrip(box){ if(!box||!ROW||document.body.classList.contains("zn-night")) return; const items=[];
     try{ routineDefs().filter(rtDays).forEach(d=>{ if(rtDone(ROW,d)) items.push({ic:MAP[d.icon]||"check",l:d.name,go:"me"}); }); }catch(e){}
@@ -5425,7 +5437,9 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const top=el("div","shead"); top.append(el("div","grab"),el("div","k",kicker)); if(title) top.append(el("h2",null,title));
     const done=el("button","btn ghost","Done"); done.type="button";
     sh.append(top,...(Array.isArray(body)?body:[body]),done); ov.append(sh); $("#layer").append(ov); done.focus({preventScroll:true});
-    const close=()=>{ ov.remove(); onClose&&onClose(); from&&from.focus({preventScroll:true}); };
+    /* Oct 31: Tab stays inside the sheet; the page behind is inert while any sheet is open */ window.__SHEETS=(window.__SHEETS||0)+1; [...document.body.children].forEach(x=>{ if(x.id!=="layer"&&!x.classList.contains("set")) x.inert=true; });
+    sh.addEventListener("keydown",e=>{ if(e.key!=="Tab") return; const f=[...sh.querySelectorAll('button:not([disabled]),input:not([disabled]),textarea,select,a[href],[tabindex]:not([tabindex="-1"])')].filter(x=>x.getClientRects().length); if(!f.length) return; const a=f[0], z=f[f.length-1]; if(e.shiftKey&&document.activeElement===a){ e.preventDefault(); z.focus(); } else if(!e.shiftKey&&document.activeElement===z){ e.preventDefault(); a.focus(); } });
+    const close=()=>{ if(!ov.isConnected) return; ov.remove(); window.__SHEETS=Math.max(0,(window.__SHEETS||1)-1); if(!window.__SHEETS) [...document.body.children].forEach(x=>{ x.inert=false; }); onClose&&onClose(); if(from){ const f=from.matches&&from.matches("button,a[href],input,textarea,select,[tabindex]")?from:(from.querySelector&&from.querySelector("button,a[href],[tabindex]"))||from; try{ f.focus({preventScroll:true}); }catch(e){} } };
     done.addEventListener("click",close); ov.addEventListener("click",e=>{ if(e.target===ov) close(); }); sh.addEventListener("keydown",e=>{ if(e.key==="Escape") close(); });
     let y0=null, dy=0;
     sh.addEventListener("touchstart",e=>{ if(sh.scrollTop<=0){ y0=e.touches[0].clientY; dy=0; sh.style.transition="none"; } },{passive:true});
