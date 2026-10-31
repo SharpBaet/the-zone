@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-10-30.9">
+<meta name="zone-build" content="2026-10-31.1"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -6494,7 +6494,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const rows=u?Object.entries(u.n).sort((a,b)=>b[1]-a[1]).slice(0,14):[]; rows.forEach(([k,v])=>ul.append(el("li",null,`${k.replace(/^tile:/,"More · ").replace(/^tab:/,"Tab · ").replace(/^mini:/,"Practice · ").replace(/^line:/,"Status line · ").replace(/^intent:/,"Intention · ")} — ${v}`)));
       if(!rows.length) ul.append(el("li",null,"Nothing counted yet."));
       sc.append(ul); if(u&&u.since) sc.append(el("p","hint",`Since ${u.since}.`)); }
-    if(typeof APP!=="undefined"&&APP.sb) appSigninSection(section("c-you","🔑","App sign-in","Your password for the Zone app. Your phone or browser can save it and fill it in for you."),APP.sb);
+    if(typeof APP!=="undefined"&&APP.sb) appSigninSection(section("c-you","🔑","Account","Who's signed in, your password, and signing out. Your phone can save the password and fill it in for you."),APP.sb);
     { const b=(document.querySelector('meta[name="zone-build"]')||{}).content||"unknown"; const f=el("p","hint",`Build ${b} · ${typeof APP!=="undefined"&&APP.sb?"app":"claude.ai"}${PERSON.person!=="claire"?" · "+PERSON.name:""}`); f.style.textAlign="center"; f.style.opacity=".7"; inner.append(f); } // the same file runs in both places; this says which build and where
     $("#layer").append(box); done.focus();
   }
@@ -6610,7 +6610,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     group("Done today",done,it=>notes(it)[0]||"Done",it=>chip("Reopen","Reopen "+it.name+" for Alice",()=>listUpdate(it,{Status:"Open","date:Done On:start":null,"Alice Status":"Working"},{status:"Open",doneOn:"",astat:"Working"},"Reopened. Let Alice know what's still needed")));
     group("Added to your list",added,it=>notes(it)[0]||"",it=>chip("Remove","Remove "+it.name+" from your list",()=>listUpdate(it,{Status:"Dropped"},{status:"Dropped"},"Removed",{Status:"Open"},{status:"Open"})));
     box.append(el("p","zfoot","Alice's updates show up here within the hour.")); }
-  function renderAll(storedAt){ if(INBOX.payload&&ROW) setTimeout(()=>renderInbox(INBOX.payload),0); // the rundown may arrive before today's row: redraw it so cleared items and live buttons apply
+  function renderAll(storedAt){ if(window.ZONE_FROM_LINK&&typeof APP!=="undefined"&&APP.sb){ window.ZONE_FROM_LINK=false; try{ localStorage.setItem("zone:setpw",String(Date.now())); }catch(e){} setTimeout(()=>{ const g=$("#gear"); if(g&&!document.querySelector(".set")) g.click(); },900); } /* Oct 31: arrived from an emailed sign-in link: open Settings at Account to set a new password */ if(INBOX.payload&&ROW) setTimeout(()=>renderInbox(INBOX.payload),0); // the rundown may arrive before today's row: redraw it so cleared items and live buttons apply
     ROW=ROWS[0]||null; LIVE=!!(ROW&&ROW["date:Date:start"]===TODAY()); WORK=workTimes(); renderAppts();
     { const bm=$("#briefMiss"); if(bm) bm.hidden=LIVE||nowH()<6; } // never let a missing brief pass quietly as yesterday's
     if(storedAt) SYNCED=new Date(storedAt).toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit",timeZone:TZ}).replace(" ","").toLowerCase();
@@ -6728,7 +6728,7 @@ function showSignin(){ document.body.classList.remove("loading"); let ov=documen
       '<form class="siform" id="siForm" novalidate><label class="silab" for="siEmail">Email</label><input id="siEmail" name="email" class="field" type="email" autocomplete="username" inputmode="email" required>'+
       '<label class="silab" for="siPass">Password</label><input id="siPass" name="password" class="field" type="password" autocomplete="current-password" required>'+
       '<button class="btn" id="siGo" type="submit">Sign in</button></form>'+
-      '<button class="silink" id="siSend" type="button">No password yet? Email me a sign-in link</button>'+
+      '<button class="silink" id="siSend" type="button">Forgot your password? Email me a sign-in link</button>'+
       '<p class="simsg" id="siMsg" role="status"></p></div>';
     document.body.append(ov);
     const em=ov.querySelector("#siEmail"), pw=ov.querySelector("#siPass"), msg=ov.querySelector("#siMsg"); em.value=APP.email;
@@ -6741,7 +6741,7 @@ function showSignin(){ document.body.classList.remove("loading"); let ov=documen
     ov.querySelector("#siSend").addEventListener("click",async e=>{ const b=e.currentTarget; b.disabled=true; msg.textContent="Sending…";
       const { error } = await APP.sb.auth.signInWithOtp({email:em.value.trim(),options:{shouldCreateUser:false,emailRedirectTo:location.origin+location.pathname}});
       b.disabled=false; if(error){ msg.textContent="Couldn't send the link: "+error.message; return; }
-      msg.textContent="Sent. The link signs in whichever browser opens it. Once you're in, set a password under You → App sign-in, then use it here."; b.textContent="Send another link"; });
+      msg.textContent="Sent. Open the link from your email: it signs you in and opens straight to setting a new password. On iPhone it opens in Safari; set the password there, then sign in here with it."; b.textContent="Send another link"; try{ localStorage.setItem("zone:setpw",String(Date.now())); }catch(_){} });
   }
   ov.hidden=false; }
 // Settings sheet (app only, Oct 16; was a You-tab card): set or change the password, and sign this device out
@@ -6755,6 +6755,9 @@ function appSigninSection(c,sb){
     '<p class="simsg" id="pwMsg" role="status"></p>';
   const u=c.querySelector("#pwUser"), a=c.querySelector("#pwNew"), b2=c.querySelector("#pwNew2"), msg=c.querySelector("#pwMsg");
   sb.auth.getUser().then(({data})=>{ u.value=(data&&data.user&&data.user.email)||APP.email; }).catch(()=>{ u.value=APP.email; });
+  { const who=document.createElement("p"); who.className="hint"; who.textContent=`Signed in as ${(typeof PERSON!=="undefined"&&PERSON.name)||"you"}.`; box.prepend(who); }
+  // Oct 31: arriving from an emailed sign-in link (forgot password) lands here with the new-password field ready
+  try{ const t0=Number(localStorage.getItem("zone:setpw")||0); if(t0&&Date.now()-t0<2*3600e3){ localStorage.removeItem("zone:setpw"); msg.textContent="You're in. Set a new password here so next time is quicker."; setTimeout(()=>{ box.scrollIntoView({behavior:"smooth",block:"center"}); a.focus(); },400); } }catch(_){}
   c.querySelector("#pwForm").addEventListener("submit",async e=>{ e.preventDefault(); const btn=c.querySelector("#pwSave");
     if(a.value.length<10){ msg.textContent="Use at least 10 characters."; a.focus(); return; }
     if(a.value!==b2.value){ msg.textContent="The two passwords don't match."; b2.focus(); return; }
