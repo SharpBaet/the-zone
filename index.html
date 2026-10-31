@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-10-30.7">
+<meta name="zone-build" content="2026-10-30.8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -6608,7 +6608,9 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     { const bm=$("#briefMiss"); if(bm) bm.hidden=LIVE||nowH()<6; } // never let a missing brief pass quietly as yesterday's
     if(storedAt) SYNCED=new Date(storedAt).toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit",timeZone:TZ}).replace(" ","").toLowerCase();
     document.body.classList.remove("loading");
-    renderWeather(); applyMode(); renderTop(); renderWrap(); renderZoneActs(); renderAlice(); renderAliceDesk(); renderDay(); renderMind(); renderRituals(); renderAlso(); renderTomorrow(); renderLog(); renderPlan(); renderWeek(); renderYou(); renderJournal(); renderBirdie(); renderDates(); renderHealth();
+    renderWeather(); applyMode(); renderLog();
+    // Oct 30: the pre-rebuild screens no longer render under the new layout (identical new screens in every mode, ~8x faster render). They still run if the old layout is ever switched back on.
+    if(!znOn()){ renderTop(); renderWrap(); renderZoneActs(); renderAlice(); renderAliceDesk(); renderDay(); renderMind(); renderRituals(); renderAlso(); renderTomorrow(); renderPlan(); renderWeek(); renderYou(); renderJournal(); renderBirdie(); renderDates(); renderHealth(); }
     $("#stamp").textContent="";
   }
   let INDEX_ID="3f4ef44532cf81e881d7f26e66698eb6"; let PERSON={person:"claire",name:"Claire"}; /* Oct 16: two people; the app swaps in Victoria's ids after sign-in */; let INDEX_AT=0, INDEX_ROWS=[], INDEX_REC=[], ROW_UNSUB={}, ROW_DATA={};
