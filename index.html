@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-10-31.17"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-01.1"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2229,7 +2229,7 @@ body.zn #znToday .zn-recov, body.zn #znToday > .zn-reading, body.zn #znMe > .zn-
 .zn-rsfoot{ position:sticky; bottom:0; padding:12px 0 4px; background:linear-gradient(rgba(251,248,255,0), #FBF8FF 35%); display:flex; gap:10px; z-index:2; } .zn-rsfoot .zn-btn{ flex:1; }
 body.zn.zn-night .zn-rdrow2{ background:rgba(255,255,255,.08); color:#F3EEFF; } body.zn.zn-night .zn-rdic{ background:rgba(255,255,255,.12); } body.zn.zn-night .zn-rdk, body.zn.zn-night .zn-rdgo{ color:color-mix(in srgb, var(--rc) 55%, #FFFFFF); } body.zn.zn-night .zn-rdword{ background:rgba(255,255,255,.12); color:#F3EEFF; } body.zn.zn-night .zn-rdtry{ color:rgba(243,238,255,.85); }
 /* Oct 31: Birdie, reworked */
-body.zn #znToday > .zn-birdie{ display:none !important; }
+body.zn #znToday .zn-birdie{ display:none !important; } /* Oct 31 / Nov 1: weekends nest it too */
 .zn-bd2{ --bc:#A8642C; --bbg:#FBEDE0; }
 .bd2-meals{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
 .bd2-bowl{ display:flex; align-items:center; gap:10px; border:0; border-radius:16px; padding:12px; background:rgba(255,255,255,.6); text-align:left; font:inherit; color:#1F2340; box-shadow:inset 0 0 0 1.5px rgba(168,100,44,.25); cursor:pointer; }
@@ -3166,7 +3166,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     // headlines: the brief's numbered world stories, first sentence each; tap for the whole story
     const wd=split(ROW.World); const stories=wd.rest.filter(l=>/^\d+\./.test(l)).slice(0,3);
     if(stories.length){ const c=card("heads","Headlines",RC.red); c.append(head("Headlines","from your 4:30 brief"));
-      stories.forEach((l,i)=>{ const full=l.replace(/^\d+\.\s*/,""); const first=(full.match(/^.*?[.!?](\s|$)/)||[full])[0].trim(); const b=el("button","rs-news"); b.type="button";
+      stories.forEach((l,i)=>{ const full=l.replace(/^\d+\.\s*/,""); const safe=full.replace(/\b(?:[A-Z]\.){2,}/g,x=>x.replace(/\./g,"\u2024")).replace(/\b(Mr|Mrs|Ms|Dr|St|Jr|Sr|No|vs)\./g,"$1\u2024"); const first=(safe.match(/^.*?[.!?](\s|$)/)||[safe])[0].trim().replace(/\u2024/g,"."); /* Nov 1: "U.S." isn't the end of a sentence */ const b=el("button","rs-news"); b.type="button";
         const n=el("span","rs-nn",String(i+1)); n.style.background=["#B49CF2","#C6E24A","#FFD6E6"][i]||"#E6E1F0"; const tx=el("span"); tx.append(el("b",null,first),el("span",null,full.length>first.length+5?"tap for the rest":"")); b.append(n,tx);
         b.addEventListener("click",()=>openSheet({kicker:"🗞️ Headline "+(i+1),title:first,body:[el("p",null,full.slice(first.length).trim()||full)],from:b})); c.append(b); }); box.append(c); }
     // radio + episodes
@@ -3769,8 +3769,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     let g=all.find(x=>x.mine)||null;
     if(!g&&!all.length){ // nothing today in her leagues: the next game of the first team line in Sports
       const sp=split(ROW.Sports); const cand=sp.rest.filter(l=>/^(🏀|🏈|⚽|⚾|🏒)/u.test(l)).map(l=>{ const parts2=l.replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,"").split(/\s+·\s+/); const name=parts2[0]||""; const nx=parts2.find(x=>/^next\b/i.test(x)); if(!nx) return null; const m=nx.replace(/^next\s*/i,"");
-        const opp=((m.match(/^(?:at|vs\.?|v)\s+([^,·]+)/i)||[])[1]||"").replace(/\s+(?:today|tonight|tomorrow|sun|mon|tue|wed|thu|fri|sat)\b.*$/i,"").trim(); const when=m.replace(/^(at|vs\.?|v)\s+[^,·]+,?\s*/i,"").trim();
-        return {name:`${name} ${/^at\b/i.test(m)?"at":"vs"} ${opp||"?"}`,mine:true,state:"pre",s:-1,tv:"",when:when,lg:"",up:true}; }).filter(Boolean);
+        const om=m.match(/\b(at|vs\.?|v)\s+([A-Z][^,·]*)/); const opp=om?om[2].replace(/\s+(?:today|tonight|tomorrow|sun|mon|tue|wed|thu|fri|sat)\b.*$/i,"").trim():""; /* Nov 1: the opponent can follow the time */ const when=(om?m.replace(om[1]+" "+opp,""):m).replace(/\s{2,}/g," ").replace(/^[\s,]+|[\s,]+$/g,"").trim();
+        if(!opp) return null; return {name:`${name} ${om&&/^at/i.test(om[1])?"at":"vs"} ${opp}`,mine:true,state:"pre",s:-1,tv:"",when:when,lg:"",up:true}; }).filter(Boolean);
       g=cand[0]; if(!g) return; }
     const c=znCard("zn-game","","Game day"); const others=all.filter(x=>x!==g).slice(0,g?3:5);
     const row=(x,hid)=>{ const st=x.state==="in"?(hid?"live · score hidden":`live · ${x.score||""}`):x.state==="post"?(hid?"final · score hidden":`final · ${x.score||""}`):[znMins(x.s),x.tv].filter(Boolean).join(" · "); return `<div class="zn-grow zn-grow2"><span>${znEsc((x.e||"")+" "+x.name).trim()}${x.mine?" ★":""}</span><span>${znEsc(st)}</span></div>`; };
@@ -3807,7 +3807,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     try{ sec.append(znListenCard("Weekend listening")); }catch(e){ console.error("listen",e); } // Oct 26: shared card, now with the day's discovery
     // worth reading
     const wd=split(ROW.World); const st=wd.rest.filter(l=>/^\d+\./.test(l)).slice(0,3);
-    if(st.length){ const rc=znCard("zn-reads","","Worth reading"); rc.innerHTML=znH("Worth reading","from the brief"); st.forEach((l,i)=>{ const full=l.replace(/^\d+\.\s*/,""); const first=(full.match(/^.*?[.!?](\s|$)/)||[full])[0].trim(); const b=el("button","zn-read"); b.type="button"; b.innerHTML=`<span class="zn-num">${i+1}</span><span>${znEsc(first)}</span>`; b.addEventListener("click",()=>openSheet({kicker:"Headline",title:first,body:[el("p",null,full.slice(first.length).trim()||full)],from:b})); rc.append(b); }); sec.append(rc); }
+    if(st.length){ const rc=znCard("zn-reads","","Worth reading"); rc.innerHTML=znH("Worth reading","from the brief"); st.forEach((l,i)=>{ const full=l.replace(/^\d+\.\s*/,""); const safe=full.replace(/\b(?:[A-Z]\.){2,}/g,x=>x.replace(/\./g,"\u2024")).replace(/\b(Mr|Mrs|Ms|Dr|St|Jr|Sr|No|vs)\./g,"$1\u2024"); const first=(safe.match(/^.*?[.!?](\s|$)/)||[safe])[0].trim().replace(/\u2024/g,"."); /* Nov 1: "U.S." isn't the end of a sentence */ const b=el("button","zn-read"); b.type="button"; b.innerHTML=`<span class="zn-num">${i+1}</span><span>${znEsc(first)}</span>`; b.addEventListener("click",()=>openSheet({kicker:"Headline",title:first,body:[el("p",null,full.slice(first.length).trim()||full)],from:b})); rc.append(b); }); sec.append(rc); }
     box.append(sec); }
   // Apple's podcast directory (public, no key): the show's page, or the exact episode when the title matches
   const ZN_EP={};
@@ -3938,14 +3938,14 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   const RD_STYLE={gita:{c:"#C9821F",bg:"#FFF1DC",ic:"🕯️",book:"The Bhagavad Gita"},recovery:{c:"#4F7A5C",bg:"#E4EFDD",ic:"🌿",book:"Recovery Dharma"},prophet:{c:"#6E5CC8",bg:"#ECE6FF",ic:"🕊️",book:"The Prophet"}};
   function znRecovNow(){ try{ return readingOn("recovery")?znJSON(ROW&&((ROW.__raw&&ROW.__raw.Recovery)||ROW.Recovery)):null; }catch(e){ return null; } }
   function znReadingsList(opts){ opts=opts||{}; const out=[];
-    try{ const g=typeof gita==="function"&&readingOn("gita")?gita():null; if(g) out.push({k:"gita",title:g.review?"The week in the Gita":g.title,ref:g.ref||"",day:g.n||0,of:g.of||158,word:g.word||"",min:g.review?4:6,read:g.review?!!clean(ROW["Gita Check"]).trim():gitaReadN()>=(g.n||0),src:g,review:!!g.review}); }catch(e){}
+    try{ const g=typeof gita==="function"&&readingOn("gita")?gita():null; if(g) out.push({k:"gita",title:g.review?"The week in the Gita":g.title,ref:g.ref||"",day:g.review?(g.done||0):(g.n||0),of:g.of||158,word:g.word||"",min:g.review?4:6,read:g.review?!!clean(ROW["Gita Check"]).trim():gitaReadN()>=(g.n||0),src:g,review:!!g.review}); }catch(e){}
     try{ const R=znRecovNow(); if(R) out.push({k:"recovery",title:R.title,ref:R.ref||"",day:R.n,of:R.total,word:R.word||"",min:5,read:(parseInt(clean(ROW["Recovery Read"]).trim())||0)>=R.n,src:R,book:R.book_title}); }catch(e){}
     try{ const P=US_POD&&US_POD.data&&US_POD.data.reading; if(P&&(opts.prophet||nowH()>=17)) out.push({k:"prophet",title:P.title,ref:P.aired?"read in tonight’s episode":"tonight, in Zone Radio · Us",day:P.n,of:P.of,word:"",min:Math.max(2,Math.round(String(P.body||"").split(/\s+/).length/150)),read:false,src:{paras:String(P.body||"").split(/\n\n+/).filter(Boolean),cite:P.source}}); }catch(e){}
     return out; }
   const rdUnit=r=>r.k==="prophet"?"night":"day";
   function znReadingRow(r){ const S=RD_STYLE[r.k]; const b=el("button","zn-rdrow2"+(r.read?" done":"")); b.type="button"; b.style.setProperty("--rc",S.c); b.style.setProperty("--rbg",S.bg);
     const pct=r.of?Math.round(r.day/r.of*100):0; const book=r.book||S.book;
-    b.innerHTML=`<span class="zn-rdic" aria-hidden="true">${S.ic}</span><span class="zn-rdtx"><span class="zn-rdk">${znEsc(book)} · ${rdUnit(r)} ${r.day} of ${r.of}</span><b>${znEsc(r.title||"")}</b><span class="zn-rdbar" aria-hidden="true"><i style="width:${Math.max(2,pct)}%"></i></span>${r.read&&r.src&&r.src.try?`<span class="zn-rdtry">Today, try: ${znEsc(r.src.try)}</span>`:""}</span><span class="zn-rdside">${r.word?`<span class="zn-rdword">${znEsc(r.word)}</span>`:""}<span class="zn-rdgo">${r.read?"✓ read":r.min+" min"}</span></span>`;
+    b.innerHTML=`<span class="zn-rdic" aria-hidden="true">${S.ic}</span><span class="zn-rdtx"><span class="zn-rdk">${znEsc(book)} · ${r.review?"this week, in review":`${rdUnit(r)} ${r.day} of ${r.of}`}</span><b>${znEsc(r.title||"")}</b><span class="zn-rdbar" aria-hidden="true"><i style="width:${Math.max(2,pct)}%"></i></span>${r.read&&r.src&&r.src.try?`<span class="zn-rdtry">Today, try: ${znEsc(r.src.try)}</span>`:""}</span><span class="zn-rdside">${r.word?`<span class="zn-rdword">${znEsc(r.word)}</span>`:""}<span class="zn-rdgo">${r.read?"✓ read":r.min+" min"}</span></span>`;
     b.setAttribute("aria-label",`${book}, ${rdUnit(r)} ${r.day} of ${r.of}: ${r.title}${r.read?", read":""}`);
     b.addEventListener("click",()=>znOpenReadingRow(r,b)); return b; }
   function znOpenReadingRow(r,from){ if(r.review&&typeof gitaSheet==="function") return gitaSheet(r.src,from); znReadingSheet(r,from); }
@@ -4232,7 +4232,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const rail=el("div","zn-rail"); teamL.forEach(l=>{ const parts2=l.replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,"").split(/\s+·\s+/); const name=parts2.shift()||""; const res=parts2.shift()||""; const tc=znTeamCol(name)||["#2A7FA8","#B9A6F5"]; const W=/\b(won|beat|win)\b/i.test(res), L=/\b(lost|fell|loss|eliminated)\b/i.test(res);
         const b=el("button","zn-tile"); b.type="button"; b.innerHTML=`<span class="zn-tt"><b><i class="zn-sw" style="background:${tc[0]}"></i>${znEsc(name)}</b>${(W||L)&&!hideAll?`<em class="${W?"w":"l"}">${W?"W":"L"}</em>`:""}</span><span class="zn-tl">${znEsc(hideAll?znMask(res):res)}</span>`; b.addEventListener("click",()=>openSheet({kicker:name,title:"",body:[el("p",null,hideAll?znMask(l):l.replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,""))],from:b})); rail.append(b); }); sec.append(rail); }
     const wd=split(ROW.World); const heads=wd.rest.filter(l=>/^\d+\./.test(l)).slice(0,3);
-    if(heads.length){ const nc=znCard("zn-headlines","","Headlines"); nc.innerHTML=`<span class="zn-k">Headlines</span>`; heads.forEach((l,i)=>{ const full=l.replace(/^\d+\.\s*/,""); const first=(full.match(/^.*?[.!?](\s|$)/)||[full])[0].trim(); const b=el("button","zn-hline"); b.type="button"; b.innerHTML=`<span class="zn-num">0${i+1}</span><span>${znEsc(first)}</span>`; b.addEventListener("click",()=>openSheet({kicker:"Headline",title:first,body:[el("p",null,full.slice(first.length).trim()||full)],from:b})); nc.append(b); }); sec.append(nc); }
+    if(heads.length){ const nc=znCard("zn-headlines","","Headlines"); nc.innerHTML=`<span class="zn-k">Headlines</span>`; heads.forEach((l,i)=>{ const full=l.replace(/^\d+\.\s*/,""); const safe=full.replace(/\b(?:[A-Z]\.){2,}/g,x=>x.replace(/\./g,"\u2024")).replace(/\b(Mr|Mrs|Ms|Dr|St|Jr|Sr|No|vs)\./g,"$1\u2024"); const first=(safe.match(/^.*?[.!?](\s|$)/)||[safe])[0].trim().replace(/\u2024/g,"."); /* Nov 1: "U.S." isn't the end of a sentence */ const b=el("button","zn-hline"); b.type="button"; b.innerHTML=`<span class="zn-num">0${i+1}</span><span>${znEsc(first)}</span>`; b.addEventListener("click",()=>openSheet({kicker:"Headline",title:first,body:[el("p",null,full.slice(first.length).trim()||full)],from:b})); nc.append(b); }); sec.append(nc); }
     try{ sec.append(znListenCard("Listening")); }catch(e){ console.error("listen",e); }
     if(sec.children.length) box.append(sec);
   }
