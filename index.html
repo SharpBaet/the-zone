@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-01.10"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-01.11"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1232,6 +1232,12 @@ html body.zn.zn-night .zn-cobtns .zn-pill.zn-copri{background:#F3EEFF !important
 html body.zn.zn-night .zn-cobtns .zn-pill.zn-coghost{background:transparent !important;border:1px solid rgba(255,255,255,.3) !important;color:#F3EEFF !important}
 body.zn .zn-cobtns .zn-pill:disabled{opacity:.5}
 body.zn .zn-cohint{font-size:13px;opacity:.75;margin:0 0 4px 52px;color:#F3EEFF}
+
+/* Nov 1: the full rundown sheet (Needs you) */
+.zn-nsh{display:flex;align-items:center;gap:8px;margin:14px 0 6px}
+.zn-nsh b{font-size:15px;font-weight:700}
+.zn-nsh .zn-nsn{font-size:12px;font-weight:700;letter-spacing:.06em;opacity:.6}
+.zn-nsh .zn-pill{margin-left:auto;min-height:36px}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -2259,16 +2265,25 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     box.append(c); }
   // the writers (brief, radio) read this row: one game per line, date|name; "date|all" keeps every score quiet that day
   async function znSpoilSave(key,on){ if(!mcp) return; try{ const T=TODAY(); const lines=String(SET.Spoilers&&SET.Spoilers.value||"").split(/\n+/).map(x=>x.trim()).filter(l=>l&&l.slice(0,10)>=addDays(T,-7)); const i=lines.indexOf(key); if(on&&i<0) lines.push(key); if(!on&&i>=0) lines.splice(i,1); await saveSetting("Spoilers",lines); }catch(e){ console.warn("spoilers",e); } }
-  function znNeedsList(inboxLeft,lateL,alL,limit){ const lst=el("div","zn-list"); const T=TODAY();
+  function znNeedsList(inboxLeft,lateL,alL,limit,full){ const lst=el("div","zn-list"); const T=TODAY();
     const ini=t=>String(t).replace(/^[^A-Za-z]+/,"").split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join("")||"•"; const COLS=[ZC.sky,ZC.lim,ZC.lil,ZC.mint,ZC.peach];
     const mrow=(av,c,who,subj,due,onOpen)=>{ const b=el("button","zn-mrow"); b.type="button"; b.innerHTML=`<span class="zn-av" style="background:${c}">${znEsc(av)}</span><span class="zn-mt2"><b>${znEsc(who)}</b><span>${znEsc(subj)}</span></span>${due?`<span class="zn-due">${znEsc(due)}</span>`:""}`; b.addEventListener("click",onOpen); lst.append(b); return b; };
     const tagFor=t=>{ const m=String(t).toLowerCase().match(/\b(today|tomorrow|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/); return m?(m[1]==="today"?"Today":m[1]==="tomorrow"?"Tmrw":m[1].slice(0,3).replace(/^./,c=>c.toUpperCase())):""; };
     inboxLeft.slice(0,limit).forEach((l,i)=>{ const title=inboxTitle(l); const who=title.split(/[:·]/)[0].replace(/^(Reply to |Pay )/,"").trim(); const subj=title.slice(title.indexOf(who)+who.length).replace(/^[\s:·]+/,"")||title;
       const r=mrow(ini(who),COLS[i%COLS.length],who,subj,tagFor(l),()=>{ const body=el("div","schd"); body.append(el("p",null,title)); if(INBOX_MAIL[l]){ const acts=mailRow(l); acts.querySelectorAll("[hidden]").forEach(x=>x.hidden=false); acts.querySelector(".more")?.remove(); body.append(acts); } else { const c2=el("button","btn","Mark handled"); c2.type="button"; c2.addEventListener("click",()=>{ clearInbox(l,true); setTimeout(znRender,300); }); body.append(c2); } openSheet({kicker:"Inbox",title:who,body,from:r}); });
       if(INBOX_MAIL[l]&&mcp) swipeify(r,{right:()=>{ mailAct(l,"read"); setTimeout(znRender,400); },left:()=>r.click()}); });
-    lateL.slice(0,2).forEach(it=>{ const r=mrow("✓",ZC.cor,it.name,it.due<T?"overdue":"due today",it.due<T?"Late":"Today",()=>openListItem(it,r)); });
-    alL.slice(0,2).forEach(it=>{ const nn=alNotes(it); mrow("A",ZC.lil,"Alice",`${it.name}: ${nn[nn.length-1]||"needs your input"}`,"",()=>show("alice")); });
+    lateL.slice(0,full?lateL.length:2).forEach(it=>{ const r=mrow("✓",ZC.cor,it.name,it.due<T?"overdue":"due today",it.due<T?"Late":"Today",()=>openListItem(it,r)); });
+    alL.slice(0,full?alL.length:2).forEach(it=>{ const nn=alNotes(it); mrow("A",ZC.lil,"Alice",`${it.name}: ${nn[nn.length-1]||"needs your input"}`,"",()=>show("alice")); });
     return lst; }
+  // Nov 1: the full rundown (Claire chose option B from the mockups): everything that needs you, grouped (Inbox with Triage, Due, With Alice),
+  // no caps. Opened from Today's "+N more · full rundown" and the weekend "Peek".
+  function znNeedsSheet(inboxLeft,lateL,alL,from){ const total=inboxLeft.length+lateL.length+alL.length; const body=[];
+    const grp=(lab,n,lst,extra)=>{ if(!n) return; const h=el("div","zn-nsh"); h.append(el("b",null,lab),el("span","zn-nsn",String(n))); if(extra) h.append(extra); body.push(h,lst); };
+    let tb=null; if(inboxLeft.length){ tb=el("button","zn-pill zn-dark","Triage"); tb.type="button"; tb.addEventListener("click",()=>znTriage(tb)); }
+    grp("Inbox",inboxLeft.length,znNeedsList(inboxLeft,[],[],inboxLeft.length,true),tb); grp("Due",lateL.length,znNeedsList([],lateL,[],0,true)); grp("With Alice",alL.length,znNeedsList([],[],alL,0,true));
+    const src=[inboxLeft.length?`this morning’s Inbox Rundown${INBOX.date?" · "+INBOX.date:""}`:"",(lateL.length||alL.length)?"your List":""].filter(Boolean).join(" and ");
+    if(src) body.push(el("p","hint",`From ${src}.`));
+    openSheet({kicker:"Needs you",title:`${total} ${total===1?"thing":"things"} waiting`,body,from}); }
   function znFunWeekend(box){ const sec=el("section","zn-funwk"); sec.setAttribute("aria-label","The fun stuff");
     // scores, with the spoiler switch
     const sp=split(ROW.Sports); const teamL=sp.rest.filter(l=>/^(🏀|🏈|⚽|⚾|🏒)/u.test(l)).slice(0,4); const hideAll=znSpoil();
@@ -2723,7 +2738,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const lateL=LIST.filter(it=>it.status==="Open"&&isTask(it)&&forClaire(it)&&it.due&&it.due<=T&&it.owner!=="Alice");
     const alL=LIST.filter(it=>it.owner==="Alice"&&alNeedsYou(it)&&it.status==="Open"&&!alAnswered(it));
     const total=inboxLeft.length+lateL.length+alL.length;
-    if(total&&wk){ const ln=el("button","zn-boundary"); ln.type="button"; ln.innerHTML=`<span><b>${total} ${total===1?"thing":"things"} can wait until Monday.</b> <span>Nothing urgent.</span></span><span class="zn-peek">Peek</span>`; ln.addEventListener("click",()=>openSheet({kicker:"Needs you",title:`${total} waiting`,body:[znNeedsList(inboxLeft,lateL,alL,8)],from:ln})); end.append(ln); }
+    if(total&&wk){ const ln=el("button","zn-boundary"); ln.type="button"; ln.innerHTML=`<span><b>${total} ${total===1?"thing":"things"} can wait until Monday.</b> <span>Nothing urgent.</span></span><span class="zn-peek">Peek</span>`; ln.addEventListener("click",()=>znNeedsSheet(inboxLeft,lateL,alL,ln)); end.append(ln); }
     if(total&&!wk){ const nd=znCard("zn-needs","","Needs you"); nd.innerHTML=znH("Needs you",`${total}`); if(inboxLeft.length){ const tb=el("button","zn-pill zn-dark zn-triagebtn","Triage"); tb.type="button"; tb.addEventListener("click",()=>znTriage(tb)); nd.querySelector(".zn-h").append(tb); } const lst=el("div","zn-list");
       const ini=t=>String(t).replace(/^[^A-Za-z]+/,"").split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join("")||"•";
       const COLS=[ZC.sky,ZC.lim,ZC.lil,ZC.mint,ZC.peach];
@@ -2734,7 +2749,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
         if(INBOX_MAIL[l]&&mcp) swipeify(r,{right:()=>{ mailAct(l,"read"); setTimeout(znRender,400); },left:()=>r.click()}); });
       lateL.slice(0,2).forEach(it=>{ const r=mrow("✓",ZC.cor,it.name,it.due<T?"overdue":"due today",it.due<T?"Late":"Today",()=>openListItem(it,r)); });
       alL.slice(0,2).forEach(it=>{ const nn=alNotes(it); mrow("A",ZC.lil,"Alice",`${it.name}: ${nn[nn.length-1]||"needs your input"}`,"",()=>show("alice")); });
-      if(total>5){ const m2=el("button","zn-more",`+${total-5} more · full rundown`); m2.type="button"; m2.addEventListener("click",()=>{ $("#wdNeeds")?.scrollIntoView?.(); show("today"); document.body.classList.add("zn-old"); }); lst.append(m2); }
+      if(total>5){ const m2=el("button","zn-more",`+${total-5} more · full rundown`); m2.type="button"; m2.addEventListener("click",()=>znNeedsSheet(inboxLeft,lateL,alL,m2)); lst.append(m2); }
       nd.append(lst); box.append(nd); } }
 
     if(!wk&&!night){ try{ if(clean(ROW.Recovery).trim()){ const rv=znRecovCard(); if(rv) box.append(rv); } }catch(e){ console.error("recov",e); } try{ const rc=znReadingCard(); if(rc) box.append(rc); }catch(e){ console.error("reading",e); } }
