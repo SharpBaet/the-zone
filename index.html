@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-01.8"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-01.9"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2342,89 +2342,35 @@ body.zn .zn-cohint{font-size:13px;opacity:.75;margin:0 0 4px 52px;color:#F3EEFF}
 
     
     
-    <section class="card wdc" id="wdNeeds" hidden aria-labelledby="wdNeedsH"><h2 id="wdNeedsH" class="wdh">Needs you</h2><p class="wdsub">From your inbox, your list, and Alice</p><div id="wdNeedsList"></div>
-      <details class="wdmore" id="wdInboxD"><summary>Full inbox rundown</summary><div class="sbslot" id="wdInboxSlot"></div></details></section>
     
     
-    <nav class="jumpbar" id="tdJump" hidden aria-label="Jump to a section"></nav>
-    <section class="vibe" id="vibe"><div class="wkhero" id="wkHero" hidden><span class="wksticker" id="wkSticker" aria-hidden="true">weekend mode</span><div class="wkday" id="wkDay"></div></div><h1 id="vibeLine">Loading today from Notion…</h1><p id="mantra"></p><span class="stale" id="stale" hidden></span></section>
-
     
-
-
+    
     
 
     
-    <section class="card zact alice" id="aliceCard" hidden aria-label="What Alice is working on"></section>
 
-    <section class="card tint day" id="dayCard" aria-labelledby="dayH">
-      <div class="daytop"><h2 id="dayH" class="ttl-c">Your day</h2><span class="label" id="stamp"></span></div>
-      <div class="dayhead" id="dayHead"></div>
-      <div class="nowstrip" id="nowStrip"></div>
-      <div class="allday" id="allDay"></div>
-      <ul class="tl" id="timeline"></ul>
-      <div class="daytips" id="dayTips"></div>
-      <div class="birdie" id="birdie" hidden></div>
-      <button class="linkbtn shapeBtn" id="shapeBtn" type="button" aria-expanded="false" aria-controls="shapeBox">Show day shape</button>
-      <div id="shapeBox" hidden>
-        <svg class="orbit" id="orbit" viewBox="0 0 320 320" role="img" aria-label="Day orbit"></svg>
-        <div class="legend" id="legend"></div>
-      </div>
-    </section>
 
-    <section class="card tint" id="topCard" aria-labelledby="topH">
-      <div class="row" style="justify-content:space-between"><h2 id="topH" class="ttl-c">Today's list</h2><span class="prog" id="listProg"></span></div>
-      <ul class="tasks" id="dueToday" style="margin-top:12px" hidden></ul>
-      <ul class="tasks" id="tasks" style="margin-top:12px"></ul>
-      <div class="unplaced" id="unplaced"></div>
-    </section>
+    
 
-    <section class="card mind devo" id="mindCard" aria-labelledby="mindH">
-      <header class="devo-top">
-        <div class="symwrap" id="symArt"></div>
-        <div class="trad" id="mindTrad">Today's teaching</div>
-        <h2 id="mindH"></h2>
-      </header>
-      <div class="orn" aria-hidden="true"><i></i><span>✦</span><i></i></div>
-      <div class="devo-l">Today's reading</div>
-      <blockquote id="teaching"></blockquote>
-      <div class="src" id="teachSrc"></div>
-      <div id="devoBody" hidden><div class="devo-l">Reflection</div><p class="devo-p" id="devoText"></p></div><div id="tryBody" class="trybody" hidden><div class="devo-l">🎯 Try it today</div><p class="devo-p" id="tryText"></p></div>
-      <p class="devo-sym" id="symbol"></p>
-      <div class="journal">
-        <div class="devo-l">For your journal</div>
-        <p class="q" id="question"></p>
-        <p class="refl" id="reflText" hidden></p>
-        <button class="linkbtn" id="reflToggle" type="button">+ Write your reflection</button>
-        <div id="reflEdit" hidden>
-          <textarea id="reflection" rows="4" aria-label="Your reflection" placeholder="Take your time. A line or a page."></textarea>
-          <div class="row" style="margin-top:8px"><button class="btn ghost sm" id="reflCancel" type="button">Done</button><span class="note" id="reflNote">Saves as you type</span></div>
-        </div>
-      </div>
-      <p class="closing" id="closing" hidden></p>
-      <p class="devo-foot" id="devoFoot" hidden></p>
-      <div id="mindFb"></div>
-    </section>
+    
+    
+
+    
 
     
 
     
 
-    <section class="card tint" id="ritualsCard" aria-labelledby="ritH">
-      <div class="row" style="justify-content:space-between"><h2 id="ritH" class="ttl-c">Logbook</h2><span class="prog" id="ritProg"></span></div>
-      <div class="note" id="ritualsHead" style="margin-top:4px"></div>
-      <div class="sub pracsub" id="selfSub">🌿 Mind &amp; body</div>
-      <ul class="tasks prac" id="rituals"></ul>
-      <div class="sub pracsub" id="routSub">🔁 Routines &amp; habits</div>
-      <ul class="tasks prac" id="routines"></ul>
-      <div class="note" id="sitNote"></div>
-    </section>
     
 
     
-    <section class="card wkc" id="wkQuests" hidden aria-labelledby="wkQuestsH"><div class="wkconf" id="wkConf" aria-hidden="true"></div><span class="wtag" id="wkQuestsTag">🛒 Side quests</span><h2 id="wkQuestsH" class="wkh">Errands and chores</h2>
-      <ul class="wkq" id="wkQList"></ul><div class="wkmeter" id="wkMeter" aria-hidden="true"></div><p class="wkcheer" id="wkCheer" aria-live="polite"></p>
-      <div class="addrow"><input class="field" id="wkQIn" autocomplete="off" aria-label="Add a side quest" placeholder="Add a side quest"><button class="plus" id="wkQGo" type="button" aria-label="Add side quest" style="--c:var(--quest)">+</button></div></section>
+
+    
+    
+
+    
+    
     
     
     
@@ -2441,29 +2387,11 @@ body.zn .zn-cohint{font-size:13px;opacity:.75;margin:0 0 4px 52px;color:#F3EEFF}
   <!-- WEEK -->
   <div id="view-ahead" class="view" hidden style="display:none">
 <div class="zn-today" id="znPlan" hidden></div>
-    <nav class="jumpbar" id="aheadJump" aria-label="Jump to">
-      <button type="button" class="jchip" data-jump="planCard">📝 Tomorrow</button>
-      <button type="button" class="jchip" data-jump="weekCard">🗓️ This week</button>
-      <button type="button" class="jchip" data-jump="dateCard">💕 Date night</button>
-      <button type="button" class="jchip" data-jump="campCard">🏕️ Birdie</button>
-    </nav>
     
     
     
-    <section class="card tint c-plan" id="planCard" aria-labelledby="planH">
-      <div class="label" id="planDate">Tomorrow</div>
-      <h2 id="planH" class="ttl-c" style="margin-top:4px">Get tomorrow ready</h2>
-      <div class="ready" id="planReady"></div>
-      <div class="psub">Your top 3</div>
-      <p class="hint">Write them the way you'd say them, with timing in parentheses if it matters, like (after 10) or (2 hours). The 4:30am planner splits steps, looks things up, and puts them on your calendar.</p>
-      <textarea id="tomorrow" rows="4" style="margin-top:10px" placeholder="1. Call the vet about Birdie's refill (after 9)&#10;2. Finish the pricing deck (2 hours)&#10;3. Pick up the dry cleaning"></textarea>
-      <div id="listPickWrap" hidden><div class="label" style="margin-top:10px">From your list</div><p class="hint" id="fillNote"></p><div class="ideas" id="listPicks"></div></div>
-      <div id="ideaWrap" hidden><div class="label" style="margin-top:10px">From your inbox</div><div class="ideas" id="ideas"></div></div>
-      <div class="psub">Work blocks</div>
-      <p class="hint">Name tomorrow's busy blocks so the brief knows what they are, and tap prep for a prep window before one.</p>
-      <div class="blocks" id="blocks"></div>
-      <div class="savebar" id="planSave"></div>
-    </section>
+    
+    
     
     
     
@@ -2474,7 +2402,6 @@ body.zn .zn-cohint{font-size:13px;opacity:.75;margin:0 0 4px 52px;color:#F3EEFF}
   <div id="view-us" class="view" hidden style="display:none">
 <div class="zn-today" id="znUs" hidden></div>
 <div class="zn-today" id="znOurShelf" hidden></div>
-    <section class="ushead"><h1>Us</h1></section>
     
     
     
@@ -2490,28 +2417,6 @@ body.zn .zn-cohint{font-size:13px;opacity:.75;margin:0 0 4px 52px;color:#F3EEFF}
   <div id="view-you" class="view" hidden style="display:none">
 <div class="zn-today" id="znMe" hidden></div>
 <div class="zn-today" id="znShelf" hidden></div>
-    
-    
-    <section class="card tint c-you" aria-labelledby="offH" id="timeOffCard">
-      <h2 id="offH" class="ttl-c">🛋️ Time off</h2>
-      <p class="hint">Days you're not working run like a weekend: no work, no gym, sleep-in timing. Rest days also skip anything physical. All-day Vacation, PTO, or OOO events on your calendar count automatically.</p>
-      <div id="offList"></div>
-      <div class="offadd">
-        <label>From<input type="date" id="offFrom" class="field"></label>
-        <label>To (optional)<input type="date" id="offTo" class="field"></label>
-        <label>Label<input id="offLabel" class="field" maxlength="60" placeholder="Day off"></label>
-        <label>Kind<select id="offKind" class="field"><option value="off">🛋️ Day off</option><option value="rest">😴 Rest day</option><option value="vacation">🧳 Vacation</option></select></label>
-        <label class="wide">Where (optional, if you'll be away)<input id="offPlace" class="field" maxlength="80" placeholder="New Orleans, LA"></label>
-        <button class="btn" id="offSave" type="button">Add time off</button>
-      </div>
-    </section>
-    
-    
-    <section class="card tint c-you" aria-labelledby="habH">
-      
-      
-      <div style="margin-top:14px"><div class="daylabels"><span></span></div></div>
-    </section>
     <section class="card tint c-you" aria-labelledby="bodyH">
       
       
@@ -2528,34 +2433,15 @@ body.zn .zn-cohint{font-size:13px;opacity:.75;margin:0 0 4px 52px;color:#F3EEFF}
 
   <!-- LIST -->
   <div id="view-alice" class="view" hidden style="display:none">
-    <section class="alhero" aria-labelledby="alH"><div class="alav" aria-hidden="true">A</div><div><p id="alStatus"></p></div></section>
     
     
   </div>
   <div id="view-list" class="view" hidden style="display:none">
     
-    <section class="card tint c-plan" id="capCard" aria-labelledby="listH">
-      <div class="row" style="justify-content:space-between;align-items:baseline"><h2 id="listH" class="ttl-c">Your list</h2><span class="note" id="listCount"></span></div>
-      <div class="addrow"><input class="field" id="capIn" autocomplete="off" aria-label="Add to your list" placeholder="Add anything: a to-do, note, reminder, thought"><button class="plus" id="capGo" type="button" aria-label="Add to your list" style="--c:var(--plan)">+</button></div>
-      <div class="capprev" id="capPrev" aria-live="polite"></div>
-      <details class="hint shtips"><summary>Shorthand tips</summary><p>Shorthand: <b>#work</b> #home #birdie #us <b>#weekend</b> · <b>!</b> to star · dates like <b>Fri</b>, <b>tomorrow</b>, <b>10/14</b> · start with <b>note:</b>, <b>idea:</b>, <b>thought:</b>, <b>someday:</b>, or <b>remind me</b> · repeats like <b>every 30 days</b> · <b>until Mon</b> to snooze · <b>waiting on Stacie</b> · <b>30m</b> · <b>[Project]</b></p></details>
-    </section>
-    <div class="lviews" id="listViews" role="tablist" aria-label="List views">
-      <button type="button" role="tab" data-v="now" aria-selected="true">Now</button>
-      <button type="button" role="tab" data-v="projects" aria-selected="false">Projects</button>
-      <button type="button" role="tab" data-v="waiting" aria-selected="false">Waiting</button>
-      <button type="button" role="tab" data-v="later" aria-selected="false">Later</button>
-    </div>
-    <nav class="jumpbar" id="listFilters" aria-label="Filter your list">
-      <button type="button" class="jchip" data-f="all" aria-pressed="true">All</button>
-      <button type="button" class="jchip" data-f="todo" aria-pressed="false">To-dos</button>
-      <button type="button" class="jchip" data-f="work" aria-pressed="false">💼 Work</button>
-      <button type="button" class="jchip" data-f="personal" aria-pressed="false">🌱 Personal</button>
-      <button type="button" class="jchip" data-f="rem" aria-pressed="false">🔔 Reminders</button>
-      <button type="button" class="jchip" data-f="notes" aria-pressed="false">💭 Notes &amp; ideas</button>
-      <button type="button" class="jchip" data-f="alice" aria-pressed="false">🤝 Alice</button>
-    </nav>
-    <section class="card tint" id="listCard" aria-label="Your list items"><div id="listBody"></div></section>
+    
+    
+    
+    
   </div>
 
   <!-- PLAN -->
@@ -2650,18 +2536,11 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // ---------- time off as one stretch (Oct 16): the weekend, a day off, or both joined up ----------
   // A day off on its own is just that day (7am to 11pm). Days off that touch a weekend join it: a Friday off runs Friday 7am to
   // Sunday 11pm, a Monday off runs Friday 5pm to Monday 11pm. A normal weekend is still Friday 5pm to Sunday 11pm.
-  const DOW3=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], DOWL=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-  const dowOf=d=>new Date(d+"T12:00:00Z").getUTCDay();
-  const offOn=d=>{ try{ return offFor(d); }catch(e){ return null; } };
-  const freeDay=d=>{ const w=dowOf(d); return w===0||w===6||!!offOn(d); };
-  function offStretch(){ const wk=wkDay(); if(!wk) return null; const T=TODAY(); const days=[T]; let S=7;
-    if(wk!=="fri") while(freeDay(addDays(days[0],-1))&&days.length<30) days.unshift(addDays(days[0],-1));
-    while(freeDay(addDays(days[days.length-1],1))&&days.length<30) days.push(addDays(days[days.length-1],1));
-    if(wk==="fri") S=17; else if(dowOf(days[0])===6){ days.unshift(addDays(days[0],-1)); S=17; } // a weekend starts when Friday's work ends
-    const offs=days.map(offOn).filter(Boolean), weekend=days.some(d=>dowOf(d)===0||dowOf(d)===6);
-    const kind=!offs.length?"weekend":offs.some(o=>o.kind==="vacation")?"vacation":weekend?(offs.length===1?"long weekend":"time off"):days.length===1?(offs[0].kind==="rest"?"rest day":"day off"):"time off";
-    const next=addDays(days[days.length-1],1);
-    return {days,S,span:(days.length-1)*24+23-S,kind,weekend,next,nextName:DOWL[dowOf(next)],last:days[days.length-1]}; }
+  
+  
+  
+  
+  
   
   let NIGHT=false;
   function mode(){ const n=nowH(); const set=SUN.set??19.2, rise=SUN.rise??7.3; const night=n>=set||n<rise-1.5; NIGHT=night;
@@ -3770,7 +3649,9 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     if(SIT_LEN==null) SIT_LEN=SIT.min;
     const d=(ROW&&ROW["date:Date:start"])||TODAY(); MM=mmFor(d); const match=!!src&&src.toLowerCase().includes(MM.source.toLowerCase().split(" (")[0].toLowerCase());
     const trad=PW?"Letting Go":match?MM.tradition:(src.match(/Buddhism|Hinduism and Vedanta|Yogic philosophy|Christian mysticism/)||[""])[0];
-    SIT.trad=PW?`Letting Go · ${tp[2]||""} · ${tp[3]||""}`.replace(/ · $/,""):(trad||"Mindful Moment")+(SIT.day?" · "+SIT.day.toLowerCase():""); }
+    SIT.color=MM_COLOR[trad]||"var(--sage)"; SIT.trad=PW?`Letting Go · ${tp[2]||""} · ${tp[3]||""}`.replace(/ · $/,""):(trad||"Mindful Moment")+(SIT.day?" · "+SIT.day.toLowerCase():""); }
+  const MM_COLOR={"Letting Go":"var(--water)","Buddhism":"var(--sand)","Hinduism and Vedanta":"var(--rose)","Yogic philosophy":"var(--sage)","Christian mysticism":"var(--lav)"}; /* the sit sheet's tradition color (it used to be read off the old Mindful Moment card) */
+  function znMindColor(){ return (SIT&&SIT.color)||"var(--sage)"; }
   function znMindTrad(){ return (SIT&&SIT.trad)||"Today's teaching"; }
   function znRenderInner(){ try{ znLegacyClasses(); }catch(e){} const box=$("#znToday"); if(!box) return; const on=znOn()&&ROW; document.body.classList.toggle("zn",!!on); if(!on){ box.hidden=true; return; }
     if(!LIVE){ znBetween(box); return; } /* Oct 25: before the brief lands (or if it failed), never fall back to the old, empty layout */ box.hidden=false; box.replaceChildren();
@@ -4034,11 +3915,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // ---------- Today's jump bar (phones) and the desktop spread (wide screens) ----------
   
   
-  function tdJumpActive(){ const nav=$("#tdJump"); if(!nav||nav.hidden||!nav.offsetParent) return; const line=nav.getBoundingClientRect().bottom+24; let cur=null;
-    nav.querySelectorAll(".jchip").forEach(b=>{ const c=$("#"+b.dataset.jump); if(c&&c.getBoundingClientRect().top<=line) cur=b; });
-    if(innerHeight+scrollY>=document.documentElement.scrollHeight-4){ const all=nav.querySelectorAll(".jchip"); if(all.length) cur=all[all.length-1]; }
-    nav.querySelectorAll(".jchip").forEach(b=>{ const on=b===cur; b.setAttribute("aria-current",on?"true":"false"); if(on&&b.scrollIntoView&&nav.scrollWidth>nav.clientWidth){ const r=b.getBoundingClientRect(), nr=nav.getBoundingClientRect(); if(r.left<nr.left||r.right>nr.right) nav.scrollLeft+=r.left-nr.left-12; } }); }
-  { let t=0; addEventListener("scroll",()=>{ if(t) return; t=requestAnimationFrame(()=>{ t=0; tdJumpActive(); }); },{passive:true}); }
+  
+  
   // the desktop spread: a planner (weekdays) or magazine (weekends) laid out in columns, with the first page pinned when it fits
   
   
@@ -4075,33 +3953,12 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function renderSideB(){ /* Nov 1: retired with the old layer */ }
 
   // ---------- side quests: weekend errands + list items due this weekend (or overdue, or tagged #weekend) ----------
-  const wkBounds=()=>{ const ST=offStretch(); if(ST) return {fri:ST.days[0],sat:addDays(TODAY(),-1)<ST.days[0]?TODAY():addDays(TODAY(),-1),sun:ST.last}; const wk=wkDay(); const sat=wk==="sat"?TODAY():wk==="fri"?addDays(TODAY(),1):addDays(TODAY(),-1); return {fri:addDays(sat,-1),sat,sun:addDays(sat,1)}; }; // fri = first day of the time off, sun = its last
-  function questItems(){ const D=parseDay(); const doneT=new Set(listOf("Top 3 Done").map(x=>x.toLowerCase())); const {fri,sun}=wkBounds();
-    const out=D.tasks.map(t=>({kind:"task",title:t.title,on:doneT.has(t.title.toLowerCase()),meta:fmtH(t.r.start)}));
-    const seen=new Set(out.map(q=>q.title.toLowerCase()));
-    for(const it of LIST){ if(!isTask(it)||!forClaire(it)||it.area==="Work"||!it.due||it.due>sun) continue; const lc=it.name.toLowerCase(); if(seen.has(lc)) continue;
-      const open=it.status==="Open", doneNow=it.status==="Done"&&it.doneOn>=fri; if(!open&&!doneNow) continue;
-      seen.add(lc); out.push({kind:"list",item:it,title:it.name,on:!open,meta:it.due<TODAY()?"overdue":it.due===TODAY()?"today":dueLabel(it.due)}); }
-    return out; }
-  let QUEST_ALL=null;
-  function renderQuests(){ const card=$("#wkQuests"), wk=wkDay(); if(!wk||!LIVE){ card.hidden=true; return; }
-    $("#wkQuestsTag").textContent=wk==="sun"?"🧺 Sunday reset":"🛒 Side quests"; $("#wkQuestsH").textContent=wk==="sun"?"Reset for the week":"Errands and chores";
-    const qs=questItems(); const ul=$("#wkQList"); ul.replaceChildren();
-    for(const q of qs){ const li=el("li"); const b=el("button"); b.type="button"; b.setAttribute("aria-pressed",String(q.on)); b.disabled=!mcp; b.setAttribute("aria-label",(q.on?"Undo: ":"Done: ")+q.title);
-      b.append(el("span","box"),el("span","qt",q.title),el("span","qx",q.meta||""));
-      b.addEventListener("click",async()=>{ const on=b.getAttribute("aria-pressed")!=="true"; b.setAttribute("aria-pressed",String(on)); q.on=on; drawMeter(qs);
-        if(q.kind==="task"){ await setInList("Top 3 Done",q.title,on,"\n"); syncListDone(q.title,on); } else await setDone(q.item,on); });
-      li.append(b); ul.append(li); }
-    if(!qs.length) ul.append(el("li","muted","Nothing on deck. Add one below, tag a list item #weekend, or enjoy the empty."));
-    drawMeter(qs,true); card.hidden=false; }
-  function drawMeter(qs,quiet){ const m=$("#wkMeter"); m.replaceChildren(); const n=qs.length, d=qs.filter(q=>q.on).length;
-    for(let i=0;i<n;i++) m.append(el("i",i<d?"on":null)); m.hidden=!n;
-    const all=n&&d===n; $("#wkCheer").textContent=!n?"":all?"Every quest done. The rest of the day is yours.":d?`${d} of ${n} done. Momentum looks good on you.`:`${n} to go, no rush.`;
-    if(all&&!quiet&&QUEST_ALL===false) confetti(); QUEST_ALL=all; }
-  function confetti(){ if(matchMedia("(prefers-reduced-motion: reduce)").matches) return; const box=$("#wkConf"); box.replaceChildren();
-    const cols=["var(--us)","var(--birdie)","var(--quest)","var(--game)","var(--rest)"];
-    for(let i=0;i<28;i++){ const p=el("i"); p.style.background=cols[i%5]; p.style.setProperty("--x",(Math.random()*240-120).toFixed(0)+"px"); p.style.setProperty("--y",(Math.random()*-160-20).toFixed(0)+"px"); p.style.setProperty("--r",(Math.random()*540).toFixed(0)+"deg"); box.append(p); }
-    setTimeout(()=>box.replaceChildren(),1100); }
+   // fri = first day of the time off, sun = its last
+  
+  
+  
+  
+  
   
    
 
@@ -4164,18 +4021,13 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   
 
   // ---------- checklists (everything saves to Notion) ----------
-  const CHECK_SVG='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2B1A16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>';
+  
   
   // task-title lists are one per line (titles can contain commas); short code lists like "am,pm" or "0,2" use commas
   const LINE_LISTS=new Set(["Top 3 Done","Top 3 Moved","Habits Done"]);
   const listOf=prop=>clean(ROW&&ROW[prop]).split(LINE_LISTS.has(prop)?/\n/:/\n|,/).map(x=>x.trim()).filter(x=>x&&!/^none$/i.test(x));
   async function setInList(prop,item,on,sep){ const cur=new Set(listOf(prop)); on?cur.add(item):cur.delete(item); const v=[...cur].join(sep); await writeToday({[prop]:v}); }
-  function updateProgress(){
-    const t=document.querySelectorAll("#tasks li:not([data-moved]) .check, #dueToday .check"), r=document.querySelectorAll("#rituals .check, #routines .check");
-    const done=x=>[...x].filter(b=>b.getAttribute("aria-pressed")==="true").length;
-    const lt=t.length; $("#listProg").textContent=lt?`${done(t)} of ${lt} done`:"";
-    $("#ritProg").textContent=r.length?`${done(r)} of ${r.length} done`:"";
-  }
+  
   // words that make two lines "about the same thing"
   
   
@@ -4202,8 +4054,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const prev=clean(ROW&&ROW.Tomorrow); const tom=tomLines(); const have=tom.map(x=>x.toLowerCase()); let added=0;
     for(const t of items){ const v=t.trim(); if(v&&!have.some(h=>h===v.toLowerCase())){ tom.push(v); added++; } }
     if(!added){ toast("Already on tomorrow's list"); return false; }
-    try{ await writeToday({Tomorrow:tom.map((x,i)=>`${i+1}. ${x}`).join("\n")},{silent:true});   renderInboxActions(); twinsFor(items,tmrwISO()).catch(()=>{});
-      toast((label||"Added to tomorrow")+(tom.length>3?` · tomorrow has ${tom.length}`:""),async()=>{ try{ await writeToday({Tomorrow:prev||"none"},{silent:true});   renderInboxActions(); }catch(e){ toast(writeErr(e)); } }); return true;
+    try{ await writeToday({Tomorrow:tom.map((x,i)=>`${i+1}. ${x}`).join("\n")},{silent:true});    twinsFor(items,tmrwISO()).catch(()=>{});
+      toast((label||"Added to tomorrow")+(tom.length>3?` · tomorrow has ${tom.length}`:""),async()=>{ try{ await writeToday({Tomorrow:prev||"none"},{silent:true});    }catch(e){ toast(writeErr(e)); } }); return true;
     }catch(e){ toast(writeErr(e)); return false; } }
   
   // "Carry over N unfinished" chip for the Tomorrow card and Ahead
@@ -4270,7 +4122,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       [[528,1],[1056,.35],[1584,.15]].forEach(([f,amp])=>{ const o=ctx.createOscillator(), g=ctx.createGain(); o.type="sine"; o.frequency.value=f; const peak=(soft?.07:.16)*amp;
         g.gain.setValueAtTime(0.0001,t0); g.gain.exponentialRampToValueAtTime(peak,t0+.03); g.gain.exponentialRampToValueAtTime(0.0001,t0+(soft?2.5:4.5)); o.connect(g).connect(ctx.destination); o.start(t0); o.stop(t0+5); }); }catch(e){} }
   function openSit(){
-    const T=el("div","timer"); T.setAttribute("role","dialog"); T.setAttribute("aria-modal","true"); T.setAttribute("aria-label","Set up your sit"); T.style.setProperty("--trad",getComputedStyle($("#mindCard")).getPropertyValue("--trad"));
+    const T=el("div","timer"); T.setAttribute("role","dialog"); T.setAttribute("aria-modal","true"); T.setAttribute("aria-label","Set up your sit"); T.style.setProperty("--trad",znMindColor());
     const box=el("div","setup"); box.append(el("div","trad",znMindTrad()),el("div","tt",SIT.name?SIT.name.charAt(0).toUpperCase()+SIT.name.slice(1):"Today's sit"),el("div","cue",SIT.how));
     let mins=SIT_LEN||SIT.min; const lens=el("div","lens"); lens.setAttribute("role","group"); lens.setAttribute("aria-label","Sit length"); lens.style.justifyContent="center";
     for(const m of [...new Set([SIT.min,3,5,7,10,12])].sort((a,b)=>a-b)){ const b=el("button","chip",m+" min"); b.type="button"; b.setAttribute("aria-pressed",String(m===mins)); b.addEventListener("click",()=>{ mins=m; lens.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); }); lens.append(b); }
@@ -4284,7 +4136,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function runSit(mins){
     const total=mins*60, practice=MM&&MM.practice||SIT.name||""; const guide=guideFor(SIT.name||practice,total); const bells=bellsOn();
     let elapsed=0, last=performance.now(), paused=false, raf=0, closed=false, halfRung=false;
-    const T=el("div","timer"); T.setAttribute("role","dialog"); T.setAttribute("aria-modal","true"); T.setAttribute("aria-label","Meditation timer"); T.style.setProperty("--trad",getComputedStyle($("#mindCard")).getPropertyValue("--trad"));
+    const T=el("div","timer"); T.setAttribute("role","dialog"); T.setAttribute("aria-modal","true"); T.setAttribute("aria-label","Meditation timer"); T.style.setProperty("--trad",znMindColor());
     const trad=el("div","trad",znMindTrad()); const title=el("div","step",`${mins} min · ${SIT.name||"sit"}`);
     const visual=el("div"); const orb=el("div","orb"); const flame=el("div","flame");
     const cue=el("div","tt",""); cue.setAttribute("aria-live","polite"); const sub=el("div","cue","");
@@ -4305,8 +4157,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       skip.addEventListener("click",close);
       save.addEventListener("click",async()=>{ const v=[pick,ta.value.trim()].filter(Boolean).join(" · "); if(!v){ close(); return; } nt.textContent="Saving…"; try{ await writeToday({"Sit Note":v}); close(); }catch(e){ nt.textContent=writeErr(e); } }); };
     const finish=async(full)=>{ if(closed) return; closed=true; cancelAnimationFrame(raf); if(full&&bells) bell(false); const minsDone=full?mins:Math.round(elapsed/60);
-      if(!minsDone){ T.remove(); $("#sitNote").textContent="Ended before a full minute, so nothing was logged."; return; }
-      const prev=num(ROW&&ROW.Meditated)||0; try{ await writeToday({Meditated:prev+minsDone}); }catch(e){ $("#sitNote").textContent=writeErr(e); }
+      if(!minsDone){ T.remove(); toast("Ended before a full minute, so nothing was logged."); return; }
+      const prev=num(ROW&&ROW.Meditated)||0; try{ await writeToday({Meditated:prev+minsDone}); }catch(e){ toast(writeErr(e)); }
       checkin(full,minsDone); };
     const tick=t=>{ if(!paused) elapsed+=(t-last)/1000; last=t; if(bells&&!halfRung&&elapsed>=total/2&&total>=180){ halfRung=true; bell(true); } if(elapsed>=total){ elapsed=total; draw(); finish(true); return; } draw(); raf=requestAnimationFrame(tick); };
     pb.addEventListener("click",()=>{ paused=!paused; pb.textContent=paused?"Resume":"Pause"; });
@@ -4387,7 +4239,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const startMove=()=>{ phase="move"; left=SEC; switched=false; banner.hidden=true; if(bells) bell(false); try{ navigator.vibrate&&navigator.vibrate(150); }catch(e){} paint(); tick(); };
     const ready=()=>{ phase="ready"; left=GAP; paint(); tick(); };
     const finish=async()=>{ clearInterval(h); step.textContent="Done"; banner.hidden=true; art.replaceChildren(); name.textContent="That's the routine. Nice work."; steps.replaceChildren(); meta.textContent="Skipped a move? Totally fine."; clock.textContent="✓"; fill.style.width="100%"; prev.hidden=true; pause.hidden=true; next.hidden=true; if(bells) bell(false); close.focus();
-      const b=row&&row.querySelector(".check"); if(b&&b.getAttribute("aria-pressed")!=="true"&&LIVE){ try{ await setInList("Rituals Done","mobility",true,","); b.setAttribute("aria-pressed","true"); row.classList.add("done"); updateProgress(); meta.textContent="Mobility is checked off for today."; }catch(e){} } };
+      const b=row&&row.querySelector(".check"); if(b&&b.getAttribute("aria-pressed")!=="true"&&LIVE){ try{ await setInList("Rituals Done","mobility",true,","); b.setAttribute("aria-pressed","true"); row.classList.add("done"); meta.textContent="Mobility is checked off for today."; }catch(e){} } };
     h=setInterval(()=>{ if(!running||closed) return; left--;
       if(phase==="move"&&MOVES[ids[i]].sides&&!switched&&left<=SEC/2){ switched=true; banner.hidden=false; banner.textContent="Switch sides"; if(bells) bell(true); try{ navigator.vibrate&&navigator.vibrate([120,80,120]); }catch(e){} }
       if(left<=0){ if(phase==="ready"){ startMove(); return; } i++; if(i>=ids.length){ finish(); return; } if(bells) bell(true); ready(); return; }
@@ -4421,7 +4273,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // inbox items she's handled: saved to today's Daily Log as plain-word keys, one per line
   const inboxKey=raw=>String(iconOf(raw)[1]||raw).toLowerCase().replace(/[^a-z0-9 ]+/g," ").replace(/\s+/g," ").trim().slice(0,70).trim(); // trim after cutting, or a key ending on a space never matches what's saved
   const inboxCleared=()=>new Set(listOf("Inbox Cleared"));
-  async function clearInbox(raw,on){ await setInList("Inbox Cleared",inboxKey(raw),on,"\n"); if(INBOX.payload) znInbox(INBOX.payload); else renderInboxActions(); if(!wkDay()) setTimeout(renderWeekday,0); else setTimeout(offSummaries,0); toast(on?"Cleared":"Back in your inbox"); }
+  async function clearInbox(raw,on){ await setInList("Inbox Cleared",inboxKey(raw),on,"\n"); if(INBOX.payload) znInbox(INBOX.payload); else ; if(!wkDay()) setTimeout(renderWeekday,0); else setTimeout(offSummaries,0); toast(on?"Cleared":"Back in your inbox"); }
   // ---- appointment emails (Oct 16): zone-cal ?part=appts writes the Zone Settings row "Inbox Appointments" a few times a day ----
   
   
@@ -4442,17 +4294,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     // Oct 23: two actions up front; Delete, List, Alice and Snooze behind "More" (the card was a wall of buttons)
     if(RISO){ extra.forEach(b=>b.hidden=true); const mo=el("button","ibact more","⋯"); mo.type="button"; mo.setAttribute("aria-expanded","false"); mo.setAttribute("aria-label","More actions for this email"); mo.addEventListener("click",()=>{ const on=mo.getAttribute("aria-expanded")!=="true"; mo.setAttribute("aria-expanded",String(on)); extra.forEach(b=>b.hidden=!on); mo.textContent=on?"×":"⋯"; }); row.insertBefore(mo,extra[0]||null); }
     return row; }
-  function renderInboxActions(){
-    const cleared=inboxCleared();
-    document.querySelectorAll("ul.inboxacts > li").forEach(li=>{ li.querySelector(".ibacts")?.remove(); const r0=li.dataset.raw; if(r0&&INBOX_MAIL[r0]&&!cleared.has(inboxKey(r0))){ li.classList.add("hasmail"); const host=li.querySelector("span:last-of-type")||li; host.append(mailRow(r0)); } });
-    document.querySelectorAll("ul.inboxacts > li").forEach(li=>{ li.querySelector(".ibclr")?.remove(); if(li.classList.contains("hasmail")) return; const raw=li.dataset.raw; if(!raw||/^↳/.test(raw)) return; const on=cleared.has(inboxKey(raw)); li.classList.toggle("cleared",on);
-      const c=el("button","mini ibclr",on?"✓":""); c.type="button"; c.disabled=!LIVE; c.setAttribute("aria-pressed",String(on)); c.setAttribute("aria-label",on?"Mark as not handled":"Mark as handled"); c.title=on?"Handled":"Mark handled";
-      c.addEventListener("click",()=>{ c.disabled=true; clearInbox(raw,!on).catch(e=>{ toast(writeErr(e)); c.disabled=false; }); }); li.prepend(c); });
-    const tom=tomLines().map(x=>x.toLowerCase());
-    document.querySelectorAll("ul.inboxacts > li").forEach(li=>{ li.querySelector(".ibtn")?.remove(); const raw=li.dataset.raw; if(!raw||!LIVE) return; const [ic]=iconOf(raw); if(!ic||INBOX_SKIP.has(ic)||/^↳/.test(raw)) return;
-      const title=inboxTitle(raw); const lc=title.toLowerCase(); const on=tom.includes(lc)||LIST.some(it=>it.name.toLowerCase()===lc&&it.status!=="Dropped");
-      const b=el("button","mini ibtn",on?"✓":"+"); b.type="button"; b.disabled=on||!LIST_LOADED; b.setAttribute("aria-label",on?`"${title}" is on your list`:`Add "${title}" to your list`); b.title=on?"On your list":"Add to your list";
-      b.addEventListener("click",async()=>{ b.disabled=true; const p=parseCapture(title); if(await listCreate({...p,name:title,kind:"To-do"},"Inbox")) toast("Added to your list from your inbox"); else b.disabled=false; }); li.append(b); }); }
+  
   
   
 
@@ -4531,16 +4373,10 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
 
   // ---------- plan ----------
   // ---------- ahead: get tomorrow ready (top 3 + work block labels, one save) ----------
-  let PLAN_DIRTY=false;
   
-  function drawPlanSave(msg){ const b=$("#planSave"); b.replaceChildren(); if(!LIVE){ b.append(el("div","done","Planning opens once today's brief lands at 4:30am.")); return; }
-    if(PLAN_DIRTY){ const s=el("button","btn","Save changes"); s.type="button"; s.addEventListener("click",savePlan); b.append(s); if(msg) b.append(el("div","err",msg)); }
-    else if(msg) b.append(el("div","done",msg)); }
-  async function savePlan(){ const b=$("#planSave"); const btn=b.querySelector("button"); if(btn){ btn.disabled=true; btn.textContent="Saving…"; }
-    const props={Tomorrow:$("#tomorrow").value.trim()||"none"};
-    if(BLOCKS.length) props["Block Labels"]=BLOCKS.map((x,i)=>{ const lab=$("#bl"+i).value.trim(); const skip=$("#bs"+i).getAttribute("aria-pressed")==="true"; const prep=!skip&&$("#bp"+i).getAttribute("aria-pressed")==="true"; if(!lab&&!prep&&!skip) return null; return x.key+" · "+(lab||"work block")+(prep?" · prep":"")+(skip?" · not attending":""); }).filter(Boolean).join("\n")||"none";
-    if(BLOCKS.length) props["Auto Labels"]=""; // she's reviewed them, so pre-filled labels are hers now
-    try{ await writeToday(props,{silent:true}); PLAN_DIRTY=false; { const tom=addDays((ROW&&ROW["date:Date:start"])||TODAY(),1); twinsFor(tomLines(),tom).catch(()=>{}); } drawPlanSave("Saved ✓ · the 4:30am planner takes it from here");   }catch(e){ drawPlanSave(writeErr(e)); } }
+  
+  
+  
   // ready checks shared by Today's Tomorrow card and the Ahead tab
   
   
@@ -4552,7 +4388,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   
   const HM=new Intl.DateTimeFormat("en-US",{timeZone:TZ,hour:"2-digit",minute:"2-digit",hourCycle:"h23"});
   const PRETTY=new Intl.DateTimeFormat("en-US",{timeZone:TZ,hour:"numeric",minute:"2-digit"});
-  let BLOCKS=[];
+  
   // a saved block label: "10:30-11:30 · Renee 1:1 · prep" or "14:00-15:30 · standup · not attending"
   
   
@@ -4698,7 +4534,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     return ""; }
   function repeatFirst(rule,from){ const p=repeatParse(rule); if(!p) return ""; if(p.days||(p.months&&!p.dom)) return ""; // interval rules start when you first do it
     return repeatNext(rule,addDays(from,-1)); }
-  const repeatLabel=r=>{ const x=String(r||"").trim(); return x?("↻ "+x.replace(/^every\s+/,"every ")):""; };
+  
   const isSnoozed=it=>!!(it.snooze&&it.snooze>TODAY());
   // "next up" for Today's 3 (same order the 4:30am fill uses): overdue or due by the day, then starred, then due within 3 days, then oldest
   
@@ -4708,16 +4544,16 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     if(p.repeat) props.Repeat=p.repeat; if(p.snooze) props["date:Snooze Until:start"]=p.snooze; if(p.waiting){ props["Waiting On"]=p.waiting; props["date:Waiting Since:start"]=TODAY(); } if(p.project) props.Project=p.project; if(p.est) props.Estimate=p.est;
     if(p.owner==="Alice"){ props.Owner="Alice"; props["Alice Status"]="Assigned"; props["date:Alice Updated:start"]=TODAY(); if(p.jtype) props["Job Type"]=p.jtype; }
     const temp={id:"tmp"+Date.now(),url:"",name:p.name,kind:p.kind,area:p.area,status:props.Status,due:p.due||"",star:!!p.star,created:new Date().toISOString(),doneOn:"",source:props.Source,owner:p.owner||"",astat:p.owner==="Alice"?"Assigned":"",anotes:"",aupd:p.owner==="Alice"?TODAY():"",focus:p.focus||"",repeat:p.repeat||"",snooze:p.snooze||"",waiting:p.waiting||"",wsince:p.waiting?TODAY():"",project:p.project||"",est:p.est||0,steps:"",lastDone:""};
-    LIST.unshift(temp); renderListAll();
+    LIST.unshift(temp); 
     try{ const r=await mcp.callTool(SERVER,"notion-create-pages",{parent:{data_source_id:LIST_DSID},pages:[{properties:props}],allow_async:false});
       const ids=(JSON.stringify(r||{}).match(/[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}/g)||[]).map(x=>x.replace(/-/g,"")).filter(x=>x!==LIST_DSID.replace(/-/g,""));
       if(ids.length){ temp.id=ids[0]; temp.url="https://www.notion.so/"+temp.id; rememberLocal(temp,{},true); }
-      return true; }catch(e){ LIST=LIST.filter(x=>x!==temp); renderListAll(); toast(writeErr(e)); return false; } }
+      return true; }catch(e){ LIST=LIST.filter(x=>x!==temp);  toast(writeErr(e)); return false; } }
   async function listUpdate(it,props,patch,msg,undoProps,undoPatch){ if(!mcp||!it.id||it.id.startsWith("tmp")){ toast("Still saving, try again in a second"); return false; }
-    const prev={...it}; Object.assign(it,patch); renderListAll();
+    const prev={...it}; Object.assign(it,patch); 
     try{ await mcp.callTool(SERVER,"notion-update-page",{page_id:it.id,command:"update_properties",properties:props,allow_async:false}); rememberLocal(it,patch);
       if(msg) toast(msg,undoProps?async()=>{ await listUpdate(it,undoProps,undoPatch||prev); }:null); return true; }
-    catch(e){ Object.assign(it,prev); renderListAll(); toast(writeErr(e)); return false; } }
+    catch(e){ Object.assign(it,prev);  toast(writeErr(e)); return false; } }
   const setDone=(it,on)=>{ if(on&&it.repeat){ const nx=repeatNext(it.repeat,TODAY()); if(nx){ const steps=it.steps?it.steps.split(/\n/).map(l=>l.replace(/^\[x\]\s*/i,"")).join("\n"):"";
       return listUpdate(it,{"date:Due:start":nx,"date:Last Done:start":TODAY(),"date:Snooze Until:start":null,...(it.steps?{Steps:steps}:{})},{due:nx,lastDone:TODAY(),snooze:"",...(it.steps?{steps}:{})},`Done. Back ${dueLabel(nx)}`,{"date:Due:start":it.due||null,"date:Last Done:start":it.lastDone||null},{due:it.due,lastDone:it.lastDone}); } }
     return listUpdate(it,on?{Status:"Done","date:Done On:start":TODAY()}:{Status:"Open","date:Done On:start":null},on?{status:"Done",doneOn:TODAY()}:{status:"Open",doneOn:""}); };
@@ -4747,83 +4583,18 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   
   // weekends and days off don't show the Tomorrow card, so the close-out gets its own card there (from 3pm, only when something's unfinished)
   
-  function listRow(it){ const li=el("li","litem"+(it.status==="Done"?" done":"")); li.dataset.id=it.id;
-    if(isTask(it)){ const b=el("button","check"); b.type="button"; b.innerHTML=CHECK_SVG; b.setAttribute("aria-pressed",String(it.status==="Done")); b.setAttribute("aria-label",(it.status==="Done"?"Reopen ":"Mark done: ")+it.name); b.disabled=!mcp; b.addEventListener("click",()=>setDone(it,it.status!=="Done")); li.append(b); }
-    else li.append(el("span","lk",KIND_IC[it.kind]||"•"));
-    const body=el("button","lbody"); body.type="button"; body.setAttribute("aria-label","Edit: "+it.name); body.append(el("span","ln",it.name));
-    const meta=el("span","lmeta"); if(it.kind==="Reminder") meta.append(el("span","lchip","🔔"));
-    if(it.owner==="Alice") meta.append(el("span","lchip alchip"+(alNeedsYou(it)?" nd":""),"🤝 Alice · "+(it.status==="Done"?"done":AL_LAB[it.astat]||"queued")));
-    else if(it.source==="Alice") meta.append(el("span","lchip","🤝 from Alice"));
-    if(it.area) meta.append(el("span","lchip",`${AREA_IC[it.area]||""} ${it.area}`)); if(it.due){ const d=el("span","lchip due"+(dayDiff(it.due,TODAY())<0&&it.status==="Open"?" late":""),dueLabel(it.due)); meta.append(d); }
-    if(it.status==="Someday") meta.append(el("span","lchip","someday"));
-    if(it.repeat) meta.append(el("span","lchip rep",repeatLabel(it.repeat))); if(it.est) meta.append(el("span","lchip",`${it.est}m`));
-    if(it.project) meta.append(el("span","lchip proj","📁 "+it.project)); if(it.waiting) meta.append(el("span","lchip wait",`⏳ ${it.waiting}${it.wsince?` · ${Math.max(0,dayDiff(TODAY(),it.wsince))}d`:""}`));
-    if(isSnoozed(it)) meta.append(el("span","lchip","😴 until "+dueLabel(it.snooze)));
-    if(it.sched&&it.status==="Open"){ const a=ctOf(it.sched); if(a.d>=TODAY()) meta.append(el("span","lchip sched",`📅 ${dayWord(a.d)} ${hLabel(a.h)}`)); }
-    if(it.steps){ const ls=it.steps.split(/\n/).filter(x=>x.trim()); const dn=ls.filter(x=>/^\[x\]/i.test(x)).length; if(ls.length) meta.append(el("span","lchip",`☑ ${dn}/${ls.length}`)); }
-    if(meta.children.length) body.append(meta);
-    body.addEventListener("click",()=>openListItem(it,body)); li.append(body);
-    const st=el("button","lstar",it.star?"★":"☆"); st.type="button"; st.setAttribute("aria-pressed",String(it.star)); st.setAttribute("aria-label",(it.star?"Unstar ":"Star ")+it.name); st.disabled=!mcp;
-    st.addEventListener("click",()=>listUpdate(it,{Star:it.star?"__NO__":"__YES__"},{star:!it.star})); li.append(st);
-    if(isTask(it)&&it.status==="Open"&&mcp) swipeify(li,{right:()=>setDone(it,true),left:()=>{ const bar=el("div","rs-swbar"); const mk=(t,fn,cls)=>{ const b=el("button","btn sm"+(cls||""),t); b.type="button"; b.addEventListener("click",()=>{ bar.remove(); fn(); }); bar.append(b); };
-        if(calOK()) mk("📅 Plan it",()=>openScheduleSheet(it,li)); mk("😴 Snooze a week",()=>listUpdate(it,{"date:Snooze Until:start":addDays(TODAY(),7)},{snooze:addDays(TODAY(),7)},"Snoozed a week"),"  ghost");
-        mk("→ Tomorrow",()=>listUpdate(it,{"date:Due:start":addDays(TODAY(),1)},{due:addDays(TODAY(),1)},"Moved to tomorrow",{"date:Due:start":it.due||null},{due:it.due})," ghost"); mk("✕",()=>{}," ghost"); li.querySelector(".rs-swbar")?.remove(); li.append(bar); }});
-    return li; }
+  
   // swipe right / left on a row (touch); vertical scrolling is left alone
   function swipeify(row,{right,left}){ let x0=null,y0=null,dx=0,on=false; row.style.touchAction="pan-y";
     row.addEventListener("pointerdown",e=>{ if(e.pointerType==="mouse") return; x0=e.clientX; y0=e.clientY; dx=0; on=false; });
     row.addEventListener("pointermove",e=>{ if(x0==null) return; const ddx=e.clientX-x0, ddy=e.clientY-y0; if(!on&&Math.abs(ddx)>12&&Math.abs(ddx)>Math.abs(ddy)*1.5) on=true; if(!on) return; dx=Math.max(-120,Math.min(120,ddx)); row.style.transform=`translateX(${dx}px)`; row.classList.toggle("sw-r",dx>60); row.classList.toggle("sw-l",dx<-60); });
     const end=()=>{ if(x0==null) return; const d=dx; x0=null; row.style.transform=""; row.classList.remove("sw-r","sw-l"); if(!on) return; on=false; if(d>80&&right) right(); else if(d<-80&&left) left(); };
     row.addEventListener("pointerup",end); row.addEventListener("pointercancel",end); }
-  function renderList(){ const box=$("#listBody"); if(!box) return; box.replaceChildren();
-    if(!LIST_LOADED){ box.append(el("p","muted","Loading your list…")); return; }
-    const f=LIST_FILTER, today=TODAY();
-    if(LIST_VIEW==="projects"){ renderProjects(box); return; } if(LIST_VIEW==="waiting"){ renderWaiting(box); return; } if(LIST_VIEW==="later"){ renderLater(box); return; }
-    const pass=it=>f==="alice"?(it.owner==="Alice"||it.source==="Alice"):f==="all"?true:f==="todo"?isTask(it):f==="work"?it.area==="Work":f==="personal"?it.area!=="Work":f==="rem"?it.kind==="Reminder":f==="notes"?!isTask(it):true;
-    const openAll=LIST.filter(it=>it.status==="Open"&&pass(it)); const snoozed=openAll.filter(isSnoozed), waitingL=openAll.filter(it=>!isSnoozed(it)&&it.waiting&&isTask(it));
-    const later=openAll.filter(it=>!isSnoozed(it)&&!it.waiting&&it.repeat&&it.due&&dayDiff(it.due,today)>3&&isTask(it));
-    const open=openAll.filter(it=>!snoozed.includes(it)&&!waitingL.includes(it)&&!later.includes(it)), tasks=open.filter(isTask), notes=open.filter(it=>!isTask(it));
-    const sec=(title,items,opts)=>{ if(!items.length) return; const wrap=opts&&opts.fold?el("details","lsec"):el("div","lsec"); wrap.dataset.sec=title.replace(/^[^A-Za-z]+/,"").split(" ")[0].toLowerCase(); const h=el(opts&&opts.fold?"summary":"div","lsh",`${title} · ${items.length}`); wrap.append(h); const ul=el("ul","litems"); items.forEach(it=>ul.append(listRow(it))); wrap.append(ul); box.append(wrap); };
-    const due=tasks.filter(it=>it.due&&it.due<=addDays(today,1)).sort((a,b)=>a.due.localeCompare(b.due));
-    const starred=tasks.filter(it=>!due.includes(it)&&it.star);
-    const soon=tasks.filter(it=>!due.includes(it)&&!starred.includes(it)&&it.due).sort((a,b)=>a.due.localeCompare(b.due));
-    const rest=tasks.filter(it=>!due.includes(it)&&!starred.includes(it)&&!it.due);
-    sec("Due now",due); sec("⭐ Starred",starred); sec("Coming up",soon);
-    if(f==="all"||f==="todo"){ const byArea=AREAS.map(a=>[a,rest.filter(it=>it.area===a)]).concat([["Other",rest.filter(it=>!AREAS.includes(it.area))]]); for(const [a,items] of byArea) sec(`${AREA_IC[a]||""} ${a}`.trim(),items); }
-    else sec("Open",rest);
-    sec("⏳ Waiting on",waitingL.sort((a,b)=>(a.wsince||"").localeCompare(b.wsince||"")));
-    sec("↻ Coming back around",later.sort((a,b)=>a.due.localeCompare(b.due)));
-    sec("Notes, thoughts & ideas",notes.sort((a,b)=>String(b.created).localeCompare(String(a.created))));
-    sec("😴 Snoozed",snoozed.sort((a,b)=>a.snooze.localeCompare(b.snooze)),{fold:true});
-    sec("Someday",LIST.filter(it=>it.status==="Someday"&&pass(it)),{fold:true});
-    sec("Done this week",LIST.filter(it=>it.status==="Done"&&pass(it)&&it.doneOn&&dayDiff(today,it.doneOn)<=7),{fold:true});
-    if(!box.children.length) box.append(el("p","muted",f==="all"?"Nothing here yet. Add anything above: a to-do, a work note, a reminder, a stray thought.":"Nothing in this view right now."));
-    const n=LIST.filter(it=>it.status==="Open"&&isTask(it)).length; $("#listCount").textContent=n?`${n} open`:""; }
+  
   // ---------- List v2 step 3 (Oct 22): Projects, Waiting, Later views ----------
-  function renderProjects(box){ const T=TODAY(); const by=new Map();
-    LIST.filter(it=>it.project&&it.status!=="Dropped").forEach(it=>{ const k=it.project.trim(); if(!by.has(k)) by.set(k,[]); by.get(k).push(it); });
-    const act=[...by.entries()].filter(([,a])=>a.some(it=>it.status==="Open"||it.status==="Someday")).sort((a,b)=>{ const due=x=>x[1].filter(i=>i.status==="Open"&&i.due).map(i=>i.due).sort()[0]||"9999"; return due(a).localeCompare(due(b)); });
-    if(!act.length){ box.append(el("p","muted","No projects yet. Add [Project name] to any task, like “pick camp dates [Birdie camp]”, and it groups here.")); return; }
-    act.forEach(([name,items])=>{ const open=items.filter(i=>i.status==="Open"), done=items.filter(i=>i.status==="Done"); const total=open.length+done.length;
-      const card=el("div","lsec proj"); card.dataset.sec="project"; const head=el("div","pjhead"); const due=open.filter(i=>i.due).map(i=>i.due).sort()[0];
-      head.append(el("b",null,name),el("span",null,`${done.length} of ${total}${due?` · next due ${dueLabel(due)}`:""}`)); card.append(head);
-      const bar=el("div","pjbar"); const fill=el("span"); fill.style.width=`${total?Math.round(done.length/total*100):0}%`; bar.append(fill); bar.setAttribute("aria-label",`${done.length} of ${total} done`); card.append(bar);
-      const nx=open.slice().sort((a,b)=>(a.due||"9999").localeCompare(b.due||"9999"))[0]; if(nx){ const step=(nx.steps||"").split(/\n/).find(l=>l.trim()&&!/^\[x\]/i.test(l)); card.append(el("p","pjnext",`Next: ${nx.name}${step?` · ${step.trim()}`:""}`)); }
-      const ul=el("ul","litems"); open.forEach(it=>ul.append(listRow(it))); card.append(ul); box.append(card); }); }
-  function renderWaiting(box){ const T=TODAY(); const w=LIST.filter(it=>it.status==="Open"&&it.waiting).sort((a,b)=>(a.wsince||"").localeCompare(b.wsince||""));
-    if(!w.length){ box.append(el("p","muted","Nothing's waiting on anyone. Add “waiting on Stacie” to a task, or set it in the task.")); return; }
-    const card=el("div","lsec"); card.dataset.sec="waiting"; card.append(el("div","lsh",`⏳ Waiting on · ${w.length}`)); const ul=el("ul","litems");
-    w.forEach(it=>{ const li=el("li","litem wrow"); const days=it.wsince?Math.max(0,dayDiff(T,it.wsince)):0; const body=el("button","lbody"); body.type="button"; body.append(el("span","ln",it.name),el("span","lmeta",`waiting on ${it.waiting}${it.wsince?` · ${days===0?"since today":days===1?"1 day":days+" days"}`:""}`));
-      body.addEventListener("click",()=>openListItem(it,body)); li.append(body); const acts=el("div","wacts");
-      const nb=el("button","btn sm"+(days>=3?"":" ghost"),days>=3?"Nudge":"Check later"); nb.type="button"; nb.disabled=!mcp;
-      nb.addEventListener("click",()=>listUpdate(it,{"date:Waiting Since:start":T},{wsince:T},days>=3?`Nudged ${it.waiting}. Back in your face in 3 days`:"OK, it'll come back up in 3 days"));
-      const gb=el("button","btn ghost sm","Got it"); gb.type="button"; gb.disabled=!mcp; gb.addEventListener("click",()=>listUpdate(it,{"Waiting On":"","date:Waiting Since:start":null},{waiting:"",wsince:""},"Back on your list",{"Waiting On":it.waiting,"date:Waiting Since:start":it.wsince||null},{waiting:it.waiting,wsince:it.wsince}));
-      acts.append(nb,gb); li.append(acts); ul.append(li); }); card.append(ul); box.append(card); }
-  function renderLater(box){ const T=TODAY(); const sec=(title,items,key)=>{ if(!items.length) return; const c=el("div","lsec"); c.dataset.sec=key; c.append(el("div","lsh",`${title} · ${items.length}`)); const ul=el("ul","litems"); items.forEach(it=>ul.append(listRow(it))); c.append(ul); box.append(c); };
-    sec("😴 Snoozed",LIST.filter(it=>it.status==="Open"&&isSnoozed(it)).sort((a,b)=>a.snooze.localeCompare(b.snooze)),"snoozed");
-    sec("↻ Coming back around",LIST.filter(it=>it.status==="Open"&&it.repeat&&!isSnoozed(it)).sort((a,b)=>(a.due||"9999").localeCompare(b.due||"9999")),"coming");
-    sec("Someday",LIST.filter(it=>it.status==="Someday"),"someday");
-    if(!box.children.length) box.append(el("p","muted","Nothing parked for later.")); }
+  
+  
+  
   // ---------- the week's capacity (shared by Ahead's planner and the Sunday review) ----------
   function dayLoad(d){ const T=TODAY(); const wd=new Date(d+"T12:00:00Z").getUTCDay(); const wk=wd===0||wd===6; let from=wk?9:8, to=wk?20.5:21; if(d===T) from=Math.max(from,nowH()); if(from>=to) from=to;
     const busy=busyOn(d); let used=0, cur=from; busy.forEach(b=>{ const s0=Math.max(b.s,cur), e0=Math.min(b.e,to); if(e0>s0){ used+=e0-s0; cur=Math.max(cur,e0); } });
@@ -4906,27 +4677,25 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     btn("Drop",async()=>{ if(await listUpdate(it,{Status:"Dropped"},{status:"Dropped"},"Dropped",{Status:it.status},{status:it.status})) close&&close(); });
     setTimeout(()=>ta.focus({preventScroll:true}),50); }
   // capture box: live preview of how the shorthand was read
-  function capPreview(){ const v=$("#capIn").value; const box=$("#capPrev"); box.replaceChildren(); if(!v.trim()) return; const p=parseCapture(v);
-    [`${KIND_IC[p.kind]} ${p.kind}`,`${AREA_IC[p.area]||""} ${p.area}`,p.due?"📅 "+dueLabel(p.due):"",p.star?"★ starred":"",p.status==="Someday"?"someday":"",p.owner==="Alice"?"🤝 for Alice":"",p.repeat?repeatLabel(p.repeat):"",p.snooze?"😴 until "+dueLabel(p.snooze):"",p.waiting?"⏳ waiting on "+p.waiting:"",p.est?`⏱ ${p.est}m`:"",p.project?"📁 "+p.project:""].filter(Boolean).forEach(t=>box.append(el("span","lchip",t))); }
-  async function capAdd(){ const inp=$("#capIn"); const v=inp.value.trim(); if(!v) return; const p=parseCapture(v); if(!p.name) return; const b=$("#capGo"); b.disabled=true;
-    if(await listCreate(p,"List")){ inp.value=""; capPreview(); toast(p.owner==="Alice"?"Added for Alice. Message her to get it started":`Added · ${p.kind}${p.due?" · "+dueLabel(p.due):""}`); } b.disabled=false; inp.focus(); }
-  function renderListAll(){ renderList();  renderAlice(); renderAliceDesk();  renderInboxActions(); if(wkDay()&&ROW){ renderQuests();  } if(!wkDay()&&ROW) setTimeout(renderWeekday,0); }
+  
+  
+  
   // Today: anything on the list due today or overdue (reminders and to-dos) shows on Today's list
   
   // Ahead: list picks for tomorrow, plus what the 4:30am fill would add to any blank spots
   
   // ---------- ahead: jump bar (hides chips for cards that aren't showing) ----------
   
-  document.querySelectorAll("#aheadJump .jchip").forEach(b=>b.addEventListener("click",()=>{ const c=$("#"+b.dataset.jump); if(c) c.scrollIntoView({behavior:"smooth",block:"start"}); }));
-  $("#capIn").addEventListener("input",capPreview); $("#capIn").addEventListener("keydown",e=>{ if(e.key==="Enter") capAdd(); }); $("#capGo").addEventListener("click",capAdd);
-  document.querySelectorAll("#listViews [data-v]").forEach(b=>b.addEventListener("click",()=>{ LIST_VIEW=b.dataset.v; document.querySelectorAll("#listViews [data-v]").forEach(x=>x.setAttribute("aria-selected",String(x===b))); const f=$("#listFilters"); if(f) f.hidden=LIST_VIEW!=="now"; renderList(); }));
-  document.querySelectorAll("#listFilters .jchip").forEach(b=>b.addEventListener("click",()=>{ LIST_FILTER=b.dataset.f; document.querySelectorAll("#listFilters .jchip").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); renderList(); }));
+  
+    
+  
+  
   // ---------- tabs ----------
   const VIEWS=["today","ahead","list","us","alice","you"];
   // Oct 18: Alice's desk lives at the bottom of List (tab bar: Today, Ahead, List, You; Us comes next). Set to false to give her a tab again.
-  const ALICE_FOLDED=true;
-  function show(view){ if((view==="you"||view==="us")&&typeof znShelfRender==="function"){ setTimeout(()=>{ try{ if(view==="you"){ znMe(); } else { znUs(); znOurShelf(); } }catch(e){ console.error("shelf",e); } },0); } if(view==="ahead"&&typeof znPlanRender==="function"){ setTimeout(()=>{ try{ znPlanRender(); }catch(e){ console.error("plan",e); } },0); } if(view==="alice"&&ALICE_FOLDED){ view="list"; setTimeout(()=>{ const a=$("#aliceSec"); if(a) a.scrollIntoView({behavior:"smooth",block:"start"}); },120); }
-  $("#main").classList.toggle("wide",view==="today"&&$("#view-today").classList.contains("spread"));  if(view==="list"){ renderList(); if(ALICE_FOLDED) renderAliceDesk(); } if(view==="alice") renderAliceDesk(); if(view==="us"){ try{ renderUs(); }catch(e){ console.error("us",e); } } for(const v of VIEWS){ const on=v===view; const n=$("#view-"+v); n.hidden=!on; n.style.display=on?"flex":"none"; $("#tab-"+v).setAttribute("aria-selected",String(on)); } window.scrollTo({top:0}); }
+  
+  function show(view){ if(view==="alice"||view==="list"){ ZN_PLAN.seg=view==="alice"?"waiting":"list"; view="ahead"; } /* Nov 1 (3e): the old List and Alice pages are retired; their homes are Plan → With Alice / All tasks */ if((view==="you"||view==="us")&&typeof znShelfRender==="function"){ setTimeout(()=>{ try{ if(view==="you"){ znMe(); } else { znUs(); znOurShelf(); } }catch(e){ console.error("shelf",e); } },0); } if(view==="ahead"&&typeof znPlanRender==="function"){ setTimeout(()=>{ try{ znPlanRender(); }catch(e){ console.error("plan",e); } },0); }
+  $("#main").classList.toggle("wide",view==="today"&&$("#view-today").classList.contains("spread"));  if(view==="us"){ try{ renderUs(); }catch(e){ console.error("us",e); } } for(const v of VIEWS){ const on=v===view; const n=$("#view-"+v); n.hidden=!on; n.style.display=on?"flex":"none"; $("#tab-"+v).setAttribute("aria-selected",String(on)); } window.scrollTo({top:0}); }
   document.querySelectorAll(".tab[data-view]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.view)));
   document.addEventListener("click",e=>{ const g=e.target.closest("[data-goto]"); if(g) show(g.dataset.goto); });
 
@@ -5079,22 +4848,14 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const label=bits[0]||"Day off", k=(bits[1]||"").toLowerCase(); const kind=["off","rest","vacation"].includes(k)?k:/rest|sick|recover/i.test(label)?"rest":/vacation|trip|travel/i.test(label)?"vacation":"off";
     return {s,e,label,kind,place:bits.slice(2).join(", "),raw:l}; }).filter(Boolean); }
   function offFor(d){ return offList().find(o=>o.s<=d&&o.e>=d)||null; }
-  const offIcon=o=>o.kind==="rest"?"😴 ":o.kind==="vacation"?"🧳 ":"🛋️ ";
-  const offLine=o=>[o.s+(o.e&&o.e!==o.s?" to "+o.e:""),o.label,o.kind,o.place].filter(Boolean).join(" · ");
+  
+  
   function tmrwISO(){ return addDays(TODAY(),1); } // the real calendar tomorrow, even if this morning's brief is missing
   
-  async function saveOff(list){ await saveSetting("TimeOff",[...list].sort((a,b)=>a.s<b.s?-1:a.s>b.s?1:0).map(offLine)); renderTimeOff(); if(ROW){   znDayMode(); } }
-  function renderTimeOff(){ const box=$("#offList"); if(!box) return; box.replaceChildren(); const today=TODAY(); const list=offList().filter(o=>o.e>=today);
-    const fmt=d=>new Date(d+"T12:00:00Z").toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric",timeZone:"UTC"});
-    if(!list.length){ box.append(el("p","muted","Nothing coming up.")); return; }
-    for(const o of list){ const row=el("div","offrow"); row.append(el("span","offwhen",o.s===o.e?fmt(o.s):fmt(o.s)+" – "+fmt(o.e)), el("span","offwhat",offIcon(o)+o.label+(o.place?" · 📍 "+o.place:"")));
-      const x=el("button","offx","✕"); x.type="button"; x.disabled=!mcp; x.setAttribute("aria-label","Remove "+o.label+" on "+fmt(o.s));
-      x.addEventListener("click",async()=>{ x.disabled=true; try{ await saveOff(offList().filter(y=>y.raw!==o.raw)); toast("Removed"); }catch(e){ toast(writeErr(e)); x.disabled=false; } });
-      row.append(x); box.append(row); } }
-  async function addOff(){ const b=$("#offSave"); const s0=$("#offFrom").value, e0=$("#offTo").value||s0; if(!s0){ toast("Pick a start date first"); return; }
-    const kind=$("#offKind").value, label=($("#offLabel").value.trim()||({off:"Day off",rest:"Rest day",vacation:"Vacation"})[kind]).replace(/·/g,","), place=$("#offPlace").value.trim().replace(/·/g,",");
-    b.disabled=true; try{ await saveOff([...offList(),{s:e0<s0?e0:s0,e:e0<s0?s0:e0,label,kind,place}]); ["#offFrom","#offTo","#offLabel","#offPlace"].forEach(q=>$(q).value=""); $("#offKind").value="off"; toast("Saved · the 4:30am brief will plan around it"); }catch(err){ toast(writeErr(err)); } b.disabled=false; }
-  document.addEventListener("click",ev=>{ if(ev.target&&ev.target.closest&&ev.target.closest("#offSave")) addOff(); });
+  
+  
+  
+  
   // "I'm off tomorrow" / "Rest day tomorrow" on the Tomorrow card and in Ahead
   
   
@@ -5239,7 +5000,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // ---------- Alice: what she's working on, needs from you, finished, and captured today (Zone List fields, via the hourly index) ----------
   // ---------- Alice's desk: one home for everything Alice is doing ----------
   
-  const AL_LAB={"Needs Claire":"needs you","Working":"on it","Assigned":"queued","Done":"done"};
+  
   const alNotes=it=>Array.isArray(it.anotes)?it.anotes:String(it.anotes||"").split(/\n+/).map(x=>x.trim()).filter(Boolean);
   
   const AL_ANSWERED={}; 
@@ -5248,32 +5009,13 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   const alAsks=it=>{ const n=alNotes(it); const l=String(n[n.length-1]||""); return /\?\s*\)?\.?\s*$/.test(l)||/\b(asked claire|waiting on claire|need(s)? (your|claire's) (answer|ok|okay|decision|pick))\b/i.test(l); };
   const alNeedsYou=it=>it.astat==="Needs Claire"||(it.status==="Open"&&it.astat!=="Done"&&alAsks(it));
   // untouched for 2+ days (and not waiting on Claire): returns the day it last moved, or ""
-  const alIdle=it=>{ if(it.owner!=="Alice"||it.status!=="Open"||alNeedsYou(it)) return ""; let d=String(it.aupd||"").slice(0,10); if(!d){ try{ d=it.created?new Date(it.created).toLocaleDateString("en-CA",{timeZone:TZ}):""; }catch(e){ d=""; } } return d&&dayDiff(TODAY(),d)>=2?d:""; };
+  
   
   // an outcome like "Booked UPS Store Westgate, Sat 10/10, 10:30am" becomes a pre-filled Google Calendar event
   
-  function renderAliceDesk(){ /* Nov 1: retired with the old layer */ }
+  
 
-  function renderAlice(){ const box=$("#aliceCard"); if(!box) return; box.replaceChildren(); if(!LIST_LOADED){ box.hidden=true; return; }
-    const today=TODAY(); const cday=it=>{ try{ return it.created?new Date(it.created).toLocaleDateString("en-CA",{timeZone:TZ}):""; }catch(e){ return ""; } };
-    const notes=it=>String(it.anotes||"").split(/\n+/).map(x=>x.trim()).filter(Boolean);
-    const mine=LIST.filter(it=>it.owner==="Alice");
-    const needs=mine.filter(it=>it.status==="Open"&&alNeedsYou(it));
-    const working=mine.filter(it=>it.status==="Open"&&!alNeedsYou(it));
-    const done=mine.filter(it=>it.status==="Done"&&(it.doneOn===today||it.aupd===today));
-    const added=LIST.filter(it=>it.source==="Alice"&&it.owner!=="Alice"&&it.status==="Open"&&cday(it)===today);
-    if(!needs.length&&!working.length&&!done.length&&!added.length){ box.hidden=true; return; }
-    box.hidden=false; box.append(el("div","label","🤝 Alice"));
-    const group=(title,items,metaOf,act)=>{ if(!items.length) return; box.append(el("div","zsub",`${title} · ${items.length}`));
-      for(const it of items){ const row=el("div","zrow"); const b=el("button","ztxt zbtn"); b.type="button"; b.setAttribute("aria-label","Open: "+it.name);
-        b.append(document.createTextNode(it.name)); const m=metaOf(it); if(m) b.append(el("small",null,m)); b.addEventListener("click",()=>openListItem(it,b)); row.append(b);
-        if(act){ const a=act(it); if(a) row.append(a); } box.append(row); } };
-    const chip=(label,aria,fn)=>{ const c=el("button","chip",label); c.type="button"; c.setAttribute("aria-label",aria); c.disabled=!mcp; c.addEventListener("click",fn); return c; };
-    group("Needs you",needs,it=>{ const n=notes(it); return n[n.length-1]||"Check your messages from Alice"; });
-    group("Working on",working,it=>{ const n=notes(it); const idl=alIdle(it); return idl?`No update since ${shortDate(idl)} · nudge her in Muse`:it.astat==="Assigned"||!it.astat?"Not started yet":n[n.length-1]||"In progress"; });
-    group("Done today",done,it=>notes(it)[0]||"Done",it=>chip("Reopen","Reopen "+it.name+" for Alice",()=>listUpdate(it,{Status:"Open","date:Done On:start":null,"Alice Status":"Working"},{status:"Open",doneOn:"",astat:"Working"},"Reopened. Let Alice know what's still needed")));
-    group("Added to your list",added,it=>notes(it)[0]||"",it=>chip("Remove","Remove "+it.name+" from your list",()=>listUpdate(it,{Status:"Dropped"},{status:"Dropped"},"Removed",{Status:"Open"},{status:"Open"})));
-    box.append(el("p","zfoot","Alice's updates show up here within the hour.")); }
+  
   function renderAll(storedAt){ if(window.ZONE_FROM_LINK&&typeof APP!=="undefined"&&APP.sb){ window.ZONE_FROM_LINK=false; try{ localStorage.setItem("zone:setpw",String(Date.now())); }catch(e){} setTimeout(()=>{ const g=$("#gear"); if(g&&!document.querySelector(".set")) g.click(); },900); } /* Oct 31: arrived from an emailed sign-in link: open Settings at Account to set a new password */ if(INBOX.payload&&ROW) setTimeout(()=>znInbox(INBOX.payload),0); // the rundown may arrive before today's row: redraw it so cleared items and live buttons apply
     ROW=ROWS[0]||null; LIVE=!!(ROW&&ROW["date:Date:start"]===TODAY()); WORK=workTimes(); 
     { const bm=$("#briefMiss"); if(bm) bm.hidden=LIVE||nowH()<6; } // never let a missing brief pass quietly as yesterday's
@@ -5282,7 +5024,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
      znDayMode(); try{ znMindState(); }catch(e){} 
     // Oct 30: the pre-rebuild screens no longer render under the new layout (identical new screens in every mode, ~8x faster render). They still run if the old layout is ever switched back on.
     /* Nov 1: old-layer branch removed */
-    $("#stamp").textContent="";
+    
   }
   let INDEX_ID="3f4ef44532cf81e881d7f26e66698eb6"; let PERSON={person:"claire",name:"Claire"}; /* Oct 16: two people; the app swaps in Victoria's ids after sign-in */; let INDEX_AT=0, INDEX_ROWS=[], INDEX_REC=[], ROW_UNSUB={}, ROW_DATA={};
   // a page opened directly comes back with Notion's escaping (\| , <br>, **bold**); clean every text field once on the way in
@@ -5312,16 +5054,16 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     // the dashboard opens those pages directly, because database searches are capped on her Notion plan
     unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:INDEX_ID},ev=>{
       if(ev.type!=="data"){ handleError(ev.error); return; } const pr=parseProps(ev.result.payload); let idx=null; try{ idx=JSON.parse(clean(pr&&pr.Value)); }catch(e){}
-      if(!idx||!Array.isArray(idx.rows)){ if(PERSON.person!=="claire"){ showAlert(`Welcome, ${PERSON.name}`,"Your Zone is being built. Your first morning brief will show up here soon."); const vl=$("#vibeLine"); if(vl) vl.textContent=""; } else showAlert("Setting things up","The dashboard index is being built. Refresh in a minute."); return; }
+      if(!idx||!Array.isArray(idx.rows)){ if(PERSON.person!=="claire"){ showAlert(`Welcome, ${PERSON.name}`,"Your Zone is being built. Your first morning brief will show up here soon."); } else showAlert("Setting things up","The dashboard index is being built. Refresh in a minute."); return; }
       INDEX_AT=Date.parse(idx.at)||0; INDEX_ROWS=idx.rows||[]; BOOKS=Array.isArray(idx.books)?idx.books:BOOKS; INDEX_REC=Array.isArray(idx.rec)?idx.rec:[];  try{ primeSettings(); }catch(e){} LIST=mergeLocal(idx.list.map(x=>listItem({url:"https://www.notion.so/"+x.id,Name:x.n,Kind:x.k,Area:x.a,Status:x.s,Star:x.star?"__YES__":"__NO__","date:Due:start":x.due||null,Created:x.c,"date:Done On:start":x.done||null,"date:Focus:start":x.f||null,Source:x.src,Owner:x.own||"","Alice Status":x.as||"","Alice Notes":Array.isArray(x.an)?x.an.join("\n"):(x.an||""),"date:Alice Updated:start":x.au||null,"Job Type":x.jt||"","Alice Options":Array.isArray(x.ao)?x.ao.join("\n"):"","Claire Reply":Array.isArray(x.cr)?x.cr.join("\n"):"",Outcome:x.out||"",Repeat:x.rp||"","date:Snooze Until:start":x.sz||null,"Waiting On":x.wo||"","date:Waiting Since:start":x.ws||null,Project:x.pj||"",Estimate:x.est||null,Steps:Array.isArray(x.st)?x.st.join("\n"):"","date:Last Done:start":x.ld||null,"date:Scheduled:start":x.sc||null}))).filter(it=>it.id&&it.name); LIST=LIST.filter(x=>!znIsGone(x.id)); LIST_LOADED=true;
-      watchRows(idx.rows.slice(0,7)); if(ROW) renderListAll();
+      watchRows(idx.rows.slice(0,7)); 
     },{cache:{staleTime:60000},refetchInterval:600000}));
     unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.SideB},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.SideB={value:clean(pr.Value),check:clean(pr.Check)}; if(ROW) renderSideB(); } } },{cache:{staleTime:300000},refetchInterval:1800000}));
     for(const k of ["Ideas","DateHist"]) unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS[k]},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET[k]={value:clean(pr.Value),check:clean(pr.Check)}; if(ROW){   } } } },{cache:{staleTime:60000},refetchInterval:600000}));
     for(const k of ["Birdie","Camp"]) unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS[k]},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET[k]={value:clean(pr.Value),check:clean(pr.Check)}; if(ROW) renderBirdie(); } } },{cache:{staleTime:60000},refetchInterval:600000}));
     unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.Pathway},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.Pathway={value:clean(pr.Value),check:clean(pr.Check)}; if(ROW) znMindState(); } } },{cache:{staleTime:60000},refetchInterval:600000}));
     unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.Habits},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.Habits={value:clean(pr.Value),check:clean(pr.Check)}; if(ROW){  renderYou(); } } } },{cache:{staleTime:60000},refetchInterval:600000}));
-    unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.TimeOff},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.TimeOff={value:clean(pr.Value),check:clean(pr.Check)}; renderTimeOff(); if(ROW){ znDayMode();   } } } },{cache:{staleTime:60000},refetchInterval:600000}));
+    unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.TimeOff},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.TimeOff={value:clean(pr.Value),check:clean(pr.Check)};  if(ROW){ znDayMode();   } } } },{cache:{staleTime:60000},refetchInterval:600000}));
     if(SET_IDS.FamEvents) unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.FamEvents},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.FamEvents={value:String(pr.Value||"")}; try{ if(!$("#view-us").hidden) renderUs(); }catch(e){} } } },{cache:{staleTime:60000},refetchInterval:600000}));
     if(SET_IDS.BirdieToday) unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.BirdieToday},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.BirdieToday={value:clean(pr.Value)}; try{ renderBirdie(); }catch(e){} } } },{cache:{staleTime:30000},refetchInterval:120000}));
     for(const k of ["UsWeek","UsNotes"]) if(SET_IDS[k]) unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS[k]},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET[k]={value:k==="UsWeek"?String(pr.Value||""):clean(pr.Value)}; try{ if(!$("#view-us").hidden) renderUs(); }catch(e){} } } },{cache:{staleTime:60000},refetchInterval:300000}));
@@ -5330,7 +5072,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.Appts},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.Appts={value:clean(pr.Value),check:clean(pr.Check)};  } } },{cache:{staleTime:300000},refetchInterval:1800000}));
     unsub.push(mcp.watchTool(SERVER,"notion-fetch",ZONE_INPUT,ev=>{ if(ev.type==="data") znInbox(ev.result.payload); else {  } },{cache:{staleTime:60000},refetchInterval:600000}));
   }
-  $("#refresh").addEventListener("click",async()=>{ if(!mcp) return; const st=$("#stale"); st.hidden=false; st.classList.remove("warn"); st.textContent="Refreshing…"; try{ await mcp.invalidate(SERVER); }catch(e){} watch(); });
+  
   setInterval(()=>{ if(ROW){ znDayMode();   } },60000);
   $("#date").textContent=new Date().toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric",timeZone:TZ});
   { const m=$("#mode"); if(m){ const fix=()=>{ const t=m.textContent; m.title=t; const k=t.indexOf(" · "); if(k>0&&!m.querySelector(".msub")){ m.textContent=""; m.append(document.createTextNode(t.slice(0,k)),el("span","msub",t.slice(k))); } }; new MutationObserver(fix).observe(m,{childList:true,characterData:true,subtree:true}); fix(); } } // UX sweep: "Dawn · after the gym" shows as "Dawn" on phones
