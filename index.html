@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-10-31.14"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-10-31.15"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -3668,8 +3668,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     return wrap; }
   function znPlanRender(){ const host=$("#znPlan"); if(!host) return; if(!znOn()||!ROW){ host.hidden=true; return; } host.hidden=false; host.replaceChildren();
     const T=TODAY(); if(!ZN_PLAN.day||ZN_PLAN.day<T) ZN_PLAN.day=T; const days=znPlanDays();
-    const mh=el("div","zn-mast zn-card"); mh.innerHTML=`<span class="zn-mt">Plan</span>`; const addb=el("button","zn-pill","+ Event"); addb.type="button"; addb.disabled=!calOK(); addb.addEventListener("click",()=>openAddEvent(addb)); mh.append(addb); host.append(mh);
-    const seg=el("div","zn-seg"); [["week","Week"],["projects","Projects"],["waiting","With Alice"],["list","All tasks"]].forEach(([k,l])=>{ const b=el("button",null,l); b.type="button"; b.setAttribute("aria-pressed",String(ZN_PLAN.seg===k)); b.addEventListener("click",()=>{ ZN_PLAN.seg=k; znPlanRender(); }); seg.append(b); }); host.append(seg);
+    const mh=el("div","zn-mast zn-card"); mh.innerHTML=`<span class="zn-mt">Plan</span>`; const addb=el("button","zn-pill","+ Event"); addb.type="button"; addb.disabled=!calOK(); addb.hidden=!calOK(); /* Oct 31: hidden, not greyed, where adding events isn't wired (Victoria) */ addb.addEventListener("click",()=>openAddEvent(addb)); mh.append(addb); host.append(mh);
+    const seg=el("div","zn-seg"); [["week","Week"],["projects","Projects"],["waiting","With Alice"],["list","All tasks"]].filter(([k])=>k!=="waiting"||!(PERSON.features&&PERSON.features.alice===false)).forEach(([k,l])=>{ const b=el("button",null,l); b.type="button"; b.setAttribute("aria-pressed",String(ZN_PLAN.seg===k)); b.addEventListener("click",()=>{ ZN_PLAN.seg=k; znPlanRender(); }); seg.append(b); }); host.append(seg);
     if(ZN_PLAN.seg==="list"){ try{ host.append(znTasksView()); }catch(e){ console.error("tasks",e); } return; } // Oct 27: tasks live here now, not on the old List page
     if(ZN_PLAN.seg==="projects") return znProjects(host); if(ZN_PLAN.seg==="waiting") return znWaiting(host);
     // ---------- the week ----------
