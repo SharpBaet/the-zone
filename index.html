@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-01.7"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-01.8"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2315,7 +2315,7 @@ body.zn .zn-cohint{font-size:13px;opacity:.75;margin:0 0 4px 52px;color:#F3EEFF}
     </div>
   </header>
   <div class="briefmiss" id="briefMiss" role="alert" hidden><b>⚠️ This morning's brief hasn't arrived</b>You're seeing yesterday's. Make retries a failed step automatically for about 15 minutes. If this banner is still here, start a chat with Claude and say <i>the brief didn't run</i>.</div>
-  <div class="health" id="health" role="group" aria-label="Morning runs"></div>
+  
   <div id="alert"></div>
 
   <div class="skel" id="skel" aria-hidden="true">
@@ -2333,24 +2333,19 @@ body.zn .zn-cohint{font-size:13px;opacity:.75;margin:0 0 4px 52px;color:#F3EEFF}
 
 
 
-<section class="rfhero" id="rfHero" hidden aria-label="Your day"><button type="button" class="rfword" id="rfWord" hidden data-track="hero:word"><span aria-hidden="true">🕉️</span><b id="rfWordT"></b></button><button type="button" class="rfwxb" id="rfWxBtn" data-track="line:weather" aria-expanded="false" aria-controls="rfWx"><span id="rfWxIc" aria-hidden="true">☀️</span><span id="rfWxTx"></span></button><div id="rfArcSlot"></div><div class="rfends" id="rfEnds" aria-live="polite"><span id="rfEndL"></span><span id="rfEndR"></span></div></section>
-<section class="card wdc rftask" id="rfTask" hidden aria-labelledby="rfTaskN"><span class="k" id="rfTaskK"></span><b id="rfTaskN"></b><span class="sub" id="rfTaskS"></span><div class="row"><button type="button" class="btn" id="rfTaskDone" data-track="now:done">Done</button><button type="button" class="btn ghost" id="rfTaskDay" data-track="now:day">See the day</button></div></section>
 
 
-<section class="card wdc rfcheck" id="gitaCheck" hidden aria-labelledby="gcQ"><span class="k">The word, tonight</span><p id="gcQ"></p><div class="row" id="gcBtns"></div></section>
-<section class="card wdc rfmini" id="prMini" hidden aria-labelledby="prMiniH"><span class="k" id="prMiniH">Today’s practice</span><div class="w" id="prMiniW"></div><p id="prMiniTry"></p><p class="sub" id="prMiniSit"></p><button type="button" class="rfmore" id="prMiniBtn" data-track="mini:practice" aria-expanded="false" aria-controls="prMiniSlot"><span>Teaching, reading and journal</span><span aria-hidden="true">›</span></button><div class="rfslot" id="prMiniSlot"></div></section>
-<section class="card wdc rftiles" id="moreCard" hidden aria-labelledby="moreH"><h2 id="moreH">More today</h2><div class="grid" id="moreGrid"></div><div class="rfslot" id="moreSlot"></div></section>
-    <section class="wdhero" id="wdHero" hidden aria-label="Today's date and your week">
-      <div class="tear" aria-hidden="true"><div class="holes"><i></i><i></i></div><div class="mb" id="wdMonth"></div><div class="nm" id="wdNum"></div><div class="dw" id="wdDow"></div></div>
-      <div class="wkstrip"><div class="lab">This week's meetings</div><div class="bars" id="wdBars" role="img"></div><div class="cd" id="wdCount"></div></div>
-    </section>
-    <section class="card wdc" id="wdDay" hidden aria-labelledby="wdDayH"><span class="wdtape" aria-hidden="true"></span><h2 id="wdDayH" class="wdh">The day</h2><p class="wdsub" id="wdDaySub"></p><div id="wdArc"></div><ol class="setl" id="wdSet"></ol></section>
+
+
+
+
+
+    
+    
     <section class="card wdc" id="wdNeeds" hidden aria-labelledby="wdNeedsH"><h2 id="wdNeedsH" class="wdh">Needs you</h2><p class="wdsub">From your inbox, your list, and Alice</p><div id="wdNeedsList"></div>
       <details class="wdmore" id="wdInboxD"><summary>Full inbox rundown</summary><div class="sbslot" id="wdInboxSlot"></div></details></section>
-    <section class="card prcard" id="prCard" hidden aria-labelledby="prH"><span class="prtape" aria-hidden="true"></span>
-      <div class="prhead"><h2 id="prH">The practice</h2><span class="prprog" id="prProg"></span></div>
-      <div class="prtheme" id="prTheme"></div><div class="prpaths" id="prPath"></div></section>
-    <section class="wdcare" id="wdCare" hidden><div class="card wdc tile" id="wdPrac"></div><div class="card wdc tile" id="wdBird"></div><div class="wdslot" id="wdCareSlot"></div></section>
+    
+    
     <nav class="jumpbar" id="tdJump" hidden aria-label="Jump to a section"></nav>
     <section class="vibe" id="vibe"><div class="wkhero" id="wkHero" hidden><span class="wksticker" id="wkSticker" aria-hidden="true">weekend mode</span><div class="wkday" id="wkDay"></div></div><h1 id="vibeLine">Loading today from Notion…</h1><p id="mantra"></p><span class="stale" id="stale" hidden></span></section>
 
@@ -2359,7 +2354,7 @@ body.zn .zn-cohint{font-size:13px;opacity:.75;margin:0 0 4px 52px;color:#F3EEFF}
 
     
 
-    <section class="card zact" id="zoneActs" hidden aria-label="What the Zone changed today"></section>
+    
     <section class="card zact alice" id="aliceCard" hidden aria-label="What Alice is working on"></section>
 
     <section class="card tint day" id="dayCard" aria-labelledby="dayH">
@@ -2413,13 +2408,7 @@ body.zn .zn-cohint{font-size:13px;opacity:.75;margin:0 0 4px 52px;color:#F3EEFF}
 
     
 
-    <section class="card tint" id="inboxCard" aria-labelledby="inboxH">
-      <div class="label" id="inboxDate">Inbox Rundown</div>
-      <h2 id="inboxH" style="margin-top:4px">Checking your inbox…</h2>
-      <div class="appts" id="apptBox" hidden></div>
-      <ul class="lines" id="inboxLines"></ul>
-      <button class="linkbtn" id="inboxMore" type="button" hidden></button>
-    </section>
+    
 
     <section class="card tint" id="ritualsCard" aria-labelledby="ritH">
       <div class="row" style="justify-content:space-between"><h2 id="ritH" class="ttl-c">Logbook</h2><span class="prog" id="ritProg"></span></div>
@@ -2430,46 +2419,23 @@ body.zn .zn-cohint{font-size:13px;opacity:.75;margin:0 0 4px 52px;color:#F3EEFF}
       <ul class="tasks prac" id="routines"></ul>
       <div class="note" id="sitNote"></div>
     </section>
-    <section class="hlstrip" id="headStrip" aria-label="Headlines"></section>
+    
 
-    <section class="card wkc wkribbon" id="wkRibbon" hidden aria-label="The shape of your weekend">
-      <div class="wkring" id="wkRing"><svg id="wkTrack" viewBox="0 0 300 300" role="img"></svg>
-        <div class="wkcenter" aria-hidden="true"><b id="wkLeft"></b><span id="wkLeftSub"></span></div></div>
-      <p class="wknext" id="wkNext" aria-live="polite"></p>
-
-      <div class="wkkey"><span style="--c:var(--us)"><i></i>Us</span><span style="--c:var(--birdie)"><i></i>Birdie</span><span style="--c:var(--quest)"><i></i>Side quests</span><span style="--c:var(--game)"><i></i>Games on</span><span style="--c:color-mix(in srgb, var(--ink) 22%, transparent)"><i></i>Open time</span><span style="--c:var(--plan-n)"><i></i>Plans</span><span style="--c:var(--sleep)"><i></i>Sleep</span></div>
-      <div class="wkplans" id="wkPlans"><div class="wkplanh" id="wkPlanH">Weekend plans</div>
-        <section class="card wkc" id="wkUs" hidden aria-labelledby="wkUsH"><span class="wtag" id="wkUsTag">💕 Tonight</span><h2 id="wkUsH" class="wkh"></h2><div class="wkgames" id="wkUsList"></div><p class="note" id="wkUsNote"></p></section>
-        <div class="wkheads" id="wkHeads" hidden></div></div>
-      <div class="wkmorewrap"><button type="button" class="wkmore" id="wkMore" aria-expanded="false" aria-controls="wkToday">See today's plan</button></div>
-      <ol class="wktoday" id="wkToday" hidden></ol>
-    </section>
+    
     <section class="card wkc" id="wkQuests" hidden aria-labelledby="wkQuestsH"><div class="wkconf" id="wkConf" aria-hidden="true"></div><span class="wtag" id="wkQuestsTag">🛒 Side quests</span><h2 id="wkQuestsH" class="wkh">Errands and chores</h2>
       <ul class="wkq" id="wkQList"></ul><div class="wkmeter" id="wkMeter" aria-hidden="true"></div><p class="wkcheer" id="wkCheer" aria-live="polite"></p>
       <div class="addrow"><input class="field" id="wkQIn" autocomplete="off" aria-label="Add a side quest" placeholder="Add a side quest"><button class="plus" id="wkQGo" type="button" aria-label="Add side quest" style="--c:var(--quest)">+</button></div></section>
-    <div class="wksec" id="wkSecToday" hidden>Today</div>
-    <section class="card wkc" id="wkAdvCard" hidden aria-labelledby="advH">
-      <span class="wtag" id="advTag">🐕 Big Adventure</span>
-      <h2 class="advh" id="advH"></h2><p class="advwhen" id="advWhen"></p>
-      <div class="advspots" id="advSpots"></div>
-      <details class="passport" id="advPass"><summary class="passh"><b>Birdie's passport</b><span class="pdots" id="advDots" aria-hidden="true"></span><span id="advPassN"></span></summary><div class="stamps" id="advStamps"></div></details>
-      <div class="advmeals" id="advMeals"></div>
-    </section>
-    
-    <section class="card wkc parkedline" id="wkOff" hidden aria-label="Parked till Monday"><details id="wkOffD"><summary><span class="ic">🅿️</span><span class="pt"><b>Parked till Monday</b><span id="wkOffSum"></span></span></summary><div class="wkoffrows" id="wkOffRows"></div></details></section>
-    
-    <section class="card wkc" id="wkWins" hidden aria-labelledby="wkWinsH"><span class="wtag" id="wkWinsTag">🏆 Today's wins</span><h2 id="wkWinsH" class="wkh"></h2><ul class="wkwins" id="wkWinsList"></ul></section>
     
     
-    <div class="wkparked" id="wkParked" hidden><span id="wkParkedTxt">Work inbox and weekday tasks are parked till Monday 6am.</span><button type="button" id="wkPeekBtn" aria-expanded="false" aria-controls="wkPeek">Peek</button></div>
-    <ul class="wkpeek" id="wkPeek" hidden></ul>
-    <section class="card tint c-birdie" id="birdieCard" aria-labelledby="bdH">
-      <div class="row" style="justify-content:space-between"><h2 id="bdH" class="ttl-c">🐕 Birdie</h2><span class="note" id="bdPaw"></span></div>
-      <div class="wkadv" id="wkAdv" hidden></div>
-      <div class="bdmeals" id="bdMeals"></div>
-      <div class="bdwalks"><span id="bdWalkTxt" class="muted"></span><button class="btn ghost sm" id="bdWalkBtn" type="button">+ Walk</button></div>
-      <div id="bdAlerts"></div>
-    </section>
+    
+    
+    
+    
+    
+    
+    
+    
+    
   </div>
 
   <!-- WEEK -->
@@ -2482,7 +2448,7 @@ body.zn .zn-cohint{font-size:13px;opacity:.75;margin:0 0 4px 52px;color:#F3EEFF}
       <button type="button" class="jchip" data-jump="campCard">🏕️ Birdie</button>
     </nav>
     
-    <section class="card tint c-plan" id="sunCard" hidden aria-labelledby="sunH"><div class="label" id="sunLabel">Sunday preview</div><h2 id="sunH" style="margin-top:4px"></h2><ul class="lines" id="sunLines"></ul></section>
+    
     
     <section class="card tint c-plan" id="planCard" aria-labelledby="planH">
       <div class="label" id="planDate">Tomorrow</div>
@@ -2498,21 +2464,10 @@ body.zn .zn-cohint{font-size:13px;opacity:.75;margin:0 0 4px 52px;color:#F3EEFF}
       <div class="blocks" id="blocks"></div>
       <div class="savebar" id="planSave"></div>
     </section>
-    <section class="card tint c-plan" id="weekCard" aria-labelledby="horH">
-      <div class="label">This week</div>
-      <h2 id="horH" style="margin-top:4px">Your week arrives with the 4:30am brief.</h2>
-      <div class="agenda" id="agenda"></div>
-    </section>
-    <div class="asec" id="ideaSec">Ideas</div>
-    <section class="card tint c-date" id="dateCard" hidden aria-labelledby="dateH">
-      <div class="row" style="justify-content:space-between;align-items:baseline"><h2 id="dateH" class="ttl-c">💕 Date night ideas</h2><span class="note" id="dateNote"></span></div>
-      <div id="dateBody"></div>
-    </section>
-    <section class="card tint c-birdie" id="campCard" hidden aria-labelledby="campH">
-      <div class="label">For Birdie</div>
-      <h2 id="campH" class="ttl-c" style="margin-top:4px">Camp idea</h2>
-      <div id="campBody"></div>
-    </section>
+    
+    
+    
+    
   </div>
 
   <!-- US (Oct 19) -->
@@ -2522,12 +2477,12 @@ body.zn .zn-cohint{font-size:13px;opacity:.75;margin:0 0 4px 52px;color:#F3EEFF}
     <section class="ushead"><h1>Us</h1></section>
     
     
-    <section class="card ustonight" id="usTonight" hidden aria-labelledby="usTonightH"><div class="ush2"><h2 id="usTonightH">🏟️ Games tonight</h2><span id="usTonightN"></span></div><ul class="usgt" id="usTonightList"></ul><p class="hint" id="usTonightAt"></p></section>
     
     
     
     
-    <section class="card" id="usGames" hidden aria-labelledby="usGamesH"><div class="ush2"><h2 id="usGamesH">Games we both watch</h2></div><ul class="usgames" id="usGameList"></ul></section>
+    
+    
     
   </div>
 
@@ -2551,11 +2506,7 @@ body.zn .zn-cohint{font-size:13px;opacity:.75;margin:0 0 4px 52px;color:#F3EEFF}
       </div>
     </section>
     
-    <section class="card tint c-you" aria-labelledby="jrnH" id="journalCard">
-      <h2 id="jrnH" class="ttl-c">Journal</h2>
-      <p class="hint">Your reflections, sits, and each day's question from the last two weeks.</p>
-      <div id="journal"></div>
-    </section>
+    
     <section class="card tint c-you" aria-labelledby="habH">
       
       
@@ -2578,8 +2529,8 @@ body.zn .zn-cohint{font-size:13px;opacity:.75;margin:0 0 4px 52px;color:#F3EEFF}
   <!-- LIST -->
   <div id="view-alice" class="view" hidden style="display:none">
     <section class="alhero" aria-labelledby="alH"><div class="alav" aria-hidden="true">A</div><div><p id="alStatus"></p></div></section>
-    <div class="alstats" id="alStats"></div>
-    <div class="aldesk" id="aliceDesk"></div>
+    
+    
   </div>
   <div id="view-list" class="view" hidden style="display:none">
     
@@ -2659,8 +2610,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   const iconOf=l=>{const m=l.match(EMOJI); return m?[m[1],l.slice(m[0].length)]:["",l];};
   const parts=l=>l.split(/\s+·\s+/).map(s=>s.trim()).filter(Boolean);
   // emoji stay only where they act as icons (a sport, work, an episode, Birdie's paws); everywhere else the words carry it
-  const ICON_KEEP=new Set(["🏀","🏈","⚽","⚾","🏒","💼","🎧","🐾","✨"]);
-  function linesList(lines,ul,keepIcons){ ul=ul||el("ul","lines"); ul.replaceChildren(); groups(lines).forEach((g,gi)=>{ if(gi) ul.append(el("li","gap")); for(const raw of g){ let [ic,tx]=iconOf(raw); if(ic&&!keepIcons&&!ICON_KEEP.has(ic)) ic=""; const li=el("li",ic?"":"noicon"); if(ic) li.append(el("span",null,ic)); li.append(el("span",null,tx)); ul.append(li);} }); return ul; }
+  
+  
 
   // ---------- time ----------
   const RANGE=/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*(?:-\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)?)?$/i;
@@ -2799,25 +2750,13 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function famFind(text,date){ const n=fnorm(text).replace(/[^a-z0-9 ]+/g," ").replace(/\s+/g," ").trim(); if(!n) return null; const ev=famEvents().filter(r=>!date||r.d===date);
     return ev.find(r=>{ const k=fnorm(r.title).replace(/[^a-z0-9 ]+/g," ").replace(/\s+/g," ").trim(); return k&&(n===k||n.includes(k)||k.includes(n)); })||null; }
   function famOwnerNow(rec){ return rfFamOwner(rec.title)||rec.owner||"both"; }
-  const OWNLAB={claire:"C",victoria:"V",both:"Us"};
-  function ownTag(rec,withTitle){ const o=famOwnerNow(rec); const b=el("button","owntag own-"+o,withTitle?`${OWNLAB[o]} · ${rec.title}`:OWNLAB[o]); b.type="button";
-    b.setAttribute("aria-label",`${rec.title}: ${o==="both"?"yours together":o==="claire"?"Claire's":"Victoria's"}. Change whose it is`); b.title=rec.why?`Decided: ${rec.why}`:"";
-    b.addEventListener("click",e=>{ e.stopPropagation(); whoseSheet(rec.title,b); }); return b; }
-  let FAM_DECO=false;
-  function famDecorate(){ if(FAM_DECO) return; FAM_DECO=true; try{ if(!famEvents().length) return; const T=TODAY(); const tom=addDays(T,1);
-    const spots=[["#wdSet > li.sl",li=>(li.querySelector(".x")||li).textContent,T],["#tomCard .tomlist li",li=>li.textContent,tom],["#weekCard li",li=>li.textContent,""],["#wdHero li",li=>li.textContent,""]];
-    for(const [sel,txt,d] of spots) document.querySelectorAll(sel).forEach(li=>{ if(li.querySelector(".owntag")) return; const t=txt(li).replace(/\b(C|V|Us)\b\s*$/,""); const rec=famFind(t,d); if(rec) li.append(ownTag(rec,false)); });
-  } finally { FAM_DECO=false; } }
-  let FAM_T=null; const famSoon=()=>{ if(FAM_DECO||FAM_T) return; FAM_T=setTimeout(()=>{ FAM_T=null; famDecorate(); },120); };
-  setTimeout(()=>{ for(const id of ["wdSet","tomCard","weekCard","wdHero"]){ const n=$("#"+id); if(n) new MutationObserver(famSoon).observe(n,{childList:true,subtree:true}); } },0); // only where events render (the arc ticks constantly)
-  function whoseSheet(name,from){ const me=PERSON.person||"claire"; const other=me==="claire"?"victoria":"claire"; const otherName=other==="victoria"?"Victoria":"Claire";
-    const rec=famFind(name,""); const cur=rfFamOwner(name)||(rec&&rec.owner)||"both"; const body=[el("p","gmeta",(rec&&rec.why?`The Zone decided: ${rec.why}. `:"")+"Change it here and both of your apps update now; both briefs use it from tomorrow morning.")];
-    const pick=async(owner)=>{ try{ const loc=famLocal(); loc[fnorm(name)]=owner; localStorage.setItem(FAMHIDE,JSON.stringify(loc)); }catch(e){}
-      const lines=clean(SET.FamOwners&&SET.FamOwners.value).split(/\n+/).map(l=>l.trim()).filter(l=>l&&fnorm(l.split("|").slice(1).join("|"))!==fnorm(name)); lines.push(`${owner}|${fnorm(name)}`);
-      try{ await saveSetting("FamOwners",lines); SET.FamOwners={value:lines.join("\n")}; toast(owner===other?`Got it · ${otherName}’s, off your day`:owner==="both"?"Got it · it’s yours together":"Got it · it’s yours"); }catch(e){ toast(writeErr(e)); }
-      const d=document.querySelector("#layer .sheet > button.btn.ghost:last-of-type"); if(d) d.click(); document.querySelectorAll(".owntag").forEach(x=>x.remove()); try{ renderWeekday(); }catch(e){}  try{ renderUs(); }catch(e){} setTimeout(famDecorate,50); };
-    for(const [o,lab] of [[me,"That’s mine"],[other,`That’s ${otherName}’s`],["both","It’s ours"]]){ const b=el("button","gact"+(cur===o?" on":""),lab); b.type="button"; b.disabled=!mcp; b.dataset.track="whose:"+o; b.addEventListener("click",()=>pick(o)); body.push(b); }
-    openSheet({kicker:"Whose is this?",title:name,body,color:"var(--us)",from}); }
+  
+  
+  
+  
+   
+   // only where events render (the arc ticks constantly)
+  
 
   // ---------- Oct 19: the Us tab (zone-us builds Us Week every two hours; notes and the list are written from here) ----------
   const ME=()=>PERSON.person||"claire", OTHER=()=>ME()==="claire"?"victoria":"claire", NAME=p=>p==="victoria"?"Victoria":"Claire";
@@ -3808,6 +3747,31 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // The riso layer no longer draws; these keep its classes exactly as it set them (on once today's brief is in) until the CSS is folded in.
   function znLegacyClasses(){ const live=!!(LIVE&&ROW), wk=live?wkDay():""; const night=live&&(wk?(NIGHT||wk==="fri"):(MODE==="wrap"||MODE==="evening")); const b=document.body.classList;
     b.toggle("riso",live); b.toggle("riso-night",!!night); b.toggle("riso-wk",!!(live&&wk)); }
+  // Nov 1 (stage 3d): the Inbox Rundown, read for the new screens (Needs you, triage, the mail actions). It used to come from renderInbox, which
+  // also drew the old Inbox card, the health strip and the old plan ideas. Same parsing; redraws Today when it changes.
+  function znInbox(payload){
+    const txt=payload&&typeof payload.text==="string"?payload.text:(typeof payload==="string"?payload:"");
+    const box=txt.split(/<callout/).slice(1).map(b=>b.split(/<\/callout>/)[0]).find(b=>/Inbox Rundown/.test(b));
+    INBOX={date:"",ideas:[],payload};
+    if(box){ INBOX_MAIL={};
+      const inner=clean(box.slice(box.indexOf(">")+1)).split("\n").map(s=>{ s=s.trim(); const m=s.match(/\s*⟦(cwsharp01|claireweber3):([0-9a-f,]+)⟧\s*$/i); if(m){ s=s.slice(0,m.index).trim(); INBOX_MAIL[s]={acct:m[1].toLowerCase(),ids:m[2].split(",").filter(Boolean)}; } return s; });
+      while(inner.length&&(!inner[0]||/^Inbox Rundown/i.test(inner[0]))){ const m=(inner[0]||"").match(/Inbox Rundown\s*·\s*(.+)$/i); if(m) INBOX.date=m[1].trim(); inner.shift(); }
+      inner.shift(); while(inner.length&&!inner[0]) inner.shift();
+      INBOX.ideas=inner.filter(l=>/^💡/u.test(l)).map(l=>l.replace(/^💡\s*/u,"").replace(/^Top 3 idea\s*·\s*/i,"").trim()).filter(Boolean);
+      INBOX.items=inner.filter(l=>!/^✍️/u.test(l)&&!/^💡/u.test(l)).filter(l=>l&&!/^↳/.test(l)); }
+    if(ROW) znSoon(); }
+  // Nov 1 (stage 3d): today's sit (length, practice, cue), the teaching library entry and the tradition label, from the brief's Woo lines.
+  // It used to come from renderMind, which also drew the old Mindful Moment card; now it's also worked out whenever today's row changes.
+  function znMindState(){
+    const {rest}=split(ROW&&ROW.Woo); const get=e=>{ const l=rest.find(x=>iconOf(x)[0]===e); return l?iconOf(l)[1]:""; };
+    const tp=parts(get("🕯️")); const src=tp.slice(1).join(" · "); const PW=/^Letting Go$/i.test(tp[1]||"");
+    const sit=parts(get("🧘")); const mm=(sit.find(x=>/\d+\s*min/.test(x))||"").match(/(\d+)/);
+    SIT={min:mm?+mm[1]:3,name:sit[2]||"",how:sit[3]||"",day:(sit.find(x=>/^day\s*\d+/i.test(x))||"")};
+    if(SIT_LEN==null) SIT_LEN=SIT.min;
+    const d=(ROW&&ROW["date:Date:start"])||TODAY(); MM=mmFor(d); const match=!!src&&src.toLowerCase().includes(MM.source.toLowerCase().split(" (")[0].toLowerCase());
+    const trad=PW?"Letting Go":match?MM.tradition:(src.match(/Buddhism|Hinduism and Vedanta|Yogic philosophy|Christian mysticism/)||[""])[0];
+    SIT.trad=PW?`Letting Go · ${tp[2]||""} · ${tp[3]||""}`.replace(/ · $/,""):(trad||"Mindful Moment")+(SIT.day?" · "+SIT.day.toLowerCase():""); }
+  function znMindTrad(){ return (SIT&&SIT.trad)||"Today's teaching"; }
   function znRenderInner(){ try{ znLegacyClasses(); }catch(e){} const box=$("#znToday"); if(!box) return; const on=znOn()&&ROW; document.body.classList.toggle("zn",!!on); if(!on){ box.hidden=true; return; }
     if(!LIVE){ znBetween(box); return; } /* Oct 25: before the brief lands (or if it failed), never fall back to the old, empty layout */ box.hidden=false; box.replaceChildren();
     const T=TODAY(), dt=new Date(T+"T12:00:00Z"), n=nowH(), wk=wkDay(); const night=wk?(NIGHT||wk==="fri"):(MODE==="wrap"||MODE==="evening"); document.body.classList.toggle("zn-night",!!night); document.body.classList.toggle("zn-wk",!!wk&&!night);
@@ -3979,33 +3943,14 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   
   // Logbook: the checklist card is the Rhythms half; Records are one-tap "it happened" entries (Zone Records database)
   
-  const recDefs=()=>clean(SET.Records&&SET.Records.value).split(/\n+/).map(l=>l.trim()).filter(Boolean).map(l=>{ const m=l.match(/^(\p{Extended_Pictographic}\uFE0F?)\s*(.+)$/u); return m?{emoji:m[1],name:m[2].trim()}:{emoji:"•",name:l}; }).filter(d=>d.name);
+  
   const REC_PEND="zone:recpending:v1";
   function recPending(){ try{ return JSON.parse(localStorage.getItem(REC_PEND)||"[]"); }catch(e){ return []; } }
   function recAll(){ const idx=INDEX_REC||[]; const have=new Set(idx.map(r=>r.i)); const pend=recPending().filter(r=>!have.has(r.i)&&Date.now()-Date.parse(r.t)<36e5*6); try{ localStorage.setItem(REC_PEND,JSON.stringify(pend)); }catch(e){}
     return [...pend,...idx].filter(r=>r&&r.n&&r.t).sort((a,b)=>Date.parse(b.t)-Date.parse(a.t)); }
-  function recAgo(t){ const d=Date.parse(t); if(!d) return ""; const ms=Date.now()-d; const day=864e5; const n=Math.floor(ms/day);
-    const same=new Date(d).toLocaleDateString("en-CA",{timeZone:TZ})===TODAY(); if(same) return "today "+new Date(d).toLocaleTimeString("en-US",{timeZone:TZ,hour:"numeric",minute:"2-digit"}).toLowerCase().replace(" ","");
-    if(n<2) return "yesterday"; if(n<14) return `${n}d ago`; if(n<60) return `${Math.round(n/7)}w ago`; if(n<365) return `${Math.round(n/30)}mo ago`; return `${(n/365).toFixed(1)}y ago`; }
-  async function logRecord(def,btn){ if(!mcp) { toast("Sign in to log records."); return; } const t=new Date().toISOString(); btn.disabled=true;
-    try{ const r=await mcp.callTool(SERVER,"notion-create-pages",{parent:{data_source_id:RECORDS_DSID},pages:[{properties:{Name:def.name,"date:When:start":t,"date:When:is_datetime":1,Who:PERSON.person||"claire"}}],allow_async:false});
-      let id=""; try{ const pl=r&&r.payload; const tx=typeof pl==="string"?pl:(pl&&pl.text)||JSON.stringify(pl||{}); const m=String(tx).match(/[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}/i); id=m?m[0].replace(/-/g,""):""; }catch(e){}
-      const pend=recPending(); pend.unshift({i:id||("local"+Date.now()),n:def.name,t}); try{ localStorage.setItem(REC_PEND,JSON.stringify(pend.slice(0,50))); }catch(e){}
-      track("record:"+def.name); toast(`Logged · ${def.emoji} ${def.name}`); renderRecords(); }
-    catch(e){ toast(writeErr(e)); } btn.disabled=false; }
-  function renderRecords(){ const sec=$("#rfRecords"); if(!sec) return; const defs=recDefs(); const all=recAll();
-    if(PERSON.person!=="claire"||!defs.length){ sec.hidden=true; return; } sec.hidden=false;
-    const g=sec.querySelector(".grid"); g.replaceChildren();
-    defs.forEach(d=>{ const last=all.find(r=>r.n===d.name); const b=el("button","rfrecb"); b.type="button"; b.setAttribute("aria-label",`Log ${d.name}${last?`, last ${recAgo(last.t)}`:""}`);
-      const e=el("span","e",d.emoji); e.setAttribute("aria-hidden","true"); b.append(e,el("b",null,d.name),el("span","l",last?recAgo(last.t):"not yet")); b.addEventListener("click",()=>logRecord(d,b)); g.append(b); });
-    // You: the history card behind the Records tile
-    let hc=$("#recHist"); if(!hc){ hc=el("section","card tint c-you rfhide"); hc.id="recHist"; hc.innerHTML='<h2 id="recHistH">Records</h2><div id="recHistBody"></div>'; const Y=$("#view-you"); if(Y) Y.append(hc); }
-    const body=$("#recHistBody"); body.replaceChildren(); const now=Date.now();
-    defs.forEach(d=>{ const mine=all.filter(r=>r.n===d.name); const n30=mine.filter(r=>now-Date.parse(r.t)<30*864e5).length, n90=mine.filter(r=>now-Date.parse(r.t)<90*864e5).length;
-      const w=el("div","rfrech"); const h3=el("h3",null,`${d.emoji} ${d.name}`); const sub=el("p","sub",mine.length?`Last ${recAgo(mine[0].t)} · ${n30} in 30 days · ${n90} in 90 days`:"Nothing logged yet"); w.append(h3,sub);
-      if(mine.length){ const ul=el("ul"); mine.slice(0,6).forEach(r=>{ const li=el("li"); li.append(el("span",null,new Date(Date.parse(r.t)).toLocaleDateString("en-US",{timeZone:TZ,weekday:"short",month:"short",day:"numeric"})),el("span","t",new Date(Date.parse(r.t)).toLocaleTimeString("en-US",{timeZone:TZ,hour:"numeric",minute:"2-digit"}).toLowerCase().replace(" ",""))); if(r.x) li.append(el("span","x",r.x)); ul.append(li); }); w.append(ul); }
-      body.append(w); });
-    if(!all.length) body.append(el("p","hint","Tap a record in the Logbook on Today when something happens. The history shows up here within the hour.")); }
+  
+  
+  
 
   // a single optional line in the morning; the close-out shows it back at 4pm
   
@@ -4105,8 +4050,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // regrouped into Morning / Through the day / Tonight, with the full Mindful Moment folded inside the sit.
   
   
-  function renderPractice(){ /* Nov 1: retired with the old layer */ }
-  { const _rr=renderRituals; renderRituals=function(){ const r=_rr.apply(this,arguments); setTimeout(renderPractice,0); return r; }; }
+  
   
 
   // ---------- the weekday Planner: a tear-off date, the day as a sun arc + setlist, what needs you, and care ----------
@@ -4168,22 +4112,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   
 
   // ---------- wins: what actually happened, from what she logged ----------
-  function winsFor(rows){ const L=[]; const lines=(r,k)=>clean(r&&r[k]).split(/\n+/).map(x=>x.trim()).filter(Boolean);
-    const quests=[...new Set(rows.flatMap(r=>lines(r,"Top 3 Done")))]; const days=new Set(rows.map(r=>r["date:Date:start"]));
-    const listDone=LIST.filter(it=>it.status==="Done"&&days.has(it.doneOn)&&!quests.some(q=>q.toLowerCase()===it.name.toLowerCase())).map(it=>it.name);
-    const qAll=[...quests,...listDone]; if(qAll.length) L.push(`🛒 ${qAll.length} side quest${qAll.length===1?"":"s"} done: ${qAll.slice(0,4).join(", ")}${qAll.length>4?", and more":""}`);
-    const walks=rows.flatMap(r=>lines(r,"Birdie Walks")); const spots=[...new Set(walks.map(w=>(w.split("|")[1]||"").trim()).filter(Boolean))];
-    const nW=Math.max(walks.length,rows.reduce((a,r)=>a+(num(r.Walks)||0),0)); if(nW) L.push(`🐕 Birdie got ${nW} walk${nW===1?"":"s"}${spots.length?` (${spots.join(", ")})`:""}`);
-    const meals=rows.flatMap(r=>lines(r,"Birdie Meals")).length; if(meals) L.push(`🍽️ ${meals} Birdie meal${meals===1?"":"s"} logged`);
-    const sat=rows.reduce((a,r)=>a+(num(r.Meditated)||0),0); if(sat) L.push(`🧘 Sat for ${sat} minute${sat===1?"":"s"}`);
-    const habits=[...new Set(rows.flatMap(r=>lines(r,"Habits Done")))]; if(habits.length) L.push(`✨ ${habits.join(", ")}`);
-    const h=dateHist(); const picked=Object.values(h).filter(x=>x&&x.status==="picked"&&days.has(x.date)).map(x=>x.title); if(picked.length) L.push(`💕 ${picked.join(" + ")}`);
-    return L; }
-  function renderWins(){ const card=$("#wkWins"), wk=wkDay(); if(!wk||!LIVE||(!NIGHT&&wk!=="fri")){ card.hidden=true; return; }
-    const {fri,sat,sun}=wkBounds(); const rows=wk==="fri"?ROWS.filter(r=>{ const d=r["date:Date:start"]; return d>=addDays(TODAY(),-4)&&d<=TODAY(); }):wk==="sat"?[ROW]:[ROWS.find(r=>r["date:Date:start"]===sat),ROW].filter(Boolean);
-    const W=winsFor(rows); $("#wkWinsTag").textContent=wk==="fri"?"🏆 Week's wins":wk==="sun"?"🏆 Weekend wins":"🏆 Today's wins";
-    $("#wkWinsH").textContent=W.length?(wk==="fri"?"A week well worked":wk==="sun"?"A weekend well spent":"Look what today held"):(wk==="fri"?"You made it to Friday":"Rest counts");
-    const ul=$("#wkWinsList"); ul.replaceChildren(); (W.length?W:["Today's win is that it didn't turn into a to-do list."]).forEach(t=>ul.append(el("li",W.length?null:"soft",t))); card.hidden=false; }
+  
+  
 
   
 
@@ -4207,7 +4137,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function kindOf(text,s,e){
     if(/mindful/i.test(text)) return "mind"; if(/^prep\b|prep block/i.test(text)) return "prep"; if(/birdie|walk/i.test(text)) return "walk";
     if(WORK.some(w=>Math.abs(w.s-s)<.02&&Math.abs(w.e-e)<.02)) return "work"; return "life"; }
-  const KCOL={work:"var(--lav)",life:"var(--rose)",walk:"var(--sage)",mind:"var(--sage)",prep:"var(--sand)",task:"var(--accent)"};
+  
   function parseDay(){
     const {head,rest}=split(ROW&&ROW.Forecast); const items=[], allday=[], tasks=[], unplaced=[], untimed=[]; let birdie="";
     let lastTask=null;
@@ -4224,70 +4154,18 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     }
     return {head,items,allday,tasks,unplaced,untimed,birdie};
   }
-  function arcPath(cx,cy,r,a0,a1){ const p=a=>[cx+r*Math.sin(a),cy-r*Math.cos(a)]; const [x0,y0]=p(a0),[x1,y1]=p(a1); const large=(a1-a0)>Math.PI?1:0; return `M${x0.toFixed(1)} ${y0.toFixed(1)} A${r} ${r} 0 ${large} 1 ${x1.toFixed(1)} ${y1.toFixed(1)}`; }
-  const H0=5, H1=22, SPAN=H1-H0; const ang=h=>((Math.max(H0,Math.min(H1,h))-H0)/SPAN)*Math.PI*2;
-  let EXPAND_PAST=false;
+  
+  const H0=5, H1=22, SPAN=H1-H0; 
   
   
   
   
-  function renderDay(){
-    const D=parseDay(); TASKS=D.tasks; const n=nowH();
-    $("#dayHead").textContent=D.head||"Your schedule arrives with the 4:30am brief.";
-    $("#allDay").textContent=D.allday.length?"All day · "+D.allday.join(" · "):"";
-    // now / next across events and tasks
-    const all=[...D.items.map(i=>({s:i.start,e:i.end,t:i.text})),...D.tasks.map(t=>({s:t.r.start,e:t.r.end,t:"🎯 "+t.title}))].sort((a,b)=>a.s-b.s);
-    const live=LIVE; const cur=live?all.filter(x=>x.s<=n&&n<x.e).pop():null; const nxt=live?all.find(x=>x.s>n):null;
-    const ns=$("#nowStrip"); ns.replaceChildren();
-    if(live&&all.length){ const a=el("div","now"); a.append(el("small",null,"Now · "+fmtH(n))); a.append(el("b",null,cur?cur.t:(nxt?"Open until "+fmtH(nxt.s):"Nothing else scheduled")));
-      const b=el("div","next"); b.append(el("small",null,nxt?"Next · in "+until((nxt.s-n)*60):"Next")); b.append(el("b",null,nxt?fmtH(nxt.s)+" · "+nxt.t:"Rest of the day is yours")); ns.append(a,b); ns.hidden=false; } else ns.hidden=true;
-    // orbit
-    const svg=$("#orbit"); svg.replaceChildren(); const C=160;
-    svg.append(sv("circle",{cx:C,cy:C,r:146,fill:"none",stroke:"var(--tile)","stroke-width":14}));
-    for(const i of D.items){ if(i.end<=H0||i.start>=H1) continue; svg.append(sv("path",{d:arcPath(C,C,146,ang(i.start)+.012,ang(i.end)-.012),fill:"none",stroke:KCOL[i.kind],"stroke-width":14,opacity:i.end<=n&&live?.45:.95})); }
-    svg.append(sv("circle",{cx:C,cy:C,r:126,fill:"none",stroke:"var(--tile)","stroke-width":6}));
-    for(const t of D.tasks){ svg.append(sv("path",{d:arcPath(C,C,126,ang(t.r.start)+.01,ang(t.r.end)-.01),fill:"none",stroke:"var(--accent)","stroke-width":6,"stroke-linecap":"round"})); }
-    // hour ticks
-    for(const h of [6,9,12,15,18,21]){ const a=ang(h); const x=C+104*Math.sin(a), y=C-104*Math.cos(a); svg.append(sv("text",{x:x.toFixed(1),y:(y+4).toFixed(1),"text-anchor":"middle","font-size":11,fill:"var(--muted)"},fmtH(h).replace(":00",""))); }
-    // readiness + sleep rings
-    const rd=num(ROW&&ROW.Readiness), sl=num(ROW&&ROW["Sleep Score"]);
-    const ring=(r,v,c)=>{ svg.append(sv("circle",{cx:C,cy:C,r,fill:"none",stroke:"var(--tile)","stroke-width":8})); if(v!=null&&v>0) svg.append(sv("path",{d:arcPath(C,C,r,0,Math.min(.999,v/100)*Math.PI*2),fill:"none",stroke:c,"stroke-width":8,"stroke-linecap":"round"})); };
-    ring(84,rd,"var(--rose)"); ring(70,sl,"var(--sand)");
-    const word=clean(ROW&&ROW.Word).trim().toLowerCase();
-    svg.append(sv("text",{x:C,y:C+2,"text-anchor":"middle","font-size":19,"font-weight":800,"font-family":"Unbounded, sans-serif",fill:"var(--ink)"},word||"today"));
-    svg.append(sv("text",{x:C,y:C+22,"text-anchor":"middle","font-size":11.5,fill:"var(--muted)"},`readiness ${rd??"—"} · sleep ${sl??"—"}`));
-    if(live&&n>=H0&&n<=H1){ const a=ang(n); const x=C+146*Math.sin(a), y=C-146*Math.cos(a); svg.append(sv("line",{x1:C+56*Math.sin(a),y1:C-56*Math.cos(a),x2:x,y2:y,stroke:"var(--accent)","stroke-width":2.5,"stroke-linecap":"round"})); svg.append(sv("circle",{cx:x,cy:y,r:7,fill:"var(--accent)",stroke:"var(--bg)","stroke-width":2})); }
-    svg.setAttribute("aria-label",`Day orbit from ${fmtH(H0)} to ${fmtH(H1)}: ${D.items.length} events and ${D.tasks.length} top 3 tasks${live?", now marker at "+fmtH(n):""}. Readiness ${rd??"not synced"}, sleep ${sl??"not synced"}.`);
-    const lg=$("#legend"); lg.replaceChildren(); const used=new Set(D.items.map(i=>i.kind)); const names={work:"work",life:"plans",walk:"Birdie",mind:"sit",prep:"prep"};
-    for(const k of ["work","life","walk","prep","mind"]) if(used.has(k)){ const s=el("span"); const i=el("i"); i.style.background=KCOL[k]; s.append(i,document.createTextNode(names[k])); lg.append(s); }
-    if(D.tasks.length){ const s=el("span"); const i=el("i"); i.style.background=KCOL.task; s.append(i,document.createTextNode("top 3")); lg.append(s); }
-    // timeline
-    const tl=$("#timeline"); tl.replaceChildren();
-    const rows=[...D.items.map(i=>({s:i.start,e:i.end,t:i.text,k:i.kind})),...D.tasks.map(t=>({s:t.r.start,e:t.r.end,t:"🎯 "+t.title,k:"task"}))].sort((a,b)=>a.s-b.s||a.e-b.e);
-    if(!rows.length) tl.append(el("li",null,"Nothing on the calendar yet."));
-    // finished items fold into one "Earlier" line once the day is moving
-    const pastN=live?rows.filter(x=>x.e<=n).length:0; const showPast=EXPAND_PAST||pastN<2;
-    if(pastN>=2){ const li=el("li","earlier"); const b=el("button","linkbtn",showPast?`Hide earlier`:`Earlier · ${pastN} done ›`); b.type="button"; b.addEventListener("click",()=>{ EXPAND_PAST=!EXPAND_PAST; renderDay(); }); li.append(b); tl.append(li); }
-    for(const x of rows){ if(live&&x.e<=n&&!showPast) continue; const li=el("li"); if(live&&x.e<=n) li.classList.add("past"); if(live&&x.s<=n&&n<x.e) li.classList.add("now");
-      li.append(el("span","t",fmtH(x.s)+"–"+fmtH(x.e).replace(/(am|pm)$/,m=>m))); const nm=el("span","n"); const d=el("span","dot"); d.style.background=KCOL[x.k]; nm.append(d,el("span",null,x.t)); li.append(nm); li.dataset.key=x.t; li.dataset.at=hmOf(x.s); tl.append(li); }
-    const bd=$("#birdie"); bd.hidden=!D.birdie; bd.textContent=D.birdie?"🐕 "+D.birdie:"";
-    renderTasks(D);
-  }
+  
+  
 
   // ---------- checklists (everything saves to Notion) ----------
   const CHECK_SVG='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2B1A16" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>';
-  function checkRow({title,when,steps,detail,meta,more,action,on,label,small,onToggle}){
-    const li=el("li","task"+(small?" small":"")+(on?" done":"")); const b=el("button","check"); b.type="button"; b.innerHTML=CHECK_SVG;
-    b.setAttribute("aria-pressed",String(on)); b.setAttribute("aria-label",label||("Mark "+title+" done")); b.disabled=!LIVE;
-    b.addEventListener("click",async()=>{ const next=b.getAttribute("aria-pressed")!=="true"; b.setAttribute("aria-pressed",String(next)); li.classList.toggle("done",next); b.disabled=true;
-      try{ await onToggle(next); }catch(e){ b.setAttribute("aria-pressed",String(!next)); li.classList.toggle("done",!next); toast(writeErr(e)); } b.disabled=!LIVE; updateProgress(); });
-    const body=el("div"); if(when) body.append(el("span","when",when)); body.append(el("div","ttl",title));
-    if(meta) body.append(el("div","meta",meta));
-    if(detail) body.append(el("div","det",detail));
-    if(steps&&steps.length){ const ul=el("ul"); steps.forEach(x=>ul.append(el("li",null,x))); body.append(ul); }
-    if(more&&more.length){ const d=el("details","more"); d.append(el("summary",null,"Details")); more.forEach(x=>d.append(typeof x==="string"?el("p",null,x):x)); body.append(d); }
-    li.append(b,body); if(action){ li.classList.add("act"); li.append(action); } return li;
-  }
+  
   // task-title lists are one per line (titles can contain commas); short code lists like "am,pm" or "0,2" use commas
   const LINE_LISTS=new Set(["Top 3 Done","Top 3 Moved","Habits Done"]);
   const listOf=prop=>clean(ROW&&ROW[prop]).split(LINE_LISTS.has(prop)?/\n/:/\n|,/).map(x=>x.trim()).filter(x=>x&&!/^none$/i.test(x));
@@ -4299,34 +4177,13 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     $("#ritProg").textContent=r.length?`${done(r)} of ${r.length} done`:"";
   }
   // words that make two lines "about the same thing"
-  const STOPW=new Set(["the","and","for","with","your","you","that","this","from","before","after","have","ready","today","tomorrow","make","sure","into","about","them","their","what","when","then","will","just","bring"]);
-  const wordsOf=t=>new Set(String(t).toLowerCase().replace(/[^a-z0-9 ]/g," ").split(/\s+/).filter(w=>w.length>=4&&!STOPW.has(w)));
-  function dupOfTask(line){ const w=[...wordsOf(line)]; if(!w.length) return false;
-    return TASKS.some(t=>{ const tw=wordsOf(t.title+" "+t.steps.join(" ")); const hit=w.filter(x=>tw.has(x)).length; return hit>=2&&hit/w.length>=.4; }); }
+  
+  
+  
 
   // top 3 (from the code-built schedule) + nudges (from the brief), one card
-  let NUDGES=[];
-  function renderTasks(D){
-    const ul=$("#tasks"); ul.replaceChildren(); const done=new Set(listOf("Top 3 Done").map(x=>x.toLowerCase()));
-    // one-time carry-over of any ticks saved on this device before checkmarks moved to Notion
-    try{ const k="zone-done-"+(ROW&&ROW["date:Date:start"]); const old=JSON.parse(localStorage.getItem(k)||"[]"); if(LIVE&&old.length&&!done.size){ old.forEach(x=>done.add(x.toLowerCase())); writeToday({"Top 3 Done":old.join("\n")}).then(()=>localStorage.removeItem(k)).catch(()=>{}); } }catch(e){}
-    const moved=new Set(listOf("Top 3 Moved").map(x=>x.toLowerCase()));
-    const rows=[...D.tasks.map(t=>({title:t.title,at:hmOf(t.r.start),when:"🎯 "+fmtH(t.r.start)+"–"+fmtH(t.r.end)+(t.during?" · during "+t.during:""),steps:t.steps})),...D.untimed.map(u=>({title:u.title,when:"🎯 "+u.note,steps:u.steps})),...D.unplaced.map(u=>({title:u.replace(/\s*\(it comes after a step that didn't fit\)$/i,""),when:"🎯 no clean window today",steps:[]})),...extraPicks(D).map(x=>({title:x,when:"🎯 picked this morning",steps:[]}))];
-    if(!rows.length){ if(LIVE&&nowH()>=6){ const li=el("li","muted"); li.append(document.createTextNode("No top 3 today. Pick up to 3:")); const pr=el("div","pickrow");
-        nextUp(TODAY(),[]).slice(0,5).forEach(it=>{ const b=el("button","chip","+ "+it.name+(it.focus&&it.focus<TODAY()?" · carried":it.due?" · "+dueLabel(it.due):it.star?" · ★":"")); b.type="button"; b.disabled=!mcp; b.addEventListener("click",()=>pickToday(it.name)); pr.append(b); });
-        if(!pr.children.length) pr.append(el("span",null,"Nothing open on your list. Enjoy it.")); li.append(pr); ul.append(li); }
-      else ul.append(el("li","muted",LIVE?"No top 3 today. Set tomorrow's in Ahead.":"Your top 3 shows up with the 4:30am brief.")); }
-    for(const t of rows){ const lc=t.title.toLowerCase(), isDone=done.has(lc), tw=twinOf(t.title), isDropped=!isDone&&!!tw&&tw.status==="Dropped", isAlice=!isDone&&!isDropped&&!!tw&&tw.owner==="Alice", isMoved=moved.has(lc)&&!isDone&&!isDropped;
-      let action=null;
-      if(LIVE&&!isDone&&!isDropped&&!isAlice){ action=el("button","mini movebtn",isMoved?"↩":"↪"); action.type="button"; action.setAttribute("aria-label",isMoved?`Bring "${t.title}" back to today`:`Move "${t.title}" to tomorrow`); action.title=isMoved?"Bring back to today":"Move to tomorrow";
-        action.addEventListener("click",()=>isMoved?unmoveTask(t.title):moveTasks([t.title]));
-        if(!isMoved){ const wrap=el("span","tacts"); const al=el("button","mini movebtn","🤝"); al.type="button"; al.title="Hand to Alice"; al.setAttribute("aria-label",`Hand "${t.title}" to Alice`); al.disabled=!mcp; al.addEventListener("click",()=>handToAlice(t.title)); wrap.append(al,action); action=wrap; } }
-      const row=checkRow({title:t.title,when:t.when,steps:isMoved||isDropped||isAlice?[]:t.steps,meta:isDropped?"Dropped":isAlice?"🤝 With Alice":isMoved?"Moved to tomorrow":"",action,on:isDone,onToggle:async on=>{ await setInList("Top 3 Done",t.title,on,"\n"); syncListDone(t.title,on); }});
-      if(isMoved){ row.classList.add("moved"); row.dataset.moved="1"; }
-      row.dataset.key=t.title; if(t.at) row.dataset.at=t.at; ul.append(row); }
-    $("#unplaced").textContent="";
-    renderNudges(); renderDueToday();
-  }
+  
+  
   // unfinished = today's top 3 tasks (placed or not) that aren't checked off or already moved
   function unfinishedTasks(){ const D=parseDay(); const done=new Set(listOf("Top 3 Done").map(x=>x.toLowerCase())); const moved=new Set(listOf("Top 3 Moved").map(x=>x.toLowerCase()));
     return [...D.tasks.map(t=>t.title),...D.untimed.map(u=>u.title),...D.unplaced.map(u=>u.replace(/\s*\(it comes after a step that didn't fit\)$/i,"")),...extraPicks(D)].filter(x=>{ if(done.has(x.toLowerCase())||moved.has(x.toLowerCase())) return false; const tw=twinOf(x); return !tw||(tw.owner!=="Alice"&&tw.status!=="Dropped"); }); }
@@ -4337,44 +4194,25 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     for(const t of titles){ if(!have.some(h=>h.includes(t.toLowerCase())||t.toLowerCase().includes(h))) tom.push(t); }
     const moved=[...new Set([...listOf("Top 3 Moved"),...titles])];
     try{ await writeToday({Tomorrow:tom.map((x,i)=>`${i+1}. ${x}`).join("\n")||"none","Top 3 Moved":moved.join("\n")},{silent:true});
-      renderTasks(parseDay());  if(!PLAN_DIRTY) renderPlan(); twinsFor(titles,tmrwISO()).catch(()=>{});
+         twinsFor(titles,tmrwISO()).catch(()=>{});
       const over=tom.length>3?` · tomorrow has ${tom.length}, trim in Ahead if you like`:"";
-      toast(`${titles.length===1?"Moved to tomorrow":`${titles.length} moved to tomorrow`}${over}`,async()=>{ try{ await writeToday({Tomorrow:prevTom||"none","Top 3 Moved":prevMoved||""},{silent:true}); renderTasks(parseDay());  if(!PLAN_DIRTY) renderPlan(); }catch(e){ toast(writeErr(e)); } });
+      toast(`${titles.length===1?"Moved to tomorrow":`${titles.length} moved to tomorrow`}${over}`,async()=>{ try{ await writeToday({Tomorrow:prevTom||"none","Top 3 Moved":prevMoved||""},{silent:true});    }catch(e){ toast(writeErr(e)); } });
     }catch(e){ toast(writeErr(e)); } }
   async function addToTomorrow(items,label){
     const prev=clean(ROW&&ROW.Tomorrow); const tom=tomLines(); const have=tom.map(x=>x.toLowerCase()); let added=0;
     for(const t of items){ const v=t.trim(); if(v&&!have.some(h=>h===v.toLowerCase())){ tom.push(v); added++; } }
     if(!added){ toast("Already on tomorrow's list"); return false; }
-    try{ await writeToday({Tomorrow:tom.map((x,i)=>`${i+1}. ${x}`).join("\n")},{silent:true});  if(!PLAN_DIRTY) renderPlan(); renderInboxActions(); twinsFor(items,tmrwISO()).catch(()=>{});
-      toast((label||"Added to tomorrow")+(tom.length>3?` · tomorrow has ${tom.length}`:""),async()=>{ try{ await writeToday({Tomorrow:prev||"none"},{silent:true});  if(!PLAN_DIRTY) renderPlan(); renderInboxActions(); }catch(e){ toast(writeErr(e)); } }); return true;
+    try{ await writeToday({Tomorrow:tom.map((x,i)=>`${i+1}. ${x}`).join("\n")},{silent:true});   renderInboxActions(); twinsFor(items,tmrwISO()).catch(()=>{});
+      toast((label||"Added to tomorrow")+(tom.length>3?` · tomorrow has ${tom.length}`:""),async()=>{ try{ await writeToday({Tomorrow:prev||"none"},{silent:true});   renderInboxActions(); }catch(e){ toast(writeErr(e)); } }); return true;
     }catch(e){ toast(writeErr(e)); return false; } }
-  async function unmoveTask(title){
-    const lc=title.toLowerCase(); const tom=tomLines().filter(x=>x.toLowerCase()!==lc); const moved=listOf("Top 3 Moved").filter(x=>x.toLowerCase()!==lc);
-    try{ await writeToday({Tomorrow:tom.map((x,i)=>`${i+1}. ${x}`).join("\n")||"none","Top 3 Moved":moved.join("\n")},{silent:true}); renderTasks(parseDay());  if(!PLAN_DIRTY) renderPlan(); toast("Back on today's list"); }catch(e){ toast(writeErr(e)); } }
+  
   // "Carry over N unfinished" chip for the Tomorrow card and Ahead
-  function carryChip(box){ return; /* Oct 20: one picking flow, no carrying over */ const left=LIVE?unfinishedTasks():[]; if(!left.length) return; if(box&&box.id==="tomReady"&&nowH()>=15) return; /* the close-out below covers it (UX sweep) */ const c=el("button","rchip todo carrychip",`↪ Carry over ${left.length} unfinished`); c.type="button"; c.setAttribute("aria-label",`Move ${left.length} unfinished top 3 task${left.length===1?"":"s"} to tomorrow: ${left.join(", ")}`); c.addEventListener("click",()=>moveTasks(left)); box.append(c); }
+  
   // the brief's 📝 tips, tucked under the schedule item or task they're about ("Mahjong · bring the tiles")
-  const hmOf=h=>{ const H=Math.floor(h), M=Math.round((h-H)*60); return `${((H+11)%12)+1}:${String(M).padStart(2,"0")}`; };
-  const keyText=t=>String(t).replace(/^\s*(?:\p{Extended_Pictographic}|\uFE0F|\u200D)+\s*/u,"").trim();
-  function tipTarget(n){
-    const nameP=n.includes(" · ")?n.split(" · ")[0].trim().toLowerCase():"";
-    const cands=[...document.querySelectorAll("#tasks li[data-key], #timeline li[data-key]")];
-    if(nameP){ const hit=cands.find(li=>{ const k=keyText(li.dataset.key).toLowerCase(); return k&&(k.includes(nameP)||nameP.includes(k)); }); if(hit) return hit; }
-    const tm=n.match(/\b(\d{1,2}):(\d{2})/)||n.match(/\b(?:at|by|before|around)\s+(\d{1,2})(?![:\d])/i);
-    if(tm){ const at=tm[2]?`${+tm[1]}:${tm[2]}`:`${+tm[1]}:00`; const byTime=cands.filter(li=>li.dataset.at===at); if(byTime.length) return byTime.find(li=>li.matches("#tasks li"))||byTime[0]; }
-    const w=wordsOf(n); let best=null, bestN=0;
-    for(const li of cands){ const kw=wordsOf(li.dataset.key); const hit=[...w].filter(x=>kw.has(x)).length+(li.matches("#tasks li")?.5:0); if(hit>bestN){ best=li; bestN=hit; } }
-    return bestN>=1?best:null;
-  }
-  function renderNudges(){
-    document.querySelectorAll(".tip").forEach(x=>x.remove()); const loose=$("#dayTips"); loose.replaceChildren();
-    for(const n of NUDGES){
-      const tip=n.includes(" · ")?n.split(" · ").slice(1).join(" · ").trim():n; if(dupOfTask(tip)) continue; // the name is the address; only the tip itself can repeat a task's guidance
-      const li=tipTarget(n);
-      if(li){ const holder=li.matches("#tasks li")?(li.querySelector(":scope > div")||li):li; holder.append(el("div","tip","💡 "+tip)); }
-      else loose.append(el("div","tip loose","💡 "+n)); }
-    updateProgress();
-  }
+  
+  
+  
+  
 
   // ---------- Mindful Moment library (mirrors the morning brief's rotation; notes are hand-written and fact-checked) ----------
   const MM_START="2026-09-30";
@@ -4383,39 +4221,13 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   const PW_STEPS=["Notice","Understand","Feel","Release","Practice","With others","Integrate"];
   const PW_SEASONS=["Waking up","Letting go","Boundaries and care","Living it"];
   function pathwayAt(start,dateStr){ if(!/^\d{4}-\d{2}-\d{2}$/.test(start||"")) return null; const k=Math.round((Date.parse(dateStr+"T12:00:00Z")-Date.parse(start+"T12:00:00Z"))/86400000); if(k<0) return null; const wi=Math.floor(k/7)%52, di=k%7; return {week:wi+1,day:di+1,title:PW_TITLES[wi],step:PW_STEPS[di],season:PW_SEASONS[Math.floor(wi/13)]}; }
-  const MM_COLOR={"Letting Go":"var(--water)","Buddhism":"var(--sand)","Hinduism and Vedanta":"var(--rose)","Yogic philosophy":"var(--sage)","Christian mysticism":"var(--lav)"};
+  
   const MM_LIB=[[["Dhammapada, verse 1 (Müller translation)", "lotus", "noting"], ["Dhammapada, verse 5 (Müller translation)", "ember", "loving-kindness"], ["Dhammapada, verse 103 (Müller translation)", "mountain", "breath counting"], ["The Heart Sutra", "ensō", "open awareness"], ["Anapanasati Sutta", "bodhi leaf", "breath counting"], ["Kalama Sutta", "lamp", "noting"], ["Metta Sutta", "lotus", "loving-kindness"], ["Mahaparinibbana Sutta, the Buddha's last words", "river", "walking"], ["Traditional Zen saying", "mountain", "walking"], ["Dhammapada, verse 183 (Müller translation)", "bodhi leaf", "body scan"], ["Alagaddupama Sutta, the parable of the raft", "river", "open awareness"], ["Sallatha Sutta, the two arrows", "feather", "body scan"]], [["Bhagavad Gita 2.47", "seed", "breath counting"], ["Bhagavad Gita 6.5", "mountain", "noting"], ["Bhagavad Gita 6.19", "candle", "candle gazing"], ["Bhagavad Gita 2.14", "river", "body scan"], ["Chandogya Upanishad 6.8.7", "wave", "open awareness"], ["Isha Upanishad, verse 1", "seed", "gratitude"], ["Brihadaranyaka Upanishad 1.3.28, the Pavamana mantra", "candle", "mantra"], ["Katha Upanishad 1.3.3-4", "wheel", "body scan"], ["Mandukya Upanishad", "Om", "mantra"], ["Bhagavad Gita 2.48", "lotus", "breath counting"], ["Mundaka Upanishad 3.1.1", "tree", "noting"], ["Bhagavad Gita 5.10", "lotus", "open awareness"]], [["Yoga Sutras 1.2", "still water", "breath counting"], ["Yoga Sutras 1.12", "mountain", "breath counting"], ["Yoga Sutras 1.14", "seed", "so hum"], ["Yoga Sutras 1.33", "lotus", "loving-kindness"], ["Yoga Sutras 2.46", "mountain", "body scan"], ["Yoga Sutras 2.16", "lamp", "noting"], ["Yoga Sutras 2.33", "ember", "loving-kindness"], ["Yoga Sutras 2.35", "dove", "loving-kindness"], ["Yoga Sutras 1.27-28", "Om", "mantra"], ["Yoga Sutras 2.42", "sun", "gratitude"], ["Traditional yogic practice, the so hum breath", "wave", "so hum"], ["Yoga Sutras 3.1", "candle", "candle gazing"]], [["Julian of Norwich, Revelations of Divine Love, chapter 27", "hazelnut", "centering prayer"], ["Julian of Norwich, Revelations of Divine Love, chapter 5", "hazelnut", "gratitude"], ["Teresa of Ávila, her bookmark (Longfellow translation)", "candle", "breath counting"], ["Teresa of Ávila, The Interior Castle", "labyrinth", "body scan"], ["Brother Lawrence, The Practice of the Presence of God", "cup", "walking"], ["The Cloud of Unknowing", "cloud", "centering prayer"], ["Meister Eckhart, on Gelassenheit (letting-be)", "empty bowl", "open awareness"], ["John of the Cross, The Dark Night", "moon", "centering prayer"], ["Psalm 46:10 (King James Version)", "still water", "centering prayer"], ["Thomas à Kempis, The Imitation of Christ", "dove", "loving-kindness"], ["Ignatius of Loyola, the Examen", "lamp", "examen"], ["Hildegard of Bingen, on viriditas", "leaf", "walking"]]];
   function mmFor(dateStr){ const day=Math.max(0,Math.round((Date.parse(dateStr+"T12:00:00Z")-Date.parse(MM_START+"T12:00:00Z"))/86400000)); const t=MM_ORDER[day%4]; const list=MM_LIB[day%4]; const [source,symbol,practice]=list[Math.floor(day/4)%list.length]; return {day:day+1,tradition:t,source,symbol,practice}; }
 
   // ---------- symbol illustrations (simple line art, drawn in the tradition's color) ----------
-  const SYM={
-    "lotus":'<path d="M32 46c-6-6-6-16 0-24 6 8 6 18 0 24z"/><path d="M32 46c-9-2-15-9-16-18 8 0 14 6 16 18z"/><path d="M32 46c9-2 15-9 16-18-8 0-14 6-16 18z"/><path d="M14 48c6 4 30 4 36 0"/>',
-    "ember":'<path d="M32 52c-9 0-14-6-14-13 0-8 7-11 8-20 5 4 6 9 5 13 3-2 5-6 5-10 6 5 10 11 10 17 0 7-5 13-14 13z"/><path d="M32 52c-3 0-6-2-6-6s4-6 6-10c2 4 6 6 6 10s-3 6-6 6z"/>',
-    "mountain":'<path d="M8 50l16-26 9 14 7-10 16 22z"/><path d="M20 30l4 4 4-4"/>',
-    "ensō":'<path d="M44 16c-12-8-30-2-31 14-1 14 12 24 25 20 9-3 14-11 13-20"/>',
-    "bodhi leaf":'<path d="M32 54c-12-8-20-18-20-28 0-8 6-14 12-14 4 0 7 2 8 5 1-3 4-5 8-5 6 0 12 6 12 14 0 10-8 20-20 28z"/><path d="M32 54v4M32 20v32"/>',
-    "leaf":'<path d="M14 50c0-20 14-34 38-36-2 24-16 38-36 38z"/><path d="M14 50l22-22"/>',
-    "lamp":'<path d="M14 40c4 8 32 8 36 0z"/><path d="M50 40l6-4"/><path d="M32 34c-4-4-4-9 0-14 4 5 4 10 0 14z"/>',
-    "river":'<path d="M8 22c8-6 16 6 24 0s16 6 24 0"/><path d="M8 34c8-6 16 6 24 0s16 6 24 0"/><path d="M8 46c8-6 16 6 24 0s16 6 24 0"/>',
-    "feather":'<path d="M16 52C20 30 32 16 50 12c-2 18-14 32-34 40z"/><path d="M16 52l22-26M24 40l6 2M30 32l6 2"/>',
-    "seed":'<ellipse cx="32" cy="42" rx="9" ry="12"/><path d="M32 30c0-8 4-12 10-14-1 6-4 10-10 14z"/>',
-    "candle":'<rect x="24" y="30" width="16" height="24" rx="2"/><path d="M32 30v-4"/><path d="M32 24c-4-4-4-8 0-14 4 6 4 10 0 14z"/>',
-    "wave":'<path d="M8 44c6 0 10-4 12-10 3-10 14-14 22-8 6 4 6 12 0 14-4 2-8-2-6-6"/><path d="M8 52h48"/>',
-    "wheel":'<circle cx="32" cy="32" r="20"/><circle cx="32" cy="32" r="4"/><path d="M32 12v40M12 32h40M18 18l28 28M46 18L18 46"/>',
-    "tree":'<circle cx="32" cy="24" r="14"/><path d="M32 38v16M24 54h16M32 44l-6-5M32 42l6-5"/>',
-    "still water":'<path d="M10 36h44M16 44h32M22 52h20"/><circle cx="32" cy="24" r="6"/>',
-    "sun":'<circle cx="32" cy="32" r="10"/><path d="M32 10v6M32 48v6M10 32h6M48 32h6M16 16l4 4M44 44l4 4M48 16l-4 4M16 48l4-4"/>',
-    "dove":'<path d="M12 36c8 2 14 0 20-6 4 4 10 6 18 4-4 8-12 14-22 14-8 0-14-4-16-12z"/><path d="M32 30c-2-8 2-14 8-16-1 6 0 10 4 14"/><circle cx="42" cy="36" r="1"/>',
-    "hazelnut":'<path d="M32 54c-10 0-16-8-16-18 0-8 6-14 16-14s16 6 16 14c0 10-6 18-16 18z"/><path d="M18 28c4-8 24-8 28 0M32 22v-8"/>',
-    "labyrinth":'<circle cx="32" cy="32" r="22"/><path d="M32 10v8M32 18a14 14 0 1 1-14 14M18 32a8 8 0 1 1 8 8"/><circle cx="32" cy="32" r="2"/>',
-    "cup":'<path d="M16 24h28v12c0 9-6 16-14 16s-14-7-14-16z"/><path d="M44 28h4a6 6 0 0 1 0 12h-4"/><path d="M24 14c0 4 4 4 4 8M32 14c0 4 4 4 4 8"/>',
-    "cloud":'<path d="M18 46h30a9 9 0 0 0 0-18 13 13 0 0 0-25-3 10 10 0 0 0-5 21z"/>',
-    "empty bowl":'<path d="M10 30h44c0 14-10 22-22 22S10 44 10 30z"/><path d="M24 52h16"/>',
-    "moon":'<path d="M42 50A20 20 0 1 1 42 14a16 16 0 0 0 0 36z"/>'
-  };
-  function symbolSVG(name,color){ const s=document.createElementNS(NS,"svg"); s.setAttribute("viewBox","0 0 64 64"); s.setAttribute("aria-hidden","true"); s.setAttribute("class","sym-art");
-    if(name==="Om"){ const t=sv("text",{x:32,y:46,"text-anchor":"middle","font-size":40,fill:color},"ॐ"); s.append(t); return s; }
-    const g=sv("g",{fill:"none",stroke:color,"stroke-width":2.4,"stroke-linecap":"round","stroke-linejoin":"round"}); g.innerHTML=SYM[name]||'<circle cx="32" cy="32" r="16"/>'; s.append(g); return s; }
+  
+  
 
   // ---------- practice-specific guidance for the timer ----------
   // returns {cue, sub, orb (0..1 scale), count} for a given elapsed second
@@ -4445,47 +4257,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // ---------- mindful ----------
   let SIT={min:3,name:"",how:"",day:""}, SIT_LEN=null, MM=null;
   const bellsOn=()=>{ try{ return localStorage.getItem("zone-bells")!=="off"; }catch(e){ return true; } };
-  function renderMind(){
-    const {head,rest}=split(ROW&&ROW.Woo); $("#mindH").textContent=head||"Today's Mindful Moment arrives with the brief.";
-    const get=e=>{ const l=rest.find(x=>iconOf(x)[0]===e); return l?iconOf(l)[1]:""; };
-    const tp=parts(get("🕯️")); $("#teaching").textContent=tp[0]||""; const src=tp.slice(1).join(" · ");
-    const TRADS=/^(Buddhism|Hinduism and Vedanta|Yogic philosophy|Christian mysticism)$/i;
-    const PW=/^Letting Go$/i.test(tp[1]||"");   // "key line · Letting Go · Week 1 · Day 1 · Arriving · Notice"
-    $("#teachSrc").textContent=PW?tp.slice(4).join(" · "):tp.slice(1).filter(x=>!TRADS.test(x)).join(" · ");
-    const labs=$("#mindCard").querySelectorAll(".devo-l"); if(labs[0]) labs[0].textContent=PW?"Today's thought":"Today's reading"; const dl=$("#devoBody .devo-l"); if(dl) dl.textContent=PW?"Today's reading":"Reflection";
-    // the reflection paragraph (older briefs had a one-line note instead)
-    const devo=get("📜")||get("💭"); $("#devoText").textContent=devo; $("#devoBody").hidden=!devo;
-    // curriculum days: a concrete practice for today, and the reading becomes the idea's roots
-    const tryIt=get("🎯").replace(/^Try it today\s*·\s*/i,""); $("#tryText").textContent=tryIt; $("#tryBody").hidden=!tryIt;
-    if(tryIt&&dl) dl.textContent="Where it comes from";
-    const sym=get("✦"); const sp=parts(sym); $("#symbol").textContent=sym?(sp.length>1?`✦ ${sp[0].charAt(0).toUpperCase()+sp[0].slice(1)}. ${sp.slice(1).join(" · ")}`:"✦ "+sym):""; $("#symbol").hidden=!sym;
-    $("#question").textContent=get("✍️");
-    const closing=get("🙏"); $("#closing").textContent=closing; $("#closing").hidden=!closing;
-    const sit=parts(get("🧘")); const mm=(sit.find(x=>/\d+\s*min/.test(x))||"").match(/(\d+)/);
-    SIT={min:mm?+mm[1]:3,name:sit[2]||"",how:sit[3]||"",day:(sit.find(x=>/^day\s*\d+/i.test(x))||"")};
-    if(SIT_LEN==null) SIT_LEN=SIT.min;
-    // today's library entry, used only when it matches the brief's teaching
-    const d=(ROW&&ROW["date:Date:start"])||TODAY(); MM=mmFor(d); const match=!!src&&src.toLowerCase().includes(MM.source.toLowerCase().split(" (")[0].toLowerCase());
-    const trad=PW?"Letting Go":match?MM.tradition:(src.match(/Buddhism|Hinduism and Vedanta|Yogic philosophy|Christian mysticism/)||[""])[0];
-    const card=$("#mindCard"); card.style.setProperty("--trad",MM_COLOR[trad]||"var(--sage)");
-    $("#mindTrad").textContent=PW?`Letting Go · ${tp[2]||""} · ${tp[3]||""}`.replace(/ · $/,""):(trad||"Mindful Moment")+(SIT.day?" · "+SIT.day.toLowerCase():"");
-    const symName=(match&&!PW)?MM.symbol:(sym.split(/\s*·\s*/)[0]||"").toLowerCase();
-    $("#symArt").replaceChildren(symbolSVG(symName,MM_COLOR[trad]||"var(--sage)"));
-    // footer: the moon and tomorrow's tradition, quietly
-    const moon=get("🌙"); const tm=new Date(d+"T12:00:00Z"); tm.setUTCDate(tm.getUTCDate()+1); const t=mmFor(tm.toISOString().slice(0,10));
-    const moonShort=(moon.match(/^(new moon|full moon|(?:waxing|waning) (?:crescent|gibbous)|first quarter|last quarter|third quarter)[^,.;·]*?(?: in \w+)?/i)||[moon.split(/[,.;·]/)[0]])[0].trim();
-    const wkN=+((tp[2]||"").match(/\d+/)||[0])[0], dyN=+((tp[3]||"").match(/\d+/)||[0])[0];
-    const pwStart=(String(SET.Pathway&&SET.Pathway.value||"").match(/^Letting Go\s*·\s*(\d{4}-\d{2}-\d{2})/i)||[])[1];
-    const tPW=!PW&&pwStart?pathwayAt(pwStart,tm.toISOString().slice(0,10)):null;
-    const nextPW=tPW?`Tomorrow: Letting Go begins · ${tPW.title}`:PW&&wkN&&dyN?(dyN<7?`Tomorrow: Day ${dyN+1} · ${PW_STEPS[dyN]}`:`Tomorrow: Week ${wkN%52+1} · ${PW_TITLES[wkN%52]}`):"";
-    $("#devoFoot").textContent=[moonShort?"🌙 "+moonShort:"",(nextPW||`Tomorrow: ${t.tradition}`)].filter(Boolean).join(" · "); $("#devoFoot").hidden=false;
-    $("#mindFb").replaceChildren(feedbackRow("mindful"));
-    // reflection: quiet until you want it
-    const saved=clean(ROW&&ROW.Reflection).trim(); const editing=!$("#reflEdit").hidden;
-    $("#reflText").textContent=saved; $("#reflText").hidden=!saved||editing;
-    $("#reflToggle").textContent=saved?"Edit your reflection":"+ Write your reflection"; $("#reflToggle").hidden=editing||!LIVE;
-    const ta=$("#reflection"); if(!editing) ta.value=saved;
-  }
+  
   
   
   
@@ -4499,7 +4271,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
         g.gain.setValueAtTime(0.0001,t0); g.gain.exponentialRampToValueAtTime(peak,t0+.03); g.gain.exponentialRampToValueAtTime(0.0001,t0+(soft?2.5:4.5)); o.connect(g).connect(ctx.destination); o.start(t0); o.stop(t0+5); }); }catch(e){} }
   function openSit(){
     const T=el("div","timer"); T.setAttribute("role","dialog"); T.setAttribute("aria-modal","true"); T.setAttribute("aria-label","Set up your sit"); T.style.setProperty("--trad",getComputedStyle($("#mindCard")).getPropertyValue("--trad"));
-    const box=el("div","setup"); box.append(el("div","trad",$("#mindTrad").textContent),el("div","tt",SIT.name?SIT.name.charAt(0).toUpperCase()+SIT.name.slice(1):"Today's sit"),el("div","cue",SIT.how));
+    const box=el("div","setup"); box.append(el("div","trad",znMindTrad()),el("div","tt",SIT.name?SIT.name.charAt(0).toUpperCase()+SIT.name.slice(1):"Today's sit"),el("div","cue",SIT.how));
     let mins=SIT_LEN||SIT.min; const lens=el("div","lens"); lens.setAttribute("role","group"); lens.setAttribute("aria-label","Sit length"); lens.style.justifyContent="center";
     for(const m of [...new Set([SIT.min,3,5,7,10,12])].sort((a,b)=>a-b)){ const b=el("button","chip",m+" min"); b.type="button"; b.setAttribute("aria-pressed",String(m===mins)); b.addEventListener("click",()=>{ mins=m; lens.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); }); lens.append(b); }
     const bellT=el("button","toggle","🔔 Bells"); bellT.type="button"; bellT.setAttribute("aria-pressed",String(bellsOn()));
@@ -4513,7 +4285,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const total=mins*60, practice=MM&&MM.practice||SIT.name||""; const guide=guideFor(SIT.name||practice,total); const bells=bellsOn();
     let elapsed=0, last=performance.now(), paused=false, raf=0, closed=false, halfRung=false;
     const T=el("div","timer"); T.setAttribute("role","dialog"); T.setAttribute("aria-modal","true"); T.setAttribute("aria-label","Meditation timer"); T.style.setProperty("--trad",getComputedStyle($("#mindCard")).getPropertyValue("--trad"));
-    const trad=el("div","trad",$("#mindTrad").textContent); const title=el("div","step",`${mins} min · ${SIT.name||"sit"}`);
+    const trad=el("div","trad",znMindTrad()); const title=el("div","step",`${mins} min · ${SIT.name||"sit"}`);
     const visual=el("div"); const orb=el("div","orb"); const flame=el("div","flame");
     const cue=el("div","tt",""); cue.setAttribute("aria-live","polite"); const sub=el("div","cue","");
     const bar=el("div","bar"); const fill=el("i"); bar.append(fill); const clock=el("div","step");
@@ -4529,7 +4301,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const ta=el("textarea"); ta.rows=2; ta.placeholder="Anything you noticed (optional)"; ta.style.maxWidth="360px";
       const r=el("div","row"); r.style.justifyContent="center"; const save=el("button","btn","Save"); save.type="button"; const skip=el("button","btn ghost","Skip"); skip.type="button"; r.append(skip,save);
       const nt=el("div","note"); T.append(h,sub2,feel,ta,r,nt); feel.querySelector(".chip").focus();
-      const close=()=>{ T.remove(); renderMind(); renderRituals(); };
+      const close=()=>{ T.remove(); znMindState();  };
       skip.addEventListener("click",close);
       save.addEventListener("click",async()=>{ const v=[pick,ta.value.trim()].filter(Boolean).join(" · "); if(!v){ close(); return; } nt.textContent="Saving…"; try{ await writeToday({"Sit Note":v}); close(); }catch(e){ nt.textContent=writeErr(e); } }); };
     const finish=async(full)=>{ if(closed) return; closed=true; cancelAnimationFrame(raf); if(full&&bells) bell(false); const minsDone=full?mins:Math.round(elapsed/60);
@@ -4638,33 +4410,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   
 
   // ---------- inbox ----------
-  function renderInbox(payload){
-    const txt=payload&&typeof payload.text==="string"?payload.text:(typeof payload==="string"?payload:"");
-    const box=txt.split(/<callout/).slice(1).map(b=>b.split(/<\/callout>/)[0]).find(b=>/Inbox Rundown/.test(b));
-    INBOX={date:"",ideas:[],payload};
-    if(!box){ $("#inboxH").textContent="No Inbox Rundown yet."; $("#inboxLines").replaceChildren(); $("#inboxMore").hidden=true; renderHealth(); renderIdeas(); return; }
-    INBOX_MAIL={}; // Oct 20: lines end with a hidden " ⟦account:id1,id2⟧" marker (zone-inbox 13); keep it aside, show the line without it
-    const inner=clean(box.slice(box.indexOf(">")+1)).split("\n").map(s=>{ s=s.trim(); const m=s.match(/\s*⟦(cwsharp01|claireweber3):([0-9a-f,]+)⟧\s*$/i); if(m){ s=s.slice(0,m.index).trim(); INBOX_MAIL[s]={acct:m[1].toLowerCase(),ids:m[2].split(",").filter(Boolean)}; } return s; });
-    while(inner.length&&(!inner[0]||/^Inbox Rundown/i.test(inner[0]))){ const m=(inner[0]||"").match(/Inbox Rundown\s*·\s*(.+)$/i); if(m) INBOX.date=m[1].trim(); inner.shift(); }
-    const head=inner.shift()||""; while(inner.length&&!inner[0]) inner.shift();
-    INBOX.ideas=inner.filter(l=>/^💡/u.test(l)).map(l=>l.replace(/^💡\s*/u,"").replace(/^Top 3 idea\s*·\s*/i,"").trim()).filter(Boolean);
-    $("#inboxDate").textContent="Inbox Rundown"+(INBOX.date?" · "+INBOX.date:"");
-    $("#inboxH").textContent=head||"Nothing new";
-    // reply drafts get their own copyable block; everything else reads as before
-    const drafts=inner.filter(l=>/^✍️/u.test(l)); const rest=inner.filter(l=>!/^✍️/u.test(l)&&!/^💡/u.test(l));
-    // the card shows the top 3 items (main lines only); the sheet has everything, with how-to steps and drafts
-    const items=rest.filter(l=>l&&!/^↳/.test(l)); INBOX.items=items;
-    const clrd=new Set(listOf("Inbox Cleared")); const keyOf=raw=>String(iconOf(raw)[1]||raw).toLowerCase().replace(/[^a-z0-9 ]+/g," ").replace(/\s+/g," ").trim().slice(0,70).trim();
-    const open=items.filter(l=>!clrd.has(keyOf(l))), nCleared=items.length-open.length;
-    if(open.length) inboxList(open.slice(0,3),$("#inboxLines")); else { const ul=$("#inboxLines"); ul.replaceChildren(el("li","noicon allclear",items.length?"All handled. Inbox zero, at least here. ✓":"Nothing new")); }
-    $("#inboxDate").textContent="Inbox Rundown"+(INBOX.date?" · "+INBOX.date:"")+(nCleared?` · ${nCleared} cleared`:"");
-    const more=$("#inboxMore"); const extra=items.length-3;
-    if(items.length>3||rest.some(l=>/^↳/.test(l))||drafts.length){ more.hidden=false; more.textContent=extra>0?`See all ${items.length}${drafts.length?` · ${drafts.length} draft${drafts.length===1?"":"s"}`:""} ›`:`Details${drafts.length?` · ${drafts.length} draft${drafts.length===1?"":"s"}`:""} ›`;
-      more.onclick=()=>{ const body=[inboxList(rest,null),feedbackRow("inbox")]; const dz=buildDrafts(drafts); if(dz) body.push(dz); openSheet({kicker:"Inbox Rundown"+(INBOX.date?" · "+INBOX.date:""),title:head,body,from:more}); setTimeout(renderInboxActions,0); }; }
-    else more.hidden=true;
-    $("#inboxCard").querySelector(".drafts")?.remove();
-    renderHealth(); renderIdeas(); 
-  }
+  
   // a small ↪ on actionable inbox items sends them to tomorrow's top 3 (not on shipping, security, phishing, receipts, or newsletters)
   const INBOX_SKIP=new Set(["📦","🔒","⚠️","🧾","📰","📌","🗂️","💡","✍️"]); // Oct 23: FYI items, the "more" line, top-3 ideas and drafts aren't things that need her
   function inboxTitle(line){ const [ic,tx0]=iconOf(String(line).replace(/\s*⟦[^⟧]*(⟧|$)/g,"")); const tx=tx0; const p=parts(tx).filter(x=>!/^(✅|⚠️)/.test(x)&&!/^(on your calendar|not on your calendar)/i.test(x)&&!/^(via\s+\S+\s*)?[0-9a-f]{5,}$/i.test(x.trim())&&!/^(cwsharp01|claireweber3)[:\s]/i.test(x.trim()));
@@ -4675,24 +4421,12 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // inbox items she's handled: saved to today's Daily Log as plain-word keys, one per line
   const inboxKey=raw=>String(iconOf(raw)[1]||raw).toLowerCase().replace(/[^a-z0-9 ]+/g," ").replace(/\s+/g," ").trim().slice(0,70).trim(); // trim after cutting, or a key ending on a space never matches what's saved
   const inboxCleared=()=>new Set(listOf("Inbox Cleared"));
-  async function clearInbox(raw,on){ await setInList("Inbox Cleared",inboxKey(raw),on,"\n"); if(INBOX.payload) renderInbox(INBOX.payload); else renderInboxActions(); if(!wkDay()) setTimeout(renderWeekday,0); else setTimeout(offSummaries,0); toast(on?"Cleared":"Back in your inbox"); }
+  async function clearInbox(raw,on){ await setInList("Inbox Cleared",inboxKey(raw),on,"\n"); if(INBOX.payload) znInbox(INBOX.payload); else renderInboxActions(); if(!wkDay()) setTimeout(renderWeekday,0); else setTimeout(offSummaries,0); toast(on?"Cleared":"Back in your inbox"); }
   // ---- appointment emails (Oct 16): zone-cal ?part=appts writes the Zone Settings row "Inbox Appointments" a few times a day ----
-  const APPT_ADDED={};
-  function apptData(){ try{ const j=JSON.parse(String(SET.Appts&&SET.Appts.value||"")); return j&&Array.isArray(j.items)?j:null; }catch(e){ return null; } }
-  function renderAppts(){ const box=$("#apptBox"); if(!box) return; const d=apptData(), now=TODAY();
-    const items=d?d.items.filter(a=>a&&a.date&&a.date>=now):[]; box.replaceChildren(); box.hidden=!items.length; if(!items.length) return;
-    box.append(el("div","label","📅 Appointments from your inbox"));
-    for(const a of items){ const r=el("div","corow"); const t=el("span","cot",a.title); t.append(el("span","apptwhen"," · "+a.label)); r.append(t);
-      const added=!!APPT_ADDED[a.k];
-      if(a.on_cal||added){ const ok=el("span","apptok",added?"✓ Added to your calendar":"✓ On your calendar"); if(a.cal&&!added) ok.title="Matched: "+a.cal; r.append(ok); }
-      else if(!a.time) r.append(el("span","apptok","No time in the email, add it yourself"));
-      else { const b=el("button","chip","+ Add to calendar"); b.type="button"; b.disabled=!LIVE||!mcp; b.setAttribute("aria-label",`Add ${a.title}, ${a.label}, to your calendar`); b.addEventListener("click",()=>addAppt(a,b)); r.append(b); }
-      box.append(r); } }
-  async function addAppt(a,b){ b.disabled=true; b.textContent="Adding…"; const [h,m]=String(a.time).split(":").map(Number), e=h*60+m+60; const end=`${String(Math.floor(e/60)%24).padStart(2,"0")}:${String(e%60).padStart(2,"0")}`;
-    try{ await mcp.callTool(CAL,"create_event",{calendarId:"cwsharp01@gmail.com",summary:a.title,startTime:`${a.date}T${a.time}:00`,endTime:`${a.date}T${end}:00`,timeZone:TZ,description:(a.summary?a.summary+"\n\n":"")+"Added from your inbox by the Zone."});
-      APPT_ADDED[a.k]=1; const d=apptData(); if(d){ d.items.forEach(x=>{ if(x.k===a.k){ x.on_cal=true; x.cal=a.title; } }); const v=JSON.stringify(d); if(v.length<1900){ try{ await saveSetting("Appts",[v]); }catch(e){} } }
-      renderAppts(); toast("Added to your calendar"); }
-    catch(e){ b.disabled=false; b.textContent="+ Add to calendar"; toast(writeErr(e)); } }
+  
+  
+  
+  
   let INBOX_MAIL={};
   async function mailAct(raw,kind){ const m=INBOX_MAIL[raw]; if(!m) return;
     try{
@@ -4719,64 +4453,11 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const title=inboxTitle(raw); const lc=title.toLowerCase(); const on=tom.includes(lc)||LIST.some(it=>it.name.toLowerCase()===lc&&it.status!=="Dropped");
       const b=el("button","mini ibtn",on?"✓":"+"); b.type="button"; b.disabled=on||!LIST_LOADED; b.setAttribute("aria-label",on?`"${title}" is on your list`:`Add "${title}" to your list`); b.title=on?"On your list":"Add to your list";
       b.addEventListener("click",async()=>{ b.disabled=true; const p=parseCapture(title); if(await listCreate({...p,name:title,kind:"To-do"},"Inbox")) toast("Added to your list from your inbox"); else b.disabled=false; }); li.append(b); }); }
-  function inboxList(lines,ul){ ul=linesList(lines,ul,true); ul.classList.add("inboxacts"); const flat=lines.filter(l=>l!==""&&l!=null); let i=0;
-    ul.querySelectorAll(":scope > li:not(.gap)").forEach(li=>{ li.dataset.raw=flat[i++]||""; }); renderInboxActions(); return ul; }
-  function buildDrafts(drafts){
-    if(drafts.length){ const box=el("div","drafts"); box.append(el("div","label",drafts.length===1?"Draft reply":"Draft replies"));
-      for(const l of drafts){ const p=parts(iconOf(l)[1].replace(/^Draft reply\s*·\s*/i,"")); const who=p.shift()||"Reply"; const txt=p.join(" · ").split(/\s*\/\/\s*/).join("\n\n");
-        const d=el("div","draft"); const top=el("div","who"); top.append(el("span",null,"To "+who)); const b=el("button","chip","Copy"); b.type="button"; b.setAttribute("aria-label","Copy draft reply to "+who);
-        b.addEventListener("click",async()=>{ let ok=false; try{ await navigator.clipboard.writeText(txt); ok=true; }catch(e){ try{ const ta=document.createElement("textarea"); ta.value=txt; ta.style.position="fixed"; ta.style.opacity="0"; document.body.append(ta); ta.select(); ok=document.execCommand("copy"); ta.remove(); }catch(e2){} } b.textContent=ok?"Copied":"Select and copy"; setTimeout(()=>b.textContent="Copy",2500); });
-        top.append(b); const bd=el("div","body",txt); d.append(top,bd,el("div","hintx","A starting point. Edit anything in [brackets] before sending.")); box.append(d); }
-      return box; }
-    return null;
-  }
+  
+  
 
   // ---------- rituals (checkable) ----------
-  function renderRituals(){
-    const {head,rest}=split(ROW&&ROW.Rituals); $("#ritualsHead").textContent=head||"Arrives with the 4:30am brief.";
-    NUDGES=[]; const R={am:null,pm:null,mobility:null,ritual:null}; let cur=null;
-    for(const l of rest){ if(!l){ cur=null; continue; } const [ic,tx]=iconOf(l);
-      if(ic==="📝"){ NUDGES.push(tx); cur=null; continue; }
-      if(ic==="🧴"){ const pm=/^PM\b/i.test(tx); cur=pm?"pm":"am"; R[cur]={text:tx.replace(/^(AM|PM)\s*·\s*/i,""),extra:[]}; continue; }
-      if(ic==="🤸"){ cur="mobility"; R.mobility={text:tx,extra:[]}; continue; }
-      if(ic==="🕯️"){ cur="ritual"; R.ritual={text:tx,extra:[]}; continue; }
-      if(cur&&R[cur]) R[cur].extra.push((ic&&ic!=="①"?ic+" ":"")+(ic==="①"?"① ":"")+tx); }
-    const ul=$("#rituals"); ul.replaceChildren(); const rt=$("#routines"); rt.replaceChildren(); const done=new Set(listOf("Rituals Done"));
-    const goBtn=(label,fn)=>{ const b=el("button","btn goBtn","▶ "+label); b.type="button"; b.addEventListener("click",fn); return b; };
-    // the sit: checks itself off when the timer finishes; checking by hand logs today's minutes
-    if(SIT&&SIT.name||split(ROW&&ROW.Woo).head){ const med=num(ROW&&ROW.Meditated)||0; const note=clean(ROW&&ROW["Sit Note"]).trim();
-      ul.append(checkRow({title:`🧘 Sit · ${SIT.name||"today's practice"}`,meta:med?`${med} min logged${note?" · "+note:""}`:`${SIT.min} min`,on:med>0,label:"Mark today's sit done",
-        action:goBtn(med?"Again":"Begin",openSit),
-        onToggle:async on=>{ await writeToday({Meditated:on?Math.max(num(ROW&&ROW.Meditated)||0,SIT_LEN||SIT.min):0}); renderRituals(); }})); }
-    const defs=[["ritual","🕯️ Tiny ritual"],["mobility","🤸 Mobility"],["am","🧴 Morning skincare"],["pm","🧴 Evening skincare"]];
-    for(const [k,label] of defs){ const r=R[k]; if(!r) continue;
-      const parts0=parts(r.text); let title=label, meta="", more=[], action=null; let rowRef=null;
-      const extra=r.extra.filter(x=>!/[\u2460-\u2473]/.test(x)).map(x=>x.replace(/^\S+\s/u,m=>/[\p{Emoji_Presentation}\u2600-\u27BF]/u.test(m)?"":m));
-      if(k==="am"){ meta=/spf/i.test(r.text)?"Cleanse · tone · serum · moisturize · SPF":"Cleanse · tone · serum · moisturize"; more=[r.text,...extra]; }
-      if(k==="pm"){ const m=r.text.match(/tonight is ([^,·.]+)/i); if(m) title=label+" · "+m[1].trim(); meta=/red light/i.test(r.text)?"Red light mask first":""; more=[r.text,...extra]; }
-      if(k==="ritual"){ meta=r.text; more=extra; }
-      if(k==="mobility"){ const RT=routineFor(parts0[0]||"",(ROW&&ROW["date:Date:start"])||TODAY()); const WKD=wkDay()&&wkDay()!=="fri";
-        const moves=WKD?[...new Set([...RT.moves,...routineFor("full-body flow",(ROW&&ROW["date:Date:start"])||TODAY()).moves,...routineFor("hips and ankles",(ROW&&ROW["date:Date:start"])||TODAY()).moves])].slice(0,8):RT.moves;
-        title=WKD?"🤸 Weekend flow · optional":label+" · "+RT.focus; meta=WKD&&walksOf(ROW).length?"Birdie's adventure counts today ✓":`${moves.length} moves · about ${moves.length*2+1} min`;
-        const why=parts0.slice(2).join(" · "); more=[why,...extra].filter(Boolean);
-        const ul2=el("ul","moves");
-        moves.forEach((id,i)=>{ const m=MOVES[id]; const li=el("li"); const d=el("details"); const sm=el("summary"); const t=el("div"); t.append(el("b",null,`${i+1}. ${m.name}`),el("small",null,(m.sides?"Both sides · ":"")+m.feel)); sm.append(moveSketch(m,false),t);
-          const how=el("div","how"); const ol=el("ol"); m.steps.forEach(x=>ol.append(el("li",null,x))); how.append(ol,el("p",null,"Easier: "+m.easier)); d.append(sm,how); li.append(d); ul2.append(li); });
-        more.push(ul2);
-        const per=()=>{ try{ return +localStorage.getItem("zone-move-sec")||120; }catch(e){ return 120; } };
-        action=goBtn("Begin",()=>openMoves(moves,rowRef,per())); }
-      rowRef=checkRow({title,meta,more,action,on:done.has(k),label:"Mark "+label.replace(/^\S+\s/,"")+" done",onToggle:on=>setInList("Rituals Done",k,on,",")});
-      (k==="am"||k==="pm"?rt:ul).append(rowRef); }
-    // Sundays: a weekly treat
-    if(wkDay()==="sun") ul.append(checkRow({title:"✨ Sunday treat",meta:"A face mask or a long red-light session, your pick",on:done.has("treat"),label:"Mark the Sunday treat done",onToggle:on=>setInList("Rituals Done","treat",on,",")}));
-    // your own habits, from Settings
-    const hd=habitsDone();
-    for(const h of habitsList()) rt.append(checkRow({title:`${h.emoji} ${h.name}`,on:hd.has(h.name),label:"Mark "+h.name+" done",onToggle:on=>setHabitDone(h.name,on)}));
-    $("#selfSub").hidden=!ul.children.length; $("#routSub").hidden=!rt.children.length;
-    if(!ul.children.length&&!rt.children.length){ $("#selfSub").hidden=true; ul.append(el("li","muted","Today's practices arrive with the 4:30am brief.")); }
-    updateProgress();
-    renderNudges();
-  }
+  
 
   // ---------- episodes ----------
   
@@ -4809,22 +4490,10 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   }
   
   // 👍 / 👎 on a section, saved to today's log as "section|up" or "section|down|what missed"; the morning writers read the last week of it
-  const FB_LABEL={sports:"sports",world:"the world",episodes:"episodes",mindful:"the teaching",inbox:"the inbox rundown"};
-  const fbMap=()=>{ const m={}; clean(ROW&&ROW.Feedback).split(/\n+/).forEach(l=>{ const [k,v,...n]=l.split("|"); if(k&&v) m[k.trim()]={v:v.trim(),note:n.join("|").trim()}; }); return m; };
-  async function saveFeedback(sec,v,note){ const m=fbMap(); if(v) m[sec]={v,note:note||""}; else delete m[sec];
-    await writeToday({Feedback:Object.entries(m).map(([k,x])=>`${k}|${x.v}${x.note?"|"+x.note:""}`).join("\n")}); }
-  function feedbackRow(sec){
-    const box=el("div","fbrow"); if(!LIVE) return box; const cur=fbMap()[sec]||{};
-    const q=el("span","fbq",`Was ${FB_LABEL[sec]||"this"} useful today?`); const up=el("button","fb","👍"), dn=el("button","fb","👎");
-    [up,dn].forEach((b,i)=>{ b.type="button"; b.setAttribute("aria-label",i?"Not useful":"Useful"); b.setAttribute("aria-pressed",String(cur.v===(i?"down":"up"))); });
-    const why=el("div","fbwhy"); why.hidden=cur.v!=="down"; const wi=el("input","field"); wi.placeholder="What missed? (optional)"; wi.value=cur.note||""; wi.setAttribute("aria-label","What missed");
-    const ws=el("button","btn ghost sm","Send"); ws.type="button"; why.append(wi,ws);
-    const set=async v=>{ const same=(v==="up"&&up.getAttribute("aria-pressed")==="true")||(v==="down"&&dn.getAttribute("aria-pressed")==="true"); const nv=same?null:v;
-      up.setAttribute("aria-pressed",String(nv==="up")); dn.setAttribute("aria-pressed",String(nv==="down")); why.hidden=nv!=="down";
-      try{ await saveFeedback(sec,nv,nv==="down"?wi.value.trim():""); if(nv==="down") wi.focus(); }catch(e){ toast(writeErr(e)); } };
-    up.addEventListener("click",()=>set("up")); dn.addEventListener("click",()=>set("down"));
-    ws.addEventListener("click",async()=>{ try{ await saveFeedback(sec,"down",wi.value.trim()); toast("Thanks, the writers will see this"); }catch(e){ toast(writeErr(e)); } });
-    box.append(q,up,dn,why); return box; }
+  
+  
+  
+  
 
 
   // ---------- tomorrow at a glance ----------
@@ -4863,7 +4532,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // ---------- plan ----------
   // ---------- ahead: get tomorrow ready (top 3 + work block labels, one save) ----------
   let PLAN_DIRTY=false;
-  function planDirty(){ PLAN_DIRTY=true; drawPlanSave(); }
+  
   function drawPlanSave(msg){ const b=$("#planSave"); b.replaceChildren(); if(!LIVE){ b.append(el("div","done","Planning opens once today's brief lands at 4:30am.")); return; }
     if(PLAN_DIRTY){ const s=el("button","btn","Save changes"); s.type="button"; s.addEventListener("click",savePlan); b.append(s); if(msg) b.append(el("div","err",msg)); }
     else if(msg) b.append(el("div","done",msg)); }
@@ -4871,66 +4540,22 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const props={Tomorrow:$("#tomorrow").value.trim()||"none"};
     if(BLOCKS.length) props["Block Labels"]=BLOCKS.map((x,i)=>{ const lab=$("#bl"+i).value.trim(); const skip=$("#bs"+i).getAttribute("aria-pressed")==="true"; const prep=!skip&&$("#bp"+i).getAttribute("aria-pressed")==="true"; if(!lab&&!prep&&!skip) return null; return x.key+" · "+(lab||"work block")+(prep?" · prep":"")+(skip?" · not attending":""); }).filter(Boolean).join("\n")||"none";
     if(BLOCKS.length) props["Auto Labels"]=""; // she's reviewed them, so pre-filled labels are hers now
-    try{ await writeToday(props,{silent:true}); PLAN_DIRTY=false; { const tom=addDays((ROW&&ROW["date:Date:start"])||TODAY(),1); twinsFor(tomLines(),tom).catch(()=>{}); } drawPlanSave("Saved ✓ · the 4:30am planner takes it from here"); renderPlanReady();  }catch(e){ drawPlanSave(writeErr(e)); } }
+    try{ await writeToday(props,{silent:true}); PLAN_DIRTY=false; { const tom=addDays((ROW&&ROW["date:Date:start"])||TODAY(),1); twinsFor(tomLines(),tom).catch(()=>{}); } drawPlanSave("Saved ✓ · the 4:30am planner takes it from here");   }catch(e){ drawPlanSave(writeErr(e)); } }
   // ready checks shared by Today's Tomorrow card and the Ahead tab
-  function readyState(){ const r=ROW||{};
-    const top=clean(r.Tomorrow).split(/\n+/).map(x=>x.replace(/^\s*(\d+[.)]|[-•*])\s*/,"").trim()).filter(x=>x&&!/^none$/i.test(x));
-    const raw=clean(r["Work Blocks"]).trim(); const blocks=workBlocks(raw);
-    const labels=clean(r["Block Labels"]).split(/\n+/).filter(x=>/^\d{2}:\d{2}-\d{2}:\d{2}\s*·/.test(x.trim())).length;
-    const usual=clean(r["Auto Labels"]).split(/[,\s]+/).filter(Boolean).length;
-    const named=blocks.filter(b=>b.summary).length; // Oct 25: meetings that arrive by name (Victoria's evening wrap) need no labels
-    return {top,blocks,labels,usual,named,known:!!raw}; }
-  function readyChips(box,linkable){ const st=readyState(); box.replaceChildren();
-    const chip=(cls,txt)=>{ const go=linkable&&cls==="todo"; const c=el(go?"button":"span","rchip "+cls,txt+(go?" →":"")); if(go){ c.type="button"; c.addEventListener("click",()=>show("ahead")); } box.append(c); };
-    if(st.top.length) chip("ok","✓ Top 3 set"); else chip("todo","Set tomorrow's top 3");
-    if(offTomorrow()) chip("ok","✓ No work tomorrow"); else if(!st.known) chip("na","Work blocks arrive at 4pm");
-    else if(!st.blocks.length) chip("ok","✓ No meetings");
-    else if(st.named&&st.named>=st.blocks.length) chip("ok",`✓ ${st.blocks.length} meeting${st.blocks.length===1?"":"s"}, by name`);
-    else if(st.labels>=st.blocks.length) chip("ok",`✓ ${st.blocks.length} meeting${st.blocks.length===1?"":"s"} labeled${st.usual?` · ${st.usual} from your usual week`:""}`);
-    else chip("todo",`Label ${st.blocks.length-st.labels} meeting${st.blocks.length-st.labels===1?"":"s"}`);
-    return st; }
-  function renderPlanReady(){ readyChips($("#planReady"),false); carryChip($("#planReady")); offControl($("#planReady")); }
-  function renderPlan(){
-    const base=(ROW&&ROW["date:Date:start"])||TODAY(); const t=new Date(base+"T12:00:00Z"); t.setUTCDate(t.getUTCDate()+1);
-    $("#planDate").textContent="Tomorrow · "+t.toLocaleDateString("en-US",{weekday:"long",month:"short",day:"numeric",timeZone:"UTC"});
-    const ta=$("#tomorrow"); if(document.activeElement!==ta&&!PLAN_DIRTY) ta.value=clean(ROW&&ROW.Tomorrow).trim().replace(/^none$/i,""); ta.disabled=!LIVE;
-    renderPlanReady(); renderIdeas(); renderListPicks(); renderStars(); if(!PLAN_DIRTY) renderBlocks(); drawPlanSave();
-  }
-  function renderIdeas(){ const w=$("#ideaWrap"), box=$("#ideas"); box.replaceChildren(); if(true){ w.hidden=true; return; } /* Oct 20: inbox ideas retired */ w.hidden=false;
-    const cur=$("#tomorrow").value.toLowerCase();
-    for(const idea of INBOX.ideas){ const b=el("button","chip"); b.type="button"; const has=cur.includes(idea.replace(/\s*\(.*\)$/,"").toLowerCase()); b.setAttribute("aria-pressed",String(has)); b.textContent=(has?"Added · ":"+ ")+idea; b.disabled=has||!LIVE;
-      b.addEventListener("click",()=>{ const ta=$("#tomorrow"); const lines=ta.value.split("\n").map(x=>x.trim()).filter(Boolean); lines.push(`${lines.length+1}. ${idea}`); ta.value=lines.join("\n"); renderIdeas(); planDirty(); ta.focus(); }); box.append(b); } }
+  
+  
+  
+  
+  
   
   // ★ marks a must-do: it gets a time even on a rest day, and a work task keeps its time on a day off (zone-facts 28)
-  function renderStars(){ const ta=$("#tomorrow"); if(!ta) return; let row=$("#starRow"); if(!row){ row=el("div","starrow"); row.id="starRow"; ta.after(row); } row.replaceChildren();
-    ta.value.split("\n").forEach((ln,i)=>{ const m=ln.match(/^(\s*(?:\d+[.)]|[-•*])?\s*)(.*)$/); const body=(m?m[2]:ln).trim(); if(!body||/^none$/i.test(body)) return; const on=/★/.test(body);
-      const b=el("button","chip",(on?"★ ":"☆ ")+bareTitle(body).slice(0,40)); b.type="button"; b.setAttribute("aria-pressed",String(on)); b.title=on?"Must-do: keeps its time even on a rest day":"Mark as a must-do"; b.disabled=!LIVE;
-      b.addEventListener("click",()=>{ const ls=ta.value.split("\n"); const mm=ls[i].match(/^(\s*(?:\d+[.)]|[-•*])?\s*)(.*)$/); ls[i]=mm[1]+(on?mm[2].replace(/★\s*/g,""):"★ "+mm[2]); ta.value=ls.join("\n"); planDirty(); renderStars(); }); row.append(b); });
-    if(row.children.length) row.prepend(el("span","hint","Must-dos:")); }
+  
   const HM=new Intl.DateTimeFormat("en-US",{timeZone:TZ,hour:"2-digit",minute:"2-digit",hourCycle:"h23"});
   const PRETTY=new Intl.DateTimeFormat("en-US",{timeZone:TZ,hour:"numeric",minute:"2-digit"});
   let BLOCKS=[];
   // a saved block label: "10:30-11:30 · Renee 1:1 · prep" or "14:00-15:30 · standup · not attending"
-  function parseBlockLine(line){ const m=String(line).trim().match(/^(\d{2}:\d{2}-\d{2}:\d{2})\s*·\s*(.*)$/); if(!m) return null;
-    const bits=m[2].split(/\s*·\s*/); let prep=false, skip=false; while(bits.length>1){ const t=bits[bits.length-1].toLowerCase(); if(t==="prep"){ prep=true; bits.pop(); } else if(t==="not attending"){ skip=true; bits.pop(); } else break; }
-    const label=bits.join(" · ").trim(); return {key:m[1],label:/^(prep|not attending)$/i.test(label)?"":label,prep,skip}; }
-  function renderBlocks(){
-    const box=$("#blocks"); box.replaceChildren(); const r=ROW||{};
-    BLOCKS=workBlocks(clean(r["Work Blocks"])).map(b=>({s:new Date(b.start),e:new Date(b.end)}));
-    const saved={}; for(const line of clean(r["Block Labels"]).split("\n")){ const b=parseBlockLine(line); if(b) saved[b.key]=b; }
-    const usual=new Set(clean(r["Auto Labels"]).split(/[,\s]+/).filter(Boolean)); // pre-filled by the 4pm Day Wrap from her past labels
-    if(!BLOCKS.length){ box.append(el("p","muted",clean(r["Work Blocks"]).trim()?"No meetings on tomorrow's work calendar.":"Tomorrow's meetings show up here after the 4pm Day Wrap.")); return; }
-    BLOCKS.forEach((b,i)=>{ const key=HM.format(b.s)+"-"+HM.format(b.e); b.key=key; const s=saved[key]||{};
-      const row=el("div","brow"); const bt=el("span","bt",PRETTY.format(b.s).replace(" ","").toLowerCase()+"–"+PRETTY.format(b.e).replace(" ","").toLowerCase());
-      if(usual.has(key)&&(s.label||s.skip)){ row.classList.add("usual"); bt.append(el("span","usualtag","usual")); row.title="Pre-filled from your usual week. Edit or clear it if tomorrow is different."; }
-      row.append(bt);
-      const inp=el("input","field"); inp.maxLength=90; inp.placeholder="What is it?"; inp.value=s.label||""; inp.id="bl"+i; inp.disabled=!LIVE; inp.setAttribute("aria-label","Label for the "+key+" block"+(row.classList.contains("usual")?" (pre-filled from your usual week)":"")); inp.addEventListener("input",()=>{ if(row.classList.contains("usual")){ row.classList.remove("usual"); bt.querySelector(".usualtag")?.remove(); row.removeAttribute("title"); } planDirty(); });
-      const pb=el("button","toggle","prep"); pb.type="button"; pb.id="bp"+i; pb.setAttribute("aria-pressed",String(!!s.prep&&!s.skip)); pb.disabled=!LIVE||!!s.skip; pb.addEventListener("click",()=>{ pb.setAttribute("aria-pressed",String(pb.getAttribute("aria-pressed")!=="true")); planDirty(); });
-      const sb=el("button","toggle skip","not attending"); sb.type="button"; sb.id="bs"+i; sb.setAttribute("aria-pressed",String(!!s.skip)); sb.disabled=!LIVE; sb.title="The Zone treats this time as free and can schedule into it";
-      sb.addEventListener("click",()=>{ const on=sb.getAttribute("aria-pressed")!=="true"; sb.setAttribute("aria-pressed",String(on)); row.classList.toggle("skipped",on); if(on) pb.setAttribute("aria-pressed","false"); pb.disabled=on||!LIVE; planDirty(); });
-      if(s.skip) row.classList.add("skipped");
-      row.append(inp,pb,sb); box.append(row); });
-  }
+  
+  
 
   // ---------- the List: everything in one place (Zone List database in Notion) ----------
   let LIST_DSID="20ce7447-d822-41e7-9f8d-b05ec181ee7f";
@@ -5076,10 +4701,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   const repeatLabel=r=>{ const x=String(r||"").trim(); return x?("↻ "+x.replace(/^every\s+/,"every ")):""; };
   const isSnoozed=it=>!!(it.snooze&&it.snooze>TODAY());
   // "next up" for Today's 3 (same order the 4:30am fill uses): overdue or due by the day, then starred, then due within 3 days, then oldest
-  function nextUp(dayIso,exclude){ const ex=(exclude||[]).map(x=>x.toLowerCase());
-    const c=LIST.filter(it=>it.status==="Open"&&isTask(it)&&forClaire(it)&&it.name&&!isSnoozed(it)&&!it.waiting&&!ex.some(e=>e.includes(it.name.toLowerCase())||it.name.toLowerCase().includes(e)));
-    const tier=it=>it.focus&&it.focus<dayIso?-1:it.due&&it.due<=dayIso?0:it.star?1:it.due&&dayDiff(it.due,dayIso)<=3?2:3;
-    return c.sort((a,b)=>tier(a)-tier(b)||(tier(a)===-1?b.focus.localeCompare(a.focus):0)||(a.due||"9999").localeCompare(b.due||"9999")||String(a.created).localeCompare(String(b.created))); }
+  
   const dueLabel=d=>{ if(!d) return ""; const n=dayDiff(d,TODAY()); return n<0?`overdue · ${shortDate(d)}`:n===0?"today":n===1?"tomorrow":n<7?new Date(d+"T12:00:00Z").toLocaleDateString("en-US",{weekday:"short",timeZone:"UTC"}):shortDate(d); };
   async function listCreate(p,source){ if(!mcp||!p.name) return false;
     const props={Name:p.name,Kind:p.kind,Area:p.area,Status:p.status||"Open",Star:p.star?"__YES__":"__NO__",Source:source||"List"}; if(p.due) props["date:Due:start"]=p.due; if(p.focus) props["date:Focus:start"]=p.focus;
@@ -5116,10 +4738,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function extraPicks(D){ const seen=[...D.tasks.map(t=>t.title),...D.untimed.map(u=>u.title),...D.unplaced].map(x=>bareTitle(x).toLowerCase());
     return topField().map(bareTitle).filter(x=>!seen.some(s=>s===x.toLowerCase()||s.includes(x.toLowerCase())||x.toLowerCase().includes(s))); }
   async function pickToday(name){ const cur=topField(); if(cur.length>=3){ toast("Today already has 3"); return; } cur.push(name);
-    try{ await writeToday({"Top 3":cur.map((x,i)=>`${i+1}. ${x}`).join("\n")},{silent:true}); renderTasks(parseDay()); toast("On today's top 3"); ensureTwin(name,TODAY()).catch(()=>{}); }catch(e){ toast(writeErr(e)); } }
-  async function handToAlice(title){ const it=await ensureTwin(title,TODAY()); if(!it||String(it.id).startsWith("tmp")){ toast("Still saving, try again in a second"); return; }
-    const ok=await listUpdate(it,{Owner:"Alice","Alice Status":"Assigned","date:Alice Updated:start":TODAY(),"Job Type":it.jtype||"Task"},{owner:"Alice",astat:"Assigned",aupd:TODAY(),jtype:it.jtype||"Task"},"Handed to Alice. It's on her desk.");
-    if(ok) renderTasks(parseDay()); }
+    try{ await writeToday({"Top 3":cur.map((x,i)=>`${i+1}. ${x}`).join("\n")},{silent:true});  toast("On today's top 3"); ensureTwin(name,TODAY()).catch(()=>{}); }catch(e){ toast(writeErr(e)); } }
+  
   
   
    // Oct 20: off today, still open on the List
@@ -5290,24 +4910,13 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     [`${KIND_IC[p.kind]} ${p.kind}`,`${AREA_IC[p.area]||""} ${p.area}`,p.due?"📅 "+dueLabel(p.due):"",p.star?"★ starred":"",p.status==="Someday"?"someday":"",p.owner==="Alice"?"🤝 for Alice":"",p.repeat?repeatLabel(p.repeat):"",p.snooze?"😴 until "+dueLabel(p.snooze):"",p.waiting?"⏳ waiting on "+p.waiting:"",p.est?`⏱ ${p.est}m`:"",p.project?"📁 "+p.project:""].filter(Boolean).forEach(t=>box.append(el("span","lchip",t))); }
   async function capAdd(){ const inp=$("#capIn"); const v=inp.value.trim(); if(!v) return; const p=parseCapture(v); if(!p.name) return; const b=$("#capGo"); b.disabled=true;
     if(await listCreate(p,"List")){ inp.value=""; capPreview(); toast(p.owner==="Alice"?"Added for Alice. Message her to get it started":`Added · ${p.kind}${p.due?" · "+dueLabel(p.due):""}`); } b.disabled=false; inp.focus(); }
-  function renderListAll(){ renderList(); renderDueToday(); renderAlice(); renderAliceDesk(); if(!PLAN_DIRTY) renderListPicks(); renderInboxActions(); if(wkDay()&&ROW){ renderQuests(); renderWins(); } if(!wkDay()&&ROW) setTimeout(renderWeekday,0); }
+  function renderListAll(){ renderList();  renderAlice(); renderAliceDesk();  renderInboxActions(); if(wkDay()&&ROW){ renderQuests();  } if(!wkDay()&&ROW) setTimeout(renderWeekday,0); }
   // Today: anything on the list due today or overdue (reminders and to-dos) shows on Today's list
-  function renderDueToday(){ const ul=$("#dueToday"); if(!ul) return; ul.replaceChildren(); const tops=[...document.querySelectorAll("#tasks li[data-key]")].map(li=>li.dataset.key.toLowerCase());
-    const items=LIST.filter(it=>isTask(it)&&forClaire(it)&&(it.status==="Open"||(it.status==="Done"&&it.doneOn===TODAY()&&it.due))&&it.due&&it.due<=TODAY()&&!tops.includes(it.name.toLowerCase()));
-    for(const it of items) ul.append(checkRow({title:it.name,when:(it.owner==="Alice"?"🤝 Alice needs you · ":"")+(it.kind==="Reminder"?"🔔 ":"📌 ")+(it.due<TODAY()?"overdue since "+shortDate(it.due):"due today"),on:it.status==="Done",small:true,label:"Mark done: "+it.name,onToggle:on=>setDone(it,on)}));
-    ul.hidden=!items.length; updateProgress(); }
+  
   // Ahead: list picks for tomorrow, plus what the 4:30am fill would add to any blank spots
-  function renderListPicks(){ const w=$("#listPickWrap"), box=$("#listPicks"); if(!w) return; box.replaceChildren(); const tom=addDays((ROW&&ROW["date:Date:start"])||TODAY(),1);
-    const lines=$("#tomorrow").value.split("\n").map(x=>x.replace(/^\s*(\d+[.)]|[-•*])\s*/,"").trim()).filter(x=>x&&!/^none$/i.test(x));
-    const ups=nextUp(tom,lines); w.hidden=!ups.length&&lines.length>=3; const open=Math.max(0,3-lines.length);
-    const tomWk=new Date(tom+"T12:00:00Z").getUTCDay()===6; // Friday planning Saturday: side quests, no cap
-    $("#fillNote").textContent=!LIVE?"":tomWk?"Pick your side quests for the weekend. Only what you pick shows up.":open?`Pick up to ${open} more from your list. Nothing gets added on its own.`:"That’s three. Anything else stays on your list.";
-    { const h=$("#planH"); if(h) h.textContent=tomWk?"Get the weekend ready":"Get tomorrow ready"; }
-    w.hidden=!ups.length; if(!tomWk&&!open){ box.replaceChildren(); return; }
-    for(const it of ups.slice(0,6)){ const b=el("button","chip","+ "+it.name+(it.due?` · ${dueLabel(it.due)}`:it.star?" · ★":"")); b.type="button"; b.disabled=!LIVE;
-      b.addEventListener("click",()=>{ const ta=$("#tomorrow"); const ls=ta.value.split("\n").map(x=>x.trim()).filter(Boolean); ls.push(`${ls.length+1}. ${it.name}`); ta.value=ls.join("\n"); planDirty(); renderListPicks(); ta.focus(); }); box.append(b); } }
+  
   // ---------- ahead: jump bar (hides chips for cards that aren't showing) ----------
-  function renderJump(){ let ideas=0; document.querySelectorAll("#aheadJump .jchip").forEach(b=>{ const c=$("#"+b.dataset.jump); const on=c&&!c.hidden&&!!c.closest("#view-ahead"); b.hidden=!on; if(on&&/dateCard|campCard/.test(b.dataset.jump)) ideas++; }); $("#ideaSec").hidden=!ideas; }
+  
   document.querySelectorAll("#aheadJump .jchip").forEach(b=>b.addEventListener("click",()=>{ const c=$("#"+b.dataset.jump); if(c) c.scrollIntoView({behavior:"smooth",block:"start"}); }));
   $("#capIn").addEventListener("input",capPreview); $("#capIn").addEventListener("keydown",e=>{ if(e.key==="Enter") capAdd(); }); $("#capGo").addEventListener("click",capAdd);
   document.querySelectorAll("#listViews [data-v]").forEach(b=>b.addEventListener("click",()=>{ LIST_VIEW=b.dataset.v; document.querySelectorAll("#listViews [data-v]").forEach(x=>x.setAttribute("aria-selected",String(x===b))); const f=$("#listFilters"); if(f) f.hidden=LIST_VIEW!=="now"; renderList(); }));
@@ -5317,30 +4926,12 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // Oct 18: Alice's desk lives at the bottom of List (tab bar: Today, Ahead, List, You; Us comes next). Set to false to give her a tab again.
   const ALICE_FOLDED=true;
   function show(view){ if((view==="you"||view==="us")&&typeof znShelfRender==="function"){ setTimeout(()=>{ try{ if(view==="you"){ znMe(); } else { znUs(); znOurShelf(); } }catch(e){ console.error("shelf",e); } },0); } if(view==="ahead"&&typeof znPlanRender==="function"){ setTimeout(()=>{ try{ znPlanRender(); }catch(e){ console.error("plan",e); } },0); } if(view==="alice"&&ALICE_FOLDED){ view="list"; setTimeout(()=>{ const a=$("#aliceSec"); if(a) a.scrollIntoView({behavior:"smooth",block:"start"}); },120); }
-  $("#main").classList.toggle("wide",view==="today"&&$("#view-today").classList.contains("spread")); if(view==="ahead") renderJump(); if(view==="list"){ renderList(); if(ALICE_FOLDED) renderAliceDesk(); } if(view==="alice") renderAliceDesk(); if(view==="us"){ try{ renderUs(); }catch(e){ console.error("us",e); } } for(const v of VIEWS){ const on=v===view; const n=$("#view-"+v); n.hidden=!on; n.style.display=on?"flex":"none"; $("#tab-"+v).setAttribute("aria-selected",String(on)); } window.scrollTo({top:0}); }
+  $("#main").classList.toggle("wide",view==="today"&&$("#view-today").classList.contains("spread"));  if(view==="list"){ renderList(); if(ALICE_FOLDED) renderAliceDesk(); } if(view==="alice") renderAliceDesk(); if(view==="us"){ try{ renderUs(); }catch(e){ console.error("us",e); } } for(const v of VIEWS){ const on=v===view; const n=$("#view-"+v); n.hidden=!on; n.style.display=on?"flex":"none"; $("#tab-"+v).setAttribute("aria-selected",String(on)); } window.scrollTo({top:0}); }
   document.querySelectorAll(".tab[data-view]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.view)));
   document.addEventListener("click",e=>{ const g=e.target.closest("[data-goto]"); if(g) show(g.dataset.goto); });
 
   // ---------- health strip ----------
-  function renderHealth(){
-    const box=$("#health"); box.replaceChildren(); if(!ROW) return;
-    const n=nowH(); const live=LIVE; const todayLabel=new Date().toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric",timeZone:TZ});
-    const items=[];
-    const me=PERSON.person==="claire"; /* Oct 16: inbox, Oura and the Day Wrap are Claire-only for now; Victoria's radio is checked at 5:35am (4:35 in winter) */
-    if(me&&!(INBOX.date===todayLabel)) items.push(n<4.5?["","Inbox at 4:20am"]:["bad","Inbox didn't update"]);
-    if(!live) items.push(n<4.75?["","Brief at 4:30am"]:["bad","No brief today"]);
-    const radio=clean(ROW.Radio).trim(); if(live&&(me||(PERSON.features||{}).radio)&&!/✅|🔁/.test(radio)) items.push(me?(n<5.1?["","Radio check at 5am"]:["bad","Radio unchecked"]):(n<5.6?["","Radio check by 5:35am"]:["bad","Radio unchecked"]));
-    if(me&&live&&num(ROW.Readiness)==null) items.push(n<7.4?["","Oura syncing"]:["bad","No Oura data"]);
-    if(me&&live&&!clean(ROW.Evening).trim()&&n>=16.2) items.push(["bad","Day Wrap missing"]);
-    for(const [c,t] of items) if(c==="bad") box.append(el("span",c,t)); // Oct 17: silent until something is wrong
-    // the 5:25am morning check: one quiet chip; tap for every line it checked
-    const mc=LIVE?clean(ROW["Morning Check"]).split(/\n+/).map(x=>x.trim()).filter(Boolean):[];
-    if(mc.length){ const okAll=/^✅/.test(mc[0]); const b=el("button","mchk"+(okAll?"":" bad"),okAll?mc[0].replace(/^✅\s*Morning check\s*/,"✅ Checked "):mc[0].replace(/^⚠️\s*Morning check\s*\S+\s*·\s*/,"⚠️ "));
-      b.type="button"; b.setAttribute("aria-label","Morning check details");
-      b.addEventListener("click",()=>{ const ul=el("ul","mlist"); mc.slice(1).forEach(l=>ul.append(el("li",/^⚠️/.test(l)?"bad":null,l))); openSheet({kicker:"🩺 Morning check",title:mc[0].replace(/^(✅|⚠️)\s*/,""),body:[ul,el("p","hint",okAll?"Everything the Zone does before you wake up, verified at 5:25am.":"Tell Claude what's flagged here and we'll dig in.")],from:b}); });
-      if(!okAll) box.append(b); }
-    box.hidden=!box.children.length;
-  }
+  
   function showAlert(t,b){ const a=$("#alert"); a.replaceChildren(); if(!t) return; document.body.classList.remove("loading"); const x=el("div","alert"); x.setAttribute("role","status"); x.append(el("h3",null,t),el("p",null,b)); a.append(x); }
   function handleError(err){ document.body.classList.remove("loading");
     const code=(err&&err.code)||"upstream_error";
@@ -5456,35 +5047,10 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function dateHist(){ const m={}; String(SET.DateHist&&SET.DateHist.value||"").split(/\n+/).forEach(l=>{ const [d,t,st]=l.split("|"); if(t&&st) m[t.trim().toLowerCase()]={date:(d||"").trim(),title:t.trim(),status:st.trim()}; }); return m; }
   async function setDateStatus(idea,status){ const h=dateHist(); const k=idea.title.toLowerCase(); if(status&&!(h[k]&&h[k].status===status)) h[k]={date:idea.date,title:idea.title,status}; else delete h[k];
     const v=Object.values(h).map(x=>`${x.date}|${x.title.replace(/\|/g,"/")}|${x.status}`).join("\n")||"none yet";
-    SET.DateHist={...(SET.DateHist||{}),value:v}; renderDates(); if(!mcp) return;
+    SET.DateHist={...(SET.DateHist||{}),value:v};  if(!mcp) return;
     try{ await mcp.callTool(SERVER,"notion-update-page",{page_id:SET_IDS.DateHist,command:"update_properties",properties:{Value:v},allow_async:false}); if(h[k]&&h[k].status==="picked") toast("💕 Picked. Add it to the calendar so Victoria sees it"); else if(h[k]&&h[k].status==="passed") toast(idea.date>TODAY()?"Passed. A fresh idea for that night arrives tomorrow morning":"Passed"); else savedPing(); }catch(e){ toast(writeErr(e)); } }
-  function gcalLink(x,slotTime){ const pad=n=>String(n).padStart(2,"0"); const ymd=x.date.replace(/-/g,"");
-    const tm=(x.time||"").match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)/i)||(slotTime||"").match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
-    let dates; if(tm){ let h=+tm[1]; const mi=+(tm[2]||0); const ap=(tm[3]||"pm").toLowerCase(); if(ap==="pm"&&h<12) h+=12; if(ap==="am"&&h===12) h=0; const e=Math.min(h+3,23); dates=`${ymd}T${pad(h)}${pad(mi)}00/${ymd}T${pad(e)}${pad(mi)}00`; }
-    else { const n=new Date(x.date+"T12:00:00Z"); n.setUTCDate(n.getUTCDate()+1); dates=`${ymd}/${n.toISOString().slice(0,10).replace(/-/g,"")}`; }
-    const q=new URLSearchParams({action:"TEMPLATE",text:`💕 ${x.title}`,dates,ctz:TZ,location:x.where||"",details:`${x.why||""}${x.link?"\n\n"+x.link:""}\n\nFrom The Zone's date night ideas`});
-    return "https://calendar.google.com/calendar/render?"+q.toString(); }
-  function renderDates(){ const card=$("#dateCard"), body=$("#dateBody"); body.replaceChildren(); const ideas=dateIdeas(); const h=dateHist();
-    if(!ideas.length){ card.hidden=!SET.Ideas; body.append(el("p","hint",SET.Ideas?"No ideas for the coming nights yet. The scout checks every morning.":"")); $("#dateNote").textContent=String(SET.Ideas&&SET.Ideas.check||""); return; }
-    card.hidden=false; $("#dateNote").textContent=String(SET.Ideas&&SET.Ideas.check||"").replace(/ · \d+ searches$/,"");
-    const days=[...new Set(ideas.map(x=>x.date))].sort();
-    for(const d of days){ const g=el("div","dgroup"); const wx=(()=>{ const r=ROWS.find(x=>x["date:Date:start"]===d); return ""; })();
-      g.append(el("div","dhead",`${shortDate(d)}${new Date(d+"T12:00:00Z").getUTCDay()===5?" · Date Night":" · open evening"}`));
-      const stOf=x=>(h[x.title.toLowerCase()]||{}).status||"";
-      for(const x of ideas.filter(i=>i.date===d&&stOf(i)!=="passed")){ const st=stOf(x); const it=el("div","idea"+(st==="picked"?" picked":""));
-        const top=el("div","itop"); top.append(el("span","kind",DATE_KIND[x.kind]||"✨ Idea")); if(st==="picked") top.append(el("span","kind on","💕 The plan")); it.append(top);
-        it.append(el("div","ittl",x.title)); it.append(el("div","imeta",[x.time&&x.time!=="-"?x.time:"",x.where,x.cost].filter(Boolean).join(" · ")));
-        if(x.why) it.append(el("p","iwhy",x.why));
-        const acts=el("div","iacts");
-        if(x.link&&/^https?:/.test(x.link)){ const a=el("a","btn ghost sm","Details ↗"); a.href=x.link; a.target="_blank"; a.rel="noopener"; acts.append(a); }
-        const cal=el("a","btn ghost sm","Add to Google Calendar ↗"); cal.href=gcalLink(x); cal.target="_blank"; cal.rel="noopener"; acts.append(cal);
-        const pick=el("button","btn sm",st==="picked"?"Picked ✓":"💕 Let's do it"); pick.type="button"; pick.setAttribute("aria-pressed",String(st==="picked")); pick.addEventListener("click",()=>setDateStatus(x,"picked")); acts.append(pick);
-        const up=el("button","fb","👍"), dn=el("button","fb","👎"); [[up,"liked","Sounds like us"],[dn,"passed","Not for us"]].forEach(([b,s,lab])=>{ b.type="button"; b.setAttribute("aria-label",lab); b.setAttribute("aria-pressed",String(st===s)); b.addEventListener("click",()=>setDateStatus(x,s)); acts.append(b); });
-        it.append(acts); g.append(it); }
-      for(const x of ideas.filter(i=>i.date===d&&stOf(i)==="passed")){ const n=el("div","ipassed"); n.append(el("span",null,`👎 Passed on ${x.title}${d>TODAY()?" · a fresh idea for this night arrives tomorrow morning":""}`));
-        const u=el("button","chip","Undo"); u.type="button"; u.setAttribute("aria-label","Bring back "+x.title); u.addEventListener("click",()=>setDateStatus(x,"passed")); n.append(u); g.append(n); }
-      body.append(g); }
-  }
+  
+  
 
   // ---------- journal ----------
   
@@ -5502,7 +5068,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // ---------- settings (Zone Settings rows in Notion) ----------
   let SET_IDS={Notify:"409ef44532cf810ea38cea71fb058ebc",History:"409ef44532cf81ee9130f19adbce0087",UsFeed:"409ef44532cf81c2adabc4f6dd78dfe1",Readings:"408ef44532cf8125898bf5cbdb916013",Practices:"408ef44532cf81b78bb3e5cdce65b0c7",Routines:"408ef44532cf814d94d8f1572b2f23bf",Projects:"404ef44532cf81cd986ad119b1582265",Spoilers:"403ef44532cf817dbb73e0e0dd899c4f",SideB:"3f5ef44532cf815ba112dbf14db7253e",Ideas:"3edef44532cf8108818beacc24050e9a",DateHist:"3edef44532cf81a8a7a3cf8ca3386fd0",Birdie:"3edef44532cf81858110cb880c558c6f",Camp:"3edef44532cf81b489eed481651e4ed3",Pathway:"3edef44532cf81f39292ef101818d4bb",Teams:"3ecef44532cf814fba26ca32c2753c83",Podcasts:"3ecef44532cf81418a0aca49032829fb",News:"3ecef44532cf8166b0bfeec8dec0856a",Habits:"3ecef44532cf81609ea0df88aaa1a023",TimeOff:"3faef44532cf81789d09fe58b4f4f226",Appts:"3fbef44532cf81c49c39d9f513795764",Records:"3feef44532cf812dbb3bcde7b9d4fe2d",FamOwners:"3ffef44532cf819284abc0153a93d6da",UsNotes:"3ffef44532cf815f871dea8776750e48",UsWeek:"3ffef44532cf8183b142f35deea1fc68",BirdieToday:"3ffef44532cf81328d53cd4a402fd5be",FamEvents:"400ef44532cf81388a07de29c80af48e"};
   const US_LIST_DSID="3919678d-54b1-412e-b81a-9984b46b0ad5"; // Us · List (shared)
-  const RECORDS_DSID="ac26887b-3cf5-4496-b4ac-6a22685a6fd3"; // The Zone · Zone Records (one row per logged occurrence)
+   // The Zone · Zone Records (one row per logged occurrence)
   const SET={}; // key -> {value, check}
   function parseProps(payload){ const t=payload&&typeof payload.text==="string"?payload.text:""; const m=t.match(/<properties>\s*([\s\S]*?)\s*<\/properties>/); if(!m) return null; try{ return JSON.parse(m[1]); }catch(e){ return null; } }
   const setLines=k=>String(SET[k]&&SET[k].value||"").split(/\n+/).map(x=>x.trim()).filter(Boolean);
@@ -5516,8 +5082,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   const offIcon=o=>o.kind==="rest"?"😴 ":o.kind==="vacation"?"🧳 ":"🛋️ ";
   const offLine=o=>[o.s+(o.e&&o.e!==o.s?" to "+o.e:""),o.label,o.kind,o.place].filter(Boolean).join(" · ");
   function tmrwISO(){ return addDays(TODAY(),1); } // the real calendar tomorrow, even if this morning's brief is missing
-  function offTomorrow(){ try{ return offFor(tmrwISO()); }catch(e){ return null; } }
-  async function saveOff(list){ await saveSetting("TimeOff",[...list].sort((a,b)=>a.s<b.s?-1:a.s>b.s?1:0).map(offLine)); renderTimeOff(); if(ROW){  try{ renderPlanReady(); }catch(e){} znDayMode(); } }
+  
+  async function saveOff(list){ await saveSetting("TimeOff",[...list].sort((a,b)=>a.s<b.s?-1:a.s>b.s?1:0).map(offLine)); renderTimeOff(); if(ROW){   znDayMode(); } }
   function renderTimeOff(){ const box=$("#offList"); if(!box) return; box.replaceChildren(); const today=TODAY(); const list=offList().filter(o=>o.e>=today);
     const fmt=d=>new Date(d+"T12:00:00Z").toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric",timeZone:"UTC"});
     if(!list.length){ box.append(el("p","muted","Nothing coming up.")); return; }
@@ -5530,22 +5096,17 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     b.disabled=true; try{ await saveOff([...offList(),{s:e0<s0?e0:s0,e:e0<s0?s0:e0,label,kind,place}]); ["#offFrom","#offTo","#offLabel","#offPlace"].forEach(q=>$(q).value=""); $("#offKind").value="off"; toast("Saved · the 4:30am brief will plan around it"); }catch(err){ toast(writeErr(err)); } b.disabled=false; }
   document.addEventListener("click",ev=>{ if(ev.target&&ev.target.closest&&ev.target.closest("#offSave")) addOff(); });
   // "I'm off tomorrow" / "Rest day tomorrow" on the Tomorrow card and in Ahead
-  function offControl(box){ if(!box) return; const iso=tmrwISO(); const o=offFor(iso); const wrap=el("div","offtom");
-    if(o){ wrap.append(el("span","rchip ok",offIcon(o)+o.label+" tomorrow"));
-      if(o.s===iso&&o.e===iso){ const u=el("button","rchip todo","Undo"); u.type="button"; u.disabled=!mcp; u.addEventListener("click",async()=>{ u.disabled=true; try{ await saveOff(offList().filter(y=>y.raw!==o.raw)); toast("Removed · tomorrow is a workday again"); }catch(e){ toast(writeErr(e)); u.disabled=false; } }); wrap.append(u); } }
-    else for(const [kind,txt] of [["off","🛋️ I'm off tomorrow"],["rest","😴 Rest day tomorrow"]]){ const b=el("button","rchip todo",txt); b.type="button"; b.disabled=!mcp;
-      b.addEventListener("click",async()=>{ b.disabled=true; try{ await saveOff([...offList(),{s:iso,e:iso,label:kind==="rest"?"Rest day":"Day off",kind,place:""}]); toast("Got it · tomorrow runs like a weekend"); }catch(e){ toast(writeErr(e)); b.disabled=false; } }); wrap.append(b); }
-    box.append(wrap); }
-  function habitsList(){ return setLines("Habits").map(l=>{ const p=l.split(/\s*·\s*/); return p.length>1?{emoji:p[0],name:p.slice(1).join(" · ")}:{emoji:"✅",name:l}; }).filter(h=>h.name); }
+  
+  
   async function saveSetting(k,lines){ if(!mcp) throw {code:"not_granted"}; const v=lines.join("\n"); await mcp.callTool(SERVER,"notion-update-page",{page_id:SET_IDS[k],command:"update_properties",properties:{Value:v},allow_async:false}); SET[k]={...(SET[k]||{}),value:v}; }
-  const habitsDone=()=>new Set(clean(ROW&&ROW["Habits Done"]).split(/\n+/).map(x=>x.trim()).filter(Boolean));
-  async function setHabitDone(name,on){ const s=habitsDone(); on?s.add(name):s.delete(name); await writeToday({"Habits Done":[...s].join("\n")}); }
+  
+  
 
   function openSettings(){
     const box=el("div","set"); box.setAttribute("role","dialog"); box.setAttribute("aria-modal","true"); box.setAttribute("aria-label","Settings");
     const inner=el("div","in"); box.append(inner);
     const top=el("div","top"); top.append(el("h1",null,"Settings")); const done=el("button","btn ghost sm","Done"); done.type="button"; top.append(done); inner.append(top);
-    const close=()=>{ box.remove(); $("#gear").focus(); renderRituals(); renderYou(); };
+    const close=()=>{ box.remove(); $("#gear").focus();  renderYou(); };
     done.addEventListener("click",close); box.addEventListener("keydown",e=>{ if(e.key==="Escape") close(); });
     const section=(cls,icon,title,hint)=>{ const c=el("section","card tint "+cls); const h=el("div","sethead"); const ic=el("span","ic",icon); ic.setAttribute("aria-hidden","true"); const t=el("div"); t.append(el("h2",null,title),el("p",null,hint)); h.append(ic,t); c.append(h); inner.append(c); return c; };
     const checkNote=(c,k)=>{ const n=(SET[k]&&SET[k].check)||""; if(!n) return; const bad=/couldn't/i.test(n); const d=el("div","checknote"+(bad?" warn":"")); d.append(el("span",null,bad?"⚠️":"✓"),el("span",null,"Last morning check: "+n)); c.append(d); };
@@ -5650,7 +5211,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
 
     if(!mcp) inner.append(el("p","note","Open this in Claude to change settings."));
     if(false){ const sc=section("c-you","📒","Logbook records","One per line: an emoji, a space, the name. These become the one-tap buttons in the Logbook."); const ta=el("textarea","field"); ta.rows=5; ta.value=clean(SET.Records&&SET.Records.value); ta.setAttribute("aria-label","Record types, one per line");
-      const sv=el("button","btn sm","Save"); sv.type="button"; sv.disabled=!mcp; sv.addEventListener("click",async()=>{ sv.disabled=true; try{ await saveSetting("Records",ta.value.split(/\n/).map(x=>x.trim()).filter(Boolean)); toast("Saved"); renderRecords(); }catch(e){ toast(writeErr(e)); } sv.disabled=false; });
+      const sv=el("button","btn sm","Save"); sv.type="button"; sv.disabled=!mcp; sv.addEventListener("click",async()=>{ sv.disabled=true; try{ await saveSetting("Records",ta.value.split(/\n/).map(x=>x.trim()).filter(Boolean)); toast("Saved");  }catch(e){ toast(writeErr(e)); } sv.disabled=false; });
       sc.append(ta,sv); }
     if(false){ const u=usage(); const sc=section("c-you","📊","What you open","Counted on this device only, so we can retire what you never use."); const ul=el("ul","mlist");
       const rows=u?Object.entries(u.n).sort((a,b)=>b[1]-a[1]).slice(0,14):[]; rows.forEach(([k,v])=>ul.append(el("li",null,`${k.replace(/^tile:/,"More · ").replace(/^tab:/,"Tab · ").replace(/^mini:/,"Practice · ").replace(/^line:/,"Status line · ").replace(/^intent:/,"Intention · ")} — ${v}`)));
@@ -5671,7 +5232,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // ---------- render all ----------
   // ---------- what the Zone changed on its own today, each with Undo ----------
   // Zone Actions lines: kind|calendar event id|orig start|orig end|new start|new end|summary[|undone]
-  const CAL="Google Calendar";
+  
   
   
   
@@ -5713,12 +5274,12 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     group("Done today",done,it=>notes(it)[0]||"Done",it=>chip("Reopen","Reopen "+it.name+" for Alice",()=>listUpdate(it,{Status:"Open","date:Done On:start":null,"Alice Status":"Working"},{status:"Open",doneOn:"",astat:"Working"},"Reopened. Let Alice know what's still needed")));
     group("Added to your list",added,it=>notes(it)[0]||"",it=>chip("Remove","Remove "+it.name+" from your list",()=>listUpdate(it,{Status:"Dropped"},{status:"Dropped"},"Removed",{Status:"Open"},{status:"Open"})));
     box.append(el("p","zfoot","Alice's updates show up here within the hour.")); }
-  function renderAll(storedAt){ if(window.ZONE_FROM_LINK&&typeof APP!=="undefined"&&APP.sb){ window.ZONE_FROM_LINK=false; try{ localStorage.setItem("zone:setpw",String(Date.now())); }catch(e){} setTimeout(()=>{ const g=$("#gear"); if(g&&!document.querySelector(".set")) g.click(); },900); } /* Oct 31: arrived from an emailed sign-in link: open Settings at Account to set a new password */ if(INBOX.payload&&ROW) setTimeout(()=>renderInbox(INBOX.payload),0); // the rundown may arrive before today's row: redraw it so cleared items and live buttons apply
-    ROW=ROWS[0]||null; LIVE=!!(ROW&&ROW["date:Date:start"]===TODAY()); WORK=workTimes(); renderAppts();
+  function renderAll(storedAt){ if(window.ZONE_FROM_LINK&&typeof APP!=="undefined"&&APP.sb){ window.ZONE_FROM_LINK=false; try{ localStorage.setItem("zone:setpw",String(Date.now())); }catch(e){} setTimeout(()=>{ const g=$("#gear"); if(g&&!document.querySelector(".set")) g.click(); },900); } /* Oct 31: arrived from an emailed sign-in link: open Settings at Account to set a new password */ if(INBOX.payload&&ROW) setTimeout(()=>znInbox(INBOX.payload),0); // the rundown may arrive before today's row: redraw it so cleared items and live buttons apply
+    ROW=ROWS[0]||null; LIVE=!!(ROW&&ROW["date:Date:start"]===TODAY()); WORK=workTimes(); 
     { const bm=$("#briefMiss"); if(bm) bm.hidden=LIVE||nowH()<6; } // never let a missing brief pass quietly as yesterday's
     if(storedAt) SYNCED=new Date(storedAt).toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit",timeZone:TZ}).replace(" ","").toLowerCase();
     document.body.classList.remove("loading");
-     znDayMode(); 
+     znDayMode(); try{ znMindState(); }catch(e){} 
     // Oct 30: the pre-rebuild screens no longer render under the new layout (identical new screens in every mode, ~8x faster render). They still run if the old layout is ever switched back on.
     /* Nov 1: old-layer branch removed */
     $("#stamp").textContent="";
@@ -5752,25 +5313,25 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:INDEX_ID},ev=>{
       if(ev.type!=="data"){ handleError(ev.error); return; } const pr=parseProps(ev.result.payload); let idx=null; try{ idx=JSON.parse(clean(pr&&pr.Value)); }catch(e){}
       if(!idx||!Array.isArray(idx.rows)){ if(PERSON.person!=="claire"){ showAlert(`Welcome, ${PERSON.name}`,"Your Zone is being built. Your first morning brief will show up here soon."); const vl=$("#vibeLine"); if(vl) vl.textContent=""; } else showAlert("Setting things up","The dashboard index is being built. Refresh in a minute."); return; }
-      INDEX_AT=Date.parse(idx.at)||0; INDEX_ROWS=idx.rows||[]; BOOKS=Array.isArray(idx.books)?idx.books:BOOKS; INDEX_REC=Array.isArray(idx.rec)?idx.rec:[]; try{ renderRecords(); }catch(e){} try{ primeSettings(); }catch(e){} LIST=mergeLocal(idx.list.map(x=>listItem({url:"https://www.notion.so/"+x.id,Name:x.n,Kind:x.k,Area:x.a,Status:x.s,Star:x.star?"__YES__":"__NO__","date:Due:start":x.due||null,Created:x.c,"date:Done On:start":x.done||null,"date:Focus:start":x.f||null,Source:x.src,Owner:x.own||"","Alice Status":x.as||"","Alice Notes":Array.isArray(x.an)?x.an.join("\n"):(x.an||""),"date:Alice Updated:start":x.au||null,"Job Type":x.jt||"","Alice Options":Array.isArray(x.ao)?x.ao.join("\n"):"","Claire Reply":Array.isArray(x.cr)?x.cr.join("\n"):"",Outcome:x.out||"",Repeat:x.rp||"","date:Snooze Until:start":x.sz||null,"Waiting On":x.wo||"","date:Waiting Since:start":x.ws||null,Project:x.pj||"",Estimate:x.est||null,Steps:Array.isArray(x.st)?x.st.join("\n"):"","date:Last Done:start":x.ld||null,"date:Scheduled:start":x.sc||null}))).filter(it=>it.id&&it.name); LIST=LIST.filter(x=>!znIsGone(x.id)); LIST_LOADED=true;
+      INDEX_AT=Date.parse(idx.at)||0; INDEX_ROWS=idx.rows||[]; BOOKS=Array.isArray(idx.books)?idx.books:BOOKS; INDEX_REC=Array.isArray(idx.rec)?idx.rec:[];  try{ primeSettings(); }catch(e){} LIST=mergeLocal(idx.list.map(x=>listItem({url:"https://www.notion.so/"+x.id,Name:x.n,Kind:x.k,Area:x.a,Status:x.s,Star:x.star?"__YES__":"__NO__","date:Due:start":x.due||null,Created:x.c,"date:Done On:start":x.done||null,"date:Focus:start":x.f||null,Source:x.src,Owner:x.own||"","Alice Status":x.as||"","Alice Notes":Array.isArray(x.an)?x.an.join("\n"):(x.an||""),"date:Alice Updated:start":x.au||null,"Job Type":x.jt||"","Alice Options":Array.isArray(x.ao)?x.ao.join("\n"):"","Claire Reply":Array.isArray(x.cr)?x.cr.join("\n"):"",Outcome:x.out||"",Repeat:x.rp||"","date:Snooze Until:start":x.sz||null,"Waiting On":x.wo||"","date:Waiting Since:start":x.ws||null,Project:x.pj||"",Estimate:x.est||null,Steps:Array.isArray(x.st)?x.st.join("\n"):"","date:Last Done:start":x.ld||null,"date:Scheduled:start":x.sc||null}))).filter(it=>it.id&&it.name); LIST=LIST.filter(x=>!znIsGone(x.id)); LIST_LOADED=true;
       watchRows(idx.rows.slice(0,7)); if(ROW) renderListAll();
     },{cache:{staleTime:60000},refetchInterval:600000}));
     unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.SideB},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.SideB={value:clean(pr.Value),check:clean(pr.Check)}; if(ROW) renderSideB(); } } },{cache:{staleTime:300000},refetchInterval:1800000}));
-    for(const k of ["Ideas","DateHist"]) unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS[k]},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET[k]={value:clean(pr.Value),check:clean(pr.Check)}; if(ROW){ renderDates(); renderWins(); } } } },{cache:{staleTime:60000},refetchInterval:600000}));
+    for(const k of ["Ideas","DateHist"]) unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS[k]},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET[k]={value:clean(pr.Value),check:clean(pr.Check)}; if(ROW){   } } } },{cache:{staleTime:60000},refetchInterval:600000}));
     for(const k of ["Birdie","Camp"]) unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS[k]},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET[k]={value:clean(pr.Value),check:clean(pr.Check)}; if(ROW) renderBirdie(); } } },{cache:{staleTime:60000},refetchInterval:600000}));
-    unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.Pathway},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.Pathway={value:clean(pr.Value),check:clean(pr.Check)}; if(ROW) renderMind(); } } },{cache:{staleTime:60000},refetchInterval:600000}));
-    unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.Habits},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.Habits={value:clean(pr.Value),check:clean(pr.Check)}; if(ROW){ renderRituals(); renderYou(); } } } },{cache:{staleTime:60000},refetchInterval:600000}));
-    unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.TimeOff},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.TimeOff={value:clean(pr.Value),check:clean(pr.Check)}; renderTimeOff(); if(ROW){ znDayMode();  try{ renderPlanReady(); }catch(e){} } } } },{cache:{staleTime:60000},refetchInterval:600000}));
-    if(SET_IDS.FamEvents) unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.FamEvents},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.FamEvents={value:String(pr.Value||"")}; setTimeout(famDecorate,0); try{ if(!$("#view-us").hidden) renderUs(); }catch(e){} } } },{cache:{staleTime:60000},refetchInterval:600000}));
+    unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.Pathway},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.Pathway={value:clean(pr.Value),check:clean(pr.Check)}; if(ROW) znMindState(); } } },{cache:{staleTime:60000},refetchInterval:600000}));
+    unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.Habits},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.Habits={value:clean(pr.Value),check:clean(pr.Check)}; if(ROW){  renderYou(); } } } },{cache:{staleTime:60000},refetchInterval:600000}));
+    unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.TimeOff},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.TimeOff={value:clean(pr.Value),check:clean(pr.Check)}; renderTimeOff(); if(ROW){ znDayMode();   } } } },{cache:{staleTime:60000},refetchInterval:600000}));
+    if(SET_IDS.FamEvents) unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.FamEvents},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.FamEvents={value:String(pr.Value||"")}; try{ if(!$("#view-us").hidden) renderUs(); }catch(e){} } } },{cache:{staleTime:60000},refetchInterval:600000}));
     if(SET_IDS.BirdieToday) unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.BirdieToday},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.BirdieToday={value:clean(pr.Value)}; try{ renderBirdie(); }catch(e){} } } },{cache:{staleTime:30000},refetchInterval:120000}));
     for(const k of ["UsWeek","UsNotes"]) if(SET_IDS[k]) unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS[k]},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET[k]={value:k==="UsWeek"?String(pr.Value||""):clean(pr.Value)}; try{ if(!$("#view-us").hidden) renderUs(); }catch(e){} } } },{cache:{staleTime:60000},refetchInterval:300000}));
     if(SET_IDS.FamOwners) unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.FamOwners},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.FamOwners={value:clean(pr.Value)}; try{ renderWeekday(); }catch(e){} } } },{cache:{staleTime:60000},refetchInterval:600000}));
-    if(SET_IDS.Records) unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.Records},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.Records={value:clean(pr.Value),check:clean(pr.Check)}; try{ renderRecords(); }catch(e){} } } },{cache:{staleTime:60000},refetchInterval:600000}));
-    unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.Appts},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.Appts={value:clean(pr.Value),check:clean(pr.Check)}; renderAppts(); } } },{cache:{staleTime:300000},refetchInterval:1800000}));
-    unsub.push(mcp.watchTool(SERVER,"notion-fetch",ZONE_INPUT,ev=>{ if(ev.type==="data") renderInbox(ev.result.payload); else { $("#inboxH").textContent="Couldn't load the Inbox Rundown. Refresh to try again."; } },{cache:{staleTime:60000},refetchInterval:600000}));
+    if(SET_IDS.Records) unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.Records},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.Records={value:clean(pr.Value),check:clean(pr.Check)};  } } },{cache:{staleTime:60000},refetchInterval:600000}));
+    unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.Appts},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.Appts={value:clean(pr.Value),check:clean(pr.Check)};  } } },{cache:{staleTime:300000},refetchInterval:1800000}));
+    unsub.push(mcp.watchTool(SERVER,"notion-fetch",ZONE_INPUT,ev=>{ if(ev.type==="data") znInbox(ev.result.payload); else {  } },{cache:{staleTime:60000},refetchInterval:600000}));
   }
   $("#refresh").addEventListener("click",async()=>{ if(!mcp) return; const st=$("#stale"); st.hidden=false; st.classList.remove("warn"); st.textContent="Refreshing…"; try{ await mcp.invalidate(SERVER); }catch(e){} watch(); });
-  setInterval(()=>{ if(ROW){ znDayMode(); renderDay(); renderHealth(); } },60000);
+  setInterval(()=>{ if(ROW){ znDayMode();   } },60000);
   $("#date").textContent=new Date().toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric",timeZone:TZ});
   { const m=$("#mode"); if(m){ const fix=()=>{ const t=m.textContent; m.title=t; const k=t.indexOf(" · "); if(k>0&&!m.querySelector(".msub")){ m.textContent=""; m.append(document.createTextNode(t.slice(0,k)),el("span","msub",t.slice(k))); } }; new MutationObserver(fix).observe(m,{childList:true,characterData:true,subtree:true}); fix(); } } // UX sweep: "Dawn · after the gym" shows as "Dawn" on phones
   znDayMode();
