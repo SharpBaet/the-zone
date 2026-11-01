@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-01.1"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-01.2"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2270,6 +2270,8 @@ body.zn.zn-night .zn-gnrow{ border-color:rgba(255,255,255,.1); } body.zn.zn-nigh
 .zn-idea .zn-hows .zn-chip{ padding:5px 10px !important; font-size:12.5px !important; background:rgba(255,255,255,.7) !important; color:#3F3B5C !important; box-shadow:inset 0 0 0 1px rgba(31,35,64,.12); } .zn-idea .zn-hows .zn-chip.on{ background:var(--ik) !important; color:#fff !important; box-shadow:none; }
 .zn-idea.picked{ box-shadow:0 0 0 2px var(--ik) inset !important; } .zn-idea .zn-ipick{ background:var(--ik); color:#fff; }
 body.zn.zn-night .zn-idea{ background:rgba(255,255,255,.07) !important; } body.zn.zn-night .zn-idea .zn-ititle{ color:#F3EEFF; } body.zn.zn-night .zn-idea .zn-iwhy, body.zn.zn-night .zn-idea .zn-gsub{ color:rgba(243,238,255,.78); } body.zn.zn-night .zn-idea .zn-k{ color:color-mix(in srgb, var(--ik) 55%, #FFFFFF) !important; } body.zn.zn-night .zn-ideas .zn-iday{ color:#FFB4CF; } body.zn.zn-night .zn-idea .zn-hows .zn-chip{ background:rgba(255,255,255,.1) !important; color:#F3EEFF !important; } body.zn.zn-night .zn-idea .zn-hows a.zn-pill{ color:#FFB4CF !important; }
+/* Nov 1: the old weekend Quests fragment */ body.zn #wkQuests{ display:none !important; }
+/* Nov 1: under the new screens Alice always lives in Plan ("With Alice"), never as her own tab */ html:has(body.zn) #tab-alice{ display:none !important; }
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -2765,9 +2767,9 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     if(!open){ guest(cardId,slot); card.hidden=false; RF_OPEN[slotId]=cardId; if(btn) btn.setAttribute("aria-expanded","true"); if(cardId==="wdHero") renderWeekday(); if(cardId==="prCard") renderPractice(); } }
   function wxNow(){ const v=clean(ROW&&ROW["Weather Now"]).trim(); if(!v) return null; let o=null; try{ o=JSON.parse(v); }catch(e){ try{ o=JSON.parse(v.replace(/\\(?=[{}\[\]:|$_*])/g,"")); }catch(e2){ o=null; } } return o&&o.date===TODAY()?o:null; }
   // Needs you stays silent when nothing needs you (the full inbox rundown lives in More today)
-  function rfQuiet(){ const c=$("#wdNeeds"), l=$("#wdNeedsList"); if(!c||!l) return; const quiet=/Nothing needs you/i.test(l.textContent)||!l.textContent.trim(); c.classList.toggle("rfquiet",quiet); }
+  function rfQuiet(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ const c=$("#wdNeeds"), l=$("#wdNeedsList"); if(!c||!l) return; const quiet=/Nothing needs you/i.test(l.textContent)||!l.textContent.trim(); c.classList.toggle("rfquiet",quiet); }
   setTimeout(()=>{ const l=$("#wdNeedsList"); if(l) new MutationObserver(rfQuiet).observe(l,{childList:true,subtree:true,characterData:true}); },0);
-  function renderRefocus(){ try{
+  function renderRefocus(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ try{
     const wk=!!wkDay(); const live=LIVE&&ROW; const n=nowH();
     // the date (weekdays; weekends already name the day in the vibe)
     const T=TODAY(); const dt=new Date(T+"T12:00:00Z");
@@ -2801,11 +2803,11 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     if(rows.length) p.append(ul);
     if(w&&w.updated) p.append(el("p","upd",`Updated ${w.updated}`)); }
   // Big Adventure on Today: where, when, and one button; the spots, passport and meals open below it
-  function rfAdv(){ const c=$("#wkAdvCard"); if(!c) return; let b=$("#rfAdvBtn");
+  function rfAdv(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ const c=$("#wkAdvCard"); if(!c) return; let b=$("#rfAdvBtn");
     if(!b){ b=el("button","rfmore rfadv","Log the walk"); b.id="rfAdvBtn"; b.type="button"; b.dataset.track="adv:log"; b.setAttribute("aria-expanded","false"); const w=$("#advWhen"); (w||$("#advH")).after(b);
       b.addEventListener("click",()=>{ const open=!c.classList.contains("rfopen"); c.classList.toggle("rfopen",open); b.setAttribute("aria-expanded",String(open)); b.textContent=open?"Done logging":"Log the walk"; }); } }
   // Side quests: an empty list is just an add line
-  function rfQuests(){ const c=$("#wkQuests"), ul=$("#wkQList"); if(!c||!ul) return; const empty=!ul.querySelector("li:not(.muted)"); c.classList.toggle("rfempty",empty); }
+  function rfQuests(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ const c=$("#wkQuests"), ul=$("#wkQList"); if(!c||!ul) return; const empty=!ul.querySelector("li:not(.muted)"); c.classList.toggle("rfempty",empty); }
   setTimeout(()=>{ const ul=$("#wkQList"); if(ul) new MutationObserver(rfQuests).observe(ul,{childList:true}); },0);
 
   // ---------- Oct 18: Ahead = what's coming; You = the practice and the patterns ----------
@@ -2825,7 +2827,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const tl=$("#tab-list"); if(tl&&!$("#listBadge")){ const b=el("i","tabbadge"); b.id="listBadge"; b.hidden=true; tl.style.position="relative"; tl.append(b); }
     const src=$("#aliceBadge"), dst=$("#listBadge"); if(src&&dst){ const sync=()=>{ dst.textContent=src.textContent; dst.hidden=src.hidden; dst.setAttribute("aria-label",src.hidden?"":`Alice has ${src.textContent} question${src.textContent==="1"?"":"s"} for you`); }; new MutationObserver(sync).observe(src,{attributes:true,childList:true,characterData:true,subtree:true}); sync(); }
     try{ renderAliceDesk(); }catch(e){} }
-  function rfArrange(){ rfFoldAlice(); if(rfArrange.done) return; rfArrange.done=true;
+  function rfArrange(){ if(znOn()){ document.documentElement.classList.add("alice-folded"); try{ rfFoldAlice(); }catch(e){} return; } /* Nov 1: old layer off under the new screens; Alice stays folded into Plan */ rfFoldAlice(); if(rfArrange.done) return; rfArrange.done=true;
     const A=$("#view-ahead"), Y=$("#view-you"); if(!A||!Y) return;
     const jb=$("#aheadJump"); if(jb) jb.classList.add("rfgone");
     const ps=$("#planSec"); if(ps) ps.classList.add("rfgone");
@@ -2841,7 +2843,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     for(const [k,h] of Object.entries(ids)){ const sec=$("#"+h)&&$("#"+h).closest("section"); if(sec){ sec.id=sec.id||("you_"+k); sec.classList.add("rfhide"); } }
     Y.append(pat);
   }
-  function renderYouRF(){ rfArrange();
+  function renderYouRF(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ rfArrange();
     const c=$("#youGita"); const g=LIVE&&ROW?gita():null;
     if(c){ if(!g){ c.hidden=true; } else { const done=g.review?g.done:(gitaReadN()>=g.n?g.n:g.n-1);
       $("#ygH").textContent=g.review?"Sunday review":`Day ${g.n} of ${g.of} · ${g.ref}`;
@@ -2860,7 +2862,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       b.append(i,el("b",null,t.title),el("span","l",t.line.slice(0,70))); b.addEventListener("click",()=>sheetCard(t.sec,`${t.ic} ${t.title}`,`var(--${t.c})`,b)); grid.append(b); }); }
 
   // ---------- Oct 18: the top of Today: the day shape is the hero, weather as a pill, one "now" card ----------
-  function rfTop(){ try{
+  function rfTop(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ try{
     const wk=!!wkDay(); const live=LIVE&&ROW;
     document.documentElement.classList.toggle("rf-stale",!$("#briefMiss").hidden);
     const hero=$("#rfHero"), slot=$("#rfArcSlot"), arc=$("#wdArc"), btn=$("#rfWxBtn"), wx=$("#rfWx");
@@ -2929,7 +2931,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function usWeek(){ const raw=String(SET.UsWeek&&SET.UsWeek.value||"").trim(); if(!raw) return null; for(const t of [raw,raw.replace(/\\/g,""),clean(raw)]){ try{ const j=JSON.parse(t); if(j&&j.days) return j; }catch(e){} } return null; }
   function usNotes(){ return String(SET.UsNotes&&SET.UsNotes.value||"").replace(/\\/g,"").split(/\n+/).map(l=>{ const a=l.split("|"); return a.length>=3?{from:a[0].trim(),t:a[1].trim(),text:a.slice(2).join("|").trim()}:null; }).filter(Boolean); }
   const hmTxt=s=>s===-1?"all day":`${((Math.floor(s/60)+11)%12)+1}${s%60?":"+String(s%60).padStart(2,"0"):""}${s<720?"am":"pm"}`;
-  function renderUs(){ if(!$("#view-us")) return; const W=usWeek(); const me=ME(), other=OTHER();
+  function renderUs(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ if(!$("#view-us")) return; const W=usWeek(); const me=ME(), other=OTHER();
     // birdie hub lives here for Claire (it's her log)
     const bh=$("#birdieHub"); if(bh&&bh.parentNode!==$("#usBirdieSlot")) $("#usBirdieSlot").append(bh); try{ renderBirdie(); }catch(e){}
     $("#usSub").textContent=W?usSubLine(W):"Your shared week shows up after the next morning briefs.";
@@ -4310,7 +4312,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     for(const id of ["wdSet","tomCard","coCard"]){ const ol=$("#"+id); if(ol) new MutationObserver(()=>{ clearTimeout(risoRender.t); risoRender.t=setTimeout(risoRender,120); }).observe(ol,{childList:true,subtree:id!=="wdSet"}); } },0);
 
   // the "now" card in work hours: the next unfinished Top 3 (Needs you takes this spot when something is waiting)
-  function rfTask(){ const c=$("#rfTask"); if(!c) return; const wk=!!wkDay(); const n=nowH();
+  function rfTask(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ const c=$("#rfTask"); if(!c) return; const wk=!!wkDay(); const n=nowH();
     if(wk||!(LIVE&&ROW)||n>=16){ c.hidden=true; return; }
     if(!$("#wdNeeds").classList.contains("rfquiet")&&!$("#wdNeeds").hidden){ c.hidden=true; return; }
     if(n<9&&!$("#prMini").hidden){ c.hidden=true; return; } // before the day, the reading comes first
@@ -4324,7 +4326,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     $("#rfTaskDay").onclick=()=>{ const d=$("#wdDay"); if(d) d.scrollIntoView({behavior:"smooth",block:"start"}); };
     c.hidden=false; }
   // Logbook: the checklist card is the Rhythms half; Records are one-tap "it happened" entries (Zone Records database)
-  function rfLogbook(){ const h=$("#ritH"); if(h&&h.textContent!=="Logbook") h.textContent="Logbook";
+  function rfLogbook(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ const h=$("#ritH"); if(h&&h.textContent!=="Logbook") h.textContent="Logbook";
     const c=$("#ritualsCard"); if(c&&!$("#rfRhyK")){ const k=el("div","rfrhyk","Rhythms"); k.id="rfRhyK"; const after=$("#ritualsHead"); (after||h).after(k); }
     if(c&&!$("#rfRecords")){ const sec=el("div","rfrec"); sec.id="rfRecords"; const k=el("div","rfrhyk","Records"); k.id="rfRecK"; sec.append(k,el("div","grid")); const hint=el("p","hint","Tap when it happens. The Zone keeps the history."); hint.id="rfRecHint"; sec.append(hint); c.append(sec); }
     renderRecords(); }
@@ -4357,7 +4359,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     if(!all.length) body.append(el("p","hint","Tap a record in the Logbook on Today when something happens. The history shows up here within the hour.")); }
 
   // a single optional line in the morning; the close-out shows it back at 4pm
-  function renderIntent(){ const c=$("#wdIntent"), b=$("#wdIntBody"); if(!c) return; if(!(LIVE&&ROW)){ c.hidden=true; return; }
+  function renderIntent(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ const c=$("#wdIntent"), b=$("#wdIntBody"); if(!c) return; if(!(LIVE&&ROW)){ c.hidden=true; return; }
     const it=clean(ROW.Intention).trim(); const n=nowH(); const late=n>=16;
     b.replaceChildren();
     if(it&&late&&typeof unfinishedTasks==="function"&&unfinishedTasks().length){ c.hidden=true; return; } // the close-out shows it, with "did the day match?"
@@ -4421,7 +4423,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     for(const a of ["yes","sort of","not really"]){ const b=el("button","btn ghost sm",a[0].toUpperCase()+a.slice(1)); b.type="button"; b.disabled=!mcp; b.dataset.track="gita:check";
       b.addEventListener("click",async()=>{ row.querySelectorAll("button").forEach(x=>x.disabled=true); try{ await writeToday({"Gita Check":a}); renderGitaCheck(); }catch(e){ toast(writeErr(e)); row.querySelectorAll("button").forEach(x=>x.disabled=false); } }); row.append(b); }
     c.hidden=false; }
-  function renderPrMini(){ const c=$("#prMini"); if(!c) return; if(!(LIVE&&ROW)){ c.hidden=true; return; }
+  function renderPrMini(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ const c=$("#prMini"); if(!c) return; if(!(LIVE&&ROW)){ c.hidden=true; return; }
     renderGitaCheck();
     const g=gita(); const btn=$("#prMiniBtn");
     if(g){ const read=!g.review&&gitaReadN()>=g.n;
@@ -4454,7 +4456,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     card.querySelectorAll("details.rfauto, #wkOffD").forEach(d=>d.open=true);
     openSheet({kicker,body:holder,color,from,onClose:()=>{ card.classList.remove("insheet"); card.classList.add(wkDay()?"wkpark":"wdpark"); $("#view-today").append(card); }});
     try{ const d=card.querySelector("#wkOffD"); if(d) d.open=true; if(cardId==="wdHero") renderWeekday(); if(cardId==="prCard") renderPractice(); }catch(e){ console.error("sheet render",e); } } // render once the sheet is on the page
-  function renderMore(){ const c=$("#moreCard"), g=$("#moreGrid"); if(!c) return; if(!(LIVE&&ROW)){ c.hidden=true; return; }
+  function renderMore(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ const c=$("#moreCard"), g=$("#moreGrid"); if(!c) return; if(!(LIVE&&ROW)){ c.hidden=true; return; }
     const wk=!!wkDay(); const n=nowH(); const late=n>=16;
     const has=k=>{ const {head,rest}=split(ROW[k]); return !!(head||rest.length); };
     const head=k=>split(ROW[k]).head.replace(/\*\*/g,"").trim();
@@ -4488,7 +4490,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     friN:["znToday","znMid","znEnd","wkRibbon","risoTop","risoMore","risoFun","vibe","gitaCheck","zoneActs","coCard","wkAdvCard","prMini","moreCard"]};
   // Off duty: the everyday stuff, folded into one card on weekends (each card moves in, and back out on weekdays)
   const OFF_ROWS=[{id:"wkPeek",inline:true},{id:"sunCard",ic:"🗓️",label:"Monday, gently",sun:true},{id:"inboxCard",ic:"📬",label:"Inbox Rundown"}];
-  function mountOff(on){ const rows=$("#wkOffRows");
+  function mountOff(on){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ const rows=$("#wkOffRows");
     for(const r of OFF_ROWS){ const n=$("#"+r.id); if(!n) continue; if(!HOME[r.id]){ HOME[r.id]=document.createComment("home:"+r.id); n.before(HOME[r.id]); }
       if(!on){ if(n.parentNode!==HOME[r.id].parentNode) HOME[r.id].after(n); continue; }
       if(r.inline){ rows.append(n); continue; }
@@ -4496,7 +4498,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       d.append(n); rows.append(d); }
     for(const id of ["mindCard","wkGames","wkWins"]){ if(on) continue; const n=$("#"+id); if(n&&HOME[id]&&n.parentNode!==HOME[id].parentNode) HOME[id].after(n); } // Side B guests go home on weekdays
     if(on) setTimeout(offSummaries,0); }
-  function offSummaries(){ const set=(id,t)=>{ const d=$("#off-"+id); if(d) d.querySelector(".sub").textContent=t||""; };
+  function offSummaries(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ const set=(id,t)=>{ const d=$("#off-"+id); if(d) d.querySelector(".sub").textContent=t||""; };
     set("ritualsCard",($("#ritProg")||{}).textContent||"");
     const mins=(clean(ROW&&ROW.Woo).match(/Today.s sit\s*·\s*(\d+)\s*min/)||[])[1]; set("mindCard",mins?`${mins}-min sit`:"");
     const sc=$("#sunCard"), so=$("#off-sunCard"); if(so) so.hidden=!sc||sc.hidden||wkDay()!=="sun"; set("sunCard","");
@@ -4528,7 +4530,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   const WK_TITLES={ topCard:{sat:"🛒 Side quests",sun:"🧺 Sunday reset"}, wrapLabel:{sat:"Today's wins",sun:"Weekend wins"}, sunLabel:{sun:"Monday, gently"} };
   const WK_DEFAULT={ topH:"Today's list", wrapLabel:"Day Wrap", sunLabel:"Sunday preview" };
   let WK_FLICKED="";
-  function renderWeekend(){ const wk=wkDay(), root=document.documentElement; const hero=$("#wkHero");
+  function renderWeekend(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens (its Quests card had become a broken fragment there) */ const wk=wkDay(), root=document.documentElement; const hero=$("#wkHero");
     hero.hidden=!wk; ["wkGames","wkRest","wkRibbon","wkQuests","wkWins","wkUs","wkAhead"].forEach(id=>{ if(!wk) $("#"+id).hidden=true; }); renderRibbon(); renderQuests(); renderWins(); $("#wkParked").hidden=!wk; if(!wk){ $("#wkPeek").hidden=true; }
     $("#topH").textContent=wk?WK_TITLES.topCard[wk]:WK_DEFAULT.topH; $("#wrapLabel").textContent=wk?WK_TITLES.wrapLabel[wk]:WK_DEFAULT.wrapLabel; $("#sunLabel").textContent=wk==="sun"?WK_TITLES.sunLabel.sun:WK_DEFAULT.sunLabel;
     if(!wk){ root.style.removeProperty("--hero"); root.style.removeProperty("--hero2"); $("#mindCard").classList.remove("wkmini","open"); $("#wkAdvCard").hidden=true; $("#ritH").textContent="Logbook"; const ab=$("#wkAdv"); if(ab) ab.hidden=true; return; }
@@ -4597,7 +4599,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     return out; }
   // days still ahead come from the brief's Week Events (date|range|title|kind)
   function weekBlocks(day){ return clean(ROW&&ROW["Week Events"]).split(/\n+/).map(l=>l.split("|")).filter(f=>f[0]===day&&f[3]!=="work"&&!/all day/i.test(f[1]||"")).map(f=>{ const r=parseRange(f[1]); return r?{...r,text:f[2]}:null; }).filter(Boolean); }
-  function renderRibbon(){ const box=$("#wkRibbon"), wk=wkDay(); if(!wk||!LIVE){ box.hidden=true; return; }
+  function renderRibbon(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ const box=$("#wkRibbon"), wk=wkDay(); if(!wk||!LIVE){ box.hidden=true; return; }
     const today=TODAY(), ST=offStretch(); if(!ST){ box.hidden=true; return; } const D0=ST.days[0], S0=ST.S, SPAN=ST.span; const off=(d,h)=>dayDiff(d,D0)*24+h-S0, nowOff=off(today,nowH());
     const segs=[];
     for(const [i,day] of ST.days.entries()){
@@ -4672,7 +4674,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const rg=$("#wkRing"); if(WK_GROWN!==today){ WK_GROWN=today; rg.classList.remove("grow"); void rg.offsetWidth; rg.classList.add("grow"); setTimeout(()=>rg.classList.remove("grow"),2500); }
     box.hidden=false; }
   // ---------- Friday evening: tonight's plan and the weekend ahead ----------
-  function renderFriday(wk,D,n){ const us=$("#wkUs"), ah=$("#wkAhead"); if(!wk){ us.hidden=true; ah.hidden=true; return; }
+  function renderFriday(wk,D,n){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ const us=$("#wkUs"), ah=$("#wkAhead"); if(!wk){ us.hidden=true; ah.hidden=true; return; }
     // Us, every weekend day: plans with Victoria, a picked date, or today's date ideas right here to pick from
     const from=wk==="fri"?17:0, H=dateHist();
     const plans=D.items.filter(x=>x.end>from&&wkKind(x.text)==="us"); const picked=Object.values(H).filter(x=>x&&x.status==="picked"&&x.date===TODAY());
@@ -4700,7 +4702,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // ---------- Today's jump bar (phones) and the desktop spread (wide screens) ----------
   const TD_SECTIONS={wd:[["wrapCard","🌗 Wrap"],["tomCard","📝 Tomorrow"],["wdDay","☀️ The day"],["wdNeeds","📬 Needs you"],["prCard","🌿 Practice"],["wdCare","🐕 Birdie"],["headStrip","📰 Headlines"]],
     wk:[["wkRibbon","💗 Weekend"],["wkAdvCard","🐕 Birdie"],["wkQuests","🛒 Quests"],["prCard","🌿 Practice"],["wkSideB","💿 Side B"],["wkOff","🅿️ Parked"]]};
-  function renderTodayJump(){ const nav=$("#tdJump"); if(!nav) return; const wk=!!wkDay();
+  function renderTodayJump(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ const nav=$("#tdJump"); if(!nav) return; const wk=!!wkDay();
     const vis=id=>{ const n=$("#"+id); return n&&!n.hidden&&!n.classList.contains("wkpark")&&!n.classList.contains("wdpark")&&n.closest("#view-today")&&n.offsetParent!==null; };
     const items=(wk?TD_SECTIONS.wk:TD_SECTIONS.wd).filter(([id])=>vis(id)).sort((a,b)=>($("#"+a[0]).compareDocumentPosition($("#"+b[0]))&Node.DOCUMENT_POSITION_FOLLOWING)?-1:1);
     nav.replaceChildren(...items.map(([id,lab])=>{ const b=el("button","jchip",lab); b.type="button"; b.dataset.jump=id;
@@ -4737,7 +4739,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     if(/evening skin|\bpm\b skin|🧴 pm|pm ·/u.test(s)) return ["tonight",0]; if(/sunday treat|✨/u.test(s)) return ["tonight",1];
     if(/mobility|weekend flow|🤸/u.test(s)) return ["day",0]; if(/tiny ritual|🕯️|candle/u.test(s)) return ["day",1];
     return ["habits",0]; }
-  function renderPractice(){ const card=$("#prCard"); if(!card||!LIVE||!ROW){ if(card) card.hidden=true; return; }
+  function renderPractice(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ const card=$("#prCard"); if(!card||!LIVE||!ROW){ if(card) card.hidden=true; return; }
     const {head,rest}=split(ROW.Woo); const line=ic=>rest.find(l=>iconOf(l)[0]===ic)||""; const strip=l=>l.replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,"").trim();
     const word=clean(ROW.Word).trim()||head; const cand=strip(line("🕯️")).split(" · "); const teaching=cand[0]||""; let meta=cand.slice(1); if(meta.length&&word&&meta[meta.length-1].toLowerCase()===word.toLowerCase()) meta=meta.slice(0,-1);
     const reading=strip(line("📜")), symbol=strip(line("✦")).replace(/^✦\s*/,""), question=strip(line("✍️"));
@@ -4801,7 +4803,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   let CARE_OPEN="";
   function workHrs(d){ const src=d===TODAY()?ROW:(ROWS.find(r=>r["date:Date:start"]===d)||ROW);
     const line=clean(src&&src["Week Events"]).split(/\n+/).map(l=>l.split("|")).find(f=>f[0]===d&&f[3]==="work"); const m=line&&String(line[2]).match(/([\d.]+)\s*hrs?/); return m?Number(m[1]):0; }
-  function renderWeekday(){ if(wkDay()||!LIVE||!ROW) return; const T=TODAY(); const dt=new Date(T+"T12:00:00Z"); const dow=dt.getUTCDay();
+  function renderWeekday(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ if(wkDay()||!LIVE||!ROW) return; const T=TODAY(); const dt=new Date(T+"T12:00:00Z"); const dow=dt.getUTCDay();
     // the tear-off date, this week's meeting load, and the countdown to Friday 5pm
     $("#wdMonth").textContent=WD_MONTHS[dt.getUTCMonth()]; $("#wdNum").textContent=String(dt.getUTCDate()); $("#wdDow").textContent=DAYS_LONG[dow];
     const mon=addDays(T,-((dow+6)%7)); const days=[0,1,2,3,4].map(i=>addDays(mon,i)); const hrs=days.map(workHrs); const top=Math.max(4,...hrs);
@@ -4900,7 +4902,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const mins=(clean(ROW.Woo).match(/Today.s sit\s*·\s*(\d+)\s*min/)||[])[1]; bar.replaceChildren(el("span","ic","🧘"),el("b",null,mins?`Mindful Moment · ${mins}-min sit`:"Mindful Moment"),el("span","go",mc.classList.contains("open")?"Close":"Open")); mc.classList.remove("wkmini","open"); } }
 
   // ---------- Birdie's Big Adventure: the star of the weekend ----------
-  function renderAdventure(wk,D,n){ const card=$("#wkAdvCard"); if(!wk||!LIVE){ card.hidden=true; return; }
+  function renderAdventure(wk,D,n){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ const card=$("#wkAdvCard"); if(!wk||!LIVE){ card.hidden=true; return; }
     const B=bdParse(); const spots=(B.spots||[]).slice(0,8); const last=spotHistory(); const walks=walksOf(ROW);
     const adv=D.items.find(x=>/birdie adventure/i.test(x.text))||D.items.find(x=>/birdie|hike|trail/i.test(x.text)&&x.start>=7&&x.start<=13);
     const done=walks[walks.length-1]; const sorted=[...spots].sort((a,b)=>(last[a]||"0000")<(last[b]||"0000")?-1:1); const suggest=sorted[0];
@@ -4969,7 +4971,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const toggle=open=>{ body.hidden=!open; w.classList.toggle("open",open); cover.setAttribute("aria-expanded",String(open)); cover.querySelector(".pu").textContent=open?"Unfolded":"Tap to unfold"; };
     cover.addEventListener("click",()=>toggle(body.hidden)); fold.addEventListener("click",()=>{ toggle(false); cover.focus(); });
     return w; }
-  function renderSideB(){ const card=$("#wkSideB"), wk=wkDay(); const ST=offStretch(); if(!wk||!LIVE||!ST||!ST.weekend||![5,6,0,1].includes(dowOf(TODAY()))){ card.hidden=true; return; } // Side B is the weekend's: not on a midweek day off
+  function renderSideB(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ const card=$("#wkSideB"), wk=wkDay(); const ST=offStretch(); if(!wk||!LIVE||!ST||!ST.weekend||![5,6,0,1].includes(dowOf(TODAY()))){ card.hidden=true; return; } // Side B is the weekend's: not on a midweek day off
     const lines=String((SET.SideB&&SET.SideB.value)||"").split(/\n+/).map(l=>l.trim()).filter(l=>/^(MOVIE|BOOK|TINY)\|/.test(l)).map(l=>l.split("|").map(x=>x.trim()));
     const movies=lines.filter(f=>f[0]==="MOVIE"), books=lines.filter(f=>f[0]==="BOOK"), tiny=lines.filter(f=>f[0]==="TINY").map(f=>f[1]).filter(Boolean);
     const P={}; const cap=t=>el("div","pcap",t);
@@ -6515,7 +6517,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     pl.addEventListener("click",addSpot); inp.addEventListener("keydown",e=>{ if(e.key==="Enter") addSpot(); });
     openSheet({kicker:"🐕 Log a walk",title:"Where'd you go?",body:[box],color:"var(--sand)",from}); }
   $("#bdWalkBtn").addEventListener("click",()=>openWalkPicker($("#bdWalkBtn")));
-  function renderBirdie(){ if(wkDay()&&ROW) setTimeout(()=>{ try{ renderAdventure(wkDay(),parseDay(),nowH()); }catch(e){} },0);
+  function renderBirdie(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ if(wkDay()&&ROW) setTimeout(()=>{ try{ renderAdventure(wkDay(),parseDay(),nowH()); }catch(e){} },0);
     const B=bdParse(); const m=mealsToday(); const walks=walksTodayAll();
     const meals=$("#bdMeals"); meals.replaceChildren();
     for(const [k,lab] of [["breakfast","Breakfast"],["dinner","Dinner"]]){ const b=el("button","meal"); b.type="button"; b.disabled=!LIVE; b.setAttribute("aria-pressed",String(!!m[k])); b.append(document.createTextNode(m[k]?`✓ ${lab}`:lab),el("small",null,m[k]?m[k].time+(m[k].picky?" · picky":"")+" · edit":"tap when fed")); b.setAttribute("aria-label",m[k]?`${lab} logged at ${m[k].time}. Tap to change the time`:`Log ${lab.toLowerCase()}`); b.addEventListener("click",()=>m[k]?openMealSheet(k,b):logMeal(k)); meals.append(b); }
@@ -6548,7 +6550,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     // pills: next care and camp
     const pills=el("div","bhpills"); if(care) pills.append(el("span","pill"+(care.due<=3?" warn":""),`💉 ${care.text}`)); const sug=campSuggestion(B); if(sug&&sug.booked) pills.append(el("span","pill",`🏕️ Camp ${shortDate(sug.booked)}`)); else if(B.camp.last) pills.append(el("span","pill",`🏕️ Last camp ${shortDate(B.camp.last)}`)); if(pills.children.length) box.append(pills);
     return box; }
-  function renderBirdieHub(B,m,sug){
+  function renderBirdieHub(B,m,sug){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */
     const hub=$("#birdieHub"); let sum=$("#bhSum"); if(!sum){ sum=el("div"); sum.id="bhSum"; $("#bhBody").before(sum); const t=el("button","bhmore","Everything Birdie ▾"); t.type="button"; t.id="bhMore"; t.setAttribute("aria-expanded","false"); t.setAttribute("aria-controls","bhBody"); t.addEventListener("click",()=>{ const open=hub.classList.toggle("open"); t.setAttribute("aria-expanded",String(open)); t.textContent=open?"Show less ▴":"Everything Birdie ▾"; }); $("#bhBody").after(t); }
     sum.replaceChildren(bdSummary(B,m)); { const h=$("#bhH"); if(h) h.textContent="🐕 Birdie today"; }
     const body=$("#bhBody"); body.replaceChildren(); const sec=k=>{ const d=el("div","bhsec"); d.append(el("div","k",k)); body.append(d); return d; };
@@ -6653,7 +6655,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     svg.append(sv("path",{d:pts.map((p,k)=>{const [x,y]=xy(p); return (k?"L":"M")+x.toFixed(1)+" "+y.toFixed(1);}).join(" "),fill:"none",stroke:color,"stroke-width":2.5,"stroke-linecap":"round","stroke-linejoin":"round","vector-effect":"non-scaling-stroke"}));
     const [lx,ly]=xy(pts[pts.length-1]); svg.append(sv("circle",{cx:lx,cy:ly,r:3.5,fill:color})); }
   function bars(box,vals,label){ box.replaceChildren(); const mx=Math.max(1,...vals.map(v=>v||0)); vals.forEach(v=>{ const i=el("i"); i.style.height=(v?Math.max(6,(v/mx)*100):3)+"%"; if(!v) i.style.opacity=".25"; box.append(i); }); box.setAttribute("aria-label",label); }
-  function renderYou(){ try{ renderTimeOff(); }catch(e){}
+  function renderYou(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ try{ renderTimeOff(); }catch(e){}
     const D=days14(); const today=TODAY();
     $("#dayLetters").replaceChildren(...D.map(x=>el("span",null,x.d.toLocaleDateString("en-US",{weekday:"narrow"}))));
     const has=(r,prop,key)=>!!r&&new Set(clean(r[prop]).split(/\n|,/).map(x=>x.trim())).has(key);
@@ -6890,7 +6892,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const st=`${y}${pad(mo)}${pad(da)}T${pad(hr)}${pad(mi)}00`, en=`${y}${pad(mo)}${pad(da)}T${pad((hr+1)%24)}${pad(mi)}00`;
     const what=t.replace(/^✅\s*Done:\s*/,"").split(",")[0].replace(/^Booked\s+/i,"").trim()||title;
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(what)}&dates=${st}/${en}&ctz=America/Chicago&details=${encodeURIComponent("Booked by Alice · "+t)}`; }
-  function renderAliceDesk(){ const box=$("#aliceDesk"); if(!box) return; const T=TODAY(); const mine=LIST.filter(it=>it.owner==="Alice");
+  function renderAliceDesk(){ if(znOn()) return; /* Nov 1: old layer, off under the new screens */ const box=$("#aliceDesk"); if(!box) return; const T=TODAY(); const mine=LIST.filter(it=>it.owner==="Alice");
     const needs=mine.filter(it=>it.status==="Open"&&alNeedsYou(it)), onit=mine.filter(it=>it.status==="Open"&&it.astat==="Working"&&!alNeedsYou(it));
     const waiting=needs.filter(alAnswered), ask=needs.filter(it=>!alAnswered(it)); // answered questions wait on Alice, not on Claire
     const queued=mine.filter(it=>it.status==="Open"&&(!it.astat||it.astat==="Assigned")&&!alNeedsYou(it)), wk=addDays(T,-6);
