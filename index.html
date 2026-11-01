@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-01.2"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-01.3"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2315,7 +2315,7 @@ body.zn.zn-night .zn-idea{ background:rgba(255,255,255,.07) !important; } body.z
 
   <!-- TODAY -->
   <div id="view-today" style="display:flex;flex-direction:column;gap:16px">
-<section class="rfhead" id="wdHead" hidden aria-label="Today"><h1 id="wdH1"></h1></section>
+
 <div class="zn-today" id="znToday" hidden></div>
 <div class="zn-today" id="znMid" hidden></div>
 <div class="zn-today" id="znEnd" hidden></div>
@@ -2325,7 +2325,7 @@ body.zn.zn-night .zn-idea{ background:rgba(255,255,255,.07) !important; } body.z
 <section class="rfhero" id="rfHero" hidden aria-label="Your day"><button type="button" class="rfword" id="rfWord" hidden data-track="hero:word"><span aria-hidden="true">🕉️</span><b id="rfWordT"></b></button><button type="button" class="rfwxb" id="rfWxBtn" data-track="line:weather" aria-expanded="false" aria-controls="rfWx"><span id="rfWxIc" aria-hidden="true">☀️</span><span id="rfWxTx"></span></button><div id="rfArcSlot"></div><div class="rfends" id="rfEnds" aria-live="polite"><span id="rfEndL"></span><span id="rfEndR"></span></div></section>
 <section class="card wdc rftask" id="rfTask" hidden aria-labelledby="rfTaskN"><span class="k" id="rfTaskK"></span><b id="rfTaskN"></b><span class="sub" id="rfTaskS"></span><div class="row"><button type="button" class="btn" id="rfTaskDone" data-track="now:done">Done</button><button type="button" class="btn ghost" id="rfTaskDay" data-track="now:day">See the day</button></div></section>
 <section class="rfline" id="wdLineCard" hidden><button type="button" class="rfbtn" id="wdLine" data-track="line:weather" aria-expanded="false" aria-controls="wdLineSlot"><span class="ic" id="wdLineIc" aria-hidden="true"></span><span class="tx" id="wdLineTx"></span><span class="chev" aria-hidden="true">›</span></button><div class="rfwx" id="rfWx" hidden></div><div class="rfslot" id="wdLineSlot"></div></section>
-<section class="card wdc rfint" id="wdIntent" hidden aria-labelledby="wdIntH"><h2 id="wdIntH" class="k">Today I want to…</h2><div id="wdIntBody"></div></section>
+
 <section class="card wdc rfcheck" id="gitaCheck" hidden aria-labelledby="gcQ"><span class="k">The word, tonight</span><p id="gcQ"></p><div class="row" id="gcBtns"></div></section>
 <section class="card wdc rfmini" id="prMini" hidden aria-labelledby="prMiniH"><span class="k" id="prMiniH">Today’s practice</span><div class="w" id="prMiniW"></div><p id="prMiniTry"></p><p class="sub" id="prMiniSit"></p><button type="button" class="rfmore" id="prMiniBtn" data-track="mini:practice" aria-expanded="false" aria-controls="prMiniSlot"><span>Teaching, reading and journal</span><span aria-hidden="true">›</span></button><div class="rfslot" id="prMiniSlot"></div></section>
 <section class="card wdc rftiles" id="moreCard" hidden aria-labelledby="moreH"><h2 id="moreH">More today</h2><div class="grid" id="moreGrid"></div><div class="rfslot" id="moreSlot"></div></section>
@@ -2351,11 +2351,7 @@ body.zn.zn-night .zn-idea{ background:rgba(255,255,255,.07) !important; } body.z
       <div id="tomBody"></div>
     </section>
 
-    <section class="card tint" id="wrapCard" hidden aria-labelledby="wrapH">
-      <div class="label" id="wrapLabel">Day Wrap</div>
-      <h2 id="wrapH" style="margin-top:4px"></h2>
-      <div id="wrapBody"></div>
-    </section>
+    
 
     <section class="card zact" id="zoneActs" hidden aria-label="What the Zone changed today"></section>
     <section class="card zact alice" id="aliceCard" hidden aria-label="What Alice is working on"></section>
@@ -2469,15 +2465,12 @@ body.zn.zn-night .zn-idea{ background:rgba(255,255,255,.07) !important; } body.z
       <details class="passport" id="advPass"><summary class="passh"><b>Birdie's passport</b><span class="pdots" id="advDots" aria-hidden="true"></span><span id="advPassN"></span></summary><div class="stamps" id="advStamps"></div></details>
       <div class="advmeals" id="advMeals"></div>
     </section>
-    <section class="card wkc sideb" id="wkSideB" hidden aria-labelledby="sbH">
-      <div class="sbhead"><div class="sbdisc" aria-hidden="true"><i></i></div><div><h2 id="sbH" class="sbtitle">Side B</h2><p class="sbsub" id="sbSub">the fun stuff, all weekend</p></div></div>
-      <div class="sbcollage" id="sbTracks"></div>
-    </section>
+    
     <section class="card wkc parkedline" id="wkOff" hidden aria-label="Parked till Monday"><details id="wkOffD"><summary><span class="ic">🅿️</span><span class="pt"><b>Parked till Monday</b><span id="wkOffSum"></span></span></summary><div class="wkoffrows" id="wkOffRows"></div></details></section>
-    <section class="card wkc" id="wkAhead" hidden aria-labelledby="wkAheadH"><span class="wtag">🗓️ Weekend ahead</span><h2 id="wkAheadH" class="wkh"></h2><div class="wkgames" id="wkAheadList"></div></section>
+    
     <section class="card wkc" id="wkWins" hidden aria-labelledby="wkWinsH"><span class="wtag" id="wkWinsTag">🏆 Today's wins</span><h2 id="wkWinsH" class="wkh"></h2><ul class="wkwins" id="wkWinsList"></ul></section>
-    <section class="card wkc" id="wkGames" hidden aria-labelledby="wkGamesH"><span class="wtag" id="wkGamesTag">🏈 Games on</span><h2 id="wkGamesH" class="wkh">What's worth the couch</h2><div class="wkgames" id="wkGamesList"></div></section>
-    <section class="card wkc" id="wkRest" hidden aria-labelledby="wkRestH"><span class="wtag" id="wkRestTag">🌵 Open time</span><h2 id="wkRestH" class="wkh"></h2><p class="note" id="wkRestNote"></p><div class="wkwoo" id="wkWoo"></div></section>
+    
+    
     <div class="wkparked" id="wkParked" hidden><span id="wkParkedTxt">Work inbox and weekday tasks are parked till Monday 6am.</span><button type="button" id="wkPeekBtn" aria-expanded="false" aria-controls="wkPeek">Peek</button></div>
     <ul class="wkpeek" id="wkPeek" hidden></ul>
     <section class="card tint c-birdie" id="birdieCard" aria-labelledby="bdH">
@@ -2500,7 +2493,7 @@ body.zn.zn-night .zn-idea{ background:rgba(255,255,255,.07) !important; } body.z
     </nav>
     <section class="riso-ahead" id="risoAhead" hidden aria-label="The week at a glance"></section>
     <section class="card tint c-plan" id="sunCard" hidden aria-labelledby="sunH"><div class="label" id="sunLabel">Sunday preview</div><h2 id="sunH" style="margin-top:4px"></h2><ul class="lines" id="sunLines"></ul></section>
-    <div class="asec" id="planSec">Plan</div>
+    
     <section class="card tint c-plan" id="planCard" aria-labelledby="planH">
       <div class="label" id="planDate">Tomorrow</div>
       <h2 id="planH" class="ttl-c" style="margin-top:4px">Get tomorrow ready</h2>
@@ -2536,16 +2529,16 @@ body.zn.zn-night .zn-idea{ background:rgba(255,255,255,.07) !important; } body.z
   <div id="view-us" class="view" hidden style="display:none">
 <div class="zn-today" id="znUs" hidden></div>
 <div class="zn-today" id="znOurShelf" hidden></div>
-    <section class="ushead"><h1>Us</h1><p id="usSub"></p></section>
-    <section class="card usnext" id="usNext" hidden aria-labelledby="usNextH"><span class="k">Next together</span><b id="usNextH"></b><span class="when" id="usNextW"></span><p class="sub" id="usNextS"></p></section>
-    <section class="card usnote" id="usNote" aria-labelledby="usNoteK"><span class="k" id="usNoteK">Note to you</span><div id="usNoteLast"></div><div class="row"><input class="field" id="usNoteIn" type="text" maxlength="240" autocomplete="off"><button type="button" class="btn" id="usNoteGo">Send</button></div></section>
+    <section class="ushead"><h1>Us</h1></section>
+    
+    
     <section class="card ustonight" id="usTonight" hidden aria-labelledby="usTonightH"><div class="ush2"><h2 id="usTonightH">🏟️ Games tonight</h2><span id="usTonightN"></span></div><ul class="usgt" id="usTonightList"></ul><p class="hint" id="usTonightAt"></p></section>
-    <section class="card" id="usWeek" aria-labelledby="usWeekH"><div class="ush2"><h2 id="usWeekH">Our week</h2><span>evenings</span></div><ul class="usdays" id="usDays"></ul><p class="hint" id="usKey"></p></section>
-    <section class="card" id="usList" aria-labelledby="usListH"><div class="ush2"><h2 id="usListH">Our list</h2><span id="usListN"></span></div><div class="usfilt" id="usFilt" role="group" aria-label="Filter"></div><ul class="usitems" id="usItems"></ul><div class="row"><input class="field" id="usAddIn" type="text" placeholder="Add something for us…" aria-label="Add to our list" autocomplete="off"><button type="button" class="btn" id="usAddGo">Add</button></div></section>
-    <section class="card usideas" id="usIdeas" aria-labelledby="usIdeasH"><div class="ush2"><h2 id="usIdeasH">Date night ideas</h2><span id="usIdeasN"></span></div><ul class="usitems" id="usIdeaItems"></ul><div class="row"><input class="field" id="usIdeaIn" type="text" placeholder="Add an idea…" aria-label="Add a date night idea" autocomplete="off"><button type="button" class="btn ghost" id="usIdeaGo">Add</button></div></section>
-    <div id="usBirdieSlot"></div>
+    
+    
+    
+    
     <section class="card" id="usGames" hidden aria-labelledby="usGamesH"><div class="ush2"><h2 id="usGamesH">Games we both watch</h2></div><ul class="usgames" id="usGameList"></ul></section>
-    <p class="hint" id="usBuilt"></p>
+    
   </div>
 
   <!-- YOU -->
@@ -2554,7 +2547,7 @@ body.zn.zn-night .zn-idea{ background:rgba(255,255,255,.07) !important; } body.z
 <div class="zn-today" id="znShelf" hidden></div>
     <section class="riso-youhero" id="risoYouHero" hidden aria-label="Your reading at a glance"></section>
     <section class="card tint c-you" aria-labelledby="logH">
-      <h2 id="logH" class="ttl-c">Log today</h2>
+      
       <div class="qlog" role="group" aria-label="Quick log" id="qlogSlot" style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px">
       <button class="qbtn" id="qWater" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--water)" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/></svg><span id="qWaterV">0</span></button>
       <button class="qbtn" id="qMeds" type="button" aria-pressed="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--rose)" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="9" width="18" height="7" rx="3.5" transform="rotate(-35 12 12.5)"/><path d="M10 7.5l4 8"/></svg>Meds</button>
@@ -2576,37 +2569,34 @@ body.zn.zn-night .zn-idea{ background:rgba(255,255,255,.07) !important; } body.z
         <button class="btn" id="offSave" type="button">Add time off</button>
       </div>
     </section>
-    <section class="card tint c-birdie" aria-labelledby="bhH" id="birdieHub">
-      <h2 id="bhH" class="ttl-c">🐕 Birdie</h2>
-      <div id="bhBody"></div>
-    </section>
+    
     <section class="card tint c-you" aria-labelledby="jrnH" id="journalCard">
       <h2 id="jrnH" class="ttl-c">Journal</h2>
       <p class="hint">Your reflections, sits, and each day's question from the last two weeks.</p>
       <div id="journal"></div>
     </section>
     <section class="card tint c-you" aria-labelledby="habH">
-      <h2 id="habH" class="ttl-c">Habits · last two weeks</h2>
-      <div class="stats" id="habStats"></div>
-      <div style="margin-top:14px"><div class="daylabels"><span></span><div id="dayLetters"></div></div><div id="habGrid"></div></div>
+      
+      
+      <div style="margin-top:14px"><div class="daylabels"><span></span></div></div>
     </section>
     <section class="card tint c-you" aria-labelledby="bodyH">
-      <h2 id="bodyH" class="ttl-c">Body · last two weeks</h2>
-      <div id="metrics" style="margin-top:6px"></div>
+      
+      
     </section>
     <section class="card tint c-you" aria-labelledby="dailyH">
-      <h2 id="dailyH" class="ttl-c">Water, walks, and sits</h2>
-      <div class="label" style="margin-top:12px">Water</div><div class="bars" id="barWater" aria-hidden="true"></div>
-      <div class="label" style="margin-top:12px">Birdie walks</div><div class="bars walks" id="barWalks" aria-hidden="true"></div>
-      <div class="label" style="margin-top:12px">Meditation minutes</div><div class="bars sit" id="barSit" aria-hidden="true"></div>
-      <div class="label" style="margin-top:12px">Mood</div><div class="moodrow" id="moodRow"></div>
-      <p class="note" id="dailyNote" style="margin-top:10px"></p>
+      
+      <div class="label" style="margin-top:12px">Water</div>
+      <div class="label" style="margin-top:12px">Birdie walks</div>
+      <div class="label" style="margin-top:12px">Meditation minutes</div>
+      <div class="label" style="margin-top:12px">Mood</div>
+      
     </section>
   </div>
 
   <!-- LIST -->
   <div id="view-alice" class="view" hidden style="display:none">
-    <section class="alhero" aria-labelledby="alH"><div class="alav" aria-hidden="true">A</div><div><h1 id="alH">Alice</h1><p id="alStatus"></p></div></section>
+    <section class="alhero" aria-labelledby="alH"><div class="alav" aria-hidden="true">A</div><div><p id="alStatus"></p></div></section>
     <div class="alstats" id="alStats"></div>
     <div class="aldesk" id="aliceDesk"></div>
   </div>
