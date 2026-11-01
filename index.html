@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-10-31.15"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-10-31.16"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -5964,7 +5964,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     return "Personal"; }
   // ---------- List v2 step 2 (Oct 22): Schedule it and Add an event. Requests ride the 5-minute poll ("!cal|..." lines in
   // today's Inbox Cleared); zone-inbox hands them to Make, which creates the event on her calendar or the Fam calendar. ----------
-  const calOK=()=>PERSON.person!=="victoria"&&!!mcp;
+  const calOK=()=>!!mcp /* Oct 31: Victoria adds events too (zone-inbox 18 reads her row; Make routes her "me" events through her own connection) */;
   const b64u=t=>btoa(unescape(encodeURIComponent(t))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
   const hm=h=>{ const hh=Math.floor(h), mm=Math.round((h-hh)*60); return `${String(hh).padStart(2,"0")}:${String(mm===60?0:mm).padStart(2,"0")}`; };
   const hLabel=h=>{ const hh=Math.floor(h)%24, mm=Math.round((h-Math.floor(h))*60); return `${((hh+11)%12)+1}${mm?":"+String(mm).padStart(2,"0"):""}${hh<12?"am":"pm"}`; };
@@ -6015,7 +6015,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const wrap=el("div","schd"); const L=(t,i)=>{ const l=el("label","note",t); l.append(i); return l; }; const inp=(type,v)=>{ const i=el("input","field"); i.type=type; i.value=v||""; return i; };
     const nm=inp("text"); nm.placeholder="Dinner out"; const n0=Math.min(22,Math.ceil(nowH()+1)); const di=inp("date",TODAY()), si=inp("time",hm(n0)), ei=inp("time",hm(Math.min(23.5,n0+1)));
     const seg=(name,opts,val)=>{ const g=el("div","schseg"); g.setAttribute("role","radiogroup"); g.setAttribute("aria-label",name); let cur=val; const bs=opts.map(([v,l])=>{ const b=el("button","chip",l); b.type="button"; b.setAttribute("role","radio"); b.setAttribute("aria-checked",String(v===val)); b.addEventListener("click",()=>{ cur=v; bs.forEach(x=>x.setAttribute("aria-checked",String(x===b))); warn(); }); g.append(b); return b; }); return {g,get:()=>cur}; };
-    const whose=seg("Whose",[["me","Mine"],["us","Fam · Us"],["victoria","Fam · Victoria"]],pre.whose||"me"); if(pre.title) nm.value=pre.title; if(pre.date) di.value=pre.date; const rem=seg("Remind me",[["none","None"],["30","30 min before"],["60","1 hr before"],["morning","Morning of"]],"30");
+    const whose=seg("Whose",(PERSON.person||"claire")==="claire"?[["me","Mine"],["us","Fam · Us"],["victoria","Fam · Victoria"]]:[["me","Mine"],["us","Fam · Us"],["claire","Fam · Claire"]],pre.whose||"me"); if(pre.title) nm.value=pre.title; if(pre.date) di.value=pre.date; const rem=seg("Remind me",[["none","None"],["30","30 min before"],["60","1 hr before"],["morning","Morning of"]],"30");
     const grid=el("div","lgrid"); grid.append(L("Day",di),L("Starts",si),L("Ends",ei));
     const w=el("p","schwarn"); w.hidden=true;
     const toH=v=>{ const [a,b]=String(v||"").split(":").map(Number); return isNaN(a)?null:a+(b||0)/60; };
@@ -6028,7 +6028,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const r=rem.get(); const remind=r==="none"?null:r==="morning"?Math.max(0,Math.round((s0-8)*60)):Number(r); const who=whose.get();
       go.disabled=true; go.textContent="Saving…";
       try{ await queueCal(who==="me"?"me":"fam",d,s0,end,remind,title);
-        if(who!=="me"){ const owner=who==="us"?"both":"victoria"; const lines=clean(SET.FamOwners&&SET.FamOwners.value).split(/\n+/).map(l=>l.trim()).filter(l=>l&&fnorm(l.split("|").slice(1).join("|"))!==fnorm(title)); lines.push(`${owner}|${fnorm(title)}`); try{ await saveSetting("FamOwners",lines); }catch(e){} }
+        if(who!=="me"){ const owner=who==="us"?"both":who; const lines=clean(SET.FamOwners&&SET.FamOwners.value).split(/\n+/).map(l=>l.trim()).filter(l=>l&&fnorm(l.split("|").slice(1).join("|"))!==fnorm(title)); lines.push(`${owner}|${fnorm(title)}`); try{ await saveSetting("FamOwners",lines); }catch(e){} }
         toast(`Added · on ${who==="me"?"your":"the Fam"} calendar in a few minutes`); close&&close(); }
       catch(e){ go.disabled=false; go.textContent="Add it"; toast(writeErr(e)); } }); }
 
