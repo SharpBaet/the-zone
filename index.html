@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-01.6"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-01.7"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2272,6 +2272,17 @@ body.zn.zn-night .zn-gnrow{ border-color:rgba(255,255,255,.1); } body.zn.zn-nigh
 body.zn.zn-night .zn-idea{ background:rgba(255,255,255,.07) !important; } body.zn.zn-night .zn-idea .zn-ititle{ color:#F3EEFF; } body.zn.zn-night .zn-idea .zn-iwhy, body.zn.zn-night .zn-idea .zn-gsub{ color:rgba(243,238,255,.78); } body.zn.zn-night .zn-idea .zn-k{ color:color-mix(in srgb, var(--ik) 55%, #FFFFFF) !important; } body.zn.zn-night .zn-ideas .zn-iday{ color:#FFB4CF; } body.zn.zn-night .zn-idea .zn-hows .zn-chip{ background:rgba(255,255,255,.1) !important; color:#F3EEFF !important; } body.zn.zn-night .zn-idea .zn-hows a.zn-pill{ color:#FFB4CF !important; }
 /* Nov 1: the old weekend Quests fragment */ body.zn #wkQuests{ display:none !important; }
 /* Nov 1: under the new screens Alice always lives in Plan ("With Alice"), never as her own tab */ html:has(body.zn) #tab-alice{ display:none !important; }
+
+/* Nov 1: close out today, in place on Tonight */
+body.zn .zn-co{margin:2px 0 6px 52px;display:flex;flex-direction:column;gap:10px}
+body.zn .zn-coit{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:12px}
+body.zn .zn-coit > b{display:block;font-size:15px;font-weight:700;line-height:1.3;color:#F3EEFF;margin-bottom:8px}
+body.zn .zn-cobtns{display:flex;gap:6px;flex-wrap:wrap}
+body.zn .zn-cobtns .zn-pill{min-height:40px;padding:0 12px;font-size:13px;display:inline-flex;align-items:center}
+html body.zn.zn-night .zn-cobtns .zn-pill.zn-copri{background:#F3EEFF !important;color:#1F2340 !important}
+html body.zn.zn-night .zn-cobtns .zn-pill.zn-coghost{background:transparent !important;border:1px solid rgba(255,255,255,.3) !important;color:#F3EEFF !important}
+body.zn .zn-cobtns .zn-pill:disabled{opacity:.5}
+body.zn .zn-cohint{font-size:13px;opacity:.75;margin:0 0 4px 52px;color:#F3EEFF}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -3538,13 +3549,26 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       return c; }
   let NIGHT_TC=null;
   // Oct 25: the night page's checklist. Rows are live: water logs a bottle, meds/supps flip, the readings open their sheets.
+  // Nov 1: close out today, in place on Tonight (Claire chose option A from the mockups). One card per unfinished Top 3 item:
+  // Done (Top 3 Done + the List twin), Tomorrow (tomorrow's Top 3 via moveTasks, with its undo), Back to the List (Top 3 Moved; stays open, no date).
+  // Every write goes through writeToday, which redraws Today, so a handled item leaves and the count drops.
+  let ZN_CO_OPEN=false;
+  function znCloseOut(){ const box=el("div","zn-co"); box.id="znCloseOut";
+    for(const t of unfinishedTasks()){ const it=el("div","zn-coit"); it.append(el("b",null,t)); const bs=el("div","zn-cobtns");
+      const mk=(lab,aria,cls,fn)=>{ const b=el("button","zn-pill "+cls,lab); b.type="button"; b.setAttribute("aria-label",aria); b.disabled=!mcp||!LIVE;
+        b.addEventListener("click",async()=>{ bs.querySelectorAll("button").forEach(x=>x.disabled=true); try{ await fn(); }catch(e){ toast(writeErr(e)); bs.querySelectorAll("button").forEach(x=>x.disabled=false); } }); return b; };
+      bs.append(mk("✓ Done","Mark done: "+t,"zn-copri",async()=>{ await setInList("Top 3 Done",t,true,"\n"); syncListDone(t,true); }),
+        mk("→ Tomorrow","Pick for tomorrow: "+t,"zn-coghost",()=>moveTasks([t])),
+        mk("↩ Back to List","Back to the List: "+t,"zn-coghost",async()=>{ await setInList("Top 3 Moved",t,true,"\n"); toast("Back on your List"); }));
+      it.append(bs); box.append(it); }
+    return [box,el("p","zn-cohint","Anything you leave stays on your List.")]; }
   function znBeforeBed(open,tom,wk){ const T=TODAY(); const c=znCard("zn-glass zn-wind","","Before bed");
     const g=num(ROW.Water)||0, tg=Number(prGet("target","water"))||8, bs=Math.max(1,Number(prGet("bottle","water"))||4);
     const medsOn=num(ROW.Meds)===1, suppOn=num(ROW.Supplements)===1; const gg=(()=>{ try{ return gita(); }catch(e){ return null; } })(); const gitaRead=!!(gg&&(gg.review||gitaReadN()>=gg.n));
     const rcv=clean(ROW.Recovery).trim(); let R=null, rcvRead=false; try{ R=rcv?znJSON((ROW.__raw&&ROW.__raw.Recovery)||ROW.Recovery):null; rcvRead=!!R&&(parseInt(clean(ROW["Recovery Read"]).trim())||0)>=R.n; }catch(e){ R=null; }
     const bk=BOOKS.filter(x=>x.s==="Reading"&&bkMine(x)).sort((x,y)=>(bkLastRead(y)||"").localeCompare(bkLastRead(x)||""))[0]; const readDone=!!(bk&&bkNights(bk).some(p=>p[0]===T&&p[2]===bkMe()));
     const rows=[];
-    rows.push({ic:"📥",tx:open?`${open} thing${open===1?"":"s"} still open`:"Nothing left to land",st:open?"close out ↓":"✓",done:!open,go:()=>{} /* Nov 1 (3b): the old close-out cards this scrolled to were never visible under the new screens; a Tonight close-out is still to design */});
+    if(!open) ZN_CO_OPEN=false; rows.push({ic:"📥",tx:open?`${open} thing${open===1?"":"s"} still open`:"Nothing left to land",st:open?(ZN_CO_OPEN?"hide ▴":"close out ↓"):"✓",done:!open,co:true,go:()=>{ ZN_CO_OPEN=!ZN_CO_OPEN; znRender(); setTimeout(()=>{ const r=document.querySelector(".zn-bedrow[aria-expanded]"); if(r) try{ r.focus({preventScroll:true}); }catch(e){} },0); }}); /* Nov 1: close-out opens in place (option A) */
     { const P=practiceDefs(); const F=(()=>{ const k=prGet("feature"); return P.find(x=>x.k===k&&x.type==="count")||P.find(x=>x.k==="water")||P.find(x=>x.type==="count")||null; })();
       if(F){ const v=pval(ROW,F)||0, t2=pTarget(F)||1, step=F.k==="water"?bs:1; const put=x=>F.k==="water"?writeToday({Water:Math.max(0,x)},{silent:true}):plogSet(F.k,Math.max(0,x)); rows.push({ic:F.icon,tx:`${F.name} · ${v} of ${t2} ${F.unit}`,st:v>=t2?"✓":(F.k==="water"?"+ a bottle":"+1"),done:v>=t2,go:async()=>{ try{ await put(v+step); toast(`${F.name} · ${v+step} ${F.unit}`,async()=>{ try{ await put(v); znRender(); }catch(e){ toast(writeErr(e)); } });  znRender(); }catch(e){ toast(writeErr(e)); } }}); }
       const left=routineDefs().filter(rtDays).filter(d=>d.action!=="walk"&&!rtDone(ROW,d)); // Oct 29: routines from the person's row
@@ -3559,7 +3583,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const left=rows.filter(r=>!r.done); c.classList.add("zn-tonight2"); c.innerHTML=`<span class="zn-k">TONIGHT · ${left.length?`${left.length} LEFT`:"ALL LANDED"}</span>`;
     { const sofar=clean(ROW.Evening).split(/\n+/).map(x=>x.trim()).find(x=>x.startsWith("🌗")); if(sofar) c.append(el("p","zn-sofar",sofar.replace(/^🌗\s*(Today so far:?\s*)?/i,""))); } // Oct 29: the Day Wrap's "today so far" line
     // Oct 29: finished rows leave; the rest get room: icon tile, name, detail, a real button
-    left.forEach(r=>{ const b=el("button","zn-bedrow"); b.type="button"; const [name,...rest]=String(r.tx).split(" · "); b.innerHTML=`<span class="zn-ric2">${r.ic}</span><span class="zn-rtx"><b>${znEsc(name)}</b>${rest.length?`<span>${znEsc(rest.join(" · "))}</span>`:""}</span><span class="zn-pill zn-dark zn-rgo">${znEsc(r.st)}</span>`; if(!mcp||!LIVE) b.disabled=true; b.addEventListener("click",()=>{ try{ r.go(b); }catch(e){} }); c.append(b); });
+    left.forEach(r=>{ const b=el("button","zn-bedrow"); b.type="button"; const [name,...rest]=String(r.tx).split(" · "); b.innerHTML=`<span class="zn-ric2">${r.ic}</span><span class="zn-rtx"><b>${znEsc(name)}</b>${rest.length?`<span>${znEsc(rest.join(" · "))}</span>`:""}</span><span class="zn-pill zn-dark zn-rgo">${znEsc(r.st)}</span>`; if(!mcp||!LIVE) b.disabled=true; b.addEventListener("click",()=>{ try{ r.go(b); }catch(e){} }); c.append(b); if(r.co){ b.setAttribute("aria-expanded",String(ZN_CO_OPEN)); b.setAttribute("aria-controls","znCloseOut"); if(ZN_CO_OPEN) c.append(...znCloseOut()); } });
     if(!left.length) c.append(el("p","zn-evs","Nothing left to land. The night is yours."));
     const f=el("div","zn-evs"); f.style.marginTop="10px"; f.textContent=first?`Tomorrow starts with ${shortName(first.name)} at ${hToLabel(first.s)}.`:"Nothing on tomorrow’s clock yet."; c.append(f); return c; }
   // Oct 26: the listening card: Zone Radio, two new episodes from her shows (ROW.Episodes 🎧 lines) and the day's discovery
