@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-01.5"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-01.6"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2319,9 +2319,9 @@ body.zn.zn-night .zn-idea{ background:rgba(255,255,255,.07) !important; } body.z
 <div class="zn-today" id="znToday" hidden></div>
 <div class="zn-today" id="znMid" hidden></div>
 <div class="zn-today" id="znEnd" hidden></div>
-<section class="riso-top" id="risoTop" hidden aria-label="Today at a glance"></section>
-<section class="riso-more" id="risoMore" hidden aria-label="Weather, reading, Birdie and tonight"></section>
-<section class="riso-fun" id="risoFun" hidden aria-label="Your teams, headlines, radio and the mantra"></section>
+
+
+
 <section class="rfhero" id="rfHero" hidden aria-label="Your day"><button type="button" class="rfword" id="rfWord" hidden data-track="hero:word"><span aria-hidden="true">🕉️</span><b id="rfWordT"></b></button><button type="button" class="rfwxb" id="rfWxBtn" data-track="line:weather" aria-expanded="false" aria-controls="rfWx"><span id="rfWxIc" aria-hidden="true">☀️</span><span id="rfWxTx"></span></button><div id="rfArcSlot"></div><div class="rfends" id="rfEnds" aria-live="polite"><span id="rfEndL"></span><span id="rfEndR"></span></div></section>
 <section class="card wdc rftask" id="rfTask" hidden aria-labelledby="rfTaskN"><span class="k" id="rfTaskK"></span><b id="rfTaskN"></b><span class="sub" id="rfTaskS"></span><div class="row"><button type="button" class="btn" id="rfTaskDone" data-track="now:done">Done</button><button type="button" class="btn ghost" id="rfTaskDay" data-track="now:day">See the day</button></div></section>
 
@@ -2470,7 +2470,7 @@ body.zn.zn-night .zn-idea{ background:rgba(255,255,255,.07) !important; } body.z
       <button type="button" class="jchip" data-jump="dateCard">💕 Date night</button>
       <button type="button" class="jchip" data-jump="campCard">🏕️ Birdie</button>
     </nav>
-    <section class="riso-ahead" id="risoAhead" hidden aria-label="The week at a glance"></section>
+    
     <section class="card tint c-plan" id="sunCard" hidden aria-labelledby="sunH"><div class="label" id="sunLabel">Sunday preview</div><h2 id="sunH" style="margin-top:4px"></h2><ul class="lines" id="sunLines"></ul></section>
     
     <section class="card tint c-plan" id="planCard" aria-labelledby="planH">
@@ -2524,7 +2524,7 @@ body.zn.zn-night .zn-idea{ background:rgba(255,255,255,.07) !important; } body.z
   <div id="view-you" class="view" hidden style="display:none">
 <div class="zn-today" id="znMe" hidden></div>
 <div class="zn-today" id="znShelf" hidden></div>
-    <section class="riso-youhero" id="risoYouHero" hidden aria-label="Your reading at a glance"></section>
+    
     
     <section class="card tint c-you" aria-labelledby="offH" id="timeOffCard">
       <h2 id="offH" class="ttl-c">🛋️ Time off</h2>
@@ -2571,7 +2571,7 @@ body.zn.zn-night .zn-idea{ background:rgba(255,255,255,.07) !important; } body.z
     <div class="aldesk" id="aliceDesk"></div>
   </div>
   <div id="view-list" class="view" hidden style="display:none">
-    <section class="riso-listhero" id="risoListHero" hidden aria-label="Your list at a glance"></section>
+    
     <section class="card tint c-plan" id="capCard" aria-labelledby="listH">
       <div class="row" style="justify-content:space-between;align-items:baseline"><h2 id="listH" class="ttl-c">Your list</h2><span class="note" id="listCount"></span></div>
       <div class="addrow"><input class="field" id="capIn" autocomplete="off" aria-label="Add to your list" placeholder="Add anything: a to-do, note, reminder, thought"><button class="plus" id="capGo" type="button" aria-label="Add to your list" style="--c:var(--plan)">+</button></div>
@@ -2618,7 +2618,7 @@ body.zn.zn-night .zn-idea{ background:rgba(255,255,255,.07) !important; } body.z
 (function(){
   "use strict";
   const SERVER="Notion";
-  const LOG_INPUT={data:{data_source_url:"collection://898ef445-32cf-831f-b174-07678a767661",mode:"rows",limit:14,sort:[{property:"Date",direction:"descending"}]}};
+  
   let ZONE_INPUT={id:"673ef445-32cf-82fb-a5b8-81b27d2e0456"};
   const TZ="America/Chicago";
   const $=(s,r=document)=>r.querySelector(s);
@@ -2630,7 +2630,7 @@ body.zn.zn-night .zn-idea{ background:rgba(255,255,255,.07) !important; } body.z
 
   // ---------- text helpers ----------
   function decode(s){return s.replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&nbsp;/g," ");}
-  const clip=(t,n)=>{ t=String(t||""); if(t.length<=n) return t; const c=t.slice(0,n+1), k=c.lastIndexOf(" "); return (k>n*0.5?c.slice(0,k):t.slice(0,n)).replace(/[\s,·:;–-]+$/,"")+"…"; }; // UX sweep: never cut a word in half
+   // UX sweep: never cut a word in half
 // Oct 31: a JSON block from a Daily Log row (the recovery reading). clean() first, as always; when that can't be read, two quote-safe ways:
   // keep the reading's own escapes (\" and \n) and undo only Notion's, or undo only Notion's markdown escapes. Straight quotes inside the text broke it once.
   function znJSON(raw){ const base=decode(String(raw??"").replace(/<br\s*\/?>/gi,"\n").replace(/<[^>]+>/g,"")).replace(/\*\*/g,"").replace(/\r/g,"").trim(); if(!base) return null;
@@ -2683,7 +2683,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // weekend = Saturday or Sunday in Claire's timezone (Friday stays a weekday for now)
   // weekend = Friday from 5pm, then all of Saturday and Sunday, in Claire's timezone
   const wkDay=()=>{ const d=new Date(TODAY()+"T12:00:00Z").getUTCDay(); let off=null; try{ off=offFor(TODAY()); }catch(e){} return d===6?"sat":d===0?"sun":off?"sat":d===5&&nowH()>=17?"fri":""; }; // a day off runs like a Saturday
-  const WK_NAME={fri:"Friday",sat:"Saturday",sun:"Sunday"};
+  
   
   // ---------- time off as one stretch (Oct 16): the weekend, a day off, or both joined up ----------
   // A day off on its own is just that day (7am to 11pm). Days off that touch a weekend join it: a Friday off runs Friday 7am to
@@ -2700,7 +2700,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const kind=!offs.length?"weekend":offs.some(o=>o.kind==="vacation")?"vacation":weekend?(offs.length===1?"long weekend":"time off"):days.length===1?(offs[0].kind==="rest"?"rest day":"day off"):"time off";
     const next=addDays(days[days.length-1],1);
     return {days,S,span:(days.length-1)*24+23-S,kind,weekend,next,nextName:DOWL[dowOf(next)],last:days[days.length-1]}; }
-  const capFirst=t=>String(t||"").charAt(0).toUpperCase()+String(t||"").slice(1);
+  
   let NIGHT=false;
   function mode(){ const n=nowH(); const set=SUN.set??19.2, rise=SUN.rise??7.3; const night=n>=set||n<rise-1.5; NIGHT=night;
     document.documentElement.classList.toggle("clay",night); document.documentElement.classList.toggle("wknd",!!wkDay());
@@ -2741,19 +2741,14 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const ul=el("ul","rows"); for(const [ic,k,v] of rows){ const li=el("li"); if(ic){ const i=el("span","i",ic); i.setAttribute("aria-hidden","true"); li.append(i); } if(k) li.append(el("b",null,k)); li.append(el("span",null,v)); ul.append(li); }
     if(rows.length) p.append(ul);
     if(w&&w.updated) p.append(el("p","upd",`Updated ${w.updated}`)); return p; }
-  const ORDER={
-    // Oct 17 refocus: what matters today up front; everything else lives in More today (or stays silent until needed)
-    dawn:["znToday","znMid","znEnd","rfHero","risoTop","vibe","wdDay","zoneActs","wdNeeds","risoMore","risoFun","prMini","rfTask","moreCard"],
-    work:["znToday","znMid","znEnd","rfHero","risoTop","vibe","wdDay","zoneActs","wdNeeds","risoMore","risoFun","rfTask","prMini","moreCard"],
-    wrap:["znToday","znMid","znEnd","rfHero","risoTop","vibe","wdDay","gitaCheck","tomCard","wdNeeds","risoFun","prMini","moreCard"],
-    evening:["znToday","znMid","znEnd","rfHero","risoTop","vibe","wdDay","gitaCheck","tomCard","wdNeeds","risoFun","prMini","moreCard"]};
+  
   // ---------- Oct 17 refocus: header, one status line, intention, practice moment, More today, usage counts ----------
   const USAGE_KEY="zone:usage:v1";
   function track(k){ try{ const u=JSON.parse(localStorage.getItem(USAGE_KEY)||"null")||{since:new Date().toISOString().slice(0,10),n:{}}; u.n[k]=(u.n[k]||0)+1; localStorage.setItem(USAGE_KEY,JSON.stringify(u)); }catch(e){} }
   function usage(){ try{ return JSON.parse(localStorage.getItem(USAGE_KEY)||"null"); }catch(e){ return null; } }
   document.addEventListener("click",e=>{ const t=e.target.closest&&e.target.closest("[data-track]"); if(t) track(t.dataset.track); const tb=e.target.closest&&e.target.closest(".tab[data-view]"); if(tb) track("tab:"+tb.dataset.view); },true);
-  const clockOf=h=>{ if(h==null||isNaN(h)) return ""; let H=Math.floor(h), M=Math.round((h-H)*60); if(M===60){ H++; M=0; } const h12=((H+11)%12)+1; return M?`${h12}:${String(M).padStart(2,"0")}`:String(h12); };
-  let RF_OPEN={};
+  
+  
   // open one card inside a slot (or close it): the card keeps its own renderer, it just moves
   
   function wxNow(){ const v=clean(ROW&&ROW["Weather Now"]).trim(); if(!v) return null; let o=null; try{ o=JSON.parse(v); }catch(e){ try{ o=JSON.parse(v.replace(/\\(?=[{}\[\]:|$_*])/g,"")); }catch(e2){ o=null; } } return o&&o.date===TODAY()?o:null; }
@@ -2789,7 +2784,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   
   // ---------- Oct 20: owner tags (C · V · Us) on every Fam event, everywhere it shows; zone-owners records the week in Fam Events ----------
   function famEvents(){ const raw=String(SET.FamEvents&&SET.FamEvents.value||"").trim(); if(!raw) return []; for(const t of [raw.replace(/\\(?=[{}\[\]:*_$|])/g,""),raw.replace(/\\/g,""),clean(raw)]){ try{ const j=JSON.parse(t); if(j&&Array.isArray(j.events)) return j.events; }catch(e){} } return []; }
-  const fwords=t=>new Set(fnorm(t).replace(/[^a-z0-9 ]+/g," ").split(/\s+/).filter(w=>w.length>=4));
+  
   function famFind(text,date){ const n=fnorm(text).replace(/[^a-z0-9 ]+/g," ").replace(/\s+/g," ").trim(); if(!n) return null; const ev=famEvents().filter(r=>!date||r.d===date);
     return ev.find(r=>{ const k=fnorm(r.title).replace(/[^a-z0-9 ]+/g," ").replace(/\s+/g," ").trim(); return k&&(n===k||n.includes(k)||k.includes(n)); })||null; }
   function famOwnerNow(rec){ return rfFamOwner(rec.title)||rec.owner||"both"; }
@@ -2818,7 +2813,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   let US_FILTER="All", US_LOCAL=[];
   function usWeek(){ const raw=String(SET.UsWeek&&SET.UsWeek.value||"").trim(); if(!raw) return null; for(const t of [raw,raw.replace(/\\/g,""),clean(raw)]){ try{ const j=JSON.parse(t); if(j&&j.days) return j; }catch(e){} } return null; }
   function usNotes(){ return String(SET.UsNotes&&SET.UsNotes.value||"").replace(/\\/g,"").split(/\n+/).map(l=>{ const a=l.split("|"); return a.length>=3?{from:a[0].trim(),t:a[1].trim(),text:a.slice(2).join("|").trim()}:null; }).filter(Boolean); }
-  const hmTxt=s=>s===-1?"all day":`${((Math.floor(s/60)+11)%12)+1}${s%60?":"+String(s%60).padStart(2,"0"):""}${s<720?"am":"pm"}`;
+  
   function renderUs(){ /* Nov 1: retired with the old layer */ }
   
   
@@ -2830,17 +2825,17 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     openSheet({kicker:"Plan it",title:x.n,body,color:"var(--us)",from}); }
 
   // ---------- Oct 20: The day starts collapsed (next three items), with "Show the whole day" ----------
-  let RF_DAY_OPEN=false, RF_DAY_BUSY=false;
+  
   
   
 
   // ---------- Oct 22: the riso Today (locked design, board D): date block, sundial, up next. Preview with #riso, back with #classic ----------
   // on for Claire by default (Victoria's Today moves later, with the other tabs); "#classic" switches it off on this device, "#riso" back on
-  const RISO_PREF=(()=>{ try{ if(location.hash==="#riso") localStorage.setItem("zone:riso","1"); if(location.hash==="#classic") localStorage.setItem("zone:riso","0"); return localStorage.getItem("zone:riso"); }catch(e){ return null; } })();
-  const risoOn=()=>RISO_PREF!=="0"; // Oct 22: on for both of you; "#classic" turns it off on a device
+  try{ localStorage.removeItem("zone:riso"); }catch(e){} /* Nov 1 (3c): the riso layer and its #classic switch are retired */
+   // Oct 22: on for both of you; "#classic" turns it off on a device
   const RISO=true; // the module is always loaded; risoOn() decides per render
   const RC={ink:"#0F3B44",card:"#FAF8FF",paper:"#EFEBF6",blue:"#2A7FA8",red:"#E2583E",green:"#2FA27A",sun:"#C6E24A",pink:"#FF6FA5",violet:"#8C7AE6",night:"#1C4F5A",tile:"#E6E1F0",grey:"#9DB4BA"};
-  const RSVGNS="http://www.w3.org/2000/svg"; const rsv=(t,a)=>{ const n=document.createElementNS(RSVGNS,t); for(const k in a) n.setAttribute(k,a[k]); return n; };
+   
   const hToLabel=h=>{ const hh=Math.floor(h)%24, mm=Math.round((h-Math.floor(h))*60); const ap=hh<12?"am":"pm"; const h12=((hh+11)%12)+1; return mm?`${h12}:${String(mm).padStart(2,"0")}`:`${h12}${ap}`; };
   function risoItems(){ // everything on today's dial, as {s,e,name,c,tag}
     const D=parseDay(); const out=[];
@@ -2860,18 +2855,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     D.tasks.forEach(t=>{ if(t.r) out.push({s:t.r.start,e:Math.max(t.r.end,t.r.start+.25),name:t.title,c:RC.red,k:"focus"}); });
     return out.sort((a,b)=>a.s-b.s);
   }
-  function risoDial(items,opt){ opt=opt||{}; const W=320,C=160; const svg=rsv("svg",{viewBox:`0 0 ${W} ${W}`,width:"100%",role:"img"});
-    const ang=h=>(h/24)*2*Math.PI+Math.PI; // midnight at the bottom, noon at the top
-    const pt=(h,r)=>[C+r*Math.sin(ang(h)),C-r*Math.cos(ang(h))];
-    const arc=(h0,h1,r)=>{ const [x0,y0]=pt(h0,r),[x1,y1]=pt(h1,r); const large=((h1-h0+24)%24)>12?1:0; return `M${x0.toFixed(1)} ${y0.toFixed(1)} A${r} ${r} 0 ${large} 1 ${x1.toFixed(1)} ${y1.toFixed(1)}`; };
-    svg.append(rsv("circle",{cx:C,cy:C,r:146,fill:"none",stroke:RC.ink,"stroke-width":2.5}),rsv("circle",{cx:C,cy:C,r:138,fill:"none",stroke:RC.night,"stroke-width":16}));
-    if(SUN.rise!=null&&SUN.set!=null) svg.append(rsv("path",{d:arc(SUN.rise,SUN.set,138),fill:"none",stroke:RC.sun,"stroke-width":16}));
-    svg.append(rsv("circle",{cx:C,cy:C,r:130,fill:"none",stroke:RC.ink,"stroke-width":2.5}),rsv("circle",{cx:C,cy:C,r:110,fill:"none",stroke:RC.tile,"stroke-width":30}));
-    items.forEach((x,i)=>{ const e=Math.min(x.e,x.s+23.9); const pth=rsv("path",{d:arc(x.s+.04,Math.max(x.s+.1,e-.04),110),fill:"none",stroke:x.c,"stroke-width":30,class:"rs-seg","data-i":String(i)});
-      if(opt.tap){ pth.setAttribute("tabindex","0"); pth.setAttribute("role","button"); pth.setAttribute("aria-label",`${x.name} at ${hToLabel(x.s)}`); } svg.append(pth); });
-    svg.append(rsv("circle",{cx:C,cy:C,r:95,fill:"none",stroke:RC.ink,"stroke-width":2.5}),rsv("circle",{cx:C,cy:C,r:94,fill:RC.card}));
-    const n=nowH(); const [hx,hy]=pt(n,150), [ix,iy]=pt(n,97); if(opt.hand!==false) svg.append(rsv("line",{x1:ix.toFixed(1),y1:iy.toFixed(1),x2:hx.toFixed(1),y2:hy.toFixed(1),stroke:RC.ink,"stroke-width":3.5,"stroke-linecap":"round"}),rsv("circle",{cx:hx.toFixed(1),cy:hy.toFixed(1),r:11,fill:RC.sun,stroke:RC.ink,"stroke-width":3})); // the hand stays outside the center so it never crosses the time
-    return svg; }
+  
   function risoTomItems(){ const T1=addDays(TODAY(),1); const out=[]; const p2=iso=>{ const p=new Intl.DateTimeFormat("en-CA",{timeZone:TZ,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(new Date(iso)); const g=k=>(p.find(x=>x.type===k)||{}).value; return {d:`${g("year")}-${g("month")}-${g("day")}`,h:Number(g("hour"))+Number(g("minute"))/60}; };
     const wwT=workWeek().filter(x=>x.d===T1); if(wwT.length) wwT.forEach(x=>out.push({s:x.s,e:x.e,name:x.n,c:RC.blue,k:"work"}));
     else workBlocks(clean(ROW["Work Blocks"])).forEach(b=>{ const a=p2(b.start), z=p2(b.end); if(a.d===T1&&z.h>a.h) out.push({s:a.h,e:z.h,name:b.summary||"Meeting",c:RC.blue,k:"work"}); });
@@ -2882,57 +2866,11 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const rec=typeof famFind==="function"?famFind(name,T1):null; const own=rec?famOwnerNow(rec):""; if(own===OTHER()) return; const us=own==="both"||/\b(dinner|date|tiny|papi|victoria|movie)\b/i.test(name);
       out.push({s:r.start,e:Math.max(r.end,r.start+.25),name,c:/birdie|walk/i.test(name)?RC.green:us?RC.pink:RC.violet,k:us?"us":"you"}); });
     return out.sort((a,b)=>a.s-b.s); }
-  function risoTomDial(){ const card=$("#tomCard"); if(!card||!card.classList.contains("rftom")||card.hidden) return; card.querySelector(".rs-tomdial")?.remove();
-    const items=risoTomItems(); const wrap=el("div","rs-tomdial"); const d=el("div","rs-dial rs-mini"); const svg=risoDial(items,{hand:false}); const T1=addDays(TODAY(),1); const dt=new Date(T1+"T12:00:00Z");
-    svg.setAttribute("aria-label",`Tomorrow as a dial: ${items.length?items.map(x=>`${x.name} at ${hToLabel(x.s)}`).slice(0,8).join(", "):"nothing scheduled yet"}`);
-    const mid=el("div","rs-mid"); mid.append(el("b",null,DAYS_LONG[dt.getUTCDay()].slice(0,3)),el("span",null,`${dt.toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"UTC"})}`)); d.append(svg,mid);
-    const first=items[0]; const side=el("div","rs-tomside"); side.append(el("b",null,first?`First: ${hToLabel(first.s)}`:"Nothing on the clock yet"),el("span",null,first?first.name:"Pick from your List below"));
-    wrap.append(d,side); const head=card.querySelector(".tomhead"); if(head) head.after(wrap); else card.querySelector("#tomBody")?.prepend(wrap); }
+  
   // ---------- Oct 22: Ahead in the riso style: the week's hill, free evenings, and a 7-day strip ----------
-  function risoAhead(){ const box=$("#risoAhead"); if(!box) return; const on=document.body.classList.contains("riso"); if(!on){ box.hidden=true; return; } box.hidden=false; box.replaceChildren();
-    const T=TODAY(); const p2=iso=>{ const p=new Intl.DateTimeFormat("en-CA",{timeZone:TZ,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(new Date(iso)); const g=k=>(p.find(x=>x.type===k)||{}).value; return {d:`${g("year")}-${g("month")}-${g("day")}`,h:Number(g("hour"))+Number(g("minute"))/60}; };
-    const hrs={}; workBlocks(clean(ROW["Work Blocks"])).forEach(b=>{ const a=p2(b.start), z=p2(b.end); if(z.h>a.h) hrs[a.d]=(hrs[a.d]||0)+(z.h-a.h); });
-    { const ww=workWeek(); if(ww.length){ for(const k of Object.keys(hrs)) delete hrs[k]; ww.forEach(x=>{ hrs[x.d]=(hrs[x.d]||0)+(x.e-x.s); }); } }
-    if(Object.keys(hrs).filter(d=>d>T).length===0) for(let i=1;i<7;i++){ const d=addDays(T,i); const w=workHrs(d); if(w) hrs[d]=w; } // fall back to the week's work-hour lines
-    const uw=typeof usWeek==="function"?usWeek():null; const ev=d=>((uw&&uw.days)||[]).find(x=>x.date===d);
-    const days=Array.from({length:7},(_,i)=>addDays(T,i)); const DN=d=>DAYS_LONG[new Date(d+"T12:00:00Z").getUTCDay()];
-    const fut=days.slice(1); const hill=fut.reduce((a,d)=>(hrs[d]||0)>(hrs[a]||0)?d:a,fut[0]); const hh=Math.round((hrs[hill]||0)*2)/2;
-    const free=days.filter(d=>{ const e=ev(d); return e&&e.status==="both free"; }).length; const tog=days.map(ev).find(e=>e&&e.status==="together"&&e.date>=T);
-    const hero=el("div","rs-hero rs-blue"); hero.append(el("span","rs-k",`${new Date(days[0]+"T12:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"UTC"})} – ${new Date(days[6]+"T12:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"UTC"})}`));
-    hero.append(el("h1",null,hh>=3?`${DN(hill)}'s the hill`:"A light week ahead"));
-    hero.append(el("p","rs-vibe",[hh>=3?`${hh} hours of meetings on ${DN(hill)}.`:"No day carries more than a few hours of meetings.",tog?`Next night together: ${tog.date===T?"tonight":DN(tog.date)}.`:""].filter(Boolean).join(" ")));
-    if(calOK()){ const ab=el("button","rs-addev","+ Add event"); ab.type="button"; ab.addEventListener("click",()=>openAddEvent(ab)); hero.append(ab); }
-    if(uw){ const st=el("div","rs-sticker rs-pinkst"); st.setAttribute("aria-label",`${free} free evenings together this week`); st.append(el("b",null,String(free)),el("small",null,free===1?"free evening":"free evenings")); hero.append(st); }
-    const card=el("div","rs-weekcard"); const h=el("div","rs-dh"); h.append(el("h2",null,"The week"),el("span",null,"meetings · evenings")); card.append(h);
-    const strip=el("div","rs-week"); const top=Math.max(6,...days.map(d=>hrs[d]||0)); const EVC={"together":RC.pink,"both free":RC.green,"claire busy":RC.sun,"victoria busy":RC.sun,"both busy":RC.tile};
-    days.forEach((d,i)=>{ const dt=new Date(d+"T12:00:00Z"); const b=el("button","rs-wd"+(i===0?" today":"")); b.type="button"; const e=ev(d);
-      b.setAttribute("aria-label",`${DN(d)}: ${Math.round((hrs[d]||0)*2)/2} hours of meetings${e?`, evening ${e.status}`:""}`);
-      b.append(el("span","rs-wdn",DN(d).slice(0,3)),el("b",null,String(dt.getUTCDate()))); const bar=el("span","rs-bar"); const fill=el("i"); fill.style.height=`${Math.round(((hrs[d]||0)/top)*100)}%`; bar.append(fill); b.append(bar);
-      const dot=el("span","rs-dot"); dot.style.background=e?EVC[e.status]||RC.tile:"transparent"; if(!e) dot.style.borderStyle="dashed"; b.append(dot);
-      b.addEventListener("click",()=>{ const row=document.querySelectorAll("#agenda .aday")[i]; if(row) row.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"}); });
-      strip.append(b); });
-    card.append(strip);
-    const lg=el("div","rs-legend"); [[RC.blue,"meetings"],[RC.pink,"together"],[RC.green,"both free"],[RC.sun,"one busy"]].forEach(([c,l])=>{ const s2=el("span"); const d=el("i"); d.style.background=c; s2.append(d,document.createTextNode(l)); lg.append(s2); }); card.append(lg);
-    box.append(hero); // Oct 23: the 7-day strip is folded into the planner below (each day now shows its evening too)
-    const tight=renderWeekPlanner(box);
-    if(tight){ const DN2=DAYS_LONG[new Date(tight.d+"T12:00:00Z").getUTCDay()]; const h1=hero.querySelector("h1"), pv=hero.querySelector(".rs-vibe"); if(h1) h1.textContent=`${tight.d===T?"Today":DN2} won't fit`; if(pv) pv.textContent=`${tight.due.length} thing${tight.due.length===1?"":"s"} due, about ${Math.round(tight.openH*2)/2} open hours.`;
-      const fb=el("button","rs-addev rs-fix",`Fix ${tight.d===T?"today":DN2}`); fb.type="button"; fb.addEventListener("click",()=>openFixDay(tight,fb)); hero.append(fb); } }
-  function risoList(){ const box=$("#risoListHero"); if(!box) return; if(!document.body.classList.contains("riso")||!LIST_LOADED){ box.hidden=true; return; } box.hidden=false; box.replaceChildren();
-    const T=TODAY(); const mine=LIST.filter(it=>it.status==="Open"&&(typeof forClaire!=="function"||forClaire(it))); const open=mine.filter(it=>!isSnoozed(it)&&!it.waiting&&!(it.repeat&&it.due&&dayDiff(it.due,T)>3)).length;
-    const extra=[[mine.filter(isSnoozed).length,"snoozed"],[mine.filter(it=>it.waiting&&!isSnoozed(it)).length,"waiting on someone"],[mine.filter(it=>it.repeat).length,"repeating"]].filter(x=>x[0]).map(x=>`${x[0]} ${x[1]}`).join(" · "); const done=LIST.filter(it=>it.status==="Done"&&it.doneOn&&dayDiff(T,it.doneOn)<=7).length;
-    const hero=el("div","rs-hero rs-green"); const big=el("div","rs-date"); big.append(el("span","rs-num",String(open)),(()=>{ const c=el("span","rs-dw"); c.append(el("b",null,"actionable"),el("span",null,"right now")); return c; })()); hero.append(big); if(extra) hero.append(el("span","rs-extra","+ "+extra));
-    if(done){ const st=el("div","rs-sticker rs-yst"); st.setAttribute("aria-label",`${done} done this week`); st.append(el("b",null,String(done)),el("small",null,"done this wk")); hero.append(st); }
-    box.append(hero); }
-  function risoYou(){ const box=$("#risoYouHero"); if(!box) return; const g=document.body.classList.contains("riso")&&ROW?gita():null; if(!g||g.review){ box.hidden=true; return; } box.hidden=false; box.replaceChildren();
-    const read=gitaReadN(); const of=g.of||158; const hero=el("div","rs-hero rs-violet");
-    hero.append(el("span","rs-k","The Gita · six months"));
-    const big=el("div","rs-date"); big.append(el("span","rs-num",String(read)),(()=>{ const c=el("span","rs-dw"); c.append(el("b",null,`of ${of}`),el("span",null,"readings")); return c; })()); hero.append(big);
-    const segs=el("div","rs-chap"); segs.setAttribute("aria-label",`Chapter ${g.ch||1} of 18`); for(let c=1;c<=18;c++){ const sp=el("span"); if(c<(g.ch||1)) sp.className="done"; else if(c===(g.ch||1)) sp.className="now"; segs.append(sp); } hero.append(segs);
-    hero.append(el("span","rs-chapname",`Today: ${g.ref||""}`));
-    if(g.word){ const st=el("div","rs-wordst"); st.setAttribute("aria-label",`Word of the day: ${g.word}`); st.append(el("small",null,"word"),el("b",null,g.word)); hero.append(st); }
-    const btn=el("button","rs-readbtn",gitaReadN()>=g.n?"Read ✓ · open again":"Open today's reading"); btn.type="button"; btn.addEventListener("click",()=>gitaSheet(g,btn)); hero.append(btn);
-    box.append(hero);
-    if(PERSON.person!=="victoria"){ const rv=el("button","rs-review","🗒️ Sunday review · your week, landed"); rv.type="button"; rv.addEventListener("click",()=>openSundayReview(rv)); box.append(rv); } }
+  
+  
+  
   // a short, readable name for tight spots (the dial's center): drop emoji and fillers, cut on a word boundary
   function shortName(name){ let t=String(name||"").replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,"").replace(/\s*[·(].*$/,"").trim(); if(t.length<=16) return t;
     const w=t.split(/\s+/); let o=""; for(const x of w){ if((o+" "+x).trim().length>15) break; o=(o+" "+x).trim(); } return (o||t.slice(0,14))+"…"; }
@@ -2940,84 +2878,17 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       .sort((a,b)=>(b.star-a.star)||((a.due||"9999").localeCompare(b.due||"9999"))).slice(0,10);
     const wrap=el("div","schd"); if(!cand.length) wrap.append(el("p","muted","Nothing open on your list. Add something on the List tab first."));
     const ul=el("ul","litems"); cand.forEach(it=>{ const li=el("li","litem frow"); li.append(el("span","ln",`${it.star?"★ ":""}${it.name}${it.due?` · ${dueLabel(it.due)}`:""}${it.est?` · ${it.est}m`:""}`));
-      const b=el("button","btn sm","Add to today"); b.type="button"; b.addEventListener("click",async()=>{ b.disabled=true; await pickToday(it.name); b.textContent="Added ✓"; try{ renderWeekday(); risoRender(); }catch(e){} }); li.append(b); ul.append(li); });
+      const b=el("button","btn sm","Add to today"); b.type="button"; b.addEventListener("click",async()=>{ b.disabled=true; await pickToday(it.name); b.textContent="Added ✓"; try{ znRender(); }catch(e){} }); li.append(b); ul.append(li); });
     wrap.append(ul); openSheet({kicker:"🎯 Today's Top 3",title:"Pick up to three",body:[wrap],color:"var(--plan)",from}); }
-  function risoMore(){ const box=$("#risoMore"); if(!box) return; const night=document.body.classList.contains("riso-night"); if(!document.body.classList.contains("riso")||night||!ROW){ box.hidden=true; return; } box.hidden=false; box.replaceChildren();
-    const mini=(cls,k,shadow)=>{ const m=el("section","rs-mini "+cls); m.style.boxShadow=`4px 4px 0 ${shadow}`; m.append(el("span","rs-mk",k)); return m; };
-    const NS="http://www.w3.org/2000/svg";
-    // weather
-    const w=wxNow(), hi=num(ROW.High), lo=num(ROW.Low); const wx=mini("wx","Weather",RC.blue);
-    const cols=el("div","rs-wxc"); [["now",w&&w.t!=null?Math.round(w.t)+"°":"—"],["high",hi!=null?Math.round(hi)+"°":"—"],["low",lo!=null?Math.round(lo)+"°":"—"]].forEach(([a,b])=>{ const c=el("div"); c.append(el("span",null,a),el("b",null,b)); cols.append(c); }); wx.append(cols);
-    if(w&&Array.isArray(w.uvh)&&w.uvh.length>3){ const pts=w.uvh.map(([h,v])=>`${((h-6)/14*140).toFixed(1)},${(46-Math.min(1,v/Math.max(6,w.uvMax||6))*40).toFixed(1)}`).join(" "); const sv=document.createElementNS(NS,"svg"); sv.setAttribute("viewBox","0 0 140 50"); sv.setAttribute("preserveAspectRatio","none"); sv.setAttribute("class","rs-uv"); sv.setAttribute("aria-label",`UV through the day${w.uvPeakH?`, peaks at ${hToLabel(w.uvPeakH)}`:""}`);
-      sv.innerHTML=`<polygon points="0,46 ${pts} 140,46" fill="#C6E24A" opacity=".75"/><polyline points="${pts}" fill="none" stroke="#0F3B44" stroke-width="2"/>`; wx.append(sv); }
-    wx.append(el("span","rs-msub",[w&&w.desc?w.desc.charAt(0).toUpperCase()+w.desc.slice(1):"",w&&w.uvPeakH?`UV peaks ${hToLabel(w.uvPeakH)}`:"",SUN.set!=null?`sunset ${hToLabel(SUN.set)}`:""].filter(Boolean).join(" · ")));
-    { const sunDeco=el("span","rs-sun"); sunDeco.setAttribute("aria-hidden","true"); wx.append(sunDeco); } wx.addEventListener("click",()=>{ let body; try{ body=znWxBody(); }catch(e){ body=el("div","rs-wxsheet"); } openSheet({kicker:"☀️ Weather",title:"Weather",body,from:wx}); }); wx.tabIndex=0; wx.setAttribute("role","button");
-    // gita
-    const g=typeof gita==="function"?gita():null; const gi=mini("gi",g?(g.review?"Gita · review":`Gita · day ${g.n}`):"Gita",RC.violet);
-    if(g){ gi.append(el("b","rs-mt",g.review?"Sunday review":(g.title?g.title.charAt(0).toUpperCase()+g.title.slice(1):g.ref||"Today's reading")));
-      const cd=el("div","rs-chdots"); cd.setAttribute("aria-label",`Chapter ${g.ch||1} of 18`); for(let c=1;c<=18;c++){ const d=el("span"); if(c<(g.ch||1)) d.className="done"; else if(c===(g.ch||1)) d.className="now"; cd.append(d); } gi.append(cd);
-      if(g.word) gi.append(el("span","rs-wtape",g.word)); const rd=gitaReadN()>=(g.n||0); const b=el("button","rs-mbtn"+(rd?" ghost":""),rd?"Read ✓":"Read"); b.type="button"; b.addEventListener("click",()=>gitaSheet(g,b)); gi.append(b); }
-    else gi.append(el("span","rs-msub","No reading today"));
-    // birdie
-    const bd=mini("bd","Birdie",RC.green); let walks=[], meals={}; try{ walks=walksTodayAll(); meals=mealsToday(); }catch(e){}
-    { const pw=el("div","rs-paws"); pw.setAttribute("aria-label",`${walks.length} walk${walks.length===1?"":"s"} today`); const PAW='<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="6" cy="9" r="2.2"/><circle cx="10" cy="5" r="2.2"/><circle cx="14" cy="5" r="2.2"/><circle cx="18" cy="9" r="2.2"/><path d="M12 10c-3 0-6 4-6 7 0 2 2 3 6 3s6-1 6-3c0-3-3-7-6-7z"/></svg>';
-      for(let i=0;i<Math.max(3,walks.length);i++){ const sp=el("span",i<walks.length?"on":""); sp.innerHTML=PAW; pw.append(sp); } bd.append(pw); }
-    bd.append(el("b","rs-mt",walks.length?`Last walk ${walks[walks.length-1].time}`:"No walk yet"));
-    const bowls=el("div","rs-bowls"); ["breakfast","dinner"].forEach(k=>{ const has=!!meals[k]; const b=el("button","rs-bowl"+(has?" full":"")); b.type="button"; b.setAttribute("aria-label",has?`${k} at ${meals[k].time}`:`Log ${k}`); b.append(el("i"),el("span",null,has?meals[k].time:k)); b.disabled=has||!mcp; b.addEventListener("click",async()=>{ try{ await logMeal(k); risoMore(); }catch(e){} }); bowls.append(b); }); bd.append(bowls);
-    // tonight together
-    const uw=typeof usWeek==="function"?usWeek():null; const td=uw&&(uw.days||[]).find(d=>d.date===TODAY()); const us=mini("us","Tonight",RC.ink||"#0F3B44");
-    us.append(el("span","rs-bigemo",td&&td.status==="together"?"💕":td&&td.status==="both free"?"🛋️":td&&/busy/.test(td.status||"")?"🌙":"✨"));
-    let usIt=null; try{ const n0=nowH(); const its=risoItems().filter(x=>x.k==="us"); usIt=its.find(x=>x.e>n0&&x.s>=16)||its.find(x=>x.e>n0)||null; }catch(e){}
-    if(usIt){ us.append(el("b","rs-mt",usIt.name),el("span","rs-msub",`${hToLabel(usIt.s)}${usIt.e>usIt.s?"–"+hToLabel(usIt.e):""}`)); }
-    else if(td){ const ev=(td.items||td.events||[]).find(x=>x&&(x.who==="both"||x.together))||null; us.append(el("b","rs-mt",ev?(ev.title||ev.name):td.status==="together"?"Together tonight":td.status==="both free"?"You're both free":td.status==="both busy"?"Both busy":"One of you is busy")); if(ev&&(ev.time||ev.start)) us.append(el("span","rs-msub",String(ev.time||ev.start))); }
-    else us.append(el("b","rs-mt","Open evening"));
-    const usb=el("button","rs-mbtn ghost","Us →"); usb.type="button"; usb.addEventListener("click",()=>{ try{ $("#tab-us").click(); }catch(e){} }); us.append(usb);
-    const r1=el("div","rs-pair"); r1.append(wx,gi); const r2=el("div","rs-pair"); r2.append(bd,us); box.append(r1,r2); }
+  
   // ---------- Today v2 step 2 (Oct 22): your teams, headlines, radio + episodes, the mantra (all from this morning's brief) ----------
-  function risoFun(){ const box=$("#risoFun"); if(!box) return; if(!document.body.classList.contains("riso")||!ROW){ box.hidden=true; return; } box.replaceChildren();
-    const card=(cls,label,shadow)=>{ const c=el("section","rs-fcard "+cls); c.setAttribute("aria-label",label); c.style.boxShadow=`6px 6px 0 ${shadow}`; return c; };
-    const head=(t,r)=>{ const h=el("div","rs-dh"); h.append(el("h2",null,t)); if(r) h.append(el("span",null,r)); return h; };
-    // teams: one tile per team line in the sports section ("🏀 Wings · lost G1 80-104 at GSV · G2 tonight 8pm · ESPN")
-    const sp=split(ROW.Sports); const teamL=sp.rest.filter(l=>/^(🏀|🏈|⚽|⚾|🏒)/u.test(l)); const leagueL=sp.rest.filter(l=>!/^\p{Extended_Pictographic}/u.test(l)&&/^[A-Z][\w .&']{1,24} · /.test(l));
-    if(teamL.length||leagueL.length||sp.head){ const c=card("teams","Your teams",RC.blue); c.append(head("Your teams",teamL.length>2?"swipe →":""));
-      if(teamL.length){ const row=el("div","rs-score"); teamL.forEach(l=>{ const parts=l.replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,"").split(/\s+·\s+/); const name=parts.shift()||""; const res=parts.shift()||""; const rest=parts.join(" · ");
-          const t=el("button","rs-tile2"); t.type="button"; const top=el("div","rs-st"); const TC={dash:["#E2583E","#2A7FA8"],longhorns:["#C8662B","#FAF8FF"],texas:["#C8662B","#FAF8FF"],saints:["#1B1B1B","#C6A15B"],wings:["#2A7FA8","#C6E24A"],mystics:["#B23A22","#2A7FA8"],uswnt:["#0F3B44","#E2583E"]}; const tc=TC[Object.keys(TC).find(k=>name.toLowerCase().includes(k))]||["#2A7FA8","#B49CF2"]; top.style.background=`linear-gradient(90deg, ${tc[0]} 0 72%, ${tc[1]} 72%)`; top.append(el("b",null,name)); const w=/\b(won|beat|win|W\s?\d)/i.test(res), lo=/\b(lost|fell|loss|L\s?\d)/i.test(res); if(w||lo){ const ch=el("span","rs-wl "+(w?"w":"l"),w?"W":"L"); top.append(ch); }
-          t.append(top,el("span","rs-sr",res)); if(rest) t.append(el("span","rs-sn",rest)); t.addEventListener("click",()=>openSheet({kicker:"🏟️ "+name,title:"",body:[el("p",null,l.replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,""))],from:t})); row.append(t); }); c.append(row); }
-      else if(sp.head) c.append(el("p","rs-fp",sp.head));
-      if(leagueL.length){ const lg=leagueL[0]; const k=lg.split(" · ")[0]; const txt=lg.slice(k.length+3); const firstS=(txt.match(/^.*?[.!?](\s|$)/)||[txt])[0].trim(); const p2=el("p","rs-fp"); p2.append(el("b",null,`${k} · `),document.createTextNode(firstS)); c.append(p2); }
-      box.append(c); }
-    // headlines: the brief's numbered world stories, first sentence each; tap for the whole story
-    const wd=split(ROW.World); const stories=wd.rest.filter(l=>/^\d+\./.test(l)).slice(0,3);
-    if(stories.length){ const c=card("heads","Headlines",RC.red); c.append(head("Headlines","from your 4:30 brief"));
-      stories.forEach((l,i)=>{ const full=l.replace(/^\d+\.\s*/,""); const safe=full.replace(/\b(?:[A-Z]\.){2,}/g,x=>x.replace(/\./g,"\u2024")).replace(/\b(Mr|Mrs|Ms|Dr|St|Jr|Sr|No|vs)\./g,"$1\u2024"); const first=(safe.match(/^.*?[.!?](\s|$)/)||[safe])[0].trim().replace(/\u2024/g,"."); /* Nov 1: "U.S." isn't the end of a sentence */ const b=el("button","rs-news"); b.type="button";
-        const n=el("span","rs-nn",String(i+1)); n.style.background=["#B49CF2","#C6E24A","#FFD6E6"][i]||"#E6E1F0"; const tx=el("span"); tx.append(el("b",null,first),el("span",null,full.length>first.length+5?"tap for the rest":"")); b.append(n,tx);
-        b.addEventListener("click",()=>openSheet({kicker:"🗞️ Headline "+(i+1),title:first,body:[el("p",null,full.slice(first.length).trim()||full)],from:b})); c.append(b); }); box.append(c); }
-    // radio + episodes
-    const radio=clean(ROW.Radio).trim(); const ep=split(ROW.Episodes); const eps=ep.rest.filter(l=>/^🎧/u.test(l));
-    const pair=el("div","rs-pair"); const mini=(k,shadow)=>{ const m=el("section","rs-mini"); m.style.boxShadow=`4px 4px 0 ${shadow}`; m.append(el("span","rs-mk",k)); return m; };
-    const rm=mini("Zone Radio","#0F3B44"); rm.classList.add("radio"); { const sv=document.createElementNS("http://www.w3.org/2000/svg","svg"); sv.setAttribute("viewBox","0 0 120 30"); sv.setAttribute("preserveAspectRatio","none"); sv.setAttribute("class","rs-wave"); sv.setAttribute("aria-hidden","true"); sv.innerHTML=[8,14,22,12,26,18,10,24,16,28,12,20,8,18,24,10,14,22,6,12].map((h,i)=>`<rect x="${i*6}" y="${15-h/2}" width="3.5" height="${h}" rx="1.5" fill="#0F3B44"/>`).join(""); rm.append(sv); } const rt=radio.replace(/^[✅🔁⚠️❌\s·]+/u,"").split(/\s+·\s+/).find(x=>x&&!/^\d{1,2}:\d{2}\s*[ap]m$/i.test(x)&&!/check/i.test(x))||"";
-    rm.append(el("b","rs-mt",/✅|🔁/.test(radio)?(rt&&!/^(ready|published|ok|up)$/i.test(rt.trim())?rt:"Today's episode is up"):"Today's episode is on its way"),el("span","rs-msub","in your podcast app · chapters")); pair.append(rm);
-    const em=mini(eps.length?`Episodes · ${eps.length} new`:"Episodes",RC.violet); em.classList.add("eps");
-    if(eps.length){ const cv=el("div","rs-covers"); const shows=[...new Set(eps.map(l=>l.replace(/^🎧\s*/u,"").split(/\s+·\s+/)[0].trim()))]; const CC=["#FF6FA5","#C6E24A","#B49CF2","#DCEBF3"];
-      shows.slice(0,3).forEach((sh,i)=>{ const ini=sh.split(/\s+/).filter(w=>/^[A-Z]/.test(w)).map(w=>w[0]).join("").slice(0,3)||sh.slice(0,3); const c=el("span","rs-cover",ini); c.style.background=CC[i]; c.title=sh; cv.append(c); });
-      if(shows.length>3){ const c=el("span","rs-cover",`+${shows.length-3}`); c.style.background=CC[3]; cv.append(c); } em.append(cv); } em.append(el("b","rs-mt",ep.head||"Nothing new dropped")); if(eps.length){ const b=el("button","rs-mbtn ghost","See them"); b.type="button";
-      b.addEventListener("click",()=>{ const ul=el("ul","litems"); eps.forEach(l=>ul.append(el("li","litem",l.replace(/^🎧\s*/u,"")))); openSheet({kicker:"🎧 New episodes",title:ep.head||"",body:[ul],from:b}); }); em.append(b); } pair.append(em); box.append(pair);
-    // the mantra
-    const mantra=clean(ROW.Mantra).trim(); const moon=split(ROW.Moon).head.replace(/\*\*/g,"").trim()||clean(ROW.Moon).split(/\n/)[0].trim(); const word=clean(ROW.Word).trim();
-    if(mantra){ const c=el("section","rs-mantra"); c.setAttribute("aria-label","Today's mantra"); c.append(el("span","rs-mk2","Today's mantra"),el("b",null,mantra.replace(/^["“]|["”]$/g,""))); if(moon) c.append(el("span","rs-mmoon",`🌖 ${moon.slice(0,60)}`)); if(word) c.append(el("span","rs-tape",`WORD · ${word}`)); box.append(c); }
-    box.hidden=!box.children.length; }
+  
   // the slim bar that stays when the hero scrolls away (Today only)
-  let STICKY=null;
-  function risoSticky(){ if(!STICKY){ STICKY=el("button","rs-sticky"); STICKY.type="button"; STICKY.hidden=true; STICKY.setAttribute("aria-label","Back to the top of Today"); STICKY.addEventListener("click",()=>window.scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})); document.body.append(STICKY);
-      const io=new IntersectionObserver(es=>{ es.forEach(e=>{ STICKY.dataset.off=e.isIntersecting?"1":""; risoStickyShow(); }); },{threshold:0}); risoSticky.io=io; }
-    const hero=document.querySelector("#risoTop .rs-hero"); if(hero&&risoSticky.watch!==hero){ try{ risoSticky.io.disconnect(); }catch(e){} risoSticky.io.observe(hero); risoSticky.watch=hero; }
-    const n=nowH(); const its=(()=>{ try{ return risoItems(); }catch(e){ return []; } })(); const nx=its.find(x=>x.s>n); const f=Math.max(0,Math.min(1,(n-6)/16));
-    const hh=Math.floor(n)%24, mm=Math.floor((n-Math.floor(n))*60); const clk=`${((hh+11)%12)+1}:${String(mm).padStart(2,"0")}`;
-    STICKY.innerHTML=`<svg aria-hidden="true" width="24" height="24" viewBox="0 0 26 26"><circle cx="13" cy="13" r="10" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="4"/><circle cx="13" cy="13" r="10" fill="none" stroke="#C6E24A" stroke-width="4" stroke-dasharray="${(f*62.8).toFixed(1)} 62.8" transform="rotate(-90 13 13)"/></svg>`;
-    STICKY.append(el("b",null,clk),el("span",null,nx?`Next: ${nx.name} in ${Math.max(1,Math.round((nx.s-n)*60))>=60?Math.floor((nx.s-n))+"h "+Math.round(((nx.s-n)%1)*60)+"m":Math.max(1,Math.round((nx.s-n)*60))+"m"}`:"Nothing else on the clock")); risoStickyShow(); }
-  function risoStickyShow(){ if(!STICKY) return; const onToday=!!document.querySelector("#view-today:not([hidden])")&&document.body.classList.contains("riso"); STICKY.hidden=!(onToday&&STICKY.dataset.off!=="1"&&window.scrollY>200); }
-  window.addEventListener("scroll",()=>{ try{ risoStickyShow(); }catch(e){} },{passive:true});
-  document.addEventListener("click",()=>setTimeout(()=>{ try{ risoStickyShow(); }catch(e){} },60)); // switching tabs hides it
+  
+  
+  
+  
+   // switching tabs hides it
   // ======================= Oct 24: the rebuild, phase 1 (the new Today, "bento on dusk light") =======================
   // On for everyone who opens /next (Netlify) or #next (claude.ai); #now turns it off on a device. Same data, same writes.
   // Oct 24: the rebuild is the app. #old (or the old address with #old) keeps the riso version on a device; #next brings it back.
@@ -3397,7 +3268,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // ======================= Oct 24: the rebuild, phase 3a — the shelf (Zone Books) =======================
   let BOOKS=[];
   const bkMe=()=>NAME(ME()), bkOther=()=>NAME(OTHER());
-  const bkMine=b=>b.who===bkMe()||b.who==="Both"; const bkTheirs=b=>b.who===bkOther()||b.who==="Both";
+  const bkMine=b=>b.who===bkMe()||b.who==="Both"; 
   const bkNights=b=>(b.n||[]).map(l=>l.split("|")).filter(p=>p.length>=3);
   const bkProg=(b,who)=>{ const w=who||bkMe(); const mine=bkNights(b).filter(p=>p[2]===w&&p[3]!=="").map(p=>Number(p[3])).filter(x=>!isNaN(x)); if(mine.length) return mine[mine.length-1]; return b.who==="Both"?0:(b.p||0); };
   const bkLastRead=(b,who)=>{ const w=who||bkMe(); const mine=bkNights(b).filter(p=>p[2]===w); return mine.length?mine[mine.length-1][0]:(b.who===w?b.lr||"":""); };
@@ -3909,7 +3780,11 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     items.forEach(x=>{ const b=el("button","zn-dchip"); b.type="button"; b.innerHTML=`${znIco("check")}<span>${znEsc(x.l)}</span>`; b.addEventListener("click",()=>{ if(x.act) x.act(b); else if(x.go==="me") $("#tab-you").click(); else if(x.go==="recov"){ znOpenReading("recovery",b); } else if(x.go==="top"){ const c=box.querySelector(".zn-top"); if(c){ c.classList.remove("zn-folded"); c.scrollIntoView({behavior:"smooth",block:"center"}); } } else if(x.go==="birdie"){ const c=box.querySelector(".zn-birdie"); if(c) c.scrollIntoView({behavior:"smooth",block:"center"}); } }); wrap.append(b); });
     ds.append(wrap); const hero=box.querySelector(".zn-hero"), wids=box.querySelector(".zn-wids2"); const anchor=(hero&&wids&&hero.nextElementSibling===wids)?wids:hero; if(anchor) anchor.after(ds); }
   function znRender(){ try{ znRenderInner(); try{ znDoneStrip($("#znToday")); }catch(e2){ console.error("done strip",e2); } try{ znTogetherToday($("#znToday")); }catch(e3){ console.error("together today",e3); } try{ znReadingsToday($("#znToday")); }catch(e4){ console.error("readings today",e4); } try{ znBirdieToday($("#znToday")); }catch(e5){ console.error("birdie today",e5); } }catch(e){ console.error("znRender",e); const box=$("#znToday"); if(box){ box.hidden=false; box.replaceChildren(); const c=el("div","zn-card"); c.innerHTML=`<span class="zn-k">TODAY COULDN’T DRAW</span><p class="zn-empty" style="user-select:text">${znEsc(String((e&&e.stack)||e).slice(0,400))}</p><p class="zn-empty">Screenshot this for the build chat.</p>`; box.append(c); } } } // Oct 29: errors show instead of a blank page
-  function znRenderInner(){ const box=$("#znToday"); if(!box) return; const on=znOn()&&ROW; document.body.classList.toggle("zn",!!on); if(!on){ box.hidden=true; return; }
+  // Nov 1 (stage 3c): the stylesheet still keys parts of the look (sheets, buttons, the tab bar, night cards) on the riso layer's body classes.
+  // The riso layer no longer draws; these keep its classes exactly as it set them (on once today's brief is in) until the CSS is folded in.
+  function znLegacyClasses(){ const live=!!(LIVE&&ROW), wk=live?wkDay():""; const night=live&&(wk?(NIGHT||wk==="fri"):(MODE==="wrap"||MODE==="evening")); const b=document.body.classList;
+    b.toggle("riso",live); b.toggle("riso-night",!!night); b.toggle("riso-wk",!!(live&&wk)); }
+  function znRenderInner(){ try{ znLegacyClasses(); }catch(e){} const box=$("#znToday"); if(!box) return; const on=znOn()&&ROW; document.body.classList.toggle("zn",!!on); if(!on){ box.hidden=true; return; }
     if(!LIVE){ znBetween(box); return; } /* Oct 25: before the brief lands (or if it failed), never fall back to the old, empty layout */ box.hidden=false; box.replaceChildren();
     const T=TODAY(), dt=new Date(T+"T12:00:00Z"), n=nowH(), wk=wkDay(); const night=wk?(NIGHT||wk==="fri"):(MODE==="wrap"||MODE==="evening"); document.body.classList.toggle("zn-night",!!night); document.body.classList.toggle("zn-wk",!!wk&&!night);
     let items=[]; try{ items=risoItems(); }catch(e){} const w=wxNow(), hi=num(ROW.High), lo=num(ROW.Low);
@@ -4072,64 +3947,9 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const ah=null; if(ah&&!$("#znPlanSeg")){ const seg=el("div","zn-seg"); seg.id="znPlanSeg"; [["Week","ahead"],["List","list"]].forEach(([l,v],i)=>{ const b=el("button",null,l); b.type="button"; b.setAttribute("aria-pressed",String(i===0)); b.addEventListener("click",()=>{ show(v); document.querySelectorAll("#znPlanSeg button, #znListSeg button").forEach(x=>x.setAttribute("aria-pressed",String(x.textContent===l))); $("#tab-ahead").setAttribute("aria-selected","true"); }); seg.append(b); }); ah.prepend(seg);
       const lv=$("#view-list"); if(lv){ const s2=seg.cloneNode(true); s2.id="znListSeg"; s2.querySelectorAll("button").forEach((b,i)=>{ b.setAttribute("aria-pressed",String(i===1)); b.addEventListener("click",()=>{ show(i?"list":"ahead"); document.querySelectorAll("#znPlanSeg button, #znListSeg button").forEach(x=>x.setAttribute("aria-pressed",String(x.textContent===b.textContent))); $("#tab-ahead").setAttribute("aria-selected","true"); }); }); lv.prepend(s2); } }
     const fab=el("button","zn-fab","+"); fab.type="button"; fab.setAttribute("aria-label","Capture anything"); fab.addEventListener("click",()=>$("#logBtn")?.click()); document.body.append(fab); }
-  function risoRender(){ const box=$("#risoTop"); if(!box) return; const wk=LIVE&&ROW?wkDay():""; const on=risoOn()&&LIVE&&ROW; const night=on&&(wk?(NIGHT||wk==="fri"):(MODE==="wrap"||MODE==="evening"));
-    document.body.classList.toggle("riso",!!on); document.body.classList.toggle("riso-night",!!night); document.body.classList.toggle("riso-wk",!!(on&&wk)); try{ risoAhead(); }catch(e){} try{ risoList(); }catch(e){} try{ risoYou(); }catch(e){} if(!on){ box.hidden=true; return; } box.hidden=false; box.replaceChildren();
-    const T=TODAY(), dt=new Date(T+"T12:00:00Z"), n=nowH(); const items=risoItems();
-    if(night){ // after work: land the day (the close-out and tomorrow live in the cards below)
-      const open=znOpenCount(); // the same items the close-out lists
-      const hero=el("div","rs-hero rs-nighthero"); const w=wxNow();
-      hero.append(el("span","rs-k",`${DAYS_LONG[dt.getUTCDay()].slice(0,3)} · ${hToLabel(n)}`),el("h1",null,wk==="fri"?"Weekend's here":wk?"Easy night":"Land the day"),el("p","rs-vibe",open?`${open} thing${open===1?"":"s"} left open. Decide where ${open===1?"it goes":"they go"}, then you're off.`:wk?"Nothing to land. The night is yours.":"Everything's landed. The rest of the night is yours."));
-      const st=el("div","rs-sticker rs-moon"); st.setAttribute("aria-hidden","true"); st.append(el("span",null,"🌙"),el("b",null,w&&w.t!=null?`${Math.round(w.t)}°`:"")); hero.append(st);
-      box.append(hero);
-      setTimeout(()=>{ try{ if(document.body.classList.contains("riso-night")) risoTomDial(); }catch(e){} try{ risoMore(); risoFun(); }catch(e){} },0);
-      const nx=items.find(x=>x.s>n); if(nx){ const up=el("div","rs-next"); const mins=Math.round((nx.s-n)*60); up.append(el("span","rs-k",mins<=90?`Up next · in ${mins} min`:`Up next · ${hToLabel(nx.s)}`),el("b",null,nx.name),el("span",null,`${hToLabel(nx.s)}–${hToLabel(nx.e)}`)); box.append(up); }
-      return; }
-    // Today v2 (Oct 22): one hero (date, vibe, weather, a compact sundial whose center says what's next), then the Top 3 checklist
-    const hero=el("div","rs-hero rs-hero2"+(wk?" rs-wkhero":"")); const w=wxNow(); const hi=num(ROW.High);
-    const lft=el("div","rs-h2l"); lft.append(el("span","rs-h2k",`${DAYS_LONG[dt.getUTCDay()].slice(0,3)} · ${WD_MONTHS[dt.getUTCMonth()]}`),el("span","rs-h2n",String(dt.getUTCDate())));
-    const vibe=clean(ROW.Vibe).trim(); if(vibe) lft.append(el("p","rs-h2v",vibe)); hero.append(lft);
-    const wrap=el("div","rs-dial rs-dial2"); const svg=risoDial(items,{tap:true}); const left=items.filter(x=>x.e>n);
-    svg.setAttribute("aria-label",`Today as a 24-hour dial. Now ${hToLabel(n)}. ${left.length?left.map(x=>`${x.name} at ${hToLabel(x.s)}`).slice(0,6).join(", "):"Nothing else scheduled today."}`);
-    const mid=el("div","rs-mid"); const nx=items.find(x=>x.s>n); mid.append(el("b",null,(()=>{ const hh=Math.floor(n)%24, mm=Math.floor((n-Math.floor(n))*60); return `${((hh+11)%12)+1}:${String(mm).padStart(2,"0")}`; })()));
-    if(nx){ const mins=Math.round((nx.s-n)*60); mid.append(el("span",null,`${shortName(nx.name)} in ${mins>=60?Math.floor(mins/60)+"h"+(mins%60?" "+mins%60+"m":""):mins+"m"}`)); } else mid.append(el("span",null,"all clear"));
-    wrap.append(svg,mid); hero.append(wrap);
-    // Today v2 step 3: tap a segment to name it and jump to it in The day; tap the center to cycle next / open time / the clock
-    const clock=(()=>{ const hh=Math.floor(n)%24, mm=Math.floor((n-Math.floor(n))*60); return `${((hh+11)%12)+1}:${String(mm).padStart(2,"0")}`; })();
-    const setMid=(a,b)=>{ mid.replaceChildren(el("b",null,a),el("span",null,b)); };
-    const modes=[()=>{ const nx2=items.find(x=>x.s>n); if(!nx2) return [clock,"all clear"]; const mins=Math.round((nx2.s-n)*60); const nm=shortName(nx2.name); return [clock,`${nm} in ${mins>=60?Math.floor(mins/60)+"h"+(mins%60?" "+mins%60+"m":""):mins+"m"}`]; },
-      ()=>{ let o=0; try{ o=dayLoad(T).openH; }catch(e){} return [`${Math.round(o*2)/2}h`,"open today"]; },
-      ()=>[clock,DAYS_LONG[dt.getUTCDay()]]];
-    let mode=risoRender.mode||0; if(mode) setMid(...modes[mode]());
-    const segs=[...svg.querySelectorAll(".rs-seg")];
-    const pick=i=>{ const x=items[i]; if(!x) return; segs.forEach(sg=>{ const on=Number(sg.getAttribute("data-i"))===i; sg.setAttribute("stroke-width",on?"40":"30"); sg.style.opacity=on?"1":".35"; });
-      setMid(hToLabel(x.s).replace(/(am|pm)$/,""),x.name.length>16?x.name.slice(0,15)+"…":x.name);
-      const row=[...document.querySelectorAll("#wdSet li.sl")].find(li=>{ const t=(li.querySelector(".x")||{}).textContent||""; return t&&(x.name.toLowerCase().includes(t.toLowerCase())||t.toLowerCase().includes(x.name.toLowerCase())); });
-      if(row){ row.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"}); row.classList.add("rs-flash"); setTimeout(()=>row.classList.remove("rs-flash"),1600); }
-      clearTimeout(pick.t); pick.t=setTimeout(()=>{ segs.forEach(sg=>{ sg.setAttribute("stroke-width","30"); sg.style.opacity="1"; }); setMid(...modes[mode]()); },4000); };
-    segs.forEach(sg=>{ const go=e=>{ e.stopPropagation(); pick(Number(sg.getAttribute("data-i"))); }; sg.addEventListener("click",go); sg.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); go(e); } }); });
-    mid.setAttribute("role","button"); mid.tabIndex=0; mid.setAttribute("aria-label","Change what the center of the dial shows");
-    const cycle=()=>{ mode=(mode+1)%modes.length; risoRender.mode=mode; setMid(...modes[mode]()); }; mid.addEventListener("click",cycle); mid.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); cycle(); } });
-    const t=w&&w.t!=null?Math.round(w.t):hi!=null?Math.round(hi):null; const openWx=from=>{ let body; try{ body=znWxBody(); }catch(e){ body=el("div","rs-wxsheet"); } openSheet({kicker:"☀️ Weather",title:w&&w.t!=null?`${Math.round(w.t)}° now${hi!=null?", high "+Math.round(hi)+"°":""}`:hi!=null?`High ${Math.round(hi)}°`:"Weather",body,from}); };
-    if(t!=null){ const st=el("button","rs-h2wx"); st.type="button"; st.setAttribute("aria-label",`${t} degrees${w&&w.desc?", "+w.desc:""}. Open the weather`); st.textContent=`${(w&&w.emoji)||"☀️"} ${t}°`; st.addEventListener("click",()=>openWx(st)); hero.append(st); }
-    // Top 3 as a checklist
-    const D3=parseDay(); const done3=new Set(listOf("Top 3 Done").map(x=>x.toLowerCase()));
-    const picks=[...D3.tasks.map(t3=>({title:t3.title,sub:`${fmtH(t3.r.start)}–${fmtH(t3.r.end)}`})),...D3.untimed.map(u=>({title:u.title,sub:u.note||""})),...D3.unplaced.map(u=>({title:u.replace(/\s*\(it comes after a step that didn't fit\)$/i,""),sub:"no clean window today"})),...(typeof extraPicks==="function"?extraPicks(D3):[]).map(x=>({title:x,sub:""}))].slice(0,5);
-    const top3=el("section","rs-top3"); top3.setAttribute("aria-label","Top 3"); const dn=picks.filter(x=>done3.has(x.title.toLowerCase())).length;
-    const th=el("div","rs-t3head"); const ringSvg=(d,t)=>{ const r=30, C=2*Math.PI*r, f=t?d/t:0; const ns="http://www.w3.org/2000/svg"; const sv=document.createElementNS(ns,"svg"); sv.setAttribute("viewBox","0 0 74 74"); sv.setAttribute("width","70"); sv.setAttribute("height","70"); sv.setAttribute("aria-hidden","true");
-      sv.innerHTML=`<circle cx="37" cy="37" r="${r}" fill="#fff" stroke="#0F3B44" stroke-width="2.5"/><circle cx="37" cy="37" r="${r}" fill="none" stroke="#C6E24A" stroke-width="10" stroke-dasharray="${(C*f).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 37 37)"/><text x="37" y="43" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-size="19" font-weight="800" fill="#0F3B44">${d}/${t||3}</text>`; return sv; };
-    const tt=el("div"); tt.append(el("h2",null,"Top 3"),el("span",null,picks.length?`${dn} of ${picks.length} done`:"nothing picked yet")); th.append(ringSvg(dn,picks.length),tt); top3.append(th);
-    if(!picks.length){ const b=el("button","rs-pick","Pick today's Top 3"); b.type="button"; b.disabled=!mcp; b.addEventListener("click",()=>openPickToday(b)); top3.append(b); }
-    if(picks.length&&dn===picks.length){ top3.classList.add("all"); top3.append(el("span","rs-stamp","DONE"),el("span","rs-spark","✨")); }
-    picks.forEach(x=>{ const isD=done3.has(x.title.toLowerCase()); const row=el("div","rs-t3"+(isD?" done":"")); const cb=el("button","rs-cb",isD?"✓":""); cb.type="button"; cb.setAttribute("aria-pressed",String(isD)); cb.setAttribute("aria-label",(isD?"Undo: ":"Done: ")+x.title); cb.disabled=!mcp;
-      cb.addEventListener("click",async()=>{ cb.disabled=true; if(!isD){ cb.textContent="✓"; cb.classList.add("pop"); } try{ await setInList("Top 3 Done",x.title,!isD,"\n"); syncListDone(x.title,!isD); renderWeekday(); risoRender(); }catch(e){ toast(writeErr(e)); cb.disabled=false; } });
-      const tx=el("span","rs-t3x"); tx.append(el("b",null,x.title)); if(x.sub) tx.append(el("span",null,x.sub)); row.append(cb,tx); top3.append(row); });
-    const up=el("div"); const dial=el("div"); // kept for the weekend review button below
-    box.append(hero); if(picks.length||!wk) box.append(top3); try{ risoMore(); }catch(e){} try{ risoFun(); }catch(e){} try{ risoSticky(); }catch(e){} try{ znRender(); if(!$("#view-ahead").hidden) znPlanRender(); if(!$("#view-you").hidden){ znMe(); } if(!$("#view-us").hidden){ znUs(); znOurShelf(); } }catch(e){}
-    if(wk==="sun"&&n>=15&&PERSON.person!=="victoria"){ const rv=el("button","rs-review","🗒️ Do your Sunday review · 2 min"); rv.type="button"; rv.addEventListener("click",()=>openSundayReview(rv)); box.append(rv); }
-  }
-  setTimeout(()=>{ const zk=setInterval(()=>{ if(ROW){ try{ znShell(); znRender(); }catch(e){ console.error("zn",e); } clearInterval(zk); } },400); setInterval(()=>{ try{ znRender(); }catch(e){} },60000); },0);
-  setTimeout(()=>{ if(!RISO) return; const kick=setInterval(()=>{ if(LIVE&&ROW){ risoRender(); clearInterval(kick); } },400); setInterval(risoRender,60000); { const lb=$("#listBody"); if(lb) new MutationObserver(()=>{ clearTimeout(risoList.t); risoList.t=setTimeout(()=>{ try{ risoList(); }catch(e){} },150); }).observe(lb,{childList:true}); }
-    for(const id of ["wdSet","tomCard","coCard"]){ const ol=$("#"+id); if(ol) new MutationObserver(()=>{ clearTimeout(risoRender.t); risoRender.t=setTimeout(risoRender,120); }).observe(ol,{childList:true,subtree:id!=="wdSet"}); } },0);
+  
+  setTimeout(()=>{ const zk=setInterval(()=>{ if(ROW){ try{ znShell(); znRender(); }catch(e){ console.error("zn",e); } clearInterval(zk); } },400); setInterval(()=>{ try{ znRender(); if(LIVE&&ROW&&!document.body.classList.contains("riso-night")){ if(!$("#view-ahead").hidden) znPlanRender(); if(!$("#view-you").hidden){ znMe(); } if(!$("#view-us").hidden){ znUs(); znOurShelf(); } } }catch(e){} },60000); /* Nov 1 (3c): by day Plan / Me / Us refresh with the minute too, as the riso layer did */ },0);
+  
 
   // the "now" card in work hours: the next unfinished Top 3 (Needs you takes this spot when something is waiting)
   
@@ -4167,7 +3987,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   
   // the practice, one moment of it: the word, today's try-it, today's sit; the full practice opens below
   // ---------- Oct 18: the Bhagavad Gita devotional (zone-gita writes it to the Daily Log's Gita field at about 4:50am) ----------
-  const GITA_PEOPLE=["claire","victoria"]; // who has the six-month reading plan (Victoria from Oct 19 too)
+   // who has the six-month reading plan (Victoria from Oct 19 too)
   function gita(){ const raw=String(ROW&&ROW.Gita||"").trim(); if(!raw) return null; const tries=[raw, raw.replace(/\\/g,""), clean(raw)];
     for(const t of tries){ try{ const g=JSON.parse(t); if(g&&g.word) return g; }catch(e){} } return null; }
   const gl=v=>String(v||"").replace(/[¶\u2028]/g,"\n").replace(/<br\s*\/?>/gi,"\n"); // zone-gita stores line breaks as ¶
@@ -4217,28 +4037,22 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   
 
   // weekends: Us, Birdie, side quests, games, open time first; the work inbox and weekday cards are parked
-  const WK_ORDER={
-    satD:["znToday","znMid","znEnd","wkRibbon","risoTop","risoMore","risoFun","vibe","gitaCheck","zoneActs","wkAdvCard","coCard","prMini","wkQuests","moreCard"],
-    sunD:["znToday","znMid","znEnd","wkRibbon","risoTop","risoMore","risoFun","vibe","gitaCheck","zoneActs","wkAdvCard","coCard","prMini","wkQuests","moreCard"],
-    satN:["znToday","znMid","znEnd","wkRibbon","risoTop","risoMore","risoFun","vibe","gitaCheck","zoneActs","coCard","wkAdvCard","prMini","moreCard"],
-    sunN:["znToday","znMid","znEnd","wkRibbon","risoTop","risoMore","risoFun","vibe","gitaCheck","zoneActs","coCard","wkAdvCard","prMini","moreCard"],
-    friD:["znToday","znMid","znEnd","wkRibbon","risoTop","risoMore","risoFun","vibe","gitaCheck","zoneActs","coCard","wkAdvCard","prMini","moreCard"],
-    friN:["znToday","znMid","znEnd","wkRibbon","risoTop","risoMore","risoFun","vibe","gitaCheck","zoneActs","coCard","wkAdvCard","prMini","moreCard"]};
+  
   // Off duty: the everyday stuff, folded into one card on weekends (each card moves in, and back out on weekdays)
-  const OFF_ROWS=[{id:"wkPeek",inline:true},{id:"sunCard",ic:"🗓️",label:"Monday, gently",sun:true},{id:"inboxCard",ic:"📬",label:"Inbox Rundown"}];
+  
   
   function offSummaries(){ /* Nov 1: retired with the old layer */ }
-  const HOME={}; // where borrowed cards live on weekdays (Date night and the Sunday preview come from Ahead)
+   // where borrowed cards live on weekdays (Date night and the Sunday preview come from Ahead)
   
   
 
   // ---------- weekend mode ----------
-  const WK_TITLES={ topCard:{sat:"🛒 Side quests",sun:"🧺 Sunday reset"}, wrapLabel:{sat:"Today's wins",sun:"Weekend wins"}, sunLabel:{sun:"Monday, gently"} };
-  const WK_DEFAULT={ topH:"Today's list", wrapLabel:"Day Wrap", sunLabel:"Sunday preview" };
-  let WK_FLICKED="";
+  
+  
+  
   
   // ---------- the weekend ribbon: Fri 5pm to Sun 11pm, colored by what's planned ----------
-  const WK_SPAN=54; let WK_GROWN="";
+   
   
   // one day's blocks [{start,end,text}] from a Daily Log row's schedule (today, or a day that already happened)
   
@@ -4249,8 +4063,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   
 
   // ---------- Today's jump bar (phones) and the desktop spread (wide screens) ----------
-  const TD_SECTIONS={wd:[["wrapCard","🌗 Wrap"],["tomCard","📝 Tomorrow"],["wdDay","☀️ The day"],["wdNeeds","📬 Needs you"],["prCard","🌿 Practice"],["wdCare","🐕 Birdie"],["headStrip","📰 Headlines"]],
-    wk:[["wkRibbon","💗 Weekend"],["wkAdvCard","🐕 Birdie"],["wkQuests","🛒 Quests"],["prCard","🌿 Practice"],["wkSideB","💿 Side B"],["wkOff","🅿️ Parked"]]};
+  
   
   function tdJumpActive(){ const nav=$("#tdJump"); if(!nav||nav.hidden||!nav.offsetParent) return; const line=nav.getBoundingClientRect().bottom+24; let cur=null;
     nav.querySelectorAll(".jchip").forEach(b=>{ const c=$("#"+b.dataset.jump); if(c&&c.getBoundingClientRect().top<=line) cur=b; });
@@ -4258,8 +4071,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     nav.querySelectorAll(".jchip").forEach(b=>{ const on=b===cur; b.setAttribute("aria-current",on?"true":"false"); if(on&&b.scrollIntoView&&nav.scrollWidth>nav.clientWidth){ const r=b.getBoundingClientRect(), nr=nav.getBoundingClientRect(); if(r.left<nr.left||r.right>nr.right) nav.scrollLeft+=r.left-nr.left-12; } }); }
   { let t=0; addEventListener("scroll",()=>{ if(t) return; t=requestAnimationFrame(()=>{ t=0; tdJumpActive(); }); },{passive:true}); }
   // the desktop spread: a planner (weekdays) or magazine (weekends) laid out in columns, with the first page pinned when it fits
-  const SPREAD={wd:[["wxCard","wdHero","vibe","wdDay"],["zoneActs","wrapCard","tomCard","wdNeeds","wdCare","headStrip"],["prCard"]],
-    wk:[["wxCard","vibe","wkRibbon"],["zoneActs","wkAdvCard","wkQuests","prCard"],["wkSideB","coCard","wkOff"]]};
+  
   
   
   
@@ -4267,7 +4079,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // ---------- The practice: theme, sit, rituals, journal and habits as one path through the day ----------
   // It reuses the practice rows the rituals card already renders (so every check, timer and sheet keeps working),
   // regrouped into Morning / Through the day / Tonight, with the full Mindful Moment folded inside the sit.
-  const PR_OPEN={};
+  
   
   function renderPractice(){ /* Nov 1: retired with the old layer */ }
   { const _rr=renderRituals; renderRituals=function(){ const r=_rr.apply(this,arguments); setTimeout(renderPractice,0); return r; }; }
@@ -4275,9 +4087,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
 
   // ---------- the weekday Planner: a tear-off date, the day as a sun arc + setlist, what needs you, and care ----------
   const WD_MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"], DAYS_LONG=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-  let CARE_OPEN="";
-  function workHrs(d){ const src=d===TODAY()?ROW:(ROWS.find(r=>r["date:Date:start"]===d)||ROW);
-    const line=clean(src&&src["Week Events"]).split(/\n+/).map(l=>l.split("|")).find(f=>f[0]===d&&f[3]==="work"); const m=line&&String(line[2]).match(/([\d.]+)\s*hrs?/); return m?Number(m[1]):0; }
+  
+  
   function renderWeekday(){ /* Nov 1: retired with the old layer */ }
 
   // ---------- Birdie's Big Adventure: the star of the weekend ----------
@@ -4286,7 +4097,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // ---------- Side B: the fun stuff, laid out like a record's track list ----------
   
   // Side B as liner notes: every item is its own printed object
-  const NS_SVG="http://www.w3.org/2000/svg"; const svgEl=(tag,at)=>{ const n=document.createElementNS(NS_SVG,tag); for(const k in at) n.setAttribute(k,at[k]); return n; };
+   
   
   
   
@@ -4327,9 +4138,9 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
    
 
   // ---------- spoiler shield: games she's recording stay hidden until she says she watched them ----------
-  const SHIELD_KEY="zone-shield";
-  const shields=()=>{ try{ const j=JSON.parse(localStorage.getItem(SHIELD_KEY)||"{}"); const now=Date.now(); return Object.fromEntries(Object.entries(j).filter(([,v])=>v&&v.until>now)); }catch(e){ return {}; } };
-  const saveShields=o=>{ try{ localStorage.setItem(SHIELD_KEY,JSON.stringify(o)); }catch(e){} };
+  
+  
+  
   
 
   // ---------- wins: what actually happened, from what she logged ----------
@@ -4392,7 +4203,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function arcPath(cx,cy,r,a0,a1){ const p=a=>[cx+r*Math.sin(a),cy-r*Math.cos(a)]; const [x0,y0]=p(a0),[x1,y1]=p(a1); const large=(a1-a0)>Math.PI?1:0; return `M${x0.toFixed(1)} ${y0.toFixed(1)} A${r} ${r} 0 ${large} 1 ${x1.toFixed(1)} ${y1.toFixed(1)}`; }
   const H0=5, H1=22, SPAN=H1-H0; const ang=h=>((Math.max(H0,Math.min(H1,h))-H0)/SPAN)*Math.PI*2;
   let EXPAND_PAST=false;
-  const shapeOn=()=>{ try{ return localStorage.getItem("zone-shape")==="on"; }catch(e){ return false; } };
+  
   
   
   
@@ -4944,14 +4755,14 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   }
 
   // ---------- episodes ----------
-  const hue=t=>{ let h=0; for(const ch of t) h=(h*31+ch.charCodeAt(0))%360; return h; };
-  function listenedList(){ const v=clean(ROW&&ROW.Listened).trim(); if(!v||/^none$/i.test(v)) return []; return v.split("\n").map(x=>x.trim()).filter(Boolean); }
-  const listenedSet=()=>new Set(listenedList().map(x=>x.toLowerCase()));
+  
+  
+  
   
   
 
   // ---------- also today ----------
-  const HEADS=[["Sports","🏀","Sports"],["World","🌍","World"],["Episodes","🎧","Episodes"]];
+  
   
   // Nov 1 (stage 3b): a sheet removed directly (several pickers close that way) skipped openSheet's close, leaving the page behind inert:
   // after logging a walk the whole app ignored taps until a reload. When no sheet is left in the layer, the page comes back.
@@ -4993,8 +4804,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
 
 
   // ---------- tomorrow at a glance ----------
-  const SKIN_BY_DOW=["rest night, no treatment","niacinamide","azelaic acid","niacinamide","azelaic acid","niacinamide","azelaic acid"];
-  const MOB_BY_DOW=["gentle recovery and breathing","hips","upper back and thoracic spine","hamstrings and calves","neck and shoulders","full-body flow","hips and ankles"];
+  
+  
   
 
   // ---------- day wrap ----------
@@ -5099,7 +4910,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
 
   // ---------- the List: everything in one place (Zone List database in Notion) ----------
   let LIST_DSID="20ce7447-d822-41e7-9f8d-b05ec181ee7f";
-  const LIST_INPUT={data:{data_source_url:"collection://"+LIST_DSID,mode:"rows",limit:200,sort:[{property:"Created",direction:"descending"}]}};
+  
   let LIST=[], LIST_LOADED=false, LIST_FILTER="all", LIST_VIEW="now";
   const AREAS=["Work","Personal","Home","Birdie","Us"], KINDS=["To-do","Reminder","Note","Thought","Idea"];
   const AREA_IC={Work:"💼",Personal:"🌱",Home:"🏠",Birdie:"🐕",Us:"💕"}, KIND_IC={"To-do":"☐",Reminder:"🔔",Note:"🗒️",Thought:"💭",Idea:"✨"};
@@ -5384,17 +5195,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const zb=el("button","btn ghost sm","Snooze a week"); zb.type="button"; zb.addEventListener("click",async()=>{ const z=addDays(T,7); if(await listUpdate(it,{"date:Snooze Until:start":z},{snooze:z},"Snoozed a week")) li.remove(); }); a.append(zb);
       li.append(a); ul.append(li); }); wrap.append(ul);
     openSheet({kicker:`🗓️ ${DAYS_LONG[new Date(L.d+"T12:00:00Z").getUTCDay()]} won't fit`,title:"",body:[wrap],color:"var(--plan)",from}); }
-  function renderWeekPlanner(box){ const T=TODAY(); const days=Array.from({length:7},(_,i)=>addDays(T,i)).map(dayLoad);
-    const card=el("div","rs-weekcard rs-planner"); const h=el("div","rs-dh"); h.append(el("h2",null,"The week"),el("span",null,"meetings · due · evenings")); card.append(h);
-    days.forEach((L,i)=>{ const row=el("div","wpday"+(L.tight?" tight":"")); const top=el("div","wptop"); const name=i===0?"Today":DAYS_LONG[new Date(L.d+"T12:00:00Z").getUTCDay()].slice(0,3);
-      const lab=el("span","wplab"); lab.append(el("b",null,name),el("span",null,`${new Date(L.d+"T12:00:00Z").toLocaleDateString("en-US",{month:"numeric",day:"numeric",timeZone:"UTC"})} · ${Math.round(L.meet*2)/2}h meetings · ${L.due.length} due`)); top.append(lab);
-      const tag=L.tight?el("button","wptag tight","Won't fit · fix"):el("span","wptag",`${Math.round(L.openH*2)/2}h open`); if(L.tight){ tag.type="button"; tag.addEventListener("click",()=>openFixDay(L,tag)); } top.append(tag); row.append(top);
-      { const uw=typeof usWeek==="function"?usWeek():null; const e=uw&&(uw.days||[]).find(x=>x.date===L.d); if(e){ const ev=el("span","wpeve "+String(e.status||"").replace(/\s+/g,"-"),e.status==="together"?"💕 together tonight":e.status==="both free"?"🛋️ both free tonight":e.status==="both busy"?"🌙 both busy tonight":"one of you is busy tonight"); row.append(ev); } }
-      const wd=new Date(L.d+"T12:00:00Z").getUTCDay(); const span=(wd===0||wd===6)?11.5:13; const bar=el("div","wpbar"); const m=el("span","m"); m.style.width=`${Math.min(100,Math.round(L.busy.reduce((a,b)=>a+(b.e-b.s),0)/span*100))}%`; const n=el("span","n"); n.style.width=`${Math.min(100,Math.round(L.needH/span*100))}%`; bar.append(m,n); row.append(bar);
-      const items=[...L.busy.filter(b=>!b.work).slice(0,3).map(b=>[hLabel(b.s),b.n,"ev"]),...L.busy.filter(b=>b.work&&b.n!=="a meeting").slice(0,2).map(b=>[hLabel(b.s),"💼 "+b.n,"wk"]),...L.due.slice(0,3).map(it=>["due",it.name,"due"])];
-      if(items.length){ const ul=el("div","wpitems"); items.forEach(([t,n,k])=>{ const r=el("div","wpit "+k); r.append(el("span",null,t),el("span",null,n)); ul.append(r); }); row.append(ul); }
-      card.append(row); });
-    box.append(card); return days.find(L=>L.tight&&dayDiff(L.d,T)<=4)||null; }
+  
   // ---------- Sunday review ----------
   function openSundayReview(from){ const T=TODAY(); const mine=LIST.filter(it=>forClaire(it)&&isTask(it));
     const done=mine.filter(it=>it.status==="Done"&&it.doneOn&&dayDiff(T,it.doneOn)<=7).length+mine.filter(it=>it.repeat&&it.lastDone&&dayDiff(T,it.lastDone)<=7).length;
@@ -5533,10 +5334,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
 
   // ---------- week ----------
   // ---------- ahead: this week as a day-by-day agenda ----------
-  const startMin=w=>{ const t=String(w||"").toLowerCase(); if(!t||/all day/.test(t)) return -1; const m=t.match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/); if(!m) return 9999; let h=+m[1]; const mi=+(m[2]||0);
-    const ap=m[3]||(t.match(/(am|pm)\s*$/)||[])[1]||""; const endH=+((t.match(/-(\d{1,2})(?::\d{2})?\s*(am|pm)\s*$/)||[])[1]||0);
-    let pm=ap==="pm"; if(!m[3]&&ap==="pm"&&endH&&h>endH&&h!==12) pm=false; if(pm&&h<12) h+=12; if(!pm&&ap==="am"&&h===12) h=0; return h*60+mi; };
-  const ROUTINE=/birdie|walk\b|prep block|skincare|mindful moment|^⏱️|^🧘|^🐕/i;
+  
+  
   
 
   // ---------- birdie ----------
@@ -5620,7 +5419,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   
   function renderBirdie(){ /* Nov 1: retired with the old layer */ }
   function bdWag(){ const d=document.querySelector("#bhDog"); if(!d) return; d.classList.remove("wag"); void d.offsetWidth; d.classList.add("wag"); }
-  const BD_SVG='<svg viewBox="0 0 120 110" aria-hidden="true"><g class="ear l"><path d="M22 38 L14 6 L44 26 Z" fill="#1E2340"/></g><g class="ear r"><path d="M98 38 L106 6 L76 26 Z" fill="#1E2340"/></g><ellipse cx="60" cy="58" rx="42" ry="38" fill="#1E2340"/><path d="M60 22 C50 40 40 62 34 92 L86 92 C80 62 70 40 60 22 Z" fill="#FFFFFF"/><ellipse cx="60" cy="84" rx="26" ry="18" fill="#FFFFFF"/><circle cx="42" cy="54" r="6.5" fill="#FFFFFF"/><circle cx="78" cy="54" r="6.5" fill="#FFFFFF"/><circle cx="43" cy="55" r="3.6" fill="#1E2340"/><circle cx="77" cy="55" r="3.6" fill="#1E2340"/><ellipse cx="60" cy="72" rx="7" ry="5" fill="#1E2340"/><path d="M52 82 Q60 90 68 82" stroke="#1E2340" stroke-width="3" fill="none" stroke-linecap="round"/><path class="tongue" d="M57 85 Q60 96 63 85 Z" fill="#FF5CBE"/></svg>';
+  
   
   
   
@@ -5664,7 +5463,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   }
 
   // ---------- journal ----------
-  let JR_ALL=false;
+  
   
 
   // ---------- you ----------
@@ -5849,16 +5648,16 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // ---------- what the Zone changed on its own today, each with Undo ----------
   // Zone Actions lines: kind|calendar event id|orig start|orig end|new start|new end|summary[|undone]
   const CAL="Google Calendar";
-  const clock12=iso=>{ const m=String(iso).match(/T(\d{2}):(\d{2})/); if(!m) return ""; const h=+m[1]; return `${((h+11)%12)+1}${m[2]==="00"?"":":"+m[2]}${h<12?"am":"pm"}`; };
+  
   
   
   // ---------- Alice: what she's working on, needs from you, finished, and captured today (Zone List fields, via the hourly index) ----------
   // ---------- Alice's desk: one home for everything Alice is doing ----------
-  const AL_SOP="https://www.notion.so/3f4ef44532cf8143b847f3d91cc69868";
+  
   const AL_LAB={"Needs Claire":"needs you","Working":"on it","Assigned":"queued","Done":"done"};
   const alNotes=it=>Array.isArray(it.anotes)?it.anotes:String(it.anotes||"").split(/\n+/).map(x=>x.trim()).filter(Boolean);
-  const alAgo=d=>{ if(!d) return ""; const n=dayDiff(TODAY(),d); return n<=0?"today":n===1?"yesterday":`${n} days ago`; };
-  const AL_ANSWERED={}; let AL_TYPE="Task";
+  
+  const AL_ANSWERED={}; 
   const alAnswered=it=>{ const latest=String(it.creply||"").split(/\n+/).map(x=>x.trim()).filter(Boolean)[0]||""; const ld=(latest.match(/^(\d{4}-\d{2}-\d{2})/)||[])[1]||""; return !!latest&&(!!AL_ANSWERED[it.id]||(!!ld&&ld>=(it.aupd||""))); };
   // Oct 16: a question in Alice's latest note means she needs Claire, even if she left the status at Working
   const alAsks=it=>{ const n=alNotes(it); const l=String(n[n.length-1]||""); return /\?\s*\)?\.?\s*$/.test(l)||/\b(asked claire|waiting on claire|need(s)? (your|claire's) (answer|ok|okay|decision|pick))\b/i.test(l); };
