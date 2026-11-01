@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-10-31.16"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-10-31.17"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2253,6 +2253,23 @@ body.zn #znToday > .zn-birdie{ display:none !important; }
 .bd2-new{ display:flex; gap:8px; } .bd2-new input{ flex:1; border:1px solid rgba(31,35,64,.14); border-radius:999px; padding:10px 14px; font:400 15px 'Plus Jakarta Sans',sans-serif; background:rgba(255,255,255,.85); color:#1F2340; min-width:0; }
 .bd2-sheet .zn-field{ display:flex; flex-direction:column; gap:4px; } .bd2-sheet .zn-field input{ border:1px solid rgba(31,35,64,.14); border-radius:12px; padding:10px 12px; font:400 15px 'Plus Jakarta Sans',sans-serif; background:rgba(255,255,255,.85); color:#1F2340; }
 .bd2-sheet .zn-chip.on{ background:#1F2340 !important; color:#FFE27A !important; }
+/* Oct 31: the Us page, games and date ideas */
+body.zn #view-us > #usTonight, body.zn #view-us > #usGames, body.zn #view-us > #usBuilt{ display:none !important; }
+.zn-gnrow{ display:flex; align-items:center; gap:10px; padding:8px 0; border-top:1px solid rgba(31,35,64,.07); } .zn-usgames .zn-h + .zn-gnrow{ border-top:0; }
+.zn-gne{ width:28px; text-align:center; font-size:18px; flex:none; } .zn-gnt{ flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; } .zn-gnt b{ font:700 14.5px 'Plus Jakarta Sans',sans-serif; color:#1F2340; } .zn-gnt small{ font:500 12.5px 'Plus Jakarta Sans',sans-serif; color:#5F5B78; }
+.zn-gnline{ font:500 13.5px/1.4 'Plus Jakarta Sans',sans-serif !important; color:#3F3B5C !important; }
+.zn-gns{ font:700 12px 'Plus Jakarta Sans',sans-serif; color:#5F5B78; white-space:nowrap; } .zn-gnrow.live .zn-gns{ color:#fff; background:#C23A6B; border-radius:999px; padding:2px 8px; }
+.zn-gnmore{ margin-top:4px; }
+body.zn.zn-night .zn-gnrow{ border-color:rgba(255,255,255,.1); } body.zn.zn-night .zn-gnt b{ color:#F3EEFF; } body.zn.zn-night .zn-gnt small, body.zn.zn-night .zn-gns, body.zn.zn-night .zn-gnline{ color:rgba(243,238,255,.75) !important; }
+.zn-idea{ --ik:#C23A6B; background:#FFF3F6 !important; border-left:4px solid var(--ik); border-radius:18px !important; padding:14px 14px 12px 16px !important; margin-bottom:10px !important; }
+.zn-idea.k-event{ --ik:#C23A6B; } .zn-idea.k-place{ --ik:#B8661E; background:#FFF6EC !important; } .zn-idea.k-easy{ --ik:#3F7F63; background:#F1F8F2 !important; } .zn-idea.k-home{ --ik:#6E5CC8; background:#F4F1FF !important; }
+.zn-idea .zn-k{ color:var(--ik) !important; } .zn-idea .zn-ititle{ color:#1F2340; } .zn-idea .zn-iwhy{ color:#3F3B5C; }
+.zn-ideas .zn-iday{ color:#A8325E; }
+.zn-idea .zn-hows{ align-items:center; gap:6px; flex-wrap:wrap; } body.zn .zn-ideas .zn-idea .zn-hows .zn-pill.zn-dark, body.zn.zn-night .zn-ideas .zn-idea .zn-hows .zn-pill.zn-dark{ background:var(--ik) !important; color:#fff !important; }
+.zn-idea .zn-hows a.zn-pill{ background:transparent !important; color:var(--ik) !important; padding-left:6px; padding-right:6px; }
+.zn-idea .zn-hows .zn-chip{ padding:5px 10px !important; font-size:12.5px !important; background:rgba(255,255,255,.7) !important; color:#3F3B5C !important; box-shadow:inset 0 0 0 1px rgba(31,35,64,.12); } .zn-idea .zn-hows .zn-chip.on{ background:var(--ik) !important; color:#fff !important; box-shadow:none; }
+.zn-idea.picked{ box-shadow:0 0 0 2px var(--ik) inset !important; } .zn-idea .zn-ipick{ background:var(--ik); color:#fff; }
+body.zn.zn-night .zn-idea{ background:rgba(255,255,255,.07) !important; } body.zn.zn-night .zn-idea .zn-ititle{ color:#F3EEFF; } body.zn.zn-night .zn-idea .zn-iwhy, body.zn.zn-night .zn-idea .zn-gsub{ color:rgba(243,238,255,.78); } body.zn.zn-night .zn-idea .zn-k{ color:color-mix(in srgb, var(--ik) 55%, #FFFFFF) !important; } body.zn.zn-night .zn-ideas .zn-iday{ color:#FFB4CF; } body.zn.zn-night .zn-idea .zn-hows .zn-chip{ background:rgba(255,255,255,.1) !important; color:#F3EEFF !important; } body.zn.zn-night .zn-idea .zn-hows a.zn-pill{ color:#FFB4CF !important; }
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -3471,7 +3488,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const row=(ic,name,sub,right)=>{ const r=el("div","zn-prow2"); r.innerHTML=`<span class="zn-pic2">${ic}</span><span class="zn-rtx"><b>${znEsc(name)}</b>${sub?`<span>${znEsc(sub)}</span>`:""}</span>${right?`<span class="zn-ptime">${znEsc(right)}</span>`:""}`; return r; };
     host.append((()=>{ const m=el("div","zn-mast zn-card"); m.innerHTML=`<span class="zn-mt">Us</span><span class="zn-md">${znEsc(new Date(T+"T12:00:00Z").toLocaleDateString("en-US",{timeZone:"UTC",weekday:"short",day:"numeric",month:"short"}).toUpperCase())}</span>`; return m; })());
     // 1. Together, next: the same hero shape as Today, in the Us pink
-    let next=null; if(W){ const nowM=n*60; for(const d of W.days){ for(const e of (d.shared||[])){ if(e.s===-1) continue; if(d.date===W.today&&e.s<nowM-30) continue; next={d,e}; break; } if(next) break; } }
+    let next=null; if(W){ const nowM=n*60; for(const d of W.days){ for(const e of (d.shared||[])){ if(e.s===-1) continue; if(/^\W*(trash|recycl\w*|garbage|bins?|compost)\b/i.test(String(e.title||""))) continue; /* Oct 31: chores aren't plans */ if(d.date===W.today&&e.s<nowM-30) continue; next={d,e}; break; } if(next) break; } }
     const freeDays=W?W.days.filter(d=>d.date>=T&&d.status==="both free"):[]; const nextFree=freeDays[0];
     const hero=znCard("zn-hero zn-usnext2","","Together, next"); hero.innerHTML=`<div class="zn-hrow"><span class="zn-date">Together <i>next</i></span>${calOK()?`<button type="button" class="zn-pill zn-dark" id="znUsPlan">+ Plan</button>`:""}</div>
       <div class="zn-usbig"><b>${next?znEsc(next.e.title):!W?"Your week together":(nextFree?"Nothing planned yet":"A busy week")}</b><span>${next?znEsc(`${next.d.date===T?"Tonight":next.d.label}${next.e.s>=0?" · "+znMins(next.e.s):""}`):(nextFree?`Free together ${nextFree.date===T?"tonight":znEsc(nextFree.label)}`:"")}</span></div>
@@ -3516,7 +3533,17 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const send=async()=>{ const v=si.value.trim(); if(!v) return; sb.disabled=true; try{ await usSend("note",v); si.value=""; toast(`Sent to ${NAME(other)}`); znUs(); }catch(e){ toast(writeErr(e)); sb.disabled=!mcp; } }; sb.addEventListener("click",send); si.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); send(); } }); sw.append(si,sb); fd.append(sw); host.append(fd);
     // 6. tonight's games in the leagues you follow (from zone-us)
     queueMicrotask(()=>{ const eve=n>=18.5||n<3; const order=eve?["zn-mast","zn-hero","zn-uspod","zn-usfeed","zn-herday","zn-usplans","zn-ideas","zn-usgames"]:["zn-mast","zn-hero","zn-herday","zn-usfeed","zn-usplans","zn-ideas","zn-usgames","zn-uspod"]; order.forEach(cl=>{ const x=host.querySelector(":scope > ."+cl); if(x) host.append(x); }); }); // Oct 31: by day, her day and your messages first; after 6:30pm, tonight's episode
-    { const G=(W&&W.today===T&&Array.isArray(W.tonight))?W.tonight.filter(g=>g.state!=="post"||n*60-g.s<240):[]; if(G.length){ const gc=znCard("zn-usgames","","Tonight’s games"); gc.innerHTML=znH("Tonight’s games",`${G.length} in your leagues`); G.slice(0,6).forEach(g=>{ const hid=typeof znHide==="function"&&znHide(`${T}:${g.name}`); gc.append(row(g.e||"🏟️",`${g.name}${g.mine?" ★":""}`,[g.lg,g.state==="pre"?g.tv:(hid?"score hidden":g.score)].filter(Boolean).join(" · "),g.state==="in"?"LIVE":g.state==="post"?"Final":znMins(g.s))); }); host.append(gc); } }
+    { // Oct 31: one "Game night" card instead of three (this card, plus the old #usTonight and #usGames sections): your teams' games tonight first,
+      // then what's coming up for your teams (Us Week storylines), and the rest of your leagues behind a toggle. Spoiler-hidden scores stay hidden.
+      const all=(W&&W.today===T&&Array.isArray(W.tonight))?W.tonight.filter(g=>g.state!=="post"||n*60-g.s<240):[]; const mine=all.filter(g=>g.mine), rest=all.filter(g=>!g.mine);
+      const upcoming=(W&&Array.isArray(W.games)?W.games:[]).filter(l=>!/\btonight\b/i.test(l));
+      if(mine.length||upcoming.length||rest.length){ const gc=znCard("zn-usgames","",mine.length?"Game night":"Your teams"); gc.innerHTML=znH(mine.length?"Game night":"Your teams",mine.length?`${mine.length} of yours today`:"what’s coming up");
+        const gRow=g=>{ const hid=typeof znHide==="function"&&znHide(`${T}:${g.name}`); const st=g.state==="in"?"LIVE":g.state==="post"?"Final":znMins(g.s); const r=el("div","zn-gnrow"+(g.state==="in"?" live":""));
+          r.innerHTML=`<span class="zn-gne" aria-hidden="true">${g.e||"🏟️"}</span><span class="zn-gnt"><b>${znEsc(String(g.name||"").trim())}</b><small>${znEsc([g.state==="pre"?"":(hid?"score hidden":g.score),g.tv].filter(Boolean).join(" · "))}</small></span><span class="zn-gns">${znEsc(st)}</span>`; return r; };
+        mine.forEach(g=>gc.append(gRow(g)));
+        if(upcoming.length){ if(mine.length) gc.append(el("div","zn-rslot","Coming up")); upcoming.forEach(l=>{ const m=String(l).match(/^(\S+)\s+(.*)$/); const r=el("div","zn-gnrow up"); r.innerHTML=`<span class="zn-gne" aria-hidden="true">${znEsc(m?m[1]:"🏟️")}</span><span class="zn-gnt"><small class="zn-gnline">${znEsc(m?m[2]:l)}</small></span>`; gc.append(r); }); }
+        if(rest.length){ const tg=el("button","zn-chip",`${rest.length} more in your leagues`); tg.type="button"; const more=el("div","zn-gnmore"); more.hidden=true; rest.forEach(g=>more.append(gRow(g))); tg.addEventListener("click",()=>{ more.hidden=!more.hidden; tg.textContent=more.hidden?`${rest.length} more in your leagues`:"Hide the rest"; }); const w=el("div","zn-hows"); w.append(tg); gc.append(w,more); }
+        host.append(gc); } }
   }
     // Us: the date scout's ideas, for both of you (Oct 24): pick one and it goes on the Fam calendar in one tap
   function znIdeas(host){ const ideas=typeof dateIdeas==="function"?dateIdeas():[]; const h=dateHist(); const T=TODAY();
@@ -3525,11 +3552,11 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     if(!ideas.length){ c.append(el("p","zn-empty","No ideas for the coming nights yet.")); host.append(c); return; }
     const days=[...new Set(live.map(x=>x.date))].sort();
     days.forEach(d=>{ const dd=new Date(d+"T12:00:00Z"); const lab=el("div","zn-iday",`${d===T?"Tonight":DAYS_LONG[dd.getUTCDay()]} · ${dd.getUTCDay()===5?"date night":"open evening"}`); c.append(lab);
-      live.filter(x=>x.date===d).forEach(x=>{ const st=(h[x.title.toLowerCase()]||{}).status||""; const t=el("div","zn-idea"+(st==="picked"?" picked":"")); t.innerHTML=`<div class="zn-ihead"><span class="zn-k">${znEsc((DATE_KIND[x.kind]||"✨ Idea").replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,""))}</span>${st==="picked"?`<span class="zn-ipick">The plan</span>`:""}</div><div class="zn-ititle">${znEsc(x.title)}</div><div class="zn-gsub">${znEsc([x.time&&x.time!=="-"?x.time:"",x.where,x.cost].filter(Boolean).join(" · "))}</div>${x.why?`<p class="zn-iwhy">${znEsc(x.why)}</p>`:""}`;
+      live.filter(x=>x.date===d).forEach(x=>{ const st=(h[x.title.toLowerCase()]||{}).status||""; const t=el("div","zn-idea k-"+String(x.kind||"idea").toLowerCase().replace(/[^a-z]/g,"")+(st==="picked"?" picked":"")); t.innerHTML=`<div class="zn-ihead"><span class="zn-k">${znEsc((DATE_KIND[x.kind]||"✨ Idea").replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,""))}</span>${st==="picked"?`<span class="zn-ipick">The plan</span>`:""}</div><div class="zn-ititle">${znEsc(x.title)}</div><div class="zn-gsub">${znEsc([x.time&&x.time!=="-"?x.time:"",x.where,x.cost].filter(Boolean).join(" · "))}</div>${x.why?`<p class="zn-iwhy">${znEsc(x.why)}</p>`:""}`;
         const acts=el("div","zn-hows");
         const pick=el("button","zn-pill zn-dark",st==="picked"?"Picked ✓":"Let’s do it"); pick.type="button"; pick.disabled=!mcp; pick.addEventListener("click",async()=>{ pick.disabled=true; try{ await setDateStatus(x,"picked"); if(calOK()&&st!=="picked"){ const tm=(x.time||"").match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)/i); let s0=19; if(tm){ s0=(+tm[1]%12)+(+(tm[2]||0))/60+((tm[3]||"pm").toLowerCase()==="pm"?12:0); } await queueCal("fam",x.date,s0,Math.min(s0+3,23.5),60,`💕 ${x.title}${x.where?" · "+x.where:""}`); toast("Picked · on the Fam calendar in a few minutes"); } }catch(e){ toast(writeErr(e)); } znUs(); }); acts.append(pick);
         if(x.link&&/^https?:/.test(x.link)){ const a=el("a","zn-pill","Details ↗"); a.href=x.link; a.target="_blank"; a.rel="noopener"; acts.append(a); }
-        const like=el("button","zn-chip"+(st==="liked"?" on":""),"Sounds like us"); like.type="button"; like.disabled=!mcp; like.addEventListener("click",()=>setDateStatus(x,"liked").then(znUs)); const pass=el("button","zn-chip","Not for us"); pass.type="button"; pass.disabled=!mcp; pass.addEventListener("click",()=>setDateStatus(x,"passed").then(znUs)); acts.append(like,pass); t.append(acts); c.append(t); }); });
+        const like=el("button","zn-chip"+(st==="liked"?" on":""),st==="liked"?"♡ Liked":"♡ Like"); like.setAttribute("aria-label","Sounds like us"); like.type="button"; like.disabled=!mcp; like.addEventListener("click",()=>setDateStatus(x,"liked").then(znUs)); const pass=el("button","zn-chip","Pass"); pass.setAttribute("aria-label","Not for us"); pass.type="button"; pass.disabled=!mcp; pass.addEventListener("click",()=>setDateStatus(x,"passed").then(znUs)); acts.append(like,pass); t.append(acts); c.append(t); }); });
     const passed=ideas.filter(x=>(h[x.title.toLowerCase()]||{}).status==="passed"); if(passed.length){ const p=el("button","zn-more",`${passed.length} passed · bring one back`); p.type="button"; p.addEventListener("click",()=>{ const w=el("div","schd"); passed.forEach(x=>{ const b=el("button","btn sm",x.title); b.type="button"; b.addEventListener("click",()=>setDateStatus(x,"passed").then(()=>{ close&&close(); znUs(); })); w.append(b); }); const close=openSheet({kicker:"Passed",title:"Bring one back",body:[w],from:p}); }); c.append(p); }
     host.append(c); }
   // Triage: one email at a time, four directions
