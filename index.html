@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-02.1"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-02.2"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1271,6 +1271,25 @@ body.zn .zn-tog{display:inline-flex;border:1.5px solid rgba(31,35,64,.2);border-
 body.zn .zn-tog button{padding:7px 12px;font-size:12.5px;font-weight:700;border:0;background:transparent;color:inherit;font-family:inherit;cursor:pointer}
 body.zn .zn-tog button.on{background:#1F2340;color:#fff}
 body.zn .zn-sizerow .zn-priv{margin-left:auto}
+
+/* Nov 2: Plan · Work and a segment bar that scrolls */
+body.zn #znPlan .zn-seg{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+body.zn #znPlan .zn-seg::-webkit-scrollbar{display:none}
+body.zn #znPlan .zn-seg button{flex:none;white-space:nowrap}
+body.zn .zn-wcap{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:4px 0 12px}
+body.zn .zn-wcap div{background:rgba(255,255,255,.75);border-radius:12px;padding:8px 6px;text-align:center}
+body.zn .zn-wcap b{display:block;font-size:13px}
+body.zn .zn-wcap small{font-size:10.5px;opacity:.65;text-transform:uppercase;letter-spacing:.06em}
+body.zn .zn-wcap i{display:block;height:4px;border-radius:4px;margin-top:6px;background:rgba(31,35,64,.12)}
+body.zn .zn-wcap i em{display:block;height:100%;border-radius:4px;background:#1F2340}
+body.zn .zn-wsec{display:flex;gap:8px;align-items:baseline;margin:12px 0 2px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.65}
+body.zn .zn-wsec span{font-weight:600;letter-spacing:0;text-transform:none}
+body.zn .zn-wrow{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid rgba(31,35,64,.08)}
+body.zn .zn-wrow .zn-tt2{flex:1;min-width:0}
+body.zn .zn-wsz{font-size:11px;font-weight:700;padding:4px 8px;border-radius:999px;background:rgba(31,35,64,.07);white-space:nowrap}
+body.zn .zn-wsz.zn-deep{background:rgba(217,200,255,.6)}
+body.zn.zn-night .zn-wcap div{background:rgba(255,255,255,.08)}
+body.zn.zn-night .zn-wsz{background:rgba(255,255,255,.12)}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -2229,9 +2248,9 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function znPlanRender(){ const host=$("#znPlan"); if(!host) return; if(!znOn()||!ROW){ host.hidden=true; return; } host.hidden=false; host.replaceChildren();
     const T=TODAY(); if(!ZN_PLAN.day||ZN_PLAN.day<T) ZN_PLAN.day=T; const days=znPlanDays();
     const mh=el("div","zn-mast zn-card"); mh.innerHTML=`<span class="zn-mt">Plan</span>`; const addb=el("button","zn-pill","+ Event"); addb.type="button"; addb.disabled=!calOK(); addb.hidden=!calOK(); /* Oct 31: hidden, not greyed, where adding events isn't wired (Victoria) */ addb.addEventListener("click",()=>openAddEvent(addb)); mh.append(addb); host.append(mh);
-    const seg=el("div","zn-seg"); [["week","Week"],["projects","Projects"],["waiting","With Alice"],["list","All tasks"]].filter(([k])=>k!=="waiting"||!(PERSON.features&&PERSON.features.alice===false)).forEach(([k,l])=>{ const b=el("button",null,l); b.type="button"; b.setAttribute("aria-pressed",String(ZN_PLAN.seg===k)); b.addEventListener("click",()=>{ ZN_PLAN.seg=k; znPlanRender(); }); seg.append(b); }); host.append(seg);
+    const seg=el("div","zn-seg"); [["week","Week"],["work","Work"],["projects","Projects"],["waiting","With Alice"],["list","All tasks"]].filter(([k])=>k!=="waiting"||!(PERSON.features&&PERSON.features.alice===false)).forEach(([k,l])=>{ const b=el("button",null,l); b.type="button"; b.setAttribute("aria-pressed",String(ZN_PLAN.seg===k)); b.addEventListener("click",()=>{ ZN_PLAN.seg=k; znPlanRender(); }); seg.append(b); }); host.append(seg);
     if(ZN_PLAN.seg==="list"){ try{ host.append(znTasksView()); }catch(e){ console.error("tasks",e); } return; } // Oct 27: tasks live here now, not on the old List page
-    if(ZN_PLAN.seg==="projects") return znProjects(host); if(ZN_PLAN.seg==="waiting") return znWaiting(host);
+    if(ZN_PLAN.seg==="projects") return znProjects(host); if(ZN_PLAN.seg==="waiting") return znWaiting(host); if(ZN_PLAN.seg==="work") return znWork(host); /* Nov 2 (step 3) */
     // ---------- the week ----------
     try{ let tom=[]; try{ tom=risoTomItems().map(x=>({...x,k:x.k==="work"?"work":x.k})); }catch(e){} host.append(znTomorrowPrep(tom,addDays(TODAY(),1),{})); }catch(e){ console.error("prep",e); } // Oct 29
     const loads=days.map(d=>dayLoad(d)); const wkc=znCard("zn-week","","This week"); wkc.innerHTML=znH("This week","meetings · due · evenings");
@@ -2272,6 +2291,31 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
         b.innerHTML=`<b>${znEsc(nm)}</b><i class="zn-pbar"><i style="width:${its.length?Math.round(done/its.length*100):0}%"></i></i><span>${done} of ${its.length}${nx?` · next: ${znEsc(nx.name)}`:""}</span>`; b.addEventListener("click",()=>{ ZN_PLAN.seg="projects"; znPlanRender(); }); rail.append(b); });
       sec.append(rail); host.append(sec); }
   }
+  // Nov 2 (tasks & planning, step 3): Plan · Work. Capacity by weekday (9–5 minus meetings, nothing on Time Off), then the open Work tasks in
+  // three groups with their size and energy, and Place: the first work-hours gap the task fits, on its due day if it has one, else the next
+  // weekday within two weeks; Deep tasks prefer a gap that starts before 2pm. Same writes as "place a task here" (calendar queue + Scheduled).
+  const WORK_H={from:9,to:17};
+  function znWorkGaps(d){ const T=TODAY(); if(offFor(d)) return []; const wd=new Date(d+"T12:00:00Z").getUTCDay(); if(wd===0||wd===6) return []; let from=WORK_H.from; const to=WORK_H.to; if(d===T) from=Math.max(from,Math.ceil(nowH()*4)/4); if(d<T||from>=to) return [];
+    const busy=busyOn(d).filter(b=>b.e>from&&b.s<to&&!/work blocks?\b|work day/i.test(b.n||"")).sort((a,b)=>a.s-b.s); const gaps=[]; /* the brief's "N work blocks" summary line is the workday itself, not a meeting */ let cur=from; busy.forEach(b=>{ if(b.s>cur+1e-6) gaps.push({s:cur,e:Math.min(b.s,to)}); cur=Math.max(cur,b.e); }); if(cur<to) gaps.push({s:cur,e:to}); return gaps.filter(g=>g.e-g.s>=0.25); }
+  function znWorkOpen(d){ return znWorkGaps(d).reduce((a,g)=>a+(g.e-g.s),0); }
+  function znWorkSlot(d,it){ const need=(it.est||30)/60; const fits=znWorkGaps(d).filter(g=>g.e-g.s>=need); const pick=(it.energy==="Deep"&&fits.find(g=>g.s<14))||fits[0]; return pick?{s:pick.s,e:pick.s+need}:null; }
+  async function znWorkPlace(it,btn){ const T=TODAY(); const days=[T,...Array.from({length:13},(_,i)=>addDays(T,i+1))]; const pref=it.due&&it.due>=T?it.due:""; const order=pref?[pref,...days.filter(x=>x!==pref)]:days; let d=null,slot=null;
+    for(const x of order){ const s0=znWorkSlot(x,it); if(s0){ d=x; slot=s0; break; } } if(!slot){ toast("No open work time in the next two weeks"); return; }
+    btn.disabled=true; try{ await queueCal("me",d,slot.s,slot.e,10,it.name); const iso=`${d}T${hm(slot.s)}:00`; await listUpdate(it,{"date:Scheduled:start":iso},{sched:iso}); toast(`Placed ${d===T?"today":dueLabel(d)} at ${hLabel(slot.s)} · on your calendar in a few minutes`); znPlanRender(); }catch(e){ btn.disabled=false; toast(writeErr(e)); } }
+  function znWork(host){ const T=TODAY(); const wk=[...Array(7)].map((_,i)=>addDays(T,i)).filter(d=>{ const wd=new Date(d+"T12:00:00Z").getUTCDay(); return wd>=1&&wd<=5; }).slice(0,5);
+    const open=LIST.filter(it=>it.status==="Open"&&isTask(it)&&forClaire(it)&&it.area==="Work"&&!isSnoozed(it)&&!it.waiting);
+    const c=znCard("zn-work",""); c.innerHTML=znH("Work this week","9–5 · Time Off honored");
+    const cap=el("div","zn-wcap"); wk.forEach(d=>{ const o=znWorkOpen(d); const off=offFor(d); const used=Math.max(0,8-o); const t=el("div"); t.innerHTML=`<small>${new Date(d+"T12:00:00Z").toLocaleDateString("en-US",{weekday:"short",timeZone:"UTC"})}</small><b>${off?"off":(o%1?o.toFixed(1):o)+"h open"}</b><i><em style="width:${Math.min(100,Math.round(used/8*100))}%"></em></i>`; cap.append(t); }); c.append(cap);
+    const whenOf=it=>[it.due?(it.due===T?"due today":"due "+dueLabel(it.due)):"", it.project||"", it.priv?"private: not in the brief":""].filter(Boolean).join(" · ")||"no date";
+    const row=it=>{ const r=el("div","zn-wrow"); const tx=el("button","zn-tt2"); tx.type="button"; tx.append(el("b",null,it.name+(it.priv?" 🔒":"")),el("span",null,whenOf(it))); tx.addEventListener("click",()=>openListItem(it,tx)); r.append(tx);
+      r.append(el("span","zn-wsz"+(it.energy==="Deep"?" zn-deep":""),`${znDur(it.est||30)}${it.energy==="Deep"?" · Deep":""}`));
+      if(it.sched&&it.sched.slice(0,10)>=T){ const [h,m]=it.sched.slice(11,16).split(":").map(Number); r.append(el("span","zn-pill zn-dark",(it.sched.slice(0,10)===T?"":dueLabel(it.sched.slice(0,10))+" ")+hLabel(h+(m||0)/60))); }
+      else { const b=el("button","zn-pill zn-dark","Place"); b.type="button"; b.disabled=!mcp||!LIVE||!calOK(); b.addEventListener("click",()=>znWorkPlace(it,b)); r.append(b); } return r; };
+    const sec=(lab,its)=>{ if(!its.length) return; const h=el("div","zn-wsec"); h.append(el("b",null,lab),el("span",null,`· ${its.length} ${its.length===1?"task":"tasks"} · ${znDur(its.reduce((a,x)=>a+(x.est||30),0))}`)); c.append(h); its.forEach(it=>c.append(row(it))); };
+    const end=wk[wk.length-1]||T; const today=open.filter(it=>it.focus===T||(it.sched&&it.sched.slice(0,10)===T)||it.due===T); const week=open.filter(it=>!today.includes(it)&&((it.due&&it.due<=end)||(it.sched&&it.sched.slice(0,10)<=end))); const later=open.filter(it=>!today.includes(it)&&!week.includes(it));
+    sec("Picked for today",today); sec("This week",week.sort((a,b)=>(a.due||"9999").localeCompare(b.due||"9999"))); sec("Later",later.sort((a,b)=>(b.star?1:0)-(a.star?1:0)));
+    if(!open.length) c.append(el("p","zn-empty","No work tasks yet. Add one with #work, or set the area to Work when you capture it."));
+    host.append(c); }
   function znProjects(host){ const pj={}; LIST.filter(it=>isTask(it)&&forClaire(it)&&it.project).forEach(it=>{ (pj[it.project]=pj[it.project]||[]).push(it); });
     const names=Object.keys(pj); if(!names.length){ host.append(znCard("","<p class='zn-empty'>No projects yet. A project groups related tasks; give a task a project and it shows up here.</p>")); return; }
     names.forEach((nm,i)=>{ const its=pj[nm]; const done=its.filter(x=>x.status==="Done").length; const c=znCard("zn-pcard",""); c.style.background=`linear-gradient(170deg, ${[ZC.mint,ZC.sky,ZC.pnk,ZC.lil,ZC.lim][i%5]}, rgba(255,255,255,.85))`; c.innerHTML=znH(nm,`${done} of ${its.length}`)+`<i class="zn-pbar"><i style="width:${Math.round(done/its.length*100)}%"></i></i>`;
@@ -3431,7 +3475,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     jtype:r["Job Type"]||"", aopts:clean(r["Alice Options"]||"").trim(), creply:clean(r["Claire Reply"]||"").trim(), outcome:clean(r.Outcome||"").trim(), focus:String(r["date:Focus:start"]||"").slice(0,10),
     // Oct 22 (List v2): repeats, snooze, waiting on, project, estimate, steps
     repeat:clean(r.Repeat||"").trim(), snooze:String(r["date:Snooze Until:start"]||"").slice(0,10), waiting:clean(r["Waiting On"]||"").trim(), wsince:String(r["date:Waiting Since:start"]||"").slice(0,10),
-    project:clean(r.Project||"").trim(), est:Number(r.Estimate)||0, steps:String(r.Steps||"").replace(/\\n/g,"\n").trim(), lastDone:String(r["date:Last Done:start"]||"").slice(0,10), sched:String(r["date:Scheduled:start"]||"") }; }
+    project:clean(r.Project||"").trim(), est:Number(r.Estimate)||0, energy:r.Energy||"", estSource:r["Estimate Source"]||"", priv:yes(r.Private), actual:Number(r.Actual)||0, steps:String(r.Steps||"").replace(/\\n/g,"\n").trim(), lastDone:String(r["date:Last Done:start"]||"").slice(0,10), sched:String(r["date:Scheduled:start"]||"") }; }
   // capture shorthand: "#work", "!" to star, dates (today, tomorrow, Fri, next week, 10/14, in 3 days), "note:", "idea:", "thought:", "someday:", "remind me"
   const WD=["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
   const WD_RE="mon(?:day)?|tue(?:s|sday)?|wed(?:nesday)?|thu(?:r|rs|rsday)?|fri(?:day)?|sat(?:urday)?|sun(?:day)?";
@@ -4078,7 +4122,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:INDEX_ID},ev=>{
       if(ev.type!=="data"){ handleError(ev.error); return; } const pr=parseProps(ev.result.payload); let idx=null; try{ idx=JSON.parse(clean(pr&&pr.Value)); }catch(e){}
       if(!idx||!Array.isArray(idx.rows)){ if(PERSON.person!=="claire"){ showAlert(`Welcome, ${PERSON.name}`,"Your Zone is being built. Your first morning brief will show up here soon."); } else showAlert("Setting things up","The dashboard index is being built. Refresh in a minute."); return; }
-      INDEX_AT=Date.parse(idx.at)||0; INDEX_ROWS=idx.rows||[]; BOOKS=Array.isArray(idx.books)?idx.books:BOOKS; INDEX_REC=Array.isArray(idx.rec)?idx.rec:[];  try{ primeSettings(); }catch(e){} LIST=mergeLocal(idx.list.map(x=>listItem({url:"https://www.notion.so/"+x.id,Name:x.n,Kind:x.k,Area:x.a,Status:x.s,Star:x.star?"__YES__":"__NO__","date:Due:start":x.due||null,Created:x.c,"date:Done On:start":x.done||null,"date:Focus:start":x.f||null,Source:x.src,Owner:x.own||"","Alice Status":x.as||"","Alice Notes":Array.isArray(x.an)?x.an.join("\n"):(x.an||""),"date:Alice Updated:start":x.au||null,"Job Type":x.jt||"","Alice Options":Array.isArray(x.ao)?x.ao.join("\n"):"","Claire Reply":Array.isArray(x.cr)?x.cr.join("\n"):"",Outcome:x.out||"",Repeat:x.rp||"","date:Snooze Until:start":x.sz||null,"Waiting On":x.wo||"","date:Waiting Since:start":x.ws||null,Project:x.pj||"",Estimate:x.est||null,Steps:Array.isArray(x.st)?x.st.join("\n"):"","date:Last Done:start":x.ld||null,"date:Scheduled:start":x.sc||null}))).filter(it=>it.id&&it.name); LIST=LIST.filter(x=>!znIsGone(x.id)); LIST_LOADED=true;
+      INDEX_AT=Date.parse(idx.at)||0; INDEX_ROWS=idx.rows||[]; BOOKS=Array.isArray(idx.books)?idx.books:BOOKS; INDEX_REC=Array.isArray(idx.rec)?idx.rec:[];  try{ primeSettings(); }catch(e){} LIST=mergeLocal(idx.list.map(x=>listItem({url:"https://www.notion.so/"+x.id,Name:x.n,Kind:x.k,Area:x.a,Status:x.s,Star:x.star?"__YES__":"__NO__","date:Due:start":x.due||null,Created:x.c,"date:Done On:start":x.done||null,"date:Focus:start":x.f||null,Source:x.src,Owner:x.own||"","Alice Status":x.as||"","Alice Notes":Array.isArray(x.an)?x.an.join("\n"):(x.an||""),"date:Alice Updated:start":x.au||null,"Job Type":x.jt||"","Alice Options":Array.isArray(x.ao)?x.ao.join("\n"):"","Claire Reply":Array.isArray(x.cr)?x.cr.join("\n"):"",Outcome:x.out||"",Repeat:x.rp||"","date:Snooze Until:start":x.sz||null,"Waiting On":x.wo||"","date:Waiting Since:start":x.ws||null,Project:x.pj||"",Estimate:x.est||null,Energy:x.en||"","Estimate Source":x.es||"",Private:x.pv?"__YES__":"__NO__",Actual:x.ac||null,Steps:Array.isArray(x.st)?x.st.join("\n"):"","date:Last Done:start":x.ld||null,"date:Scheduled:start":x.sc||null}))).filter(it=>it.id&&it.name); LIST=LIST.filter(x=>!znIsGone(x.id)); LIST_LOADED=true;
       watchRows(idx.rows.slice(0,7)); 
     },{cache:{staleTime:60000},refetchInterval:600000}));
     unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.SideB},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.SideB={value:clean(pr.Value),check:clean(pr.Check)}; if(ROW) renderSideB(); } } },{cache:{staleTime:300000},refetchInterval:1800000}));
