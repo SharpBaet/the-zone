@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-02.4"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-02.5"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1290,6 +1290,13 @@ body.zn .zn-wsz{font-size:11px;font-weight:700;padding:4px 8px;border-radius:999
 body.zn .zn-wsz.zn-deep{background:rgba(217,200,255,.6)}
 body.zn.zn-night .zn-wcap div{background:rgba(255,255,255,.08)}
 body.zn.zn-night .zn-wsz{background:rgba(255,255,255,.12)}
+
+/* Nov 2: the agent's reply sheet */
+.zn-draft .zn-dta{width:100%;box-sizing:border-box;font:inherit;font-size:15px;line-height:1.45;padding:10px 12px;border-radius:12px;border:1px solid rgba(31,35,64,.2);background:#fff;color:#1F2340;resize:vertical}
+.zn-draft .zn-dins{width:100%;box-sizing:border-box;font:inherit;font-size:14px;padding:10px 12px;border-radius:12px;border:1px solid rgba(31,35,64,.15);margin-top:10px;background:rgba(255,255,255,.7)}
+.zn-draft .zn-dacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.zn-draft .zn-dacts a.zn-pill{text-decoration:none;display:inline-flex;align-items:center}
+.zn-draft .zn-dnote{margin:8px 0 0}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -3347,6 +3354,24 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   
   
   let INBOX_MAIL={};
+    // Nov 2 (the agent, job 1): a reply drafted in her voice by zone-draft (agent.reply), shown in a sheet she can edit, redo with a one-line
+  // instruction, copy, and send herself from Gmail. Nothing is sent from the app.
+  async function znDraftCall(payload){ try{ if(typeof APP==="undefined"||!APP.sb) return null; const s=await APP.sb.auth.getSession(); const tk=s&&s.data&&s.data.session&&s.data.session.access_token; if(!tk) return null;
+    const r=await fetch(APP.url+"/functions/v1/zone-draft",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify(payload)}); const j=await r.json(); return r.ok&&j.ok?j:{error:j.error||("zone-draft "+r.status)}; }catch(e){ return null; } }
+  function znDraftReply(raw,from){ const m=INBOX_MAIL[raw]; if(!m) return; const title=inboxTitle(raw);
+    const body=el("div","zn-draft"); const st=el("p","hint zn-dst","Alice is writing…"); body.append(st);
+    const ta=el("textarea","zn-dta"); ta.rows=8; ta.hidden=true; ta.setAttribute("aria-label","The drafted reply; edit it here"); body.append(ta);
+    const note=el("p","hint zn-dnote"); note.hidden=true; body.append(note);
+    const ins=el("input","zn-dins"); ins.type="text"; ins.placeholder="Tell Alice how to answer (optional)"; ins.setAttribute("aria-label","How the reply should answer"); body.append(ins);
+    const acts=el("div","zn-dacts"); const redo=el("button","zn-pill","Redo"); redo.type="button"; const copy=el("button","zn-pill zn-dark","Copy"); copy.type="button"; copy.disabled=true;
+    const open=el("a","zn-pill","Open in Gmail"); open.href=`https://mail.google.com/mail/u/${m.acct}@gmail.com/#all/${m.ids[0]}`; open.target="_blank"; open.rel="noopener"; acts.append(redo,copy,open); body.append(acts);
+    const run=async()=>{ st.hidden=false; st.textContent="Alice is writing…"; ta.hidden=true; note.hidden=true; redo.disabled=true; copy.disabled=true;
+      const d=await znDraftCall({person:PERSON.person||"claire",kind:"email",account:m.acct,id:m.ids[0],instructions:ins.value.trim()}); redo.disabled=false;
+      if(!d||d.error){ st.textContent=d&&/three days/.test(d.error)?"That one's older than the triage keeps — open it in Gmail and reply there.":"Couldn't draft this one right now — open it in Gmail."; return; }
+      st.hidden=true; ta.hidden=false; ta.value=d.reply; copy.disabled=false; if(d.note){ note.hidden=false; note.textContent="Alice: "+d.note; } };
+    redo.addEventListener("click",run); ins.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); run(); } });
+    copy.addEventListener("click",async()=>{ try{ await navigator.clipboard.writeText(ta.value); toast("Copied · paste it into your reply"); }catch(e){ ta.focus(); ta.select(); toast("Select the text and copy"); } });
+    openSheet({kicker:"Alice · a reply for you",title,body:[body],from}); run(); }
   async function mailAct(raw,kind){ const m=INBOX_MAIL[raw]; if(!m) return;
     try{
       if(kind==="read"||kind==="trash"){ await setInList("Inbox Cleared",`!mail|${m.acct}|${m.ids.join(",")}|${kind}|${Date.now()}`,true,"\n"); }
@@ -3356,7 +3381,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       track("inbox:"+kind);
     }catch(e){ toast(writeErr(e)); } }
   function mailRow(raw){ const m=INBOX_MAIL[raw]; const row=el("div","ibacts");
-    const a=el("a","ibact","Open"); a.href=`https://mail.google.com/mail/u/${m.acct}@gmail.com/#all/${m.ids[0]}`; a.target="_blank"; a.rel="noopener"; a.setAttribute("aria-label","Open this email in Gmail"); row.append(a);
+    const a=el("a","ibact","Open"); a.href=`https://mail.google.com/mail/u/${m.acct}@gmail.com/#all/${m.ids[0]}`; a.target="_blank"; a.rel="noopener"; a.setAttribute("aria-label","Open this email in Gmail"); row.append(a); { const rp=el("button","ibact","Reply"); rp.type="button"; rp.disabled=!LIVE; rp.setAttribute("aria-label","Draft a reply with Alice"); rp.addEventListener("click",()=>znDraftReply(raw,rp)); row.append(rp); } /* Nov 2: the agent drafts, she sends */
     const extra=[]; for(const [k,lab,aria] of [["read","Mark read","Mark this email read in Gmail"],["trash","Delete","Move this email to Gmail trash"],["list","→ List","Add this to your List"],["alice","→ Alice","Hand this to Alice"],["snooze","Snooze","Hide until tomorrow"]]){ const b=el("button","ibact"+(k==="trash"?" warn":""),lab); b.type="button"; b.disabled=!LIVE; b.setAttribute("aria-label",aria); b.addEventListener("click",()=>{ row.querySelectorAll("button").forEach(x=>x.disabled=true); mailAct(raw,k); }); row.append(b); if(k!=="read") extra.push(b); }
     // Oct 23: two actions up front; Delete, List, Alice and Snooze behind "More" (the card was a wall of buttons)
     if(RISO){ extra.forEach(b=>b.hidden=true); const mo=el("button","ibact more","⋯"); mo.type="button"; mo.setAttribute("aria-expanded","false"); mo.setAttribute("aria-label","More actions for this email"); mo.addEventListener("click",()=>{ const on=mo.getAttribute("aria-expanded")!=="true"; mo.setAttribute("aria-expanded",String(on)); extra.forEach(b=>b.hidden=!on); mo.textContent=on?"×":"⋯"; }); row.insertBefore(mo,extra[0]||null); }
