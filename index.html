@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-01.12"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-02.1"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1258,6 +1258,19 @@ body.zn .zn-ft b { font-size:13px; font-weight:700; line-height:1.25; max-width:
 body.zn .zn-ft small { font-size:11.5px; opacity:.7 }
 body.zn .zn-fitgo, body.zn .zn-fitadd { margin-top:8px; align-self:flex-start; min-height:34px; padding:0 12px; font-size:12.5px }
 body.zn .zn-fitnone { font-size:12.5px; opacity:.75; margin:4px 0 0 }
+
+/* Nov 2: sizing at capture */
+body.zn .zn-size{margin-top:8px}
+body.zn .zn-sizeline{display:flex;align-items:center;gap:8px;width:100%;padding:10px 12px;border:0;border-radius:14px;background:rgba(31,35,64,.05);font:inherit;color:inherit;text-align:left;cursor:pointer}
+body.zn .zn-sizeline b{font-size:13.5px;font-weight:700}
+body.zn .zn-sizeline span{font-size:12px;opacity:.75}
+body.zn .zn-sizeline em{margin-left:auto;font-style:normal;font-size:11.5px;opacity:.6;white-space:nowrap}
+body.zn .zn-sizerow{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px}
+body.zn .zn-sizerow .zn-chip{min-width:44px;justify-content:center}
+body.zn .zn-tog{display:inline-flex;border:1.5px solid rgba(31,35,64,.2);border-radius:999px;overflow:hidden}
+body.zn .zn-tog button{padding:7px 12px;font-size:12.5px;font-weight:700;border:0;background:transparent;color:inherit;font-family:inherit;cursor:pointer}
+body.zn .zn-tog button.on{background:#1F2340;color:#fff}
+body.zn .zn-sizerow .zn-priv{margin-left:auto}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -2168,11 +2181,34 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // (parseCapture reads dates and kinds out of the sentence, the chips override); done and star from the row. Everything the + button or the
   // Shortcut captures lands in Inbox here; starring moves it to Today, which Today's own card already reads.
   // Oct 29: the task Add card, shared by Plan's tasks view and the capture sheet
-  function znAddTaskCard(onAdded){ const T=TODAY(); const st={kind:"To-do",when:""}; const wrap=el("div");
+  // Nov 2: sizing at capture (Claire chose option B from the mockups). Once there's a title, one line under the field shows the size,
+  // energy and area, the engine's guess (zone-size, with her session) or hers; tap it to unfold the size chips, Light / Deep, the area and Private.
+  // A size she sets is saved as Estimate Source = Mine; an untouched guess as Guessed; with no guess in time, zone-size fills it after the add.
+  const ZN_SIZES=[[5,"5"],[15,"15"],[30,"30"],[60,"1h"],[120,"2h"],[180,"3h+"]]; const ZN_AREAS=["Personal","Work","Home","Birdie","Us"];
+  async function znSizeGuess(title){ try{ if(typeof APP==="undefined"||!APP.sb) return null; const s=await APP.sb.auth.getSession(); const tk=s&&s.data&&s.data.session&&s.data.session.access_token; if(!tk) return null;
+    const r=await fetch(APP.url+"/functions/v1/zone-size",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify({title})}); const j=await r.json(); return r.ok&&j.ok?j:null; }catch(e){ return null; } }
+  async function znSizeAfter(it){ try{ if(!it||!it.id||/^tmp/.test(it.id)) return; if(typeof APP==="undefined"||!APP.sb) return; const s=await APP.sb.auth.getSession(); const tk=s&&s.data&&s.data.session&&s.data.session.access_token; if(!tk) return;
+    await fetch(APP.url+"/functions/v1/zone-size",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify({title:it.name,page_id:it.id,area:it.area||undefined,kind:it.kind||undefined})}); }catch(e){} }
+  function znAddTaskCard(onAdded){ const T=TODAY(); const st={kind:"To-do",when:"",est:0,energy:"",area:"",priv:false,mine:false,guess:null,open:false,seq:0}; const wrap=el("div");
     const add=znCard("zn-tadd","","Add"); const fld=el("div","zn-tfield"); const inp=el("input"); inp.type="text"; inp.placeholder="Add a task… (say when: Friday, tomorrow, 3pm)"; inp.setAttribute("aria-label","New task"); const go=el("button","zn-pill zn-dark","Add"); go.type="button"; go.disabled=!mcp; fld.append(inp,go); add.append(fld);
     const chips=el("div","zn-hows"); const mk=(lab,on,fn)=>{ const b=el("button","zn-chip"+(on?" on":""),lab); b.type="button"; b.addEventListener("click",()=>{ fn(); draw(); }); return b; };
-    const draw=()=>{ chips.replaceChildren(); ["To-do","Reminder","Note","Idea"].forEach(kd=>chips.append(mk(kd,st.kind===kd,()=>{ st.kind=kd; }))); chips.append(el("span","zn-tsep")); [["Today",T],["Tomorrow",addDays(T,1)]].forEach(([l,d])=>chips.append(mk(l,st.when===d,()=>{ st.when=st.when===d?"":d; }))); const pick=mk(st.when&&st.when!==T&&st.when!==addDays(T,1)?dueLabel(st.when):"Pick a day",!!(st.when&&st.when!==T&&st.when!==addDays(T,1)),()=>{ const v=prompt("Due (YYYY-MM-DD)",st.when||T); if(v&&/^\d{4}-\d{2}-\d{2}$/.test(v)) st.when=v; }); chips.append(pick); }; draw(); add.append(chips);
-    const submit=async()=>{ const raw=inp.value.trim(); if(!raw) return; go.disabled=true; try{ const p=parseCapture(raw); if(st.kind!=="To-do"||!p.kind) p.kind=st.kind; if(st.when) p.due=st.when; if(!p.area) p.area="Personal"; const ok=await listCreate(p,"Plan"); if(ok){ inp.value=""; st.when=""; toast(`Added · ${p.name}`); draw(); onAdded&&onAdded(); } }catch(e){ toast(writeErr(e)); } go.disabled=!mcp; };
+    const size=el("div","zn-size"); size.hidden=true;
+    const fmt=m=>m>=60?(m%60?`${Math.floor(m/60)}h ${m%60}m`:`${m/60}h`):`${m}m`;
+    const drawSize=()=>{ size.replaceChildren(); const raw=inp.value.trim(); if(raw.length<4||st.kind!=="To-do"){ size.hidden=true; return; } size.hidden=false;
+      const est=st.est||(st.guess&&st.guess.est)||0, en=st.energy||(st.guess&&st.guess.energy)||"", ar=st.area||(st.guess&&st.guess.area)||"";
+      const line=el("button","zn-sizeline"); line.type="button"; line.setAttribute("aria-expanded",String(st.open));
+      line.innerHTML=`<b>${est?fmt(est):"Size"}${en?" · "+en:""}${ar?" · "+znEsc(ar):""}</b><span>${st.open?"done":"tap to change"}</span><em>${st.mine?"your size":st.guess?"engine’s guess":"no guess yet"}</em>`;
+      line.addEventListener("click",()=>{ st.open=!st.open; drawSize(); }); size.append(line);
+      if(st.open){ const row=el("div","zn-sizerow"); ZN_SIZES.forEach(([m,l])=>{ const b=el("button","zn-chip"+(est===m?" on":""),l); b.type="button"; b.setAttribute("aria-label",`${fmt(m)}`); b.addEventListener("click",()=>{ st.est=m; st.mine=true; drawSize(); }); row.append(b); }); size.append(row);
+        const row2=el("div","zn-sizerow"); const tog=el("div","zn-tog"); ["Light","Deep"].forEach(x=>{ const b=el("button",en===x?"on":"",x); b.type="button"; b.setAttribute("aria-pressed",String(en===x)); b.addEventListener("click",()=>{ st.energy=x; drawSize(); }); tog.append(b); }); row2.append(tog);
+        const ab=el("button","zn-chip",ar||"Area"); ab.type="button"; ab.setAttribute("aria-label","Area: "+(ar||"not set")+", tap to change"); ab.addEventListener("click",()=>{ const i=ZN_AREAS.indexOf(ar); st.area=ZN_AREAS[(i+1)%ZN_AREAS.length]; drawSize(); }); row2.append(ab);
+        const pv=el("button","zn-chip zn-priv"+(st.priv?" on":""),"🔒 Private"); pv.type="button"; pv.setAttribute("aria-pressed",String(st.priv)); pv.addEventListener("click",()=>{ st.priv=!st.priv; drawSize(); }); row2.append(pv); size.append(row2); } };
+    let gt=null; const guess=()=>{ clearTimeout(gt); const raw=inp.value.trim(); if(raw.length<4||st.mine||st.kind!=="To-do") return; gt=setTimeout(async()=>{ const seq=++st.seq; const g=await znSizeGuess(raw); if(g&&seq===st.seq&&inp.value.trim()===raw){ st.guess=g; drawSize(); } },700); };
+    inp.addEventListener("input",()=>{ if(!st.mine) st.guess=null; drawSize(); guess(); });
+    const draw=()=>{ chips.replaceChildren(); ["To-do","Reminder","Note","Idea"].forEach(kd=>chips.append(mk(kd,st.kind===kd,()=>{ st.kind=kd; drawSize(); }))); chips.append(el("span","zn-tsep")); [["Today",T],["Tomorrow",addDays(T,1)]].forEach(([l,d])=>chips.append(mk(l,st.when===d,()=>{ st.when=st.when===d?"":d; }))); const pick=mk(st.when&&st.when!==T&&st.when!==addDays(T,1)?dueLabel(st.when):"Pick a day",!!(st.when&&st.when!==T&&st.when!==addDays(T,1)),()=>{ const v=prompt("Due (YYYY-MM-DD)",st.when||T); if(v&&/^\d{4}-\d{2}-\d{2}$/.test(v)) st.when=v; }); chips.append(pick); }; draw(); add.append(chips); add.append(size);
+    const submit=async()=>{ const raw=inp.value.trim(); if(!raw) return; go.disabled=true; try{ const p=parseCapture(raw); if(st.kind!=="To-do"||!p.kind) p.kind=st.kind; if(st.when) p.due=st.when; if(st.area) p.area=st.area; else if(!p.area&&st.guess&&st.guess.area) p.area=st.guess.area; if(!p.area) p.area="Personal";
+      if(p.kind==="To-do"){ const est=st.est||(st.guess&&st.guess.est)||p.est||0; if(est){ p.est=est; p.estSource=st.mine||(p.est&&!st.guess)?"Mine":"Guessed"; } const en=st.energy||(st.guess&&st.guess.energy)||""; if(en) p.energy=en; } if(st.priv) p.priv=true;
+      const ok=await listCreate(p,"Plan"); if(ok){ const made=LIST.find(x=>x.name===p.name&&!/^tmp/.test(x.id)); if(p.kind==="To-do"&&!p.est) znSizeAfter(made); inp.value=""; st.when=""; st.est=0; st.energy=""; st.area=""; st.priv=false; st.mine=false; st.guess=null; st.open=false; toast(`Added · ${p.name}${p.est?" · "+fmt(p.est):""}`); draw(); drawSize(); onAdded&&onAdded(); } }catch(e){ toast(writeErr(e)); } go.disabled=!mcp; };
     go.addEventListener("click",submit); inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); submit(); } });
     return add;
   }
@@ -3528,9 +3564,9 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   const dueLabel=d=>{ if(!d) return ""; const n=dayDiff(d,TODAY()); return n<0?`overdue · ${shortDate(d)}`:n===0?"today":n===1?"tomorrow":n<7?new Date(d+"T12:00:00Z").toLocaleDateString("en-US",{weekday:"short",timeZone:"UTC"}):shortDate(d); };
   async function listCreate(p,source){ if(!mcp||!p.name) return false;
     const props={Name:p.name,Kind:p.kind,Area:p.area,Status:p.status||"Open",Star:p.star?"__YES__":"__NO__",Source:source||"List"}; if(p.due) props["date:Due:start"]=p.due; if(p.focus) props["date:Focus:start"]=p.focus;
-    if(p.repeat) props.Repeat=p.repeat; if(p.snooze) props["date:Snooze Until:start"]=p.snooze; if(p.waiting){ props["Waiting On"]=p.waiting; props["date:Waiting Since:start"]=TODAY(); } if(p.project) props.Project=p.project; if(p.est) props.Estimate=p.est;
+    if(p.repeat) props.Repeat=p.repeat; if(p.snooze) props["date:Snooze Until:start"]=p.snooze; if(p.waiting){ props["Waiting On"]=p.waiting; props["date:Waiting Since:start"]=TODAY(); } if(p.project) props.Project=p.project; if(p.est) props.Estimate=p.est; if(p.energy) props.Energy=p.energy; if(p.estSource) props["Estimate Source"]=p.estSource; if(p.priv) props.Private="__YES__";
     if(p.owner==="Alice"){ props.Owner="Alice"; props["Alice Status"]="Assigned"; props["date:Alice Updated:start"]=TODAY(); if(p.jtype) props["Job Type"]=p.jtype; }
-    const temp={id:"tmp"+Date.now(),url:"",name:p.name,kind:p.kind,area:p.area,status:props.Status,due:p.due||"",star:!!p.star,created:new Date().toISOString(),doneOn:"",source:props.Source,owner:p.owner||"",astat:p.owner==="Alice"?"Assigned":"",anotes:"",aupd:p.owner==="Alice"?TODAY():"",focus:p.focus||"",repeat:p.repeat||"",snooze:p.snooze||"",waiting:p.waiting||"",wsince:p.waiting?TODAY():"",project:p.project||"",est:p.est||0,steps:"",lastDone:""};
+    const temp={id:"tmp"+Date.now(),url:"",name:p.name,kind:p.kind,area:p.area,status:props.Status,due:p.due||"",star:!!p.star,created:new Date().toISOString(),doneOn:"",source:props.Source,owner:p.owner||"",astat:p.owner==="Alice"?"Assigned":"",anotes:"",aupd:p.owner==="Alice"?TODAY():"",focus:p.focus||"",repeat:p.repeat||"",snooze:p.snooze||"",waiting:p.waiting||"",wsince:p.waiting?TODAY():"",project:p.project||"",est:p.est||0,energy:p.energy||"",estSource:p.estSource||"",priv:!!p.priv,steps:"",lastDone:""};
     LIST.unshift(temp); 
     try{ const r=await mcp.callTool(SERVER,"notion-create-pages",{parent:{data_source_id:LIST_DSID},pages:[{properties:props}],allow_async:false});
       const ids=(JSON.stringify(r||{}).match(/[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}/g)||[]).map(x=>x.replace(/-/g,"")).filter(x=>x!==LIST_DSID.replace(/-/g,""));
