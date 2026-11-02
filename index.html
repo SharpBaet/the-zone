@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-02.2"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-02.3"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -3623,7 +3623,14 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     catch(e){ Object.assign(it,prev);  toast(writeErr(e)); return false; } }
   const setDone=(it,on)=>{ if(on&&it.repeat){ const nx=repeatNext(it.repeat,TODAY()); if(nx){ const steps=it.steps?it.steps.split(/\n/).map(l=>l.replace(/^\[x\]\s*/i,"")).join("\n"):"";
       return listUpdate(it,{"date:Due:start":nx,"date:Last Done:start":TODAY(),"date:Snooze Until:start":null,...(it.steps?{Steps:steps}:{})},{due:nx,lastDone:TODAY(),snooze:"",...(it.steps?{steps}:{})},`Done. Back ${dueLabel(nx)}`,{"date:Due:start":it.due||null,"date:Last Done:start":it.lastDone||null},{due:it.due,lastDone:it.lastDone}); } }
-    return listUpdate(it,on?{Status:"Done","date:Done On:start":TODAY()}:{Status:"Open","date:Done On:start":null},on?{status:"Done",doneOn:TODAY()}:{status:"Open",doneOn:""}); };
+    // Nov 2 (tasks & planning, step 4): the learning loop. Checking off a task that was placed today records Actual (minutes from its
+    // placed start to now, 5 min to 8 h, skipped when it's wildly off the estimate) and turns an engine guess into Learned, so zone-size
+    // sees it as one of her sizes next time. Unchecking clears both.
+    const learn={}, unlearn={}; if(on&&it.sched&&it.sched.slice(0,10)===TODAY()){ try{ const [h,m]=it.sched.slice(11,16).split(":").map(Number); const mins=Math.round((nowH()-(h+(m||0)/60))*60); const est=it.est||30;
+      if(mins>=5&&mins<=480&&mins<=est*3){ learn.Actual=mins; learn.actual=mins; if(it.estSource==="Guessed"||!it.estSource){ learn["Estimate Source"]="Learned"; learn.estSource="Learned"; } } }catch(e){} }
+    if(!on&&it.actual){ unlearn.Actual=null; unlearn.actual=0; }
+    const nP=o=>Object.fromEntries(Object.entries(o).filter(([k])=>/^[A-Z]/.test(k))), nL=o=>Object.fromEntries(Object.entries(o).filter(([k])=>/^[a-z]/.test(k)));
+    return listUpdate(it,on?{Status:"Done","date:Done On:start":TODAY(),...nP(learn)}:{Status:"Open","date:Done On:start":null,...nP(unlearn)},on?{status:"Done",doneOn:TODAY(),...nL(learn)}:{status:"Open",doneOn:"",...nL(unlearn)}); };
   // a top 3 task checked off on Today also checks off its twin on the list
   function syncListDone(title,on){ const it=twinOf(title); if(it&&(it.status==="Open"||it.status==="Done")&&(it.status==="Done")!==on) setDone(it,on); }
   // ---- task model (Oct 16): every top 3 line has a twin on the Zone List, with Focus = the day it's on her top 3 ----
