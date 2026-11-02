@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-02.5"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-02.6"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1297,6 +1297,22 @@ body.zn.zn-night .zn-wsz{background:rgba(255,255,255,.12)}
 .zn-draft .zn-dacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
 .zn-draft .zn-dacts a.zn-pill{text-decoration:none;display:inline-flex;align-items:center}
 .zn-draft .zn-dnote{margin:8px 0 0}
+
+/* Nov 2: prep (chips, the Today card, the sheet) */
+.zn-prepchip{display:inline-flex;width:max-content;align-items:center;margin-top:3px;padding:2px 9px;border-radius:999px;border:0;font:700 11px/1.5 inherit;background:#E9E2FF;color:#3A2E7A;cursor:pointer}
+body.zn.zn-night .zn-prepchip{background:rgba(217,200,255,.25);color:#F3EEFF}
+.zn-preptoday .zn-prow3{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;padding:10px 0;border:0;border-top:1px solid rgba(31,35,64,.08);background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.zn-preptoday .zn-prow3 .zn-pt{font-size:11px;font-weight:700;opacity:.6}
+.zn-preptoday .zn-prow3 b{font-size:14px}
+.zn-preptoday .zn-prow3 small{font-size:12.5px;opacity:.75;line-height:1.35}
+.zn-preptoday .zn-prow3.zn-past{opacity:.5}
+.zn-psheet h3{font-size:15px;font-weight:700;margin:14px 0 6px}
+.zn-psheet ul{margin:0;padding-left:18px}
+.zn-psheet li{margin:4px 0;font-size:14.5px;line-height:1.4}
+.zn-psheet .zn-psum{font-size:14.5px;line-height:1.45;margin:0}
+.zn-psheet .zn-plink{font-size:13.5px;color:#4B3FA0;text-decoration:underline}
+.zn-psheet .zn-pacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.zn-prepthis{margin:0 0 10px}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -2515,6 +2531,32 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       catch(e){ go.disabled=false; toast(writeErr(e)); } }); } }
   // Oct 29: tomorrow, prepared. Meetings by name (Work Week; Work Blocks for a person without names), events (Week Events), tasks due tomorrow
   // from the list, and tomorrow's Top 3 (ROW.Tomorrow) with a picker. Used on the night page and in Plan's week.
+  // Nov 2 (the agent, job 2): prep notes from zone-prep (agent.prep). Loaded for today + tomorrow every 15 minutes; shown as a "Prep" chip on
+  // meeting rows (Plan day view, Tonight's tomorrow card), a "Prep for today" card on weekday mornings until the last prepped meeting starts,
+  // and "Prep this" on any non-private task. The sheet: summary, Bring, Ask, Read, Alice's note, Add "Bring" to my List, Redo.
+  let ZN_PREPS=[], ZN_PREP_AT=0, ZN_PREP_BUSY=false;
+  async function znPrepCall(part,payload){ try{ if(typeof APP==="undefined"||!APP.sb) return null; const s=await APP.sb.auth.getSession(); const tk=s&&s.data&&s.data.session&&s.data.session.access_token; if(!tk) return null;
+    const r=await fetch(APP.url+"/functions/v1/zone-prep?part="+part,{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify({person:PERSON.person||"claire",...payload})}); const j=await r.json(); return r.ok&&j.ok?j:{error:j.error||("zone-prep "+r.status)}; }catch(e){ return null; } }
+  async function znPrepLoad(force){ if(ZN_PREP_BUSY||(!force&&Date.now()-ZN_PREP_AT<15*60e3)) return; ZN_PREP_BUSY=true; try{ const d=await znPrepCall("get",{date:TODAY()}); if(d&&Array.isArray(d.preps)){ const was=JSON.stringify(ZN_PREPS.map(p=>p.key)); ZN_PREPS=d.preps; ZN_PREP_AT=Date.now(); if(JSON.stringify(ZN_PREPS.map(p=>p.key))!==was){ znSoon(); try{ if(!$("#view-ahead").hidden) znPlanRender(); }catch(e){} } } }finally{ ZN_PREP_BUSY=false; } }
+  const znPrepNorm=t=>String(t||"").toLowerCase().replace(/\s+/g," ").trim().slice(0,60);
+  function znPrepFor(date,title){ const n=znPrepNorm(title); return ZN_PREPS.find(p=>p.date===date&&znPrepNorm(p.title)===n)||null; }
+  function znPrepSheet(p,from,when){ const P=p.prep||{}; const box=el("div","zn-psheet");
+    if(when) box.append(el("p","hint zn-pwhen",when)); if(P.summary) box.append(el("p","zn-psum",P.summary));
+    const list=(h,arr)=>{ if(!arr||!arr.length) return; box.append(el("h3",null,h)); const ul=el("ul"); arr.forEach(x=>ul.append(el("li",null,x))); box.append(ul); };
+    list("Bring",P.bring); list("Ask",P.ask);
+    if(P.links&&P.links.length){ box.append(el("h3",null,"Read")); P.links.forEach(l=>{ const a=el("a","zn-plink",l.title); a.href=l.url; a.target="_blank"; a.rel="noopener"; const pp=el("p"); pp.append(a); box.append(pp); }); }
+    if(P.note) box.append(el("p","hint zn-pnote","Alice: "+P.note));
+    const acts=el("div","zn-pacts");
+    if(P.bring&&P.bring.length){ const add=el("button","zn-pill zn-dark","Add “Bring” to my List"); add.type="button"; add.disabled=!mcp||!LIVE; add.addEventListener("click",async()=>{ add.disabled=true; let n=0; for(const x of P.bring){ const ok=await listCreate({name:x.slice(0,120),kind:"To-do",area:p.kind==="event"?"Work":"Personal",status:"Open",due:p.date||""},"Plan"); if(ok) n++; } toast(`${n} on your List`); }); acts.append(add); }
+    const redo=el("button","zn-pill","Redo"); redo.type="button"; redo.addEventListener("click",async()=>{ redo.disabled=true; redo.textContent="Alice is rewriting…"; const d=await znPrepCall("one",{kind:p.kind,title:p.title,date:p.date,force:true}); if(d&&d.prep){ ZN_PREPS=ZN_PREPS.filter(x=>x.key!==d.key).concat([{key:d.key,title:p.title,kind:p.kind,date:p.date,prep:d.prep}]); const o=$("#layer").querySelector(".ov:last-of-type .sheet > button.btn.ghost:last-of-type"); if(o) o.click(); znPrepSheet(ZN_PREPS.find(x=>x.key===d.key),from,when); } else { redo.disabled=false; redo.textContent="Redo"; toast("Couldn’t redo it right now"); } }); acts.append(redo);
+    box.append(acts); openSheet({kicker:"✨ Alice · prep",title:p.title,body:[box],from}); }
+  function znPrepChip(date,title,when){ const p=znPrepFor(date,title); if(!p) return null; const b=el("button","zn-prepchip","✨ Prep"); b.type="button"; b.setAttribute("aria-label",`Prep for ${title}`); b.addEventListener("click",e=>{ e.stopPropagation(); znPrepSheet(p,b,when); }); return b; }
+  function znPrepToday(box){ if(!box) return; box.querySelectorAll(":scope > .zn-preptoday").forEach(x=>x.remove()); const T=TODAY(); const wd=new Date(T+"T12:00:00Z").getUTCDay(); if(wd===0||wd===6||!LIVE) return;
+    const meets=busyOn(T).filter(b=>b.work); const rows=ZN_PREPS.filter(p=>p.date===T&&p.kind==="event").map(p=>({p,m:meets.find(m=>znPrepNorm(m.n)===znPrepNorm(p.title))})).filter(x=>x.m).sort((a,b)=>a.m.s-b.m.s);
+    if(!rows.length||rows[rows.length-1].m.s<=nowH()) return;
+    const c=znCard("zn-preptoday",""); c.innerHTML=znH("Prep for today",`${rows.length} meeting${rows.length===1?"":"s"}`);
+    rows.forEach(({p,m})=>{ const r=el("button","zn-prow3"); r.type="button"; r.append(el("span","zn-pt",hToLabel(m.s)),el("b",null,p.title),el("small",null,(p.prep&&p.prep.summary||"").split(/(?<=\.)\s/)[0])); r.addEventListener("click",()=>znPrepSheet(p,r,`Today ${hToLabel(m.s)}`)); if(m.s+0.25<nowH()) r.classList.add("zn-past"); c.append(r); });
+    const anchor=box.querySelector(":scope > .zn-review")||box.querySelector(":scope > .zn-hero"); if(anchor) anchor.after(c); else box.append(c); }
   function znTomorrowPrep(tom,T1,opts){ opts=opts||{}; const c=znCard((opts.glass?"zn-glass ":"")+"zn-prep","","Tomorrow"); const d1=new Date(T1+"T12:00:00Z");
     const meets=tom.filter(x=>x.k==="work").sort((a,b)=>a.s-b.s); const evs=tom.filter(x=>x.k!=="work").sort((a,b)=>a.s-b.s);
     const due=LIST.filter(it=>it.status!=="Done"&&forClaire(it)&&isTask(it)&&(it.due===T1||it.focus===T1));
@@ -2523,7 +2565,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     c.innerHTML=znH(`${DAYS_LONG[d1.getUTCDay()]}`,meets.length?`${meets.length} meeting${meets.length===1?"":"s"} · ${Math.round(hours*2)/2} h${b2b.length?" · back-to-backs":""}`:"no meetings");
     const sec=(label)=>{ const h=el("div","zn-rslot"); h.textContent=label; c.append(h); };
     const line=(ic,name,sub,right,go)=>{ const r=el(opts.rowsAsButtons?"button":"div","zn-prow2"); if(opts.rowsAsButtons) r.type="button"; r.innerHTML=`<span class="zn-pic2">${ic}</span><span class="zn-rtx"><b>${znEsc(name)}</b>${sub?`<span>${znEsc(sub)}</span>`:""}</span>${right?`<span class="zn-ptime">${znEsc(right)}</span>`:""}`; if(go) r.addEventListener("click",go); c.append(r); return r; };
-    if(meets.length){ sec("Meetings"); meets.forEach((m,i)=>line("💼",String(m.name).replace(/^💼\s*/,""),i===0?"first of the day":b2b.includes(i)?"straight after the last one":"",`${hToLabel(m.s)}–${hToLabel(m.e)}`)); }
+    if(meets.length){ sec("Meetings"); meets.forEach((m,i)=>{ const nm=String(m.name).replace(/^💼\s*/,""); const r=line("💼",nm,i===0?"first of the day":b2b.includes(i)?"straight after the last one":"",`${hToLabel(m.s)}–${hToLabel(m.e)}`); try{ const ch=znPrepChip(T1,nm,`${DAYS_LONG[d1.getUTCDay()]} ${hToLabel(m.s)}`); if(ch){ if(r.tagName==="BUTTON"){ const sp=el("span","zn-prepchip","✨ Prep"); r.querySelector(".zn-rtx").append(sp); r.addEventListener("click",()=>znPrepSheet(znPrepFor(T1,nm),r,`${DAYS_LONG[d1.getUTCDay()]} ${hToLabel(m.s)}`)); } else r.querySelector(".zn-rtx").append(ch); } }catch(e){} }); } /* Nov 2: prep chips */
     if(evs.length){ sec("Also"); evs.forEach(e=>line("📅",String(e.name).replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,""),"",e.s!=null?hToLabel(e.s):"")); }
     if(due.length){ sec("Due tomorrow"); due.slice(0,5).forEach(it=>line(AREA_IC[it.area]||"✓",it.name,it.area||"",it.star?"★":"")); }
     sec("Tomorrow’s Top 3"); if(top.length){ top.slice(0,3).forEach((x,i)=>line(String(i+1),x,"","")); } else c.append(el("p","zn-empty","Nothing picked yet."));
@@ -2700,7 +2742,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const ds=znCard("zn-donestrip","","Done today"); ds.innerHTML=`<div class="zn-h"><span class="zn-ht">Done today</span><span class="zn-hr">${items.length} thing${items.length===1?"":"s"} · tap to open</span></div>`; const wrap=el("div","zn-dchips");
     items.forEach(x=>{ const b=el("button","zn-dchip"); b.type="button"; b.innerHTML=`${znIco("check")}<span>${znEsc(x.l)}</span>`; b.addEventListener("click",()=>{ if(x.act) x.act(b); else if(x.go==="me") $("#tab-you").click(); else if(x.go==="recov"){ znOpenReading("recovery",b); } else if(x.go==="top"){ const c=box.querySelector(".zn-top"); if(c){ c.classList.remove("zn-folded"); c.scrollIntoView({behavior:"smooth",block:"center"}); } } else if(x.go==="birdie"){ const c=box.querySelector(".zn-bd2"); if(c) c.scrollIntoView({behavior:"smooth",block:"center"}); } }); wrap.append(b); });
     ds.append(wrap); const hero=box.querySelector(".zn-hero"), wids=box.querySelector(".zn-wids2"); const anchor=(hero&&wids&&hero.nextElementSibling===wids)?wids:hero; if(anchor) anchor.after(ds); }
-  function znRender(){ try{ znRenderInner(); try{ znDoneStrip($("#znToday")); }catch(e2){ console.error("done strip",e2); } try{ znTogetherToday($("#znToday")); }catch(e3){ console.error("together today",e3); } try{ znReadingsToday($("#znToday")); }catch(e4){ console.error("readings today",e4); } try{ znBirdieToday($("#znToday")); }catch(e5){ console.error("birdie today",e5); } try{ const bx=$("#znToday"), rv=bx&&bx.querySelector(":scope > .zn-review"), hh=bx&&bx.querySelector(":scope > .zn-hero"); if(rv&&hh&&hh.nextElementSibling!==rv) hh.after(rv); }catch(e6){} /* Nov 1: Land the week stays right under the sundial */ }catch(e){ console.error("znRender",e); const box=$("#znToday"); if(box){ box.hidden=false; box.replaceChildren(); const c=el("div","zn-card"); c.innerHTML=`<span class="zn-k">TODAY COULDN’T DRAW</span><p class="zn-empty" style="user-select:text">${znEsc(String((e&&e.stack)||e).slice(0,400))}</p><p class="zn-empty">Screenshot this for the build chat.</p>`; box.append(c); } } } // Oct 29: errors show instead of a blank page
+  function znRender(){ try{ znRenderInner(); try{ znDoneStrip($("#znToday")); }catch(e2){ console.error("done strip",e2); } try{ znTogetherToday($("#znToday")); }catch(e3){ console.error("together today",e3); } try{ znReadingsToday($("#znToday")); }catch(e4){ console.error("readings today",e4); } try{ znBirdieToday($("#znToday")); }catch(e5){ console.error("birdie today",e5); } try{ znPrepToday($("#znToday")); znPrepLoad(); }catch(e7){ console.error("prep today",e7); } try{ const bx=$("#znToday"), rv=bx&&bx.querySelector(":scope > .zn-review"), hh=bx&&bx.querySelector(":scope > .zn-hero"); if(rv&&hh&&hh.nextElementSibling!==rv) hh.after(rv); }catch(e6){} /* Nov 1: Land the week stays right under the sundial */ }catch(e){ console.error("znRender",e); const box=$("#znToday"); if(box){ box.hidden=false; box.replaceChildren(); const c=el("div","zn-card"); c.innerHTML=`<span class="zn-k">TODAY COULDN’T DRAW</span><p class="zn-empty" style="user-select:text">${znEsc(String((e&&e.stack)||e).slice(0,400))}</p><p class="zn-empty">Screenshot this for the build chat.</p>`; box.append(c); } } } // Oct 29: errors show instead of a blank page
   // Nov 1 (stage 3c): the stylesheet still keys parts of the look (sheets, buttons, the tab bar, night cards) on the riso layer's body classes.
   // The riso layer no longer draws; these keep its classes exactly as it set them (on once today's brief is in) until the CSS is folded in.
   function znLegacyClasses(){ const live=!!(LIVE&&ROW), wk=live?wkDay():""; const night=live&&(wk?(NIGHT||wk==="fri"):(MODE==="wrap"||MODE==="evening")); const b=document.body.classList;
@@ -3758,7 +3800,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const r1=el("div","row"); const save=el("button","btn sm","Save"); save.type="button"; r1.append(save,sb);
     const r2=el("div","row lacts"); const btn=(t,fn)=>{ const b=el("button","btn ghost sm",t); b.type="button"; b.addEventListener("click",fn); r2.append(b); return b; };
     if(it.anotes){ wrap.append(el("div","label","Alice's notes"),el("p","anotes",it.anotes)); }
-    wrap.append(ta,...(isTask(it)?[stepsBox]:[]),grid,r1,r2);
+    const prepB=(isTask(it)&&!it.priv)?(()=>{ const b=el("button","zn-pill zn-dark zn-prepthis","✨ Prep this"); b.type="button"; b.disabled=!LIVE; b.addEventListener("click",async()=>{ b.disabled=true; b.textContent="Alice is preparing…"; const d=await znPrepCall("one",{kind:"task",title:it.name,project:it.project||"",steps:it.steps||"",notes:it.due?("due "+it.due):"",date:TODAY()}); b.disabled=false; b.textContent="✨ Prep this"; if(d&&d.prep){ const p={key:d.key,title:it.name,kind:"task",date:TODAY(),prep:d.prep}; ZN_PREPS=ZN_PREPS.filter(x=>x.key!==d.key).concat([p]); znPrepSheet(p,b,""); } else toast("Couldn’t prep this right now"); }); return b; })():null; /* Nov 2 */
+    wrap.append(...(prepB?[prepB]:[]),ta,...(isTask(it)?[stepsBox]:[]),grid,r1,r2);
     const close=openSheet({kicker:`${KIND_IC[it.kind]||""} Your list`,title:"",body:[wrap],color:"var(--plan)",from});
     save.addEventListener("click",async()=>{ const name=ta.value.replace(/\s+/g," ").trim(); if(!name) return; save.disabled=true;
       const est=Math.max(0,Math.round(Number(estI.value)||0)), rp=repI.value.trim().toLowerCase(), wo=waitI.value.trim(), pj=projI.value.trim(), sz=snzI.value||"";
