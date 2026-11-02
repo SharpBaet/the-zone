@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-02.3"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-02.4"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2205,9 +2205,9 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // A size she sets is saved as Estimate Source = Mine; an untouched guess as Guessed; with no guess in time, zone-size fills it after the add.
   const ZN_SIZES=[[5,"5"],[15,"15"],[30,"30"],[60,"1h"],[120,"2h"],[180,"3h+"]]; const ZN_AREAS=["Personal","Work","Home","Birdie","Us"];
   async function znSizeGuess(title){ try{ if(typeof APP==="undefined"||!APP.sb) return null; const s=await APP.sb.auth.getSession(); const tk=s&&s.data&&s.data.session&&s.data.session.access_token; if(!tk) return null;
-    const r=await fetch(APP.url+"/functions/v1/zone-size",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify({title})}); const j=await r.json(); return r.ok&&j.ok?j:null; }catch(e){ return null; } }
+    const r=await fetch(APP.url+"/functions/v1/zone-size",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify({title,person:PERSON.person||"claire"})}); const j=await r.json(); return r.ok&&j.ok?j:null; }catch(e){ return null; } } /* Nov 2: the guess is in the signed-in person's own context */
   async function znSizeAfter(it){ try{ if(!it||!it.id||/^tmp/.test(it.id)) return; if(typeof APP==="undefined"||!APP.sb) return; const s=await APP.sb.auth.getSession(); const tk=s&&s.data&&s.data.session&&s.data.session.access_token; if(!tk) return;
-    await fetch(APP.url+"/functions/v1/zone-size",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify({title:it.name,page_id:it.id,area:it.area||undefined,kind:it.kind||undefined})}); }catch(e){} }
+    await fetch(APP.url+"/functions/v1/zone-size",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify({title:it.name,page_id:it.id,person:PERSON.person||"claire",area:it.area||undefined,kind:it.kind||undefined})}); }catch(e){} }
   function znAddTaskCard(onAdded){ const T=TODAY(); const st={kind:"To-do",when:"",est:0,energy:"",area:"",priv:false,mine:false,guess:null,open:false,seq:0}; const wrap=el("div");
     const add=znCard("zn-tadd","","Add"); const fld=el("div","zn-tfield"); const inp=el("input"); inp.type="text"; inp.placeholder="Add a task… (say when: Friday, tomorrow, 3pm)"; inp.setAttribute("aria-label","New task"); const go=el("button","zn-pill zn-dark","Add"); go.type="button"; go.disabled=!mcp; fld.append(inp,go); add.append(fld);
     const chips=el("div","zn-hows"); const mk=(lab,on,fn)=>{ const b=el("button","zn-chip"+(on?" on":""),lab); b.type="button"; b.addEventListener("click",()=>{ fn(); draw(); }); return b; };
