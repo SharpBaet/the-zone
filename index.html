@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-03.1"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-03.2"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1351,6 +1351,21 @@ body.zn .zn-swipe{position:relative;touch-action:pan-y;transition:transform .15s
 body.zn .zn-swipe.sw-r::before,body.zn .zn-swipe.sw-l::before{content:"Done";position:absolute;left:-110px;top:50%;transform:translateY(-50%);font:700 12px inherit;color:#1F2340;opacity:.8}
 body.zn .zn-swipe.sw-l::before{content:"Tomorrow";left:auto;right:-110px}
 body.zn.zn-night .zn-tsearch{background:rgba(255,255,255,.1)}
+
+/* Nov 3: capture, round two */
+body.zn .zn-cta{width:100%;box-sizing:border-box;font:inherit;font-size:17px;line-height:1.35;padding:12px 14px;border-radius:14px;border:1.5px solid rgba(31,35,64,.15);background:#fff;color:#1F2340;resize:none;min-height:60px}
+body.zn.zn-night .zn-cta{background:rgba(255,255,255,.1);color:#F3EEFF;border-color:rgba(255,255,255,.2)}
+body.zn .zn-cread{margin-top:10px}
+body.zn .zn-crk{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.6;margin:0 0 6px}
+body.zn .zn-cchips{display:flex;flex-wrap:wrap;gap:6px}
+body.zn .zn-cchips .zn-chip{min-height:34px}
+body.zn .zn-cchips .zn-chip.on{background:#1F2340!important;color:#fff!important}
+body.zn .zn-cchips .zn-chip.soft{opacity:.65;border:1px dashed rgba(31,35,64,.3);background:transparent!important}
+body.zn .zn-csizes{margin-top:6px}
+body.zn .zn-chint{font-size:12px;opacity:.6;margin:10px 0 0;line-height:1.4}
+body.zn .zn-cbar{display:flex;gap:8px;margin-top:12px;align-items:center}
+body.zn .zn-cbar .zn-csp{flex:1}
+body.zn .zn-cbar .zn-pill{min-height:40px}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -2273,28 +2288,41 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const r=await fetch(APP.url+"/functions/v1/zone-size",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify({title,person:PERSON.person||"claire"})}); const j=await r.json(); return r.ok&&j.ok?j:null; }catch(e){ return null; } } /* Nov 2: the guess is in the signed-in person's own context */
   async function znSizeAfter(it){ try{ if(!it||!it.id||/^tmp/.test(it.id)) return; if(typeof APP==="undefined"||!APP.sb) return; const s=await APP.sb.auth.getSession(); const tk=s&&s.data&&s.data.session&&s.data.session.access_token; if(!tk) return;
     await fetch(APP.url+"/functions/v1/zone-size",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify({title:it.name,page_id:it.id,person:PERSON.person||"claire",area:it.area||undefined,kind:it.kind||undefined})}); }catch(e){} }
-  function znAddTaskCard(onAdded){ const T=TODAY(); const st={kind:"To-do",when:"",est:0,energy:"",area:"",priv:false,mine:false,guess:null,open:false,seq:0}; const wrap=el("div");
-    const add=znCard("zn-tadd","","Add"); const fld=el("div","zn-tfield"); const inp=el("input"); inp.type="text"; inp.placeholder="Add a task… (say when: Friday, tomorrow, 3pm)"; inp.setAttribute("aria-label","New task"); const go=el("button","zn-pill zn-dark","Add"); go.type="button"; go.disabled=!mcp; fld.append(inp,go); add.append(fld);
-    const chips=el("div","zn-hows"); const mk=(lab,on,fn)=>{ const b=el("button","zn-chip"+(on?" on":""),lab); b.type="button"; b.addEventListener("click",()=>{ fn(); draw(); }); return b; };
-    const size=el("div","zn-size"); size.hidden=true;
+  function znAddTaskCard(onAdded){ // Nov 3 (tasks, round two): capture — Alice reads it back as chips; tap any chip to change it; shorthand still works
+    const T=TODAY(); const st={kind:"",area:"",est:0,energy:"",when:null,project:null,repeat:null,priv:false,mine:false,guess:null,seq:0,sizeOpen:false};
+    const add=znCard("zn-tadd",""); const ta=el("textarea","zn-cta"); ta.rows=2; ta.placeholder="Add a task, note or idea…"; ta.setAttribute("aria-label","New task, note or idea"); add.append(ta);
+    const read=el("div","zn-cread"); read.hidden=true; const rk=el("p","zn-crk","Alice reads · tap to change"); const row=el("div","zn-cchips"); const sizeRow=el("div","zn-cchips zn-csizes"); sizeRow.hidden=true; read.append(rk,row,sizeRow); add.append(read);
+    const hint=el("p","zn-chint"); hint.innerHTML='Shorthand works too: <b>#work</b> · <b>30m</b> · <b>every Sun</b> · <b>[Project]</b> · <b>waiting on Renee</b> · <b>!</b> to star · <b>Idea:</b> / <b>Note:</b>'; add.append(hint);
+    const bar=el("div","zn-cbar"); const pick=el("button","zn-pill","Pick for today"); pick.type="button"; pick.disabled=!mcp; const sp=el("span","zn-csp"); const go=el("button","zn-pill zn-dark","Add"); go.type="button"; go.disabled=!mcp; bar.append(pick,sp,go); add.append(bar);
     const fmt=m=>m>=60?(m%60?`${Math.floor(m/60)}h ${m%60}m`:`${m/60}h`):`${m}m`;
-    const drawSize=()=>{ size.replaceChildren(); const raw=inp.value.trim(); if(raw.length<4||st.kind!=="To-do"){ size.hidden=true; return; } size.hidden=false;
-      const pc=parseCapture(raw); const tagArea=/#(work|personal|home|birdie|us)\b/i.test(raw)?pc.area:""; const est=st.est||pc.est||(st.guess&&st.guess.est)||0, en=st.energy||(st.guess&&st.guess.energy)||"", ar=st.area||tagArea||(st.guess&&st.guess.area)||"";
-      const line=el("button","zn-sizeline"); line.type="button"; line.setAttribute("aria-expanded",String(st.open));
-      line.innerHTML=`<b>${est?fmt(est):"Size"}${en?" · "+en:""}${ar?" · "+znEsc(ar):""}</b><span>${st.open?"done":"tap to change"}</span><em>${st.mine||pc.est?"your size":st.guess?"engine’s guess":"no guess yet"}</em>`;
-      line.addEventListener("click",()=>{ st.open=!st.open; drawSize(); }); size.append(line);
-      if(st.open){ const row=el("div","zn-sizerow"); ZN_SIZES.forEach(([m,l])=>{ const b=el("button","zn-chip"+(est===m?" on":""),l); b.type="button"; b.setAttribute("aria-label",`${fmt(m)}`); b.addEventListener("click",()=>{ st.est=m; st.mine=true; drawSize(); }); row.append(b); }); size.append(row);
-        const row2=el("div","zn-sizerow"); const tog=el("div","zn-tog"); ["Light","Deep"].forEach(x=>{ const b=el("button",en===x?"on":"",x); b.type="button"; b.setAttribute("aria-pressed",String(en===x)); b.addEventListener("click",()=>{ st.energy=x; drawSize(); }); tog.append(b); }); row2.append(tog);
-        const ab=el("button","zn-chip",ar||"Area"); ab.type="button"; ab.setAttribute("aria-label","Area: "+(ar||"not set")+", tap to change"); ab.addEventListener("click",()=>{ const i=ZN_AREAS.indexOf(ar); st.area=ZN_AREAS[(i+1)%ZN_AREAS.length]; drawSize(); }); row2.append(ab);
-        const pv=el("button","zn-chip zn-priv"+(st.priv?" on":""),"🔒 Private"); pv.type="button"; pv.setAttribute("aria-pressed",String(st.priv)); pv.addEventListener("click",()=>{ st.priv=!st.priv; drawSize(); }); row2.append(pv); size.append(row2); } };
-    let gt=null; const guess=()=>{ clearTimeout(gt); const raw=inp.value.trim(); if(raw.length<4||st.mine||st.kind!=="To-do") return; gt=setTimeout(async()=>{ const seq=++st.seq; const g=await znSizeGuess(raw); if(g&&seq===st.seq&&inp.value.trim()===raw){ st.guess=g; drawSize(); } },700); };
-    inp.addEventListener("input",()=>{ if(!st.mine) st.guess=null; drawSize(); guess(); });
-    const draw=()=>{ chips.replaceChildren(); ["To-do","Reminder","Note","Idea"].forEach(kd=>chips.append(mk(kd,st.kind===kd,()=>{ st.kind=kd; drawSize(); }))); chips.append(el("span","zn-tsep")); [["Today",T],["Tomorrow",addDays(T,1)]].forEach(([l,d])=>chips.append(mk(l,st.when===d,()=>{ st.when=st.when===d?"":d; }))); const pick=mk(st.when&&st.when!==T&&st.when!==addDays(T,1)?dueLabel(st.when):"Pick a day",!!(st.when&&st.when!==T&&st.when!==addDays(T,1)),()=>{ const v=prompt("Due (YYYY-MM-DD)",st.when||T); if(v&&/^\d{4}-\d{2}-\d{2}$/.test(v)) st.when=v; }); chips.append(pick); }; draw(); add.append(chips); add.append(size);
-    const submit=async()=>{ const raw=inp.value.trim(); if(!raw) return; go.disabled=true; try{ const p=parseCapture(raw); if(st.kind!=="To-do"||!p.kind) p.kind=st.kind; if(st.when) p.due=st.when; if(st.area) p.area=st.area; else if(!p.area&&st.guess&&st.guess.area) p.area=st.guess.area; if(!p.area) p.area="Personal";
-      if(p.kind==="To-do"){ const typed=p.est; const est=st.est||typed||(st.guess&&st.guess.est)||0; if(est){ p.est=est; p.estSource=(st.mine||typed)?"Mine":"Guessed"; } const en=st.energy||(st.guess&&st.guess.energy)||""; if(en) p.energy=en; } if(st.priv) p.priv=true;
-      const ok=await listCreate(p,"Plan"); if(ok){ const made=LIST.find(x=>x.name===p.name&&!/^tmp/.test(x.id)); if(p.kind==="To-do"&&!p.est) znSizeAfter(made); inp.value=""; st.when=""; st.est=0; st.energy=""; st.area=""; st.priv=false; st.mine=false; st.guess=null; st.open=false; toast(`Added · ${p.name}${p.est?" · "+fmt(p.est):""}`); draw(); drawSize(); onAdded&&onAdded(); } }catch(e){ toast(writeErr(e)); } go.disabled=!mcp; };
-    go.addEventListener("click",submit); inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); submit(); } });
-    return add;
+    const KS=["To-do","Reminder","Note","Idea","Thought"]; const AR={Work:"💼",Personal:"🌱",Home:"🏠",Birdie:"🐕",Us:"💕"};
+    const autoKind=raw=>/^(what if|i wonder|maybe we|could we|idea)\b/i.test(raw)||/\?\s*$/.test(raw)&&!/^(call|email|text|ask|book|order|send|check|fix|buy|pay|schedule)\b/i.test(raw)?"Idea":"";
+    const eff=()=>{ const raw=ta.value.trim(); const p=parseCapture(raw); const tag=/#(work|personal|home|birdie|us)\b/i.test(raw); const h=nowH(); const wk=wkDay(); const g=st.guess||{};
+      const kind=st.kind||(p.kind!=="To-do"?p.kind:"")||autoKind(raw)||(g.kind&&g.kind!=="To-do"?g.kind:"")||"To-do";
+      const area=st.area||(tag?p.area:"")||g.area||((wk||h<WORK_H.from||h>=WORK_H.to)?"Personal":(p.area||"Personal"));
+      return { p, kind, area, est:kind==="To-do"?(st.est||p.est||g.est||0):0, mine:!!(st.mine||p.est), energy:kind==="To-do"?(st.energy||g.energy||""):"", when:st.when!==null?st.when:(p.due||""), project:st.project!==null?st.project:(p.project||""), repeat:st.repeat!==null?st.repeat:(p.repeat||""), priv:st.priv, star:!!p.star, status:p.status||"Open" }; };
+    const chip=(lab,on,fn,aria,soft)=>{ const c=el("button","zn-chip"+(on?" on":"")+(soft?" soft":""),lab); c.type="button"; if(aria) c.setAttribute("aria-label",aria); c.addEventListener("click",()=>{ fn(); draw(); }); return c; };
+    const draw=()=>{ const raw=ta.value.trim(); if(raw.length<3){ read.hidden=true; pick.hidden=true; return; } read.hidden=false; const e=eff(); pick.hidden=e.kind!=="To-do";
+      row.replaceChildren();
+      row.append(chip(e.kind,true,()=>{ st.kind=KS[(KS.indexOf(e.kind)+1)%KS.length]; },"Kind: "+e.kind+", tap to change"));
+      row.append(chip(`${AR[e.area]||""} ${e.area}`,false,()=>{ const ks=Object.keys(AR); st.area=ks[(ks.indexOf(e.area)+1)%ks.length]; },"Area: "+e.area+", tap to change"));
+      if(e.kind==="To-do"){ row.append(chip(e.est?fmt(e.est):"size?",false,()=>{ st.sizeOpen=!st.sizeOpen; },e.est?`Size ${fmt(e.est)}${e.mine?", yours":", Alice’s guess"}, tap to change`:"Size unknown, tap to set"));
+        row.append(chip(e.energy||"Light / Deep",false,()=>{ st.energy=e.energy==="Deep"?"Light":"Deep"; },"Energy: "+(e.energy||"not set")));
+        row.append(chip(e.when?(e.when===T?"today":e.when===addDays(T,1)?"tomorrow":dueLabel(e.when)):"no date",false,()=>{ st.when=e.when===""?T:e.when===T?addDays(T,1):e.when===addDays(T,1)?"":e.when; if(st.when===e.when){ const v=prompt("Due (YYYY-MM-DD)",e.when||T); if(v&&/^\d{4}-\d{2}-\d{2}$/.test(v)) st.when=v; else if(v==="") st.when=""; } },"Due: "+(e.when||"none")+", tap to cycle today, tomorrow, none")); }
+      if(e.kind==="Reminder") row.append(chip(e.when?dueLabel(e.when):"when?",false,()=>{ const v=prompt("Remind on (YYYY-MM-DD)",e.when||T); if(v&&/^\d{4}-\d{2}-\d{2}$/.test(v)) st.when=v; },"Remind on"));
+      row.append(chip(e.project||"+ project",!!e.project,()=>{ const names=[...new Set(LIST.map(x=>x.project).filter(Boolean))].sort(); const v=prompt(names.length?"Project (one of: "+names.join(", ")+", or a new name; blank = none)":"Project name (blank = none)",e.project||""); if(v!==null) st.project=v.trim(); },"Project",!e.project));
+      if(e.kind==="To-do") row.append(chip(e.repeat?"↻ "+e.repeat:"+ repeat",!!e.repeat,()=>{ const v=prompt("Repeats (every 30 days · weekly · every Sun · monthly on the 1st; blank = none)",e.repeat||""); if(v===null) return; const r=v.trim().toLowerCase(); if(r&&!repeatParse(r)){ toast("Try: every 30 days, weekly, every Sun, monthly on the 1st"); return; } st.repeat=r; },"Repeat",!e.repeat));
+      row.append(chip("🔒",e.priv,()=>{ st.priv=!st.priv; },e.priv?"Private, tap to make visible":"Make private",!e.priv));
+      sizeRow.hidden=!(st.sizeOpen&&e.kind==="To-do"); if(!sizeRow.hidden){ sizeRow.replaceChildren(); ZN_SIZES.forEach(([m,l])=>sizeRow.append(chip(l,e.est===m,()=>{ st.est=m; st.mine=true; st.sizeOpen=false; },fmt(m)))); }
+      rk.textContent=e.mine?"Your size · tap to change":"Alice reads · tap to change"; };
+    let gt=null; const guess=()=>{ clearTimeout(gt); const raw=ta.value.trim(); if(raw.length<4||st.mine) return; gt=setTimeout(async()=>{ const seq=++st.seq; const g=await znSizeGuess(raw); if(g&&seq===st.seq&&ta.value.trim()===raw){ st.guess=g; draw(); } },700); };
+    ta.addEventListener("input",()=>{ ta.style.height="auto"; ta.style.height=Math.min(160,ta.scrollHeight)+"px"; if(!st.mine) st.guess=null; draw(); guess(); });
+    const reset=()=>{ ta.value=""; ta.style.height=""; Object.assign(st,{kind:"",area:"",est:0,energy:"",when:null,project:null,repeat:null,priv:false,mine:false,guess:null,sizeOpen:false}); draw(); };
+    const submit=async(andPick)=>{ const raw=ta.value.trim(); if(!raw) return; go.disabled=true; pick.disabled=true; try{ const e=eff(); const p=e.p; p.kind=e.kind; p.area=e.area; p.due=e.when||""; p.project=e.project||""; p.repeat=e.repeat||""; if(p.repeat&&!p.due) p.due=repeatFirst(p.repeat,T)||"";
+        if(e.kind==="To-do"){ if(e.est){ p.est=e.est; p.estSource=e.mine?"Mine":"Guessed"; } else p.est=0; if(e.energy) p.energy=e.energy; } else { p.est=0; delete p.energy; } if(e.priv) p.priv=true;
+        const ok=await listCreate(p,"Plan"); if(ok){ const made=LIST.find(x=>x.name===p.name&&!/^tmp/.test(x.id)); if(p.kind==="To-do"&&!p.est) znSizeAfter(made); if(andPick&&p.kind==="To-do"){ try{ await pickToday(p.name); }catch(e2){} } toast(`${andPick?"Picked for today":"Added"} · ${p.name}${p.est?" · "+fmt(p.est):""}`); reset(); onAdded&&onAdded(); } }catch(e){ toast(writeErr(e)); } go.disabled=!mcp; pick.disabled=!mcp; };
+    go.addEventListener("click",()=>submit(false)); pick.addEventListener("click",()=>submit(true)); ta.addEventListener("keydown",e=>{ if(e.key==="Enter"&&!e.shiftKey){ e.preventDefault(); submit(false); } });
+    draw(); return add;
   }
   function znTasksView(host){ // Nov 3 (tasks, round two): one list — search, area / kind filters, Today · This week · No date · Done this week, swipe for Done / Tomorrow
     const T=TODAY(), T7=addDays(T,7); ZN_PLAN.filter=ZN_PLAN.filter||"all"; ZN_PLAN.q=ZN_PLAN.q||"";
