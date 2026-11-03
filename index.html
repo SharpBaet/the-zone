@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-02.6"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-02.7"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -3398,20 +3398,22 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   let INBOX_MAIL={};
     // Nov 2 (the agent, job 1): a reply drafted in her voice by zone-draft (agent.reply), shown in a sheet she can edit, redo with a one-line
   // instruction, copy, and send herself from Gmail. Nothing is sent from the app.
-  async function znDraftCall(payload){ try{ if(typeof APP==="undefined"||!APP.sb) return null; const s=await APP.sb.auth.getSession(); const tk=s&&s.data&&s.data.session&&s.data.session.access_token; if(!tk) return null;
-    const r=await fetch(APP.url+"/functions/v1/zone-draft",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify(payload)}); const j=await r.json(); return r.ok&&j.ok?j:{error:j.error||("zone-draft "+r.status)}; }catch(e){ return null; } }
+  async function znDraftCall(payload,part){ try{ if(typeof APP==="undefined"||!APP.sb) return null; const s=await APP.sb.auth.getSession(); const tk=s&&s.data&&s.data.session&&s.data.session.access_token; if(!tk) return null;
+    const r=await fetch(APP.url+"/functions/v1/zone-draft"+(part?"?part="+part:""),{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify(payload)}); const j=await r.json(); return r.ok&&j.ok?j:{error:j.error||("zone-draft "+r.status)}; }catch(e){ return null; } }
   function znDraftReply(raw,from){ const m=INBOX_MAIL[raw]; if(!m) return; const title=inboxTitle(raw);
     const body=el("div","zn-draft"); const st=el("p","hint zn-dst","Alice is writing…"); body.append(st);
     const ta=el("textarea","zn-dta"); ta.rows=8; ta.hidden=true; ta.setAttribute("aria-label","The drafted reply; edit it here"); body.append(ta);
     const note=el("p","hint zn-dnote"); note.hidden=true; body.append(note);
     const ins=el("input","zn-dins"); ins.type="text"; ins.placeholder="Tell Alice how to answer (optional)"; ins.setAttribute("aria-label","How the reply should answer"); body.append(ins);
-    const acts=el("div","zn-dacts"); const redo=el("button","zn-pill","Redo"); redo.type="button"; const copy=el("button","zn-pill zn-dark","Copy"); copy.type="button"; copy.disabled=true;
-    const open=el("a","zn-pill","Open in Gmail"); open.href=`https://mail.google.com/mail/u/${m.acct}@gmail.com/#all/${m.ids[0]}`; open.target="_blank"; open.rel="noopener"; acts.append(redo,copy,open); body.append(acts);
-    const run=async()=>{ st.hidden=false; st.textContent="Alice is writing…"; ta.hidden=true; note.hidden=true; redo.disabled=true; copy.disabled=true;
+    const acts=el("div","zn-dacts"); const redo=el("button","zn-pill","Redo"); redo.type="button"; const copy=el("button","zn-pill","Copy"); copy.type="button"; copy.disabled=true; const gsave=el("button","zn-pill zn-dark","Save to Gmail"); gsave.type="button"; gsave.disabled=true; gsave.setAttribute("aria-label","Save this reply to your Gmail drafts");
+    const open=el("a","zn-pill","Open in Gmail"); open.href=`https://mail.google.com/mail/u/${m.acct}@gmail.com/#all/${m.ids[0]}`; open.target="_blank"; open.rel="noopener"; acts.append(gsave,copy,redo,open); body.append(acts);
+    const run=async()=>{ st.hidden=false; st.textContent="Alice is writing…"; ta.hidden=true; note.hidden=true; redo.disabled=true; copy.disabled=true; gsave.disabled=true;
       const d=await znDraftCall({person:PERSON.person||"claire",kind:"email",account:m.acct,id:m.ids[0],instructions:ins.value.trim()}); redo.disabled=false;
       if(!d||d.error){ st.textContent=d&&/three days/.test(d.error)?"That one's older than the triage keeps — open it in Gmail and reply there.":"Couldn't draft this one right now — open it in Gmail."; return; }
-      st.hidden=true; ta.hidden=false; ta.value=d.reply; copy.disabled=false; if(d.note){ note.hidden=false; note.textContent="Alice: "+d.note; } };
+      st.hidden=true; ta.hidden=false; ta.value=d.reply; copy.disabled=false; gsave.disabled=!LIVE; gsave.textContent="Save to Gmail"; if(d.note){ note.hidden=false; note.textContent="Alice: "+d.note; } };
     redo.addEventListener("click",run); ins.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); run(); } });
+    gsave.addEventListener("click",async()=>{ const txt=ta.value.trim(); if(!txt) return; gsave.disabled=true; gsave.textContent="Saving…";
+      const d=await znDraftCall({account:m.acct,id:m.ids[0],reply:txt},"save"); if(d&&d.queued){ gsave.textContent="Saved ✓"; toast("In your Gmail drafts in a moment · it won’t send until you do"); } else { gsave.disabled=false; gsave.textContent="Save to Gmail"; toast(d&&d.error?("Couldn’t save it: "+d.error):"Couldn’t save it right now — Copy works"); } }); /* Nov 2 */
     copy.addEventListener("click",async()=>{ try{ await navigator.clipboard.writeText(ta.value); toast("Copied · paste it into your reply"); }catch(e){ ta.focus(); ta.select(); toast("Select the text and copy"); } });
     openSheet({kicker:"Alice · a reply for you",title,body:[body],from}); run(); }
   async function mailAct(raw,kind){ const m=INBOX_MAIL[raw]; if(!m) return;
