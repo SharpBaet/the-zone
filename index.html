@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-03.4"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-03.5"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1388,6 +1388,17 @@ body.zn .zn-pacts4{margin-top:12px}
 .zn-pj .zn-pjsub{font-size:12.5px;opacity:.75;margin:0 0 8px}
 .zn-pj .zn-pjprep{background:#E9E2FF;border-radius:14px;padding:12px;margin:0 0 12px}.zn-pj .zn-pjprep b{display:block;font-size:14px;margin-bottom:4px}.zn-pj .zn-pjprep p{margin:0 0 8px;font-size:13px;line-height:1.4}.zn-pj .zn-pjprep .zn-pill{min-height:34px}
 .zn-pj .zn-pjlink{color:#4B3FA0;text-decoration:underline;font-size:12px}
+
+/* Nov 3: Ask Alice */
+body.zn .zn-asklink{display:block;width:100%;margin-top:10px;padding:8px 0;border:0;border-top:1px solid rgba(31,35,64,.1);background:transparent;font:inherit;font-size:13px;font-weight:700;color:#3A2E7A;text-align:left;cursor:pointer}
+.zn-ask .zn-askout{margin-top:14px}
+.zn-ask .zn-askk{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.6;margin:0 0 4px}
+.zn-ask .zn-askt{font:600 18px/1.25 Fraunces,Georgia,serif;margin:0 0 4px}
+.zn-ask .zn-asks{font-size:13.5px;opacity:.8;margin:0 0 10px}
+.zn-ask .zn-askb{white-space:pre-wrap;font:inherit;font-size:14px;line-height:1.45;margin:0;background:rgba(31,35,64,.04);border-radius:12px;padding:12px;max-height:50vh;overflow:auto}
+.zn-ask .zn-askm{font-size:13px;margin:10px 0 0}
+.zn-ask .zn-pacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+body.zn .zn-askcard .zn-pill{margin-top:8px}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -2316,6 +2327,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const add=znCard("zn-tadd",""); const ta=el("textarea","zn-cta"); ta.rows=2; ta.placeholder="Add a task, note or idea…"; ta.setAttribute("aria-label","New task, note or idea"); add.append(ta);
     const read=el("div","zn-cread"); read.hidden=true; const rk=el("p","zn-crk","Alice reads · tap to change"); const row=el("div","zn-cchips"); const sizeRow=el("div","zn-cchips zn-csizes"); sizeRow.hidden=true; read.append(rk,row,sizeRow); add.append(read);
     const hint=el("p","zn-chint"); hint.innerHTML='Shorthand works too: <b>#work</b> · <b>30m</b> · <b>every Sun</b> · <b>[Project]</b> · <b>waiting on Renee</b> · <b>!</b> to star · <b>Idea:</b> / <b>Note:</b>'; add.append(hint);
+    if(!(PERSON.features&&PERSON.features.alice===false)){ const ak=el("button","zn-asklink","🤝 Or ask Alice to do something →"); ak.type="button"; ak.addEventListener("click",()=>{ const raw=ta.value.trim(); znAskSheet(ak,{ask:raw,project:(preset&&preset.project)||""}); }); add.append(ak); } /* Nov 3 */
     const bar=el("div","zn-cbar"); const pick=el("button","zn-pill","Pick for today"); pick.type="button"; pick.disabled=!mcp; const sp=el("span","zn-csp"); const go=el("button","zn-pill zn-dark","Add"); go.type="button"; go.disabled=!mcp; bar.append(pick,sp,go); add.append(bar);
     const fmt=m=>m>=60?(m%60?`${Math.floor(m/60)}h ${m%60}m`:`${m/60}h`):`${m}m`;
     const KS=["To-do","Reminder","Note","Idea","Thought"]; const AR={Work:"💼",Personal:"🌱",Home:"🏠",Birdie:"🐕",Us:"💕"};
@@ -2357,7 +2369,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const body=el("div"); wrap.append(body);
     const F=ZN_PLAN.filter;
     if(F==="Work"&&!ZN_PLAN.q){ const h=el("div"); znWork(h); body.append(...h.children); return wrap; }
-    if(F==="alice"&&!ZN_PLAN.q){ const h=el("div"); znWaiting(h); body.append(...h.children); return wrap; }
+    if(F==="alice"&&!ZN_PLAN.q){ const ac=znCard("zn-askcard",""); ac.innerHTML=znH("Ask Alice","research · drafts · tasks · answers"); const ab=el("button","zn-pill zn-dark","Give Alice a job"); ab.type="button"; ab.addEventListener("click",()=>znAskSheet(ab)); ac.append(ab); body.append(ac); const h=el("div"); znWaiting(h); body.append(...h.children); return wrap; }
     const calc=()=>{ const q=ZN_PLAN.q.toLowerCase(); const hit=it=>!q||[it.name,it.project,it.area,it.kind,it.waiting].some(x=>String(x||"").toLowerCase().includes(q));
       const base=LIST.filter(it=>forClaire(it)&&hit(it)); const mine=it=>F==="all"||F==="ideas"||F==="someday"||F==="alice"?true:it.area===F;
       return { q, open:base.filter(it=>it.status==="Open"&&mine(it)&&!(it.snooze&&it.snooze>T)&&(F==="alice"?it.owner==="Alice":F==="ideas"?!isTask(it):F==="someday"?false:true)),
@@ -3573,6 +3585,26 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   let INBOX_MAIL={};
     // Nov 2 (the agent, job 1): a reply drafted in her voice by zone-draft (agent.reply), shown in a sheet she can edit, redo with a one-line
   // instruction, copy, and send herself from Gmail. Nothing is sent from the app.
+  // Nov 3 (the agent, job 3): Ask Alice — any job in plain words. zone-ask does what it can from here (research, a draft, tasks, an answer, or a
+  // question back) and files the result on the List under Alice; the sheet shows it too. Nothing is sent, paid or booked.
+  async function znAskCall(payload){ try{ if(typeof APP==="undefined"||!APP.sb) return null; const s=await APP.sb.auth.getSession(); const tk=s&&s.data&&s.data.session&&s.data.session.access_token; if(!tk) return null;
+    const r=await fetch(APP.url+"/functions/v1/zone-ask",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify({person:PERSON.person||"claire",...payload})}); const j=await r.json(); return r.ok&&j.ok?j:{error:j.error||("zone-ask "+r.status)}; }catch(e){ return null; } }
+  function znAskSheet(from,preset){ const box=el("div","zn-ask"); const ta=el("textarea","zn-cta"); ta.rows=3; ta.placeholder="What should Alice do? e.g. “Research dog boarding for Thanksgiving week and make me a task list”"; ta.setAttribute("aria-label","Ask Alice"); if(preset&&preset.ask) ta.value=preset.ask; box.append(ta);
+    const hint=el("p","zn-chint"); hint.innerHTML="Alice can research, draft, break a job into tasks, or answer. She can’t send, pay or book — she’ll say when a job needs you. The result lands on your List under Alice."; box.append(hint);
+    const bar=el("div","zn-cbar"); const sp=el("span","zn-csp"); const go=el("button","zn-pill zn-dark","Ask Alice"); go.type="button"; go.disabled=!LIVE; bar.append(sp,go); box.append(bar);
+    const out=el("div","zn-askout"); out.hidden=true; box.append(out);
+    const run=async()=>{ const ask=ta.value.trim(); if(!ask) return; go.disabled=true; go.textContent="Alice is working…"; out.hidden=false; out.replaceChildren(el("p","hint","This can take up to a minute when it needs research."));
+      const d=await znAskCall({ask,project:(preset&&preset.project)||undefined}); go.disabled=false; go.textContent="Ask again";
+      if(!d||d.error){ out.replaceChildren(el("p","hint",d&&d.error?("Alice couldn’t do that one: "+d.error):"Alice isn’t reachable right now.")); return; }
+      out.replaceChildren(); out.append(el("p","zn-askk",`${d.kind==="question"?"Alice needs something from you":d.kind==="research"?"Researched":d.kind==="write"?"Drafted":d.kind==="tasks"?"Broken into tasks":"Answered"}${d.project?" · "+d.project:""}`),el("h3","zn-askt",d.title),el("p","zn-asks",d.summary||""));
+      const body=el("pre","zn-askb",d.body||""); out.append(body);
+      if(d.made&&d.made.length){ const t=el("p","zn-askm"); t.textContent=`${d.made.length} task${d.made.length===1?"":"s"} added: `+d.made.join(" · "); out.append(t); }
+      if(d.note) out.append(el("p","hint","Alice: "+d.note));
+      const acts=el("div","zn-pacts"); const cp=el("button","zn-pill","Copy"); cp.type="button"; cp.addEventListener("click",async()=>{ try{ await navigator.clipboard.writeText(`${d.title}\n\n${d.body||""}`); toast("Copied"); }catch(e){ toast("Select the text and copy"); } }); acts.append(cp);
+      const seeB=el("button","zn-pill","See it on the List"); seeB.type="button"; seeB.addEventListener("click",()=>{ ZN_PLAN.seg="list"; ZN_PLAN.filter="alice"; const o=$("#layer").querySelector(".ov:last-of-type .sheet > button.btn.ghost:last-of-type"); if(o) o.click(); show("ahead"); }); acts.append(seeB); out.append(acts);
+      try{ ZN_PLAN.filter="alice"; }catch(e){} try{ if(typeof refreshIndex==="function") refreshIndex(); }catch(e){} };
+    go.addEventListener("click",run); ta.addEventListener("keydown",e=>{ if(e.key==="Enter"&&(e.metaKey||e.ctrlKey)){ e.preventDefault(); run(); } });
+    openSheet({kicker:"🤝 Alice",title:"Ask Alice",body:[box],color:"var(--plan)",from}); setTimeout(()=>ta.focus({preventScroll:true}),60); }
   async function znDraftCall(payload,part){ try{ if(typeof APP==="undefined"||!APP.sb) return null; const s=await APP.sb.auth.getSession(); const tk=s&&s.data&&s.data.session&&s.data.session.access_token; if(!tk) return null;
     const r=await fetch(APP.url+"/functions/v1/zone-draft"+(part?"?part="+part:""),{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify(payload)}); const j=await r.json(); return r.ok&&j.ok?j:{error:j.error||("zone-draft "+r.status)}; }catch(e){ return null; } }
   function znDraftReply(raw,from){ const m=INBOX_MAIL[raw]; if(!m) return; const title=inboxTitle(raw);
