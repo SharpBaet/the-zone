@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-02.9"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-02.10"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1319,6 +1319,23 @@ body.zn.zn-night .zn-prepchip{background:rgba(217,200,255,.25);color:#F3EEFF}
 .ledit .lchk input{width:20px;height:20px;accent-color:#1F2340}
 .ledit .lsrc{display:block;font-size:11.5px;opacity:.65;margin-top:2px}
 body.zn .zn-wrow .zn-rchk{flex:none}
+
+/* Nov 2: the task sheet, round two */
+.zn-ts .zn-tsstat{display:flex;align-items:center;gap:10px;margin:2px 0 10px}
+.zn-ts .zn-tsbig{width:30px;height:30px;border-radius:50%;border:2.5px solid rgba(31,35,64,.5);background:transparent;cursor:pointer;flex:none}
+.zn-ts .zn-tsbig.on{background:#1F2340;border-color:#1F2340}
+.zn-ts .zn-tslab{font-size:13px;opacity:.75}.zn-ts .zn-tssp{flex:1}
+.zn-ts .zn-tsico{border:0;background:transparent;font-size:18px;opacity:.45;cursor:pointer;padding:4px}.zn-ts .zn-tsico.on{opacity:1;color:#C9A227}
+.zn-ts .zn-tstitle{width:100%;box-sizing:border-box;font-family:Fraunces,Georgia,serif;font-size:21px;font-weight:600;line-height:1.25;border:0;border-bottom:1.5px dashed rgba(31,35,64,.2);background:transparent;padding:2px 0 6px;margin:0 0 6px;resize:none;color:inherit}
+.zn-ts .zn-tssec{margin:12px 0 0}.zn-ts .zn-tsk{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.6;margin:0 0 6px}
+.zn-ts .zn-tschips{display:flex;flex-wrap:wrap;gap:6px}.zn-ts .zn-tschips .zn-chip{min-height:34px}.zn-ts .zn-tschips .zn-chip.on{background:#1F2340!important;color:#fff!important}
+.zn-ts .zn-tsdate{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.zn-ts .zn-tsproj-pick{display:flex;flex-wrap:wrap;gap:6px;width:100%;margin-top:6px}
+.zn-ts .zn-tsfold{display:flex;justify-content:space-between;align-items:center;width:100%;padding:11px 0;border:0;border-top:1px solid rgba(31,35,64,.1);background:transparent;font:inherit;font-size:14px;color:inherit;text-align:left;cursor:pointer;margin-top:4px}
+.zn-ts .zn-tsfold small{opacity:.6;font-size:12px;margin-left:4px}.zn-ts .zn-tsfold.open span:last-child{transform:rotate(90deg);display:inline-block}
+.zn-ts .zn-tsfoldbody{padding:4px 0 10px}.zn-ts .zn-tsfoldbody label.note{display:block;margin:8px 0 4px}
+.zn-ts .zn-tsacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.zn-ts .zn-tsacts .zn-pill{min-height:40px}.zn-ts .zn-tsacts .zn-warn{color:#B03A2E}
+.zn-ts .zn-tsauto{font-size:11.5px;opacity:.55;margin:10px 0 0}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -3791,56 +3808,62 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const rep=mine.filter(it=>it.status==="Open"&&it.repeat&&it.due&&dayDiff(it.due,T)<=7&&it.due>=T); if(rep.length){ wrap.append(el("div","label","Coming back next week")); const cl=el("div","schseg"); rep.forEach(it=>cl.append(el("span","lchip rep",`↻ ${it.name} · ${dayWord(it.due)}`))); wrap.append(cl); }
     openSheet({kicker:"🗒️ Sunday review",title:"Your week, landed",body:[wrap],color:"var(--plan)",from}); }
 
-  function openListItem(it,from){ const wrap=el("div","ledit");
-    const ta=el("textarea","field"); ta.rows=2; ta.value=it.name; ta.setAttribute("aria-label","Item text");
-    const selRow=(label,opts,val)=>{ const l=el("label","note",label); const s=el("select","field"); opts.forEach(o=>{ const op=el("option",null,o); op.value=o; if(o===val) op.selected=true; s.append(op); }); l.append(s); return [l,s]; };
-    const [kl,ks]=selRow("Kind",KINDS,it.kind), [al,as]=selRow("Area",AREAS,it.area||"Personal");
-    const dl=el("label","note","Due or remind on"); const di=el("input","field"); di.type="date"; di.value=it.due||""; dl.append(di);
-    let star=it.star; const sb=el("button","chip",star?"★ Starred":"☆ Star"); sb.type="button"; sb.setAttribute("aria-pressed",String(star)); sb.addEventListener("click",()=>{ star=!star; sb.textContent=star?"★ Starred":"☆ Star"; sb.setAttribute("aria-pressed",String(star)); });
-    const grid=el("div","lgrid"); grid.append(kl,al,dl);
-    // List v2: time, repeats, snooze, waiting on, project
-    const fld=(label,type,val,ph)=>{ const l=el("label","note",label); const i=el("input","field"); i.type=type; i.value=val||""; if(ph) i.placeholder=ph; l.append(i); grid.append(l); return i; };
-    const estI=fld("Takes (minutes)","number",it.est||"","20"); estI.min="0"; estI.step="5";
-    const repI=fld("Repeats","text",it.repeat,"every 30 days · weekly · every Sun");
-    const snzI=fld("Snooze until","date",it.snooze);
-    const waitI=fld("Waiting on","text",it.waiting,"who or what");
-    const projI=fld("Project","text",it.project,"Birdie camp");
-    const [enl,enS]=selRow("Energy",["","Light","Deep"],it.energy||""); grid.append(enl); /* Nov 2 */
-    const pvl=el("label","note lchk"); const pvI=el("input"); pvI.type="checkbox"; pvI.checked=!!it.priv; pvl.append(pvI,document.createTextNode(" 🔒 Private · out of the brief and the radio")); grid.append(pvl);
-    if(it.estSource) { const src=el("span","hint lsrc",it.estSource==="Guessed"?"Alice’s guess":it.estSource==="Learned"?"learned from what it took":"your size"); estI.after(src); }
-    // steps: a checklist kept on the item (the morning planner's steps can land here too)
-    const stepsBox=el("div","lsteps"); let steps=(it.steps||"").split(/\n/).map(x=>x.trim()).filter(Boolean);
-    const writeSteps=async()=>{ const txt=steps.join("\n"); await listUpdate(it,{Steps:txt},{steps:txt}); };
-    const drawSteps=()=>{ stepsBox.replaceChildren(el("div","label","Steps"));
-      steps.forEach((ln,i)=>{ const done=/^\[x\]/i.test(ln); const lab=el("label","lstep"+(done?" done":"")); const cb=el("input"); cb.type="checkbox"; cb.checked=done; cb.disabled=!mcp;
-        cb.addEventListener("change",()=>{ steps[i]=(cb.checked?"[x] ":"")+ln.replace(/^\[x\]\s*/i,""); drawSteps(); writeSteps(); });
-        const rm=el("button","lsrm","×"); rm.type="button"; rm.setAttribute("aria-label","Remove step"); rm.addEventListener("click",()=>{ steps.splice(i,1); drawSteps(); writeSteps(); });
-        lab.append(cb,el("span",null,ln.replace(/^\[x\]\s*/i,"")),rm); stepsBox.append(lab); });
-      const add=el("div","row"); const ai=el("input","field"); ai.placeholder="Add a step"; ai.setAttribute("aria-label","Add a step"); const ab=el("button","btn ghost sm","Add"); ab.type="button";
-      const go=()=>{ const v=ai.value.trim(); if(!v) return; steps.push(v); drawSteps(); writeSteps(); };
-      ab.addEventListener("click",go); ai.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); go(); } }); add.append(ai,ab); stepsBox.append(add); };
-    if(isTask(it)) drawSteps();
-    const r1=el("div","row"); const save=el("button","btn sm","Save"); save.type="button"; r1.append(save,sb);
-    const r2=el("div","row lacts"); const btn=(t,fn)=>{ const b=el("button","btn ghost sm",t); b.type="button"; b.addEventListener("click",fn); r2.append(b); return b; };
-    if(it.anotes){ wrap.append(el("div","label","Alice's notes"),el("p","anotes",it.anotes)); }
-    const prepB=(isTask(it)&&!it.priv)?(()=>{ const b=el("button","zn-pill zn-dark zn-prepthis","✨ Prep this"); b.type="button"; b.disabled=!LIVE; b.addEventListener("click",async()=>{ b.disabled=true; b.textContent="Alice is preparing…"; const d=await znPrepCall("one",{kind:"task",title:it.name,project:it.project||"",steps:it.steps||"",notes:it.due?("due "+it.due):"",date:TODAY()}); b.disabled=false; b.textContent="✨ Prep this"; if(d&&d.prep){ const p={key:d.key,title:it.name,kind:"task",date:TODAY(),prep:d.prep}; ZN_PREPS=ZN_PREPS.filter(x=>x.key!==d.key).concat([p]); znPrepSheet(p,b,""); } else toast("Couldn’t prep this right now"); }); return b; })():null; /* Nov 2 */
-    wrap.append(...(prepB?[prepB]:[]),ta,...(isTask(it)?[stepsBox]:[]),grid,r1,r2);
-    const close=openSheet({kicker:`${KIND_IC[it.kind]||""} Your list`,title:"",body:[wrap],color:"var(--plan)",from});
-    save.addEventListener("click",async()=>{ const name=ta.value.replace(/\s+/g," ").trim(); if(!name) return; save.disabled=true;
-      const est=Math.max(0,Math.round(Number(estI.value)||0)), rp=repI.value.trim().toLowerCase(), wo=waitI.value.trim(), pj=projI.value.trim(), sz=snzI.value||"";
-      if(rp&&!repeatParse(rp)){ toast("Try a repeat like: every 30 days, weekly, every Sun, monthly on the 1st"); save.disabled=false; return; }
-      const due=di.value||(rp&&!it.due?repeatFirst(rp,TODAY()):"")||"";
-      const props={Name:name,Kind:ks.value,Area:as.value,Star:star?"__YES__":"__NO__","date:Due:start":due||null,Estimate:est||null,Repeat:rp,"date:Snooze Until:start":sz||null,"Waiting On":wo,Project:pj,Energy:enS.value||null,Private:pvI.checked?"__YES__":"__NO__"}; const estChanged=est!==(it.est||0); if(estChanged&&est) props["Estimate Source"]="Mine"; /* Nov 2: an edited size is hers */
-      if(wo&&wo!==it.waiting) props["date:Waiting Since:start"]=TODAY(); if(!wo) props["date:Waiting Since:start"]=null;
-      if(await listUpdate(it,props,{name,kind:ks.value,area:as.value,star,due,est,repeat:rp,snooze:sz,waiting:wo,wsince:wo?(wo!==it.waiting?TODAY():it.wsince):"",project:pj,energy:enS.value||"",priv:pvI.checked,...(estChanged&&est?{estSource:"Mine"}:{})},"Saved")) close&&close(); else save.disabled=false; });
-    if(it.status==="Open"&&it.owner!=="Alice") btn("🤝 Hand to Alice",async()=>{ if(await listUpdate(it,{Owner:"Alice","Alice Status":"Assigned","date:Alice Updated:start":TODAY()},{owner:"Alice",astat:"Assigned",aupd:TODAY()},"Handed to Alice. Message her to get it started",{Owner:"Claire","Alice Status":null},{owner:"Claire",astat:""})) close&&close(); });
-    if(it.status==="Open"&&it.owner==="Alice"){ const was=it.astat||"Assigned"; btn("Take it back",async()=>{ if(await listUpdate(it,{Owner:"Claire","Alice Status":null},{owner:"Claire",astat:""},"Back with you. Let Alice know",{Owner:"Alice","Alice Status":was},{owner:"Alice",astat:was})) close&&close(); }); }
-    if(isTask(it)&&it.status==="Open"&&calOK()) btn("📅 Schedule it",()=>{ close&&close(); setTimeout(()=>openScheduleSheet(it,from),220); });
-    if(isTask(it)&&it.status==="Open") btn("→ Tomorrow's top 3",async()=>{ if(await addToTomorrow([it.name],"On tomorrow's top 3")) close&&close(); });
-    if(it.status==="Open") btn("Someday",async()=>{ if(await listUpdate(it,{Status:"Someday"},{status:"Someday"},"Moved to someday",{Status:"Open"},{status:"Open"})) close&&close(); });
-    if(it.status!=="Open") btn("Reopen",async()=>{ if(await listUpdate(it,{Status:"Open","date:Done On:start":null},{status:"Open",doneOn:""},"Back on your list")) close&&close(); });
-    btn("Drop",async()=>{ if(await listUpdate(it,{Status:"Dropped"},{status:"Dropped"},"Dropped",{Status:it.status},{status:it.status})) close&&close(); });
-    setTimeout(()=>ta.focus({preventScroll:true}),50); }
+  function openListItem(it,from){ // Nov 2 (tasks, round two): the task sheet is built around taps; every change saves as it's made
+    const wrap=el("div","ledit zn-ts"); const T=TODAY(); const task=isTask(it);
+    const put=async(props,patch,msg)=>listUpdate(it,props,patch,msg);
+    // status row: done circle · star · private
+    const st=el("div","zn-tsstat"); const big=el("button","zn-tsbig"+(it.status==="Done"?" on":"")); big.type="button"; big.setAttribute("aria-label",it.status==="Done"?"Done, tap to reopen":"Mark done"); big.disabled=!mcp||!task;
+    const lab=el("span","zn-tslab",it.status==="Done"?"Done · tap to reopen":it.status==="Someday"?"Someday":it.status==="Dropped"?"Dropped":"Open · tap to finish");
+    big.addEventListener("click",async()=>{ big.disabled=true; const on=it.status!=="Done"; try{ await setDone(it,on); big.classList.toggle("on",on); lab.textContent=on?"Done · tap to reopen":"Open · tap to finish"; }catch(e){ toast(writeErr(e)); } big.disabled=false; });
+    const starB=el("button","zn-tsico"+(it.star?" on":""),"★"); starB.type="button"; starB.setAttribute("aria-label",it.star?"Unstar":"Star"); starB.addEventListener("click",async()=>{ await put({Star:it.star?"__NO__":"__YES__"},{star:!it.star}); starB.classList.toggle("on",it.star); });
+    const lockB=el("button","zn-tsico"+(it.priv?" on":""),"🔒"); lockB.type="button"; lockB.setAttribute("aria-label",it.priv?"Private, tap to make it visible to the brief":"Make it private"); lockB.addEventListener("click",async()=>{ await put({Private:it.priv?"__NO__":"__YES__"},{priv:!it.priv},it.priv?"Private · out of the brief and the radio":"Visible to the brief again"); lockB.classList.toggle("on",it.priv); });
+    st.append(big,lab,el("span","zn-tssp"),starB,lockB); wrap.append(st);
+    // title
+    const ta=el("textarea","zn-tstitle"); ta.rows=2; ta.value=it.name; ta.setAttribute("aria-label","Title"); ta.addEventListener("blur",async()=>{ const name=ta.value.replace(/\s+/g," ").trim(); if(name&&name!==it.name) await put({Name:name},{name}); else if(!name) ta.value=it.name; }); wrap.append(ta);
+    const sec=(k)=>{ const d=el("div","zn-tssec"); d.append(el("p","zn-tsk",k)); wrap.append(d); return d; };
+    const chips=(parent,items)=>{ const row=el("div","zn-tschips"); items.forEach(([lab,on,fn,aria])=>{ const c=el("button","zn-chip"+(on?" on":""),lab); c.type="button"; if(aria) c.setAttribute("aria-label",aria); c.setAttribute("aria-pressed",String(!!on)); c.addEventListener("click",()=>fn(c)); row.append(c); }); parent.append(row); return row; };
+    // when
+    if(task){ const w=sec("When"); const dateI=el("input"); dateI.type="date"; dateI.className="zn-tsdate"; dateI.setAttribute("aria-label","Pick a day"); w.append(dateI);
+      const setDue=async(d)=>{ await put({"date:Due:start":d||null},{due:d||""},d?`Due ${dueLabel(d)}`:"No date"); drawWhen(); };
+      const drawWhen=()=>{ w.querySelectorAll(".zn-tschips").forEach(x=>x.remove());
+        chips(w,[ ...(it.due?[[dueLabel(it.due),true,()=>setDue(""),"Clear the date"]]:[]), ["Today",it.due===T,()=>setDue(T)], ["Tomorrow",it.due===addDays(T,1),()=>setDue(addDays(T,1))], ["Pick a day",false,()=>{ try{ dateI.showPicker(); }catch(e){ dateI.focus(); dateI.click(); } }],
+          ...(it.status==="Open"&&calOK()?[["📅 Place it",!!(it.sched&&it.sched.slice(0,10)>=T),()=>{ close&&close(); setTimeout(()=>openScheduleSheet(it,from),220); },"Put it on the calendar"]]:[]) ]); };
+      dateI.addEventListener("change",()=>{ if(dateI.value) setDue(dateI.value); }); drawWhen(); }
+    // size + energy
+    if(task){ const z=sec(`Size${it.estSource?" · "+(it.estSource==="Guessed"?"Alice’s guess":it.estSource==="Learned"?"learned from what it took":"your size"):""}`);
+      const drawSize=()=>{ z.querySelectorAll(".zn-tschips").forEach(x=>x.remove()); z.querySelector(".zn-tsk").textContent=`Size${it.estSource?" · "+(it.estSource==="Guessed"?"Alice’s guess":it.estSource==="Learned"?"learned from what it took":"your size"):""}`;
+        chips(z,[ ...ZN_SIZES.map(([m,l])=>[l,it.est===m,async()=>{ await put({Estimate:m,"Estimate Source":"Mine"},{est:m,estSource:"Mine"}); drawSize(); },`${znDur(m)}`]), ["Light",it.energy==="Light",async()=>{ const v=it.energy==="Light"?"":"Light"; await put({Energy:v||null},{energy:v}); drawSize(); }], ["Deep",it.energy==="Deep",async()=>{ const v=it.energy==="Deep"?"":"Deep"; await put({Energy:v||null},{energy:v}); drawSize(); }] ]); };
+      drawSize(); }
+    // area + project
+    { const ap=sec("Area · Project"); const AR=[["Work","💼"],["Personal","🌱"],["Home","🏠"],["Birdie","🐕"],["Us","💕"]];
+      const drawArea=()=>{ ap.querySelectorAll(".zn-tschips").forEach(x=>x.remove());
+        const row=chips(ap,AR.map(([a,ic])=>[it.area===a?`${ic} ${a}`:ic,it.area===a,async()=>{ await put({Area:a},{area:a}); drawArea(); },a]));
+        const pj=el("button","zn-chip zn-tsproj"+(it.project?" on":""),(it.project||"Project")+" ▾"); pj.type="button"; pj.setAttribute("aria-label","Project: "+(it.project||"none")); pj.addEventListener("click",()=>{ const names=[...new Set(LIST.map(x=>x.project).filter(Boolean))].sort(); const box=el("div","zn-tsproj-pick");
+          const opt=(lab,val)=>{ const b=el("button","zn-pill"+(val===it.project?" zn-dark":""),lab); b.type="button"; b.addEventListener("click",async()=>{ await put({Project:val},{project:val}); box.remove(); drawArea(); }); box.append(b); };
+          names.forEach(n=>opt(n,n)); if(it.project) opt("No project",""); const nb=el("button","zn-pill","New…"); nb.type="button"; nb.addEventListener("click",()=>{ const v=prompt("Project name"); if(v&&v.trim()) opt(v.trim(),v.trim()); if(v&&v.trim()) box.lastChild.click(); }); box.append(nb); pj.after(box); }); row.append(pj); };
+      drawArea(); }
+    // folded rows: steps · repeats/snooze/waiting · prep · Alice's notes
+    const fold=(label,sub,build)=>{ const r=el("button","zn-tsfold"); r.type="button"; r.setAttribute("aria-expanded","false"); r.innerHTML=`<span>${znEsc(label)}${sub?` <small>${znEsc(sub)}</small>`:""}</span><span aria-hidden="true">›</span>`; const body=el("div","zn-tsfoldbody"); body.hidden=true; let built=false; r.addEventListener("click",()=>{ if(!built){ build(body); built=true; } body.hidden=!body.hidden; r.setAttribute("aria-expanded",String(!body.hidden)); r.classList.toggle("open",!body.hidden); }); wrap.append(r,body); return r; };
+    if(task){ let steps=(it.steps||"").split(/\n/).map(x=>x.trim()).filter(Boolean); const nd=steps.filter(x=>/^\[x\]/i.test(x)).length;
+      fold("Steps",steps.length?`${nd} of ${steps.length} done`:"none",(body)=>{ const writeSteps=async()=>{ const txt=steps.join("\n"); await put({Steps:txt},{steps:txt}); };
+        const draw=()=>{ body.replaceChildren(); steps.forEach((ln,i)=>{ const done=/^\[x\]/i.test(ln); const l=el("label","lstep"+(done?" done":"")); const cb=el("input"); cb.type="checkbox"; cb.checked=done; cb.disabled=!mcp; cb.addEventListener("change",()=>{ steps[i]=(cb.checked?"[x] ":"")+ln.replace(/^\[x\]\s*/i,""); draw(); writeSteps(); }); const rm=el("button","lsrm","×"); rm.type="button"; rm.setAttribute("aria-label","Remove step"); rm.addEventListener("click",()=>{ steps.splice(i,1); draw(); writeSteps(); }); l.append(cb,el("span",null,ln.replace(/^\[x\]\s*/i,"")),rm); body.append(l); });
+          const add=el("div","row"); const ai=el("input","field"); ai.placeholder="Add a step"; ai.setAttribute("aria-label","Add a step"); const ab=el("button","btn ghost sm","Add"); ab.type="button"; const go=()=>{ const v=ai.value.trim(); if(!v) return; steps.push(v); draw(); writeSteps(); }; ab.addEventListener("click",go); ai.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); go(); } }); add.append(ai,ab); body.append(add); }; draw(); }); }
+    fold("Repeats · Snooze · Waiting on",[it.repeat?"↻ "+it.repeat:"",it.snooze&&it.snooze>T?"until "+dueLabel(it.snooze):"",it.waiting?"waiting on "+it.waiting:""].filter(Boolean).join(" · ")||"none",(body)=>{
+      const fld=(label,type,val,ph)=>{ const l=el("label","note",label); const i=el("input","field"); i.type=type; i.value=val||""; if(ph) i.placeholder=ph; l.append(i); body.append(l); return i; };
+      const repI=fld("Repeats","text",it.repeat,"every 30 days · weekly · every Sun"); repI.addEventListener("change",async()=>{ const rp=repI.value.trim().toLowerCase(); if(rp&&!repeatParse(rp)){ toast("Try: every 30 days, weekly, every Sun, monthly on the 1st"); return; } const props={Repeat:rp}, patch={repeat:rp}; if(rp&&!it.due){ const d=repeatFirst(rp,T); if(d){ props["date:Due:start"]=d; patch.due=d; } } await put(props,patch,rp?"Repeats "+rp:"No repeat"); });
+      const snzI=fld("Snooze until","date",it.snooze); snzI.addEventListener("change",async()=>{ await put({"date:Snooze Until:start":snzI.value||null},{snooze:snzI.value||""},snzI.value?"Snoozed until "+dueLabel(snzI.value):"Snooze off"); });
+      const waitI=fld("Waiting on","text",it.waiting,"who or what"); waitI.addEventListener("change",async()=>{ const wo=waitI.value.trim(); await put({"Waiting On":wo,"date:Waiting Since:start":wo?(wo!==it.waiting?T:it.wsince||T):null},{waiting:wo,wsince:wo?(wo!==it.waiting?T:it.wsince):""},wo?"Waiting on "+wo:"Not waiting"); });
+      const kindL=el("label","note","Kind"); const ks=el("select","field"); KINDS.forEach(o=>{ const op=el("option",null,o); op.value=o; if(o===it.kind) op.selected=true; ks.append(op); }); kindL.append(ks); body.append(kindL); ks.addEventListener("change",async()=>{ await put({Kind:ks.value},{kind:ks.value},"Now a "+ks.value.toLowerCase()); }); });
+    if(task&&!it.priv){ const p0=ZN_PREPS.find(p=>p.kind==="task"&&znPrepNorm(p.title)===znPrepNorm(it.name)); const pr=fold("✨ Prep",p0?"ready":"ask Alice",async(body)=>{ const go=el("button","zn-pill zn-dark",p0?"Open the prep":"Prep this"); go.type="button"; go.disabled=!LIVE; body.append(go); go.addEventListener("click",async()=>{ if(p0){ znPrepSheet(p0,go,""); return; } go.disabled=true; go.textContent="Alice is preparing…"; const d=await znPrepCall("one",{kind:"task",title:it.name,project:it.project||"",steps:it.steps||"",notes:it.due?("due "+it.due):"",date:T}); go.disabled=false; go.textContent="Prep this"; if(d&&d.prep){ const p={key:d.key,title:it.name,kind:"task",date:T,prep:d.prep}; ZN_PREPS=ZN_PREPS.filter(x=>x.key!==d.key).concat([p]); znPrepSheet(p,go,""); } else toast("Couldn’t prep this right now"); }); }); void pr; }
+    if(it.anotes) fold("Alice’s notes","",(body)=>{ body.append(el("p","anotes",it.anotes)); });
+    // actions
+    const acts=el("div","zn-tsacts"); const act=(t,cls,fn)=>{ const b=el("button","zn-pill"+(cls?" "+cls:""),t); b.type="button"; b.addEventListener("click",fn); acts.append(b); return b; };
+    if(task&&it.status==="Open"){ act("Pick for today","zn-dark",async()=>{ await pickToday(it.name); try{ znRender(); }catch(e){} }); act("→ Tomorrow","",async()=>{ if(await addToTomorrow([it.name],"On tomorrow's top 3")) close&&close(); }); }
+    if(it.status==="Open"&&it.owner!=="Alice") act("🤝 Alice","",async()=>{ if(await put({Owner:"Alice","Alice Status":"Assigned","date:Alice Updated:start":T},{owner:"Alice",astat:"Assigned",aupd:T},"Handed to Alice")) close&&close(); });
+    if(it.status==="Open"&&it.owner==="Alice") act("Take it back","",async()=>{ if(await put({Owner:"Claire","Alice Status":null},{owner:"Claire",astat:""},"Back with you")) close&&close(); });
+    const more=act("⋯","",()=>{ more.hidden=true; if(it.status==="Open") act("Someday","",async()=>{ if(await put({Status:"Someday"},{status:"Someday"},"Moved to someday")) close&&close(); }); if(it.status!=="Open") act("Reopen","",async()=>{ if(await put({Status:"Open","date:Done On:start":null},{status:"Open",doneOn:""},"Back on your list")) close&&close(); }); act("Drop","zn-warn",async()=>{ if(await put({Status:"Dropped"},{status:"Dropped"},"Dropped")) close&&close(); }); }); more.setAttribute("aria-label","More actions");
+    wrap.append(acts,el("p","zn-tsauto","Changes save as you tap."));
+    const close=openSheet({kicker:`${KIND_IC[it.kind]||""} ${it.kind}${it.area?" · "+it.area:""}`,title:"",body:[wrap],color:"var(--plan)",from}); }
   // capture box: live preview of how the shorthand was read
   
   
