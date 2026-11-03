@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-03.3"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-03.4"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1383,6 +1383,11 @@ body.zn .zn-pacts4{margin-top:12px}
 .zn-pj .zn-pjrow .zn-rchk{flex:none}
 .zn-pj .zn-pjmore{border:0;background:transparent;font:inherit;font-size:14px;color:inherit;padding:10px 0;opacity:.75;cursor:pointer}
 .zn-pj .zn-tadd{margin-top:6px}
+
+/* Nov 3: project rhythms, prep box, materials */
+.zn-pj .zn-pjsub{font-size:12.5px;opacity:.75;margin:0 0 8px}
+.zn-pj .zn-pjprep{background:#E9E2FF;border-radius:14px;padding:12px;margin:0 0 12px}.zn-pj .zn-pjprep b{display:block;font-size:14px;margin-bottom:4px}.zn-pj .zn-pjprep p{margin:0 0 8px;font-size:13px;line-height:1.4}.zn-pj .zn-pjprep .zn-pill{min-height:34px}
+.zn-pj .zn-pjlink{color:#4B3FA0;text-decoration:underline;font-size:12px}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -2466,8 +2471,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function znProjectsOf(){ const pj={}; LIST.filter(it=>forClaire(it)&&it.project&&it.status!=="Dropped").forEach(it=>{ (pj[it.project]=pj[it.project]||[]).push(it); }); return pj; }
   function znProjectStat(its){ const T=TODAY(); const tasks=its.filter(isTask); const open=tasks.filter(x=>x.status==="Open"); const done=tasks.filter(x=>x.status==="Done"); const notes=its.filter(x=>!isTask(x)); const nextDue=open.map(x=>x.due||(x.sched||"").slice(0,10)).filter(Boolean).sort()[0]||"";
     const area=(()=>{ const c={}; its.forEach(x=>{ if(x.area) c[x.area]=(c[x.area]||0)+1; }); return Object.keys(c).sort((a,b)=>c[b]-c[a])[0]||"Personal"; })();
-    const sub=[open.length?`${open.length} open`:tasks.length?`${done.length} done`:"idea stage",nextDue?(nextDue<T?"overdue":"due "+dueLabel(nextDue)):"",notes.length?`${notes.length} note${notes.length===1?"":"s"}`:""].filter(Boolean).join(" · ");
-    return {tasks,open,done,notes,nextDue,area,sub}; }
+    const rh=ZN_RHY.find(r=>r.project&&its.some(x=>x.project===r.project)); const sub=[rh&&rh.next?"next "+dueLabel(rh.next):"",open.length?`${open.length} open`:tasks.length?`${done.length} done`:"idea stage",nextDue?(nextDue<T?"overdue":"due "+dueLabel(nextDue)):"",notes.length?`${notes.length} note${notes.length===1?"":"s"}`:""].filter(Boolean).join(" · ");
+    return {tasks,open,done,notes,nextDue,area,sub,rh}; }
   function znProjects(host){ // Nov 3 (tasks, round two): one list of projects, personal and work side by side
     const pj=znProjectsOf(); const names=Object.keys(pj).sort((a,b)=>{ const A=znProjectStat(pj[a]), B=znProjectStat(pj[b]); return (B.open.length-A.open.length)||a.localeCompare(b); });
     const c=znCard("zn-projects",""); c.innerHTML=znH("Projects",names.length?`${names.filter(n=>znProjectStat(pj[n]).open.length).length} active`:"");
@@ -2477,13 +2482,18 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     host.append(c); }
   function znProjectSheet(name,from){ // Nov 3: a project page — stats, open tasks, notes, done, and an add card with the project preset
     const its=(znProjectsOf()[name]||[]); const st=znProjectStat(its); const box=el("div","zn-pj");
+    const rh=ZN_RHY.find(r=>r.project===name); if(rh){ box.append(el("p","zn-pjsub",[rh.label,rh.next?"next session "+dueLabel(rh.next):""].filter(Boolean).join(" · "))); }
+    const sp=rh?ZN_PREPS.find(p=>p.kind==="project"&&znPrepNorm(p.title)===znPrepNorm(name+" · session")):null;
+    if(sp){ const bx=el("div","zn-pjprep"); const wdn=sp.date?DAYS_LONG[new Date(sp.date+"T12:00:00Z").getUTCDay()]:""; bx.append(el("b",null,`✨ Before ${wdn||"the session"}`),el("p",null,(sp.prep&&sp.prep.summary)||"")); const ob=el("button","zn-pill zn-dark","Open the prep"); ob.type="button"; ob.addEventListener("click",()=>znPrepSheet(sp,ob,rh.label||"")); bx.append(ob); box.append(bx); }
     const stat=el("div","zn-pjstat"); [["Open",st.open.length],["Done",st.done.length],["Notes",st.notes.length]].forEach(([k,v])=>{ const d=el("div"); d.append(el("small",null,k),el("b",null,String(v))); stat.append(d); }); box.append(stat);
     const sec=(lab,sub)=>{ const h=el("h3","zn-pjh"); h.append(document.createTextNode(lab)); if(sub) h.append(el("span",null,sub)); box.append(h); };
     const trow=(it)=>{ const r=el("div","zn-pjrow"); const chk=el("button","zn-rchk",it.status==="Done"?"✓":""); chk.type="button"; chk.setAttribute("aria-label",(it.status==="Done"?"Reopen: ":"Done: ")+it.name); chk.disabled=!mcp; chk.addEventListener("click",async()=>{ chk.disabled=true; try{ await setDone(it,it.status!=="Done"); redo(); }catch(e){ toast(writeErr(e)); chk.disabled=false; } });
       const tx=el("button","zn-ttx"); tx.type="button"; tx.innerHTML=`<b>${znEsc(it.name)}${it.priv?" 🔒":""}</b><span>${[it.due?(it.due===TODAY()?"due today":"due "+dueLabel(it.due)):"",it.est?znDur(it.est)+(it.energy==="Deep"?" · Deep":""):"",it.repeat?"↻ "+it.repeat:"",it.sched&&it.sched.slice(0,10)>=TODAY()?"placed":""].filter(Boolean).join(" · ")}</span>`; tx.addEventListener("click",()=>openListItem(it,tx)); r.append(chk,tx); return r; };
     const nrow=(it)=>{ const r=el("button","zn-pjrow zn-pjnote"); r.type="button"; r.append(el("span","zn-pjic",NB_IC[it.kind]||"📝"),(()=>{ const t=el("span","zn-ttx"); t.innerHTML=`<b>${znEsc(it.name)}${it.priv?" 🔒":""}</b><span>${znEsc(nbDate(it.created))}</span>`; return t; })()); r.addEventListener("click",()=>openListItem(it,r)); return r; };
     if(st.open.length){ sec("Open",String(st.open.length)); st.open.sort((a,b)=>(a.due||"9").localeCompare(b.due||"9")).forEach(it=>box.append(trow(it))); }
-    if(st.notes.length){ sec("Notes","newest first"); st.notes.sort((a,b)=>(b.created||"").localeCompare(a.created||"")).forEach(it=>box.append(nrow(it))); }
+    const mats=st.notes.filter(x=>x.source==="Inbox"), plain=st.notes.filter(x=>x.source!=="Inbox");
+    if(mats.length){ sec("Materials","from email"); mats.sort((a,b)=>(b.created||"").localeCompare(a.created||"")).forEach(it=>{ const r=nrow(it); r.querySelector(".zn-pjic").textContent="📎"; const m=String(it.steps||"").match(/https?:\/\/\S+/); if(m){ const a=el("a","zn-pjlink","open the email"); a.href=m[0]; a.target="_blank"; a.rel="noopener"; a.addEventListener("click",e=>e.stopPropagation()); r.querySelector(".zn-ttx span").append(document.createTextNode(" · "),a); } box.append(r); }); }
+    if(plain.length){ sec("Notes","newest first"); plain.sort((a,b)=>(b.created||"").localeCompare(a.created||"")).forEach(it=>box.append(nrow(it))); }
     if(st.done.length){ const h=el("button","zn-pjmore"); h.type="button"; h.textContent=`Done · ${st.done.length} ›`; const body=el("div"); body.hidden=true; h.addEventListener("click",()=>{ body.hidden=!body.hidden; if(!body.children.length) st.done.sort((a,b)=>(b.doneOn||"").localeCompare(a.doneOn||"")).forEach(it=>body.append(trow(it))); }); box.append(h,body); }
     if(!its.length) box.append(el("p","zn-empty","Nothing here yet. Add the first task or note below."));
     box.append(el("h3","zn-pjh","Add to this project")); box.append(znAddTaskCard(()=>redo(),{project:name}));
@@ -2696,10 +2706,10 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // Nov 2 (the agent, job 2): prep notes from zone-prep (agent.prep). Loaded for today + tomorrow every 15 minutes; shown as a "Prep" chip on
   // meeting rows (Plan day view, Tonight's tomorrow card), a "Prep for today" card on weekday mornings until the last prepped meeting starts,
   // and "Prep this" on any non-private task. The sheet: summary, Bring, Ask, Read, Alice's note, Add "Bring" to my List, Redo.
-  let ZN_PREPS=[], ZN_PREP_AT=0, ZN_PREP_BUSY=false;
+  let ZN_PREPS=[], ZN_PREP_AT=0, ZN_PREP_BUSY=false, ZN_RHY=[];
   async function znPrepCall(part,payload){ try{ if(typeof APP==="undefined"||!APP.sb) return null; const s=await APP.sb.auth.getSession(); const tk=s&&s.data&&s.data.session&&s.data.session.access_token; if(!tk) return null;
     const r=await fetch(APP.url+"/functions/v1/zone-prep?part="+part,{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify({person:PERSON.person||"claire",...payload})}); const j=await r.json(); return r.ok&&j.ok?j:{error:j.error||("zone-prep "+r.status)}; }catch(e){ return null; } }
-  async function znPrepLoad(force){ if(ZN_PREP_BUSY||(!force&&Date.now()-ZN_PREP_AT<15*60e3)) return; ZN_PREP_BUSY=true; try{ const d=await znPrepCall("get",{date:TODAY()}); if(d&&Array.isArray(d.preps)){ const was=JSON.stringify(ZN_PREPS.map(p=>p.key)); ZN_PREPS=d.preps; ZN_PREP_AT=Date.now(); if(JSON.stringify(ZN_PREPS.map(p=>p.key))!==was){ znSoon(); try{ if(!$("#view-ahead").hidden) znPlanRender(); }catch(e){} } } }finally{ ZN_PREP_BUSY=false; } }
+  async function znPrepLoad(force){ if(ZN_PREP_BUSY||(!force&&Date.now()-ZN_PREP_AT<15*60e3)) return; ZN_PREP_BUSY=true; try{ const d=await znPrepCall("get",{date:TODAY()}); if(d&&Array.isArray(d.preps)){ const was=JSON.stringify(ZN_PREPS.map(p=>p.key)); ZN_PREPS=d.preps; if(Array.isArray(d.rhythms)) ZN_RHY=d.rhythms; ZN_PREP_AT=Date.now(); if(JSON.stringify(ZN_PREPS.map(p=>p.key))!==was){ znSoon(); try{ if(!$("#view-ahead").hidden) znPlanRender(); }catch(e){} } } }finally{ ZN_PREP_BUSY=false; } }
   const znPrepNorm=t=>String(t||"").toLowerCase().replace(/\s+/g," ").trim().slice(0,60);
   function znPrepFor(date,title){ const n=znPrepNorm(title); return ZN_PREPS.find(p=>p.date===date&&znPrepNorm(p.title)===n)||null; }
   function znPrepSheet(p,from,when){ const P=p.prep||{}; const box=el("div","zn-psheet");
