@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-02.7"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-02.8"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1313,6 +1313,12 @@ body.zn.zn-night .zn-prepchip{background:rgba(217,200,255,.25);color:#F3EEFF}
 .zn-psheet .zn-plink{font-size:13.5px;color:#4B3FA0;text-decoration:underline}
 .zn-psheet .zn-pacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
 .zn-prepthis{margin:0 0 10px}
+
+/* Nov 2: task sheet additions */
+.ledit .lchk{display:flex;align-items:center;gap:8px;grid-column:1/-1;font-size:13.5px}
+.ledit .lchk input{width:20px;height:20px;accent-color:#1F2340}
+.ledit .lsrc{display:block;font-size:11.5px;opacity:.65;margin-top:2px}
+body.zn .zn-wrow .zn-rchk{flex:none}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -2237,9 +2243,9 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const size=el("div","zn-size"); size.hidden=true;
     const fmt=m=>m>=60?(m%60?`${Math.floor(m/60)}h ${m%60}m`:`${m/60}h`):`${m}m`;
     const drawSize=()=>{ size.replaceChildren(); const raw=inp.value.trim(); if(raw.length<4||st.kind!=="To-do"){ size.hidden=true; return; } size.hidden=false;
-      const est=st.est||(st.guess&&st.guess.est)||0, en=st.energy||(st.guess&&st.guess.energy)||"", ar=st.area||(st.guess&&st.guess.area)||"";
+      const pc=parseCapture(raw); const tagArea=/#(work|personal|home|birdie|us)\b/i.test(raw)?pc.area:""; const est=st.est||pc.est||(st.guess&&st.guess.est)||0, en=st.energy||(st.guess&&st.guess.energy)||"", ar=st.area||tagArea||(st.guess&&st.guess.area)||"";
       const line=el("button","zn-sizeline"); line.type="button"; line.setAttribute("aria-expanded",String(st.open));
-      line.innerHTML=`<b>${est?fmt(est):"Size"}${en?" · "+en:""}${ar?" · "+znEsc(ar):""}</b><span>${st.open?"done":"tap to change"}</span><em>${st.mine?"your size":st.guess?"engine’s guess":"no guess yet"}</em>`;
+      line.innerHTML=`<b>${est?fmt(est):"Size"}${en?" · "+en:""}${ar?" · "+znEsc(ar):""}</b><span>${st.open?"done":"tap to change"}</span><em>${st.mine||pc.est?"your size":st.guess?"engine’s guess":"no guess yet"}</em>`;
       line.addEventListener("click",()=>{ st.open=!st.open; drawSize(); }); size.append(line);
       if(st.open){ const row=el("div","zn-sizerow"); ZN_SIZES.forEach(([m,l])=>{ const b=el("button","zn-chip"+(est===m?" on":""),l); b.type="button"; b.setAttribute("aria-label",`${fmt(m)}`); b.addEventListener("click",()=>{ st.est=m; st.mine=true; drawSize(); }); row.append(b); }); size.append(row);
         const row2=el("div","zn-sizerow"); const tog=el("div","zn-tog"); ["Light","Deep"].forEach(x=>{ const b=el("button",en===x?"on":"",x); b.type="button"; b.setAttribute("aria-pressed",String(en===x)); b.addEventListener("click",()=>{ st.energy=x; drawSize(); }); tog.append(b); }); row2.append(tog);
@@ -2249,7 +2255,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     inp.addEventListener("input",()=>{ if(!st.mine) st.guess=null; drawSize(); guess(); });
     const draw=()=>{ chips.replaceChildren(); ["To-do","Reminder","Note","Idea"].forEach(kd=>chips.append(mk(kd,st.kind===kd,()=>{ st.kind=kd; drawSize(); }))); chips.append(el("span","zn-tsep")); [["Today",T],["Tomorrow",addDays(T,1)]].forEach(([l,d])=>chips.append(mk(l,st.when===d,()=>{ st.when=st.when===d?"":d; }))); const pick=mk(st.when&&st.when!==T&&st.when!==addDays(T,1)?dueLabel(st.when):"Pick a day",!!(st.when&&st.when!==T&&st.when!==addDays(T,1)),()=>{ const v=prompt("Due (YYYY-MM-DD)",st.when||T); if(v&&/^\d{4}-\d{2}-\d{2}$/.test(v)) st.when=v; }); chips.append(pick); }; draw(); add.append(chips); add.append(size);
     const submit=async()=>{ const raw=inp.value.trim(); if(!raw) return; go.disabled=true; try{ const p=parseCapture(raw); if(st.kind!=="To-do"||!p.kind) p.kind=st.kind; if(st.when) p.due=st.when; if(st.area) p.area=st.area; else if(!p.area&&st.guess&&st.guess.area) p.area=st.guess.area; if(!p.area) p.area="Personal";
-      if(p.kind==="To-do"){ const est=st.est||(st.guess&&st.guess.est)||p.est||0; if(est){ p.est=est; p.estSource=st.mine||(p.est&&!st.guess)?"Mine":"Guessed"; } const en=st.energy||(st.guess&&st.guess.energy)||""; if(en) p.energy=en; } if(st.priv) p.priv=true;
+      if(p.kind==="To-do"){ const typed=p.est; const est=st.est||typed||(st.guess&&st.guess.est)||0; if(est){ p.est=est; p.estSource=(st.mine||typed)?"Mine":"Guessed"; } const en=st.energy||(st.guess&&st.guess.energy)||""; if(en) p.energy=en; } if(st.priv) p.priv=true;
       const ok=await listCreate(p,"Plan"); if(ok){ const made=LIST.find(x=>x.name===p.name&&!/^tmp/.test(x.id)); if(p.kind==="To-do"&&!p.est) znSizeAfter(made); inp.value=""; st.when=""; st.est=0; st.energy=""; st.area=""; st.priv=false; st.mine=false; st.guess=null; st.open=false; toast(`Added · ${p.name}${p.est?" · "+fmt(p.est):""}`); draw(); drawSize(); onAdded&&onAdded(); } }catch(e){ toast(writeErr(e)); } go.disabled=!mcp; };
     go.addEventListener("click",submit); inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); submit(); } });
     return add;
@@ -2257,12 +2263,12 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function znTasksView(){ const T=TODAY(), T7=addDays(T,7); const open=LIST.filter(it=>it.status!=="Done"&&forClaire(it)&&!(it.snooze&&it.snooze>T)); const done=LIST.filter(it=>it.status==="Done"&&it.doneOn>=addDays(T,-3)).sort((a,b)=>b.doneOn.localeCompare(a.doneOn));
     const wrap=el("div","zn-tasks");
     wrap.append(znAddTaskCard(()=>znPlanRender()));
-    const groups=[["Today",it=>isTask(it)&&(it.star||(it.due&&it.due<=T))],["Up next",it=>isTask(it)&&it.due&&it.due>T&&it.due<=T7],["Inbox · no date yet",it=>isTask(it)&&!it.due&&!it.star],["Notes & ideas",it=>!isTask(it)]];
+    const groups=[["Today",it=>isTask(it)&&(it.star||(it.due&&it.due<=T)||it.focus===T||(it.sched&&it.sched.slice(0,10)===T))],["Up next",it=>isTask(it)&&it.due&&it.due>T&&it.due<=T7],["Inbox · no date yet",it=>isTask(it)&&!it.due&&!it.star],["Notes & ideas",it=>!isTask(it)]];
     groups.forEach(([name,f])=>{ const rows=open.filter(f).sort((a,b)=>(a.due||"9").localeCompare(b.due||"9")); const c=znCard("zn-tgroup","",name); c.innerHTML=znH(name,rows.length?String(rows.length):"nothing");
       if(!rows.length) c.append(el("p","zn-empty",name==="Today"?"Nothing starred or due today.":"Nothing here."));
       rows.forEach(it=>{ const r=el("div","zn-trow"); const chk=el("button","zn-rchk"); chk.type="button"; chk.setAttribute("aria-label",`Done: ${it.name}`); chk.disabled=!mcp||!isTask(it);
         chk.addEventListener("click",async()=>{ chk.disabled=true; try{ await setDone(it,true); znPlanRender(); }catch(e){ toast(writeErr(e)); chk.disabled=false; } });
-        const tx=el("span","zn-ttx"); tx.style.cursor="pointer"; tx.setAttribute("role","button"); tx.setAttribute("aria-label",`Edit ${it.name}`); tx.addEventListener("click",()=>znEditTask(it,tx)); const due=it.due?(it.due<T?"overdue":it.due===T?"today":new Date(it.due+"T12:00:00Z").toLocaleDateString("en-US",{weekday:"short",timeZone:"UTC"})):""; tx.innerHTML=`<b>${znEsc(it.name)}</b><span>${[AREA_IC[it.area]?AREA_IC[it.area]+" "+it.area:"",!isTask(it)?it.kind:"",it.repeat?"↻ "+it.repeat:""].filter(Boolean).join(" · ")}</span>`;
+        const tx=el("span","zn-ttx"); tx.style.cursor="pointer"; tx.setAttribute("role","button"); tx.setAttribute("aria-label",`Edit ${it.name}`); tx.addEventListener("click",()=>znEditTask(it,tx)); const due=it.due?(it.due<T?"overdue":it.due===T?"today":new Date(it.due+"T12:00:00Z").toLocaleDateString("en-US",{weekday:"short",timeZone:"UTC"})):""; tx.innerHTML=`<b>${znEsc(it.name)}${it.priv?" 🔒":""}</b><span>${[AREA_IC[it.area]?AREA_IC[it.area]+" "+it.area:"",!isTask(it)?it.kind:"",isTask(it)&&it.est?znDur(it.est)+(it.energy==="Deep"?" · Deep":""):"",it.sched&&it.sched.slice(0,10)>=T?"📅 "+(it.sched.slice(0,10)===T?"":dueLabel(it.sched.slice(0,10))+" ")+hLabel(Number(it.sched.slice(11,13))+Number(it.sched.slice(14,16))/60):"",it.repeat?"↻ "+it.repeat:""].filter(Boolean).join(" · ")}</span>`;
         const star=el("button","zn-tstar"+(it.star?" on":""),"★"); star.type="button"; star.setAttribute("aria-label",(it.star?"Unstar ":"Star ")+it.name); star.disabled=!mcp; star.addEventListener("click",async()=>{ await listUpdate(it,{Star:it.star?"__NO__":"__YES__"},{star:!it.star}); znPlanRender(); });
         r.append(chk,tx); if(due) r.append(Object.assign(el("span","zn-tdue"+(it.due<T?" late":""),due),{})); if(isTask(it)) r.append(star); c.append(r); }); wrap.append(c); });
     const dc=znCard("zn-tgroup zn-tdone","","Done"); dc.innerHTML=znH("Done",`last 3 days · ${done.length}`); if(!done.length) dc.append(el("p","zn-empty","Nothing yet."));
@@ -2318,8 +2324,9 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // three groups with their size and energy, and Place: the first work-hours gap the task fits, on its due day if it has one, else the next
   // weekday within two weeks; Deep tasks prefer a gap that starts before 2pm. Same writes as "place a task here" (calendar queue + Scheduled).
   const WORK_H={from:9,to:17};
+  function znPlacedOn(d){ return LIST.filter(it=>it.sched&&it.sched.slice(0,10)===d&&it.status==="Open").map(it=>{ const [h,m]=it.sched.slice(11,16).split(":").map(Number); const s=h+(m||0)/60; return {s,e:s+(it.est||30)/60,n:it.name,placed:true}; }); } /* Nov 2: what she already placed is busy too */
   function znWorkGaps(d){ const T=TODAY(); if(offFor(d)) return []; const wd=new Date(d+"T12:00:00Z").getUTCDay(); if(wd===0||wd===6) return []; let from=WORK_H.from; const to=WORK_H.to; if(d===T) from=Math.max(from,Math.ceil(nowH()*4)/4); if(d<T||from>=to) return [];
-    const busy=busyOn(d).filter(b=>b.e>from&&b.s<to&&!/work blocks?\b|work day/i.test(b.n||"")).sort((a,b)=>a.s-b.s); const gaps=[]; /* the brief's "N work blocks" summary line is the workday itself, not a meeting */ let cur=from; busy.forEach(b=>{ if(b.s>cur+1e-6) gaps.push({s:cur,e:Math.min(b.s,to)}); cur=Math.max(cur,b.e); }); if(cur<to) gaps.push({s:cur,e:to}); return gaps.filter(g=>g.e-g.s>=0.25); }
+    const busy=[...busyOn(d),...znPlacedOn(d)].filter(b=>b.e>from&&b.s<to&&!/work blocks?\b|work day/i.test(b.n||"")).sort((a,b)=>a.s-b.s); const gaps=[]; /* the brief's "N work blocks" summary line is the workday itself, not a meeting */ let cur=from; busy.forEach(b=>{ if(b.s>cur+1e-6) gaps.push({s:cur,e:Math.min(b.s,to)}); cur=Math.max(cur,b.e); }); if(cur<to) gaps.push({s:cur,e:to}); return gaps.filter(g=>g.e-g.s>=0.25); }
   function znWorkOpen(d){ return znWorkGaps(d).reduce((a,g)=>a+(g.e-g.s),0); }
   function znWorkSlot(d,it){ const need=(it.est||30)/60; const fits=znWorkGaps(d).filter(g=>g.e-g.s>=need); const pick=(it.energy==="Deep"&&fits.find(g=>g.s<14))||fits[0]; return pick?{s:pick.s,e:pick.s+need}:null; }
   async function znWorkPlace(it,btn){ const T=TODAY(); const days=[T,...Array.from({length:13},(_,i)=>addDays(T,i+1))]; const pref=it.due&&it.due>=T?it.due:""; const order=pref?[pref,...days.filter(x=>x!==pref)]:days; let d=null,slot=null;
@@ -2330,7 +2337,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const c=znCard("zn-work",""); c.innerHTML=znH("Work this week","9–5 · Time Off honored");
     const cap=el("div","zn-wcap"); wk.forEach(d=>{ const o=znWorkOpen(d); const off=offFor(d); const used=Math.max(0,8-o); const t=el("div"); t.innerHTML=`<small>${new Date(d+"T12:00:00Z").toLocaleDateString("en-US",{weekday:"short",timeZone:"UTC"})}</small><b>${off?"off":(o%1?o.toFixed(1):o)+"h open"}</b><i><em style="width:${Math.min(100,Math.round(used/8*100))}%"></em></i>`; cap.append(t); }); c.append(cap);
     const whenOf=it=>[it.due?(it.due===T?"due today":"due "+dueLabel(it.due)):"", it.project||"", it.priv?"private: not in the brief":""].filter(Boolean).join(" · ")||"no date";
-    const row=it=>{ const r=el("div","zn-wrow"); const tx=el("button","zn-tt2"); tx.type="button"; tx.append(el("b",null,it.name+(it.priv?" 🔒":"")),el("span",null,whenOf(it))); tx.addEventListener("click",()=>openListItem(it,tx)); r.append(tx);
+    const row=it=>{ const r=el("div","zn-wrow"); const chk=el("button","zn-rchk"); chk.type="button"; chk.setAttribute("aria-label",`Done: ${it.name}`); chk.disabled=!mcp||!LIVE; chk.addEventListener("click",async()=>{ chk.disabled=true; try{ await setDone(it,true); znPlanRender(); }catch(e){ toast(writeErr(e)); chk.disabled=false; } }); r.append(chk); const tx=el("button","zn-tt2"); tx.type="button"; tx.append(el("b",null,it.name+(it.priv?" 🔒":"")),el("span",null,whenOf(it))); tx.addEventListener("click",()=>openListItem(it,tx)); r.append(tx);
       r.append(el("span","zn-wsz"+(it.energy==="Deep"?" zn-deep":""),`${znDur(it.est||30)}${it.energy==="Deep"?" · Deep":""}`));
       if(it.sched&&it.sched.slice(0,10)>=T){ const [h,m]=it.sched.slice(11,16).split(":").map(Number); r.append(el("span","zn-pill zn-dark",(it.sched.slice(0,10)===T?"":dueLabel(it.sched.slice(0,10))+" ")+hLabel(h+(m||0)/60))); }
       else { const b=el("button","zn-pill zn-dark","Place"); b.type="button"; b.disabled=!mcp||!LIVE||!calOK(); b.addEventListener("click",()=>znWorkPlace(it,b)); r.append(b); } return r; };
@@ -2517,7 +2524,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // back from the start of the stretch (calendar + Scheduled, like znPlace). Replaces the Sit / Bottle / Task quick links.
   function znFitCands(mins){ return LIST.filter(it=>it.status==="Open"&&isTask(it)&&forClaire(it)&&!isSnoozed(it)&&!it.waiting&&!it.sched&&(it.est||30)<=mins).sort((x,y)=>(y.star-x.star)||((x.due||"9999").localeCompare(y.due||"9999"))); }
   function znQuickCard(items,n,cur,nx){ const wd=new Date(TODAY()+"T12:00:00Z").getUTCDay(); const endH=(wd===0||wd===6)?20.5:21;
-    const a=Math.max(n,cur?cur.e:n); const nxt=(items||[]).filter(x=>x.s>=a-1e-6).sort((x,y)=>x.s-y.s)[0]; const b=Math.max(a,nxt?nxt.s:endH); const mins=Math.round((b-a)*60);
+    const a=Math.max(n,cur?cur.e:n); const nxt=[...(items||[]),...znPlacedOn(TODAY())].filter(x=>x.s>=a-1e-6).sort((x,y)=>x.s-y.s)[0]; const b=Math.max(a,nxt?nxt.s:endH); const mins=Math.round((b-a)*60);
     const fits=[]; if(mins>=15){ let left=mins; for(const it of znFitCands(mins)){ const e=it.est||30; if(e<=left){ fits.push(it); left-=e; } if(fits.length===2) break; } }
     window.__ZQ={a,b,fits};
     const head=mins>=15?`${znDur(mins)} open${cur?" after this":""}`:cur?`${znDur(Math.max(1,Math.round((cur.e-n)*60)))} left · ${znEsc(shortName(cur.name))}`:"no open time";
@@ -3787,6 +3794,9 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const snzI=fld("Snooze until","date",it.snooze);
     const waitI=fld("Waiting on","text",it.waiting,"who or what");
     const projI=fld("Project","text",it.project,"Birdie camp");
+    const [enl,enS]=selRow("Energy",["","Light","Deep"],it.energy||""); grid.append(enl); /* Nov 2 */
+    const pvl=el("label","note lchk"); const pvI=el("input"); pvI.type="checkbox"; pvI.checked=!!it.priv; pvl.append(pvI,document.createTextNode(" 🔒 Private · out of the brief and the radio")); grid.append(pvl);
+    if(it.estSource) { const src=el("span","hint lsrc",it.estSource==="Guessed"?"Alice’s guess":it.estSource==="Learned"?"learned from what it took":"your size"); estI.after(src); }
     // steps: a checklist kept on the item (the morning planner's steps can land here too)
     const stepsBox=el("div","lsteps"); let steps=(it.steps||"").split(/\n/).map(x=>x.trim()).filter(Boolean);
     const writeSteps=async()=>{ const txt=steps.join("\n"); await listUpdate(it,{Steps:txt},{steps:txt}); };
@@ -3809,9 +3819,9 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const est=Math.max(0,Math.round(Number(estI.value)||0)), rp=repI.value.trim().toLowerCase(), wo=waitI.value.trim(), pj=projI.value.trim(), sz=snzI.value||"";
       if(rp&&!repeatParse(rp)){ toast("Try a repeat like: every 30 days, weekly, every Sun, monthly on the 1st"); save.disabled=false; return; }
       const due=di.value||(rp&&!it.due?repeatFirst(rp,TODAY()):"")||"";
-      const props={Name:name,Kind:ks.value,Area:as.value,Star:star?"__YES__":"__NO__","date:Due:start":due||null,Estimate:est||null,Repeat:rp,"date:Snooze Until:start":sz||null,"Waiting On":wo,Project:pj};
+      const props={Name:name,Kind:ks.value,Area:as.value,Star:star?"__YES__":"__NO__","date:Due:start":due||null,Estimate:est||null,Repeat:rp,"date:Snooze Until:start":sz||null,"Waiting On":wo,Project:pj,Energy:enS.value||null,Private:pvI.checked?"__YES__":"__NO__"}; const estChanged=est!==(it.est||0); if(estChanged&&est) props["Estimate Source"]="Mine"; /* Nov 2: an edited size is hers */
       if(wo&&wo!==it.waiting) props["date:Waiting Since:start"]=TODAY(); if(!wo) props["date:Waiting Since:start"]=null;
-      if(await listUpdate(it,props,{name,kind:ks.value,area:as.value,star,due,est,repeat:rp,snooze:sz,waiting:wo,wsince:wo?(wo!==it.waiting?TODAY():it.wsince):"",project:pj},"Saved")) close&&close(); else save.disabled=false; });
+      if(await listUpdate(it,props,{name,kind:ks.value,area:as.value,star,due,est,repeat:rp,snooze:sz,waiting:wo,wsince:wo?(wo!==it.waiting?TODAY():it.wsince):"",project:pj,energy:enS.value||"",priv:pvI.checked,...(estChanged&&est?{estSource:"Mine"}:{})},"Saved")) close&&close(); else save.disabled=false; });
     if(it.status==="Open"&&it.owner!=="Alice") btn("🤝 Hand to Alice",async()=>{ if(await listUpdate(it,{Owner:"Alice","Alice Status":"Assigned","date:Alice Updated:start":TODAY()},{owner:"Alice",astat:"Assigned",aupd:TODAY()},"Handed to Alice. Message her to get it started",{Owner:"Claire","Alice Status":null},{owner:"Claire",astat:""})) close&&close(); });
     if(it.status==="Open"&&it.owner==="Alice"){ const was=it.astat||"Assigned"; btn("Take it back",async()=>{ if(await listUpdate(it,{Owner:"Claire","Alice Status":null},{owner:"Claire",astat:""},"Back with you. Let Alice know",{Owner:"Alice","Alice Status":was},{owner:"Alice",astat:was})) close&&close(); }); }
     if(isTask(it)&&it.status==="Open"&&calOK()) btn("📅 Schedule it",()=>{ close&&close(); setTimeout(()=>openScheduleSheet(it,from),220); });
