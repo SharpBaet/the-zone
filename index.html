@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-03.5"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-03.6"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1397,6 +1397,7 @@ body.zn .zn-asklink{display:block;width:100%;margin-top:10px;padding:8px 0;borde
 .zn-ask .zn-asks{font-size:13.5px;opacity:.8;margin:0 0 10px}
 .zn-ask .zn-askb{white-space:pre-wrap;font:inherit;font-size:14px;line-height:1.45;margin:0;background:rgba(31,35,64,.04);border-radius:12px;padding:12px;max-height:50vh;overflow:auto}
 .zn-ask .zn-askm{font-size:13px;margin:10px 0 0}
+.zn-ask .zn-docl{display:inline-flex;align-items:center;margin-top:10px;text-decoration:none;min-height:40px}
 .zn-ask .zn-pacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 body.zn .zn-askcard .zn-pill{margin-top:8px}
 </style>
@@ -3599,6 +3600,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       out.replaceChildren(); out.append(el("p","zn-askk",`${d.kind==="question"?"Alice needs something from you":d.kind==="research"?"Researched":d.kind==="write"?"Drafted":d.kind==="tasks"?"Broken into tasks":"Answered"}${d.project?" · "+d.project:""}`),el("h3","zn-askt",d.title),el("p","zn-asks",d.summary||""));
       const body=el("pre","zn-askb",d.body||""); out.append(body);
       if(d.made&&d.made.length){ const t=el("p","zn-askm"); t.textContent=`${d.made.length} task${d.made.length===1?"":"s"} added: `+d.made.join(" · "); out.append(t); }
+      if(d.doc&&d.doc.url){ const a=el("a","zn-pill zn-dark zn-docl","📄 Open the Google Doc"); a.href=d.doc.url; a.target="_blank"; a.rel="noopener"; out.append(a); } else if(d.doc&&d.doc.pending){ out.append(el("p","hint","📄 The Google Doc is on its way — its link lands on the note within a minute or two.")); } /* Nov 3 */
       if(d.note) out.append(el("p","hint","Alice: "+d.note));
       const acts=el("div","zn-pacts"); const cp=el("button","zn-pill","Copy"); cp.type="button"; cp.addEventListener("click",async()=>{ try{ await navigator.clipboard.writeText(`${d.title}\n\n${d.body||""}`); toast("Copied"); }catch(e){ toast("Select the text and copy"); } }); acts.append(cp);
       const seeB=el("button","zn-pill","See it on the List"); seeB.type="button"; seeB.addEventListener("click",()=>{ ZN_PLAN.seg="list"; ZN_PLAN.filter="alice"; const o=$("#layer").querySelector(".ov:last-of-type .sheet > button.btn.ghost:last-of-type"); if(o) o.click(); show("ahead"); }); acts.append(seeB); out.append(acts);
