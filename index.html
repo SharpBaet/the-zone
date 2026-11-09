@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-04.2"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-09.1"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1405,6 +1405,17 @@ body.zn .zn-askcard .zn-pill{margin-top:8px}
 body.zn .zn-cmini{flex:1 1 160px;min-width:0;font:inherit;font-size:14px;padding:8px 12px;border-radius:999px;border:1px solid rgba(31,35,64,.2);background:#fff;color:#1F2340}
 body.zn.zn-night .zn-cmini{background:rgba(255,255,255,.1);color:#F3EEFF;border-color:rgba(255,255,255,.2)}
 body.zn .zn-cextra{margin-top:6px}
+
+/* Nov 9: Settings lists under the Zone skin — Teams / Podcasts rows were white on white, Routines rows stacked their buttons */
+body.zn .setlist{background:rgba(255,255,255,.08);color:inherit}
+body.zn .setlist li{color:inherit}
+body.zn .setlist .empty{color:inherit;opacity:.6}
+body.zn .setlist .hname,body.zn .setlist .nm{color:inherit}
+body.zn .set .list{list-style:none;margin:6px 0 10px;padding:0}
+body.zn .set .list li{display:flex;align-items:center;gap:6px;padding:8px 0;border-top:1px solid rgba(255,255,255,.1)}
+body.zn .set .list li:first-child{border-top:0}
+body.zn .set .list li .hname{flex:1;min-width:0}
+body.zn .set .mini{background:rgba(255,255,255,.1);color:inherit}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
