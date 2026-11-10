@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-10.3"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-10.4"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1523,6 +1523,18 @@ body.zn.zn-night .zn-wsd.today{box-shadow:inset 0 0 0 2px rgba(255,255,255,.4)}
 body.zn.zn-night .zn-wsd.on{background:#F3EEFF;color:#1F2340}
 body.zn .zn-pdacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 @media (min-width:1000px){ body.zn #znPlan > .zn-wstrip,body.zn #znPlan > .zn-tasks{grid-column:1 / -1} }
+
+/* Nov 10: prep verdict and notes */
+.zn-psheet .zn-pused{margin-top:4px}
+.zn-psheet .zn-pfb,.zn-psheet .zn-pnotes{margin-top:14px;padding-top:12px;border-top:1px solid rgba(31,35,64,.1)}
+.zn-psheet .zn-pfk{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.6;margin:0 0 8px}
+.zn-psheet .zn-pfrow{display:flex;gap:6px;flex-wrap:wrap}
+.zn-psheet .zn-pfrow .zn-chip{min-height:36px}
+body.zn #layer .zn-psheet .zn-pfrow .zn-chip.on,#layer .zn-psheet .zn-pfrow .zn-chip.on{background:#1F2340!important;color:#fff!important}
+.zn-psheet .zn-pfwhy{display:block;width:100%;box-sizing:border-box;margin-top:8px;border-radius:12px}
+.zn-psheet .zn-pfwhy[hidden]{display:none}
+.zn-psheet .zn-pnta{min-height:76px;font-size:15px}
+.zn-psheet .zn-pnst{margin:4px 0 0;min-height:1em}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -2841,10 +2853,18 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     list("Bring",P.bring); list("Ask",P.ask);
     if(P.links&&P.links.length){ box.append(el("h3",null,"Read")); P.links.forEach(l=>{ const a=el("a","zn-plink",l.title); a.href=l.url; a.target="_blank"; a.rel="noopener"; const pp=el("p"); pp.append(a); box.append(pp); }); }
     if(P.note) box.append(el("p","hint zn-pnote","Alice: "+P.note));
+    if(p.kind==="event"&&Array.isArray(P.used)) box.append(el("p","hint zn-pused",P.used.length?"Built from "+P.used.map(u=>u==="invite"?"the invite":u==="attendees"?"the attendee list":u).join(" and ")+".":"Built from the title only: the invite had no description and this meeting has no earlier notes.")); /* Nov 10: say what the note rests on */
     const acts=el("div","zn-pacts");
     if(P.bring&&P.bring.length){ const add=el("button","zn-pill zn-dark","Add “Bring” to my List"); add.type="button"; add.disabled=!mcp||!LIVE; add.addEventListener("click",async()=>{ add.disabled=true; let n=0; for(const x of P.bring){ const ok=await listCreate({name:x.slice(0,120),kind:"To-do",area:p.kind==="event"?"Work":"Personal",status:"Open",due:p.date||""},"Plan"); if(ok) n++; } toast(`${n} on your List`); }); acts.append(add); }
-    const redo=el("button","zn-pill","Redo"); redo.type="button"; redo.addEventListener("click",async()=>{ redo.disabled=true; redo.textContent="Alice is rewriting…"; const d=await znPrepCall("one",{kind:p.kind,title:p.title,date:p.date,force:true}); if(d&&d.prep){ ZN_PREPS=ZN_PREPS.filter(x=>x.key!==d.key).concat([{key:d.key,title:p.title,kind:p.kind,date:p.date,prep:d.prep}]); const o=$("#layer").querySelector(".ov:last-of-type .sheet > button.btn.ghost:last-of-type"); if(o) o.click(); znPrepSheet(ZN_PREPS.find(x=>x.key===d.key),from,when); } else { redo.disabled=false; redo.textContent="Redo"; toast("Couldn’t redo it right now"); } }); acts.append(redo);
-    box.append(acts); openSheet({kicker:"✨ Alice · prep",title:p.title,body:[box],from}); }
+    const redo=el("button","zn-pill","Redo"); redo.type="button"; redo.addEventListener("click",async()=>{ redo.disabled=true; redo.textContent="Alice is rewriting…"; const d=await znPrepCall("one",{kind:p.kind,title:p.title,date:p.date,force:true}); if(d&&d.prep){ ZN_PREPS=ZN_PREPS.filter(x=>x.key!==d.key).concat([{key:d.key,title:p.title,kind:p.kind,date:p.date,prep:d.prep,notes:p.notes||"",feedback:p.feedback||"",feedback_note:p.feedback_note||""}]); const o=$("#layer").querySelector(".ov:last-of-type .sheet > button.btn.ghost:last-of-type"); if(o) o.click(); znPrepSheet(ZN_PREPS.find(x=>x.key===d.key),from,when); } else { redo.disabled=false; redo.textContent="Redo"; toast("Couldn’t redo it right now"); } }); acts.append(redo);
+    box.append(acts);
+    // Nov 10 (smarter prep): her verdict, and her notes from the meeting — both feed the next prep for this meeting
+    if(p.key){ const save=async(patch)=>{ const d=await znPrepCall("note",{key:p.key,...patch}); if(d&&d.ok){ Object.assign(p,patch); return true; } toast("Couldn’t save that right now"); return false; };
+      const fb=el("div","zn-pfb"); fb.append(el("p","zn-pfk","Was this useful?")); const row=el("div","zn-pfrow"); const why=el("input","zn-cmini zn-pfwhy"); why.placeholder="What was missing?"; why.setAttribute("aria-label","What was missing?"); why.value=p.feedback_note||""; why.hidden=p.feedback!=="missed";
+      const mk=(val,lab)=>{ const b=el("button","zn-chip"+(p.feedback===val?" on":""),lab); b.type="button"; b.setAttribute("aria-pressed",String(p.feedback===val)); b.addEventListener("click",async()=>{ const nv=p.feedback===val?"":val; if(await save({feedback:nv})){ row.querySelectorAll(".zn-chip").forEach(x=>{ const on=x===b&&!!nv; x.classList.toggle("on",on); x.setAttribute("aria-pressed",String(on)); }); why.hidden=nv!=="missed"; if(nv==="missed") why.focus({preventScroll:true}); toast(nv==="useful"?"Noted · more like this":nv==="missed"?"Noted · tell Alice what was missing":"Cleared"); } }); return b; };
+      row.append(mk("useful","Useful"),mk("missed","Missed something")); const saveWhy=async()=>{ const v=why.value.trim(); if(v!==(p.feedback_note||"")) { if(await save({feedback_note:v})) toast("Alice will use that next time"); } }; why.addEventListener("blur",saveWhy); why.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); why.blur(); } }); fb.append(row,why); box.append(fb);
+      if(p.kind==="event"){ const nb=el("div","zn-pnotes"); nb.append(el("p","zn-pfk","Your notes from this meeting")); const ta=el("textarea","zn-cta zn-pnta"); ta.rows=3; ta.placeholder="Decisions, open questions, who owes what. Alice opens the next prep for this meeting with these."; ta.setAttribute("aria-label","Your notes from this meeting"); ta.value=p.notes||""; const st=el("p","hint zn-pnst",p.notes?"Saved":""); const saveNotes=async()=>{ const v=ta.value.trim(); if(v===(p.notes||"")) return; st.textContent="Saving…"; st.textContent=(await save({notes:v}))?"Saved":"Not saved"; }; ta.addEventListener("blur",saveNotes); nb.append(ta,st); box.append(nb); } }
+    openSheet({kicker:"✨ Alice · prep",title:p.title,body:[box],from}); }
   function znPrepChip(date,title,when){ const p=znPrepFor(date,title); if(!p) return null; const b=el("button","zn-prepchip","✨ Prep"); b.type="button"; b.setAttribute("aria-label",`Prep for ${title}`); b.addEventListener("click",e=>{ e.stopPropagation(); znPrepSheet(p,b,when); }); return b; }
   function znPrepToday(box){ if(!box) return; box.querySelectorAll(":scope > .zn-preptoday").forEach(x=>x.remove()); if(!wkDay()) return; /* Nov 9: on weekdays prep lives on the timeline */ const T=TODAY(); const wd=new Date(T+"T12:00:00Z").getUTCDay(); if(wd===0||wd===6||!LIVE) return;
     const meets=busyOn(T).filter(b=>b.work); const rows=ZN_PREPS.filter(p=>p.date===T&&p.kind==="event").map(p=>({p,m:meets.find(m=>znPrepNorm(m.n)===znPrepNorm(p.title))})).filter(x=>x.m).sort((a,b)=>a.m.s-b.m.s);
