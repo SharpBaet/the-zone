@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-10.1"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-10.2"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1486,6 +1486,24 @@ body.zn .zn-alsodue u{white-space:nowrap}
  body.zn .zn-deskpanel .zn-dpe{font-size:14px;line-height:1.45;opacity:.75;margin:8px 0 12px}
  body.zn #znDeskPlan .zn-trow.zn-sel{background:rgba(123,108,246,.14);border-radius:12px;margin:0 -8px;padding-left:8px;padding-right:8px}
 }
+
+/* Nov 10: the sheet frame */
+.sheet.read .shead .shrow{display:flex;align-items:flex-start;gap:10px}
+.sheet.read .shead .shtx{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.sheet.read .shx{flex:none;width:34px;height:34px;border-radius:50%;border:0;background:rgba(31,35,64,.08);color:inherit;font-size:14px;cursor:pointer;display:grid;place-items:center}
+.sheet.read > .shdone{display:none}
+.sheet.read .sfoot{position:sticky;bottom:calc(-22px - env(safe-area-inset-bottom,0px));background:var(--card);margin:0 -18px calc(-22px - env(safe-area-inset-bottom,0px));padding:10px 18px calc(16px + env(safe-area-inset-bottom,0px));border-top:1px solid rgba(31,35,64,.08);z-index:1}
+.sheet.read .sfoot .zn-tsacts{margin-top:0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.sheet.read .sfoot .zn-tsacts::-webkit-scrollbar{display:none}
+.sheet.read .sfoot .zn-tsacts .zn-pill{flex:none}
+.zn-ts .zn-tsrow{display:flex;align-items:center;gap:10px;margin-top:0;padding:13px 0}
+.zn-ts .zn-tsrow .zn-tsrk{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.6}
+.zn-ts .zn-tsrow .zn-tsval{margin-left:auto;font-size:14.5px;font-weight:700;text-align:right;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.zn-ts .zn-tsrow .zn-tsgo{opacity:.45;transition:transform .15s}
+.zn-ts .zn-tsrow.open .zn-tsgo{transform:rotate(90deg)}
+.zn-ts .zn-tsrowbody{margin:0 0 10px}
+.zn-ts .zn-tsrowbody .zn-tsk:empty{display:none}
+.zn-ts .zn-tsfold span small{float:right}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -3825,12 +3843,12 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // Nov 1 (stage 3b): a sheet removed directly (several pickers close that way) skipped openSheet's close, leaving the page behind inert:
   // after logging a walk the whole app ignored taps until a reload. When no sheet is left in the layer, the page comes back.
   { const L=$("#layer"); if(L) new MutationObserver(()=>{ if(window.__SHEETS&&!L.querySelector(".ov")){ window.__SHEETS=0; [...document.body.children].forEach(x=>{ x.inert=false; }); } }).observe(L,{childList:true}); }
-  function openSheet({kicker,title,body,color,from,onClose}){
+  function openSheet({kicker,title,body,color,from,onClose,foot}){
     const ov=el("div","ov"); const sh=el("div","sheet read"); sh.setAttribute("role","dialog"); sh.setAttribute("aria-modal","true"); sh.setAttribute("aria-label",kicker);
     sh.style.setProperty("--c",color||"var(--read)");
-    const top=el("div","shead"); top.append(el("div","grab"),el("div","k",kicker)); if(title) top.append(el("h2",null,title));
-    const done=el("button","btn ghost","Done"); done.type="button";
-    sh.append(top,...(Array.isArray(body)?body:[body]),done); ov.append(sh); $("#layer").append(ov); done.focus({preventScroll:true});
+    const top=el("div","shead"); const hrow=el("div","shrow"); const htx=el("div","shtx"); htx.append(el("div","k",kicker)); if(title) htx.append(el("h2",null,title)); const xb=el("button","shx","✕"); xb.type="button"; xb.setAttribute("aria-label","Close"); hrow.append(htx,xb); top.append(el("div","grab"),hrow);
+    const done=el("button","btn ghost shdone","Done"); done.type="button"; /* Nov 10: the sheet frame — ✕ in the header, an optional pinned footer; the bottom Done stays for code that clicks it, hidden */
+    sh.append(top,...(Array.isArray(body)?body:[body]),...(foot?[(()=>{ const f=el("div","sfoot"); f.append(...(Array.isArray(foot)?foot:[foot])); return f; })()]:[]),done); ov.append(sh); $("#layer").append(ov); xb.focus({preventScroll:true}); xb.addEventListener("click",()=>close());
     /* Oct 31: Tab stays inside the sheet; the page behind is inert while any sheet is open */ window.__SHEETS=(window.__SHEETS||0)+1; [...document.body.children].forEach(x=>{ if(x.id!=="layer"&&!x.classList.contains("set")) x.inert=true; });
     sh.addEventListener("keydown",e=>{ if(e.key!=="Tab") return; const f=[...sh.querySelectorAll('button:not([disabled]),input:not([disabled]),textarea,select,a[href],[tabindex]:not([tabindex="-1"])')].filter(x=>x.getClientRects().length); if(!f.length) return; const a=f[0], z=f[f.length-1]; if(e.shiftKey&&document.activeElement===a){ e.preventDefault(); z.focus(); } else if(!e.shiftKey&&document.activeElement===z){ e.preventDefault(); a.focus(); } });
     const close=()=>{ if(!ov.isConnected) return; ov.remove(); window.__SHEETS=Math.max(0,(window.__SHEETS||1)-1); if(!window.__SHEETS) [...document.body.children].forEach(x=>{ x.inert=false; }); onClose&&onClose(); if(from){ const f=from.matches&&from.matches("button,a[href],input,textarea,select,[tabindex]")?from:(from.querySelector&&from.querySelector("button,a[href],[tabindex]"))||from; try{ f.focus({preventScroll:true}); }catch(e){} } };
@@ -4163,6 +4181,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     // title
     const ta=el("textarea","zn-tstitle"); ta.rows=2; ta.value=it.name; ta.setAttribute("aria-label","Title"); ta.addEventListener("blur",async()=>{ const name=ta.value.replace(/\s+/g," ").trim(); if(name&&name!==it.name) await put({Name:name},{name}); else if(!name) ta.value=it.name; }); wrap.append(ta);
     const sec=(k)=>{ const d=el("div","zn-tssec"); d.append(el("p","zn-tsk",k)); wrap.append(d); return d; };
+    const rowsec=(label,subFn)=>{ const r=el("button","zn-tsfold zn-tsrow"); r.type="button"; r.setAttribute("aria-expanded","false"); const val=el("b","zn-tsval"); r.append(el("span","zn-tsrk",label),val,el("span","zn-tsgo","›")); const body=el("div","zn-tssec zn-tsrowbody"); body.hidden=true; body.append(el("p","zn-tsk","")); r.addEventListener("click",()=>{ body.hidden=!body.hidden; r.setAttribute("aria-expanded",String(!body.hidden)); r.classList.toggle("open",!body.hidden); }); wrap.append(r,body); const upd=()=>{ val.textContent=subFn(); }; upd(); return {body,upd}; };
     const chips=(parent,items)=>{ const row=el("div","zn-tschips"); items.forEach(([lab,on,fn,aria])=>{ const c=el("button","zn-chip"+(on?" on":""),lab); c.type="button"; if(aria) c.setAttribute("aria-label",aria); c.setAttribute("aria-pressed",String(!!on)); c.addEventListener("click",()=>fn(c)); row.append(c); }); parent.append(row); return row; };
     // when
     if(task){ const w=sec("When"); const dateI=el("input"); dateI.type="date"; dateI.className="zn-tsdate"; dateI.setAttribute("aria-label","Pick a day"); w.append(dateI);
@@ -4172,13 +4191,13 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
           ...(it.status==="Open"&&calOK()?[["📅 Place it",!!(it.sched&&it.sched.slice(0,10)>=T),()=>{ close&&close(); setTimeout(()=>openScheduleSheet(it,from),220); },"Put it on the calendar"]]:[]) ]); };
       dateI.addEventListener("change",()=>{ if(dateI.value) setDue(dateI.value); }); drawWhen(); }
     // size + energy
-    if(task){ const z=sec(`Size${it.estSource?" · "+(it.estSource==="Guessed"?"Alice’s guess":it.estSource==="Learned"?"learned from what it took":"your size"):""}`);
+    if(task){ const zs=rowsec("Size",()=>[it.est?znDur(it.est):"not set",it.energy||""].filter(Boolean).join(" · ")); const z=zs.body;
       const drawSize=()=>{ z.querySelectorAll(".zn-tschips").forEach(x=>x.remove()); z.querySelector(".zn-tsk").textContent=`Size${it.estSource?" · "+(it.estSource==="Guessed"?"Alice’s guess":it.estSource==="Learned"?"learned from what it took":"your size"):""}`;
-        chips(z,[ ...ZN_SIZES.map(([m,l])=>[l,it.est===m,async()=>{ await put({Estimate:m,"Estimate Source":"Mine"},{est:m,estSource:"Mine"}); drawSize(); },`${znDur(m)}`]), ["Light",it.energy==="Light",async()=>{ const v=it.energy==="Light"?"":"Light"; await put({Energy:v||null},{energy:v}); drawSize(); }], ["Deep",it.energy==="Deep",async()=>{ const v=it.energy==="Deep"?"":"Deep"; await put({Energy:v||null},{energy:v}); drawSize(); }] ]); };
+        chips(z,[ ...ZN_SIZES.map(([m,l])=>[l,it.est===m,async()=>{ await put({Estimate:m,"Estimate Source":"Mine"},{est:m,estSource:"Mine"}); const _ds=drawSize; _ds(); zs.upd(); z.addEventListener("click",()=>setTimeout(zs.upd,450)); },`${znDur(m)}`]), ["Light",it.energy==="Light",async()=>{ const v=it.energy==="Light"?"":"Light"; await put({Energy:v||null},{energy:v}); drawSize(); }], ["Deep",it.energy==="Deep",async()=>{ const v=it.energy==="Deep"?"":"Deep"; await put({Energy:v||null},{energy:v}); drawSize(); }] ]); };
       drawSize(); }
     // area + project
-    { const kd=sec("Kind"); const KD=[["To-do","☐"],["Reminder","⏰"],["Note","📝"],["Idea","💡"],["Thought","💭"]]; const drawKind=()=>{ kd.querySelectorAll(".zn-tschips").forEach(x=>x.remove()); chips(kd,KD.map(([k,ic])=>[it.kind===k?`${ic} ${k}`:ic,it.kind===k,async()=>{ if(it.kind===k) return; await put({Kind:k},{kind:k},"Now a "+k.toLowerCase()); const o=$("#layer").querySelector(".ov:last-of-type .sheet > button.btn.ghost:last-of-type"); if(o) o.click(); setTimeout(()=>openListItem(it,from),150); },k])); }; drawKind(); }
-    { const ap=sec("Area · Project"); const AR=[["Work","💼"],["Personal","🌱"],["Home","🏠"],["Birdie","🐕"],["Us","💕"]];
+    { const ks2=rowsec("Kind",()=>it.kind); const kd=ks2.body; const KD=[["To-do","☐"],["Reminder","⏰"],["Note","📝"],["Idea","💡"],["Thought","💭"]]; const drawKind=()=>{ kd.querySelectorAll(".zn-tschips").forEach(x=>x.remove()); chips(kd,KD.map(([k,ic])=>[it.kind===k?`${ic} ${k}`:ic,it.kind===k,async()=>{ if(it.kind===k) return; await put({Kind:k},{kind:k},"Now a "+k.toLowerCase()); const o=$("#layer").querySelector(".ov:last-of-type .sheet > button.btn.ghost:last-of-type"); if(o) o.click(); setTimeout(()=>openListItem(it,from),150); },k])); }; drawKind(); }
+    { const as2=rowsec("Where",()=>[it.area||"",it.project||""].filter(Boolean).join(" · ")||"not set"); const ap=as2.body; ap.addEventListener("click",()=>setTimeout(as2.upd,450)); const AR=[["Work","💼"],["Personal","🌱"],["Home","🏠"],["Birdie","🐕"],["Us","💕"]];
       const drawArea=()=>{ ap.querySelectorAll(".zn-tschips").forEach(x=>x.remove());
         const row=chips(ap,AR.map(([a,ic])=>[it.area===a?`${ic} ${a}`:ic,it.area===a,async()=>{ await put({Area:a},{area:a}); drawArea(); },a]));
         const pj=el("button","zn-chip zn-tsproj"+(it.project?" on":""),(it.project||"Project")+" ▾"); pj.type="button"; pj.setAttribute("aria-label","Project: "+(it.project||"none")); pj.addEventListener("click",()=>{ const names=[...new Set(LIST.map(x=>x.project).filter(Boolean))].sort(); const box=el("div","zn-tsproj-pick");
@@ -4206,8 +4225,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     if(it.status==="Open"&&it.owner!=="Alice") act("🤝 Alice","",async()=>{ if(await put({Owner:"Alice","Alice Status":"Assigned","date:Alice Updated:start":T},{owner:"Alice",astat:"Assigned",aupd:T},"Handed to Alice")) close&&close(); });
     if(it.status==="Open"&&it.owner==="Alice") act("Take it back","",async()=>{ if(await put({Owner:"Claire","Alice Status":null},{owner:"Claire",astat:""},"Back with you")) close&&close(); });
     const more=act("⋯","",()=>{ more.hidden=true; if(it.status==="Open") act("Someday","",async()=>{ if(await put({Status:"Someday"},{status:"Someday"},"Moved to someday")) close&&close(); }); if(it.status!=="Open") act("Reopen","",async()=>{ if(await put({Status:"Open","date:Done On:start":null},{status:"Open",doneOn:""},"Back on your list")) close&&close(); }); act("Drop","zn-warn",async()=>{ if(await put({Status:"Dropped"},{status:"Dropped"},"Dropped")) close&&close(); }); }); more.setAttribute("aria-label","More actions");
-    wrap.append(acts,el("p","zn-tsauto","Changes save as you tap."));
-    window.__znSel=it.id; const close=znDeskPanelOpen(`${KIND_IC[it.kind]||""} ${it.kind}${it.area?" · "+it.area:""}`,wrap)||openSheet({kicker:`${KIND_IC[it.kind]||""} ${it.kind}${it.area?" · "+it.area:""}`,title:"",body:[wrap],color:"var(--plan)",from}); }
+    const deskMode=znDeskOn(); if(deskMode) wrap.append(acts); wrap.append(el("p","zn-tsauto","Changes save as you tap."));
+    window.__znSel=it.id; const close=znDeskPanelOpen(`${KIND_IC[it.kind]||""} ${it.kind}${it.area?" · "+it.area:""}`,wrap)||openSheet({kicker:`${KIND_IC[it.kind]||""} ${it.kind}${it.area?" · "+it.area:""}`,title:"",body:[wrap],color:"var(--plan)",from,foot:acts}); }
   // capture box: live preview of how the shorthand was read
   
   
