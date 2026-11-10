@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-10.4"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-10.5"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1492,7 +1492,7 @@ body.zn .zn-alsodue u{white-space:nowrap}
 .sheet.read .shead .shtx{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
 .sheet.read .shx{flex:none;width:34px;height:34px;border-radius:50%;border:0;background:rgba(31,35,64,.08);color:inherit;font-size:14px;cursor:pointer;display:grid;place-items:center}
 .sheet.read > .shdone{display:none}
-.sheet.read .sfoot{position:sticky;bottom:calc(-22px - env(safe-area-inset-bottom,0px));background:var(--card);margin:0 -18px calc(-22px - env(safe-area-inset-bottom,0px));padding:10px 18px calc(16px + env(safe-area-inset-bottom,0px));border-top:1px solid rgba(31,35,64,.08);z-index:1}
+.sheet.read .sfoot{position:sticky;bottom:calc(-22px - env(safe-area-inset-bottom,0px));background:inherit;margin:0 -18px calc(-22px - env(safe-area-inset-bottom,0px));padding:10px 18px calc(16px + env(safe-area-inset-bottom,0px));border-top:1px solid rgba(31,35,64,.08);z-index:1}
 .sheet.read .sfoot .zn-tsacts{margin-top:0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
 .sheet.read .sfoot .zn-tsacts::-webkit-scrollbar{display:none}
 .sheet.read .sfoot .zn-tsacts .zn-pill{flex:none}
@@ -1535,6 +1535,20 @@ body.zn #layer .zn-psheet .zn-pfrow .zn-chip.on,#layer .zn-psheet .zn-pfrow .zn-
 .zn-psheet .zn-pfwhy[hidden]{display:none}
 .zn-psheet .zn-pnta{min-height:76px;font-size:15px}
 .zn-psheet .zn-pnst{margin:4px 0 0;min-height:1em}
+
+/* Nov 10: phone pass, the other sheets */
+body.zn .zn-clinks{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px;padding-top:8px;border-top:1px solid rgba(31,35,64,.1)}
+body.zn .zn-clinks .zn-asklink{width:auto;margin:0;padding:6px 0;border:0}
+body.zn .zn-clinks .zn-chtog{margin-left:auto;border:0;background:transparent;font:inherit;font-size:12.5px;font-weight:700;color:inherit;opacity:.6;padding:6px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+body.zn .zn-chint[hidden]{display:none}
+.sheet.read .sfoot .zn-cbar{margin-top:0}
+.sheet.read .sfoot .zn-rfootrow{display:flex;align-items:center;gap:12px}
+.sheet.read .sfoot .zn-rfootrow .zn-rfoot{flex:1;margin:0;font-size:13px;font-weight:700}
+.sheet.read .sfoot .zn-rfootrow .zn-rfoot.warn{color:#B03A2E}
+.sheet.read .sfoot .zn-rfootrow .zn-btn{flex:none;margin:0}
+.sheet.read .sfoot .zn-pfb{margin-top:0;padding-top:0;border-top:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.sheet.read .sfoot .zn-pfb .zn-pfk{margin:0 4px 0 0}
+.sheet.read .sfoot .zn-pfb .zn-pfwhy{flex:1 1 100%;margin-top:2px}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -2462,8 +2476,11 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const T=TODAY(); const st={kind:"",area:"",est:0,energy:"",when:null,project:(preset&&preset.project)||null,repeat:null,priv:false,mine:false,guess:null,seq:0,sizeOpen:false,open:""};
     const add=znCard("zn-tadd",""); const ta=el("textarea","zn-cta"); ta.rows=2; ta.placeholder="Add a task, note or idea…"; ta.setAttribute("aria-label","New task, note or idea"); add.append(ta);
     const read=el("div","zn-cread"); read.hidden=true; const rk=el("p","zn-crk","Alice reads · tap to change"); const row=el("div","zn-cchips"); const sizeRow=el("div","zn-cchips zn-csizes"); sizeRow.hidden=true; const extra=el("div","zn-cchips zn-cextra"); extra.hidden=true; const dateI=el("input"); dateI.type="date"; dateI.className="zn-tsdate"; dateI.setAttribute("aria-label","Pick a day"); dateI.addEventListener("change",()=>{ if(dateI.value){ st.when=dateI.value; draw(); } }); read.append(rk,row,sizeRow,extra,dateI); add.append(read);
-    const hint=el("p","zn-chint"); hint.innerHTML='Shorthand works too: <b>#work</b> · <b>30m</b> · <b>every Sun</b> · <b>[Project]</b> · <b>waiting on Renee</b> · <b>!</b> to star · <b>Idea:</b> / <b>Note:</b>'; add.append(hint);
-    if(!(PERSON.features&&PERSON.features.alice===false)){ const ak=el("button","zn-asklink","🤝 Or ask Alice to do something →"); ak.type="button"; ak.addEventListener("click",()=>{ const raw=ta.value.trim(); znAskSheet(ak,{ask:raw,project:(preset&&preset.project)||""}); }); add.append(ak); } /* Nov 3 */
+    const hint=el("p","zn-chint"); hint.innerHTML='Shorthand works too: <b>#work</b> · <b>30m</b> · <b>every Sun</b> · <b>[Project]</b> · <b>waiting on Renee</b> · <b>!</b> to star · <b>Idea:</b> / <b>Note:</b>'; hint.hidden=true; hint.id="znHint"+Math.random().toString(36).slice(2,7);
+    const links=el("div","zn-clinks"); /* Nov 10 (phone pass): one quiet line, the shorthand list opens on tap */
+    if(!(PERSON.features&&PERSON.features.alice===false)){ const ak=el("button","zn-asklink","🤝 Ask Alice instead →"); ak.type="button"; ak.addEventListener("click",()=>{ const raw=ta.value.trim(); znAskSheet(ak,{ask:raw,project:(preset&&preset.project)||""}); }); links.append(ak); }
+    { const ht=el("button","zn-chtog","Shorthand"); ht.type="button"; ht.setAttribute("aria-expanded","false"); ht.setAttribute("aria-controls",hint.id); ht.addEventListener("click",()=>{ hint.hidden=!hint.hidden; ht.setAttribute("aria-expanded",String(!hint.hidden)); }); links.append(ht); }
+    add.append(links,hint); /* Nov 3 */
     const bar=el("div","zn-cbar"); const pick=el("button","zn-pill","Pick for today"); pick.type="button"; pick.disabled=!mcp; const sp=el("span","zn-csp"); const go=el("button","zn-pill zn-dark","Add"); go.type="button"; go.disabled=!mcp; bar.append(pick,sp,go); add.append(bar);
     const fmt=m=>m>=60?(m%60?`${Math.floor(m/60)}h ${m%60}m`:`${m/60}h`):`${m}m`;
     const KS=["To-do","Reminder","Note","Idea","Thought"]; const AR={Work:"💼",Personal:"🌱",Home:"🏠",Birdie:"🐕",Us:"💕"};
@@ -2859,12 +2876,13 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const redo=el("button","zn-pill","Redo"); redo.type="button"; redo.addEventListener("click",async()=>{ redo.disabled=true; redo.textContent="Alice is rewriting…"; const d=await znPrepCall("one",{kind:p.kind,title:p.title,date:p.date,force:true}); if(d&&d.prep){ ZN_PREPS=ZN_PREPS.filter(x=>x.key!==d.key).concat([{key:d.key,title:p.title,kind:p.kind,date:p.date,prep:d.prep,notes:p.notes||"",feedback:p.feedback||"",feedback_note:p.feedback_note||""}]); const o=$("#layer").querySelector(".ov:last-of-type .sheet > button.btn.ghost:last-of-type"); if(o) o.click(); znPrepSheet(ZN_PREPS.find(x=>x.key===d.key),from,when); } else { redo.disabled=false; redo.textContent="Redo"; toast("Couldn’t redo it right now"); } }); acts.append(redo);
     box.append(acts);
     // Nov 10 (smarter prep): her verdict, and her notes from the meeting — both feed the next prep for this meeting
+    let pfoot=null;
     if(p.key){ const save=async(patch)=>{ const d=await znPrepCall("note",{key:p.key,...patch}); if(d&&d.ok){ Object.assign(p,patch); return true; } toast("Couldn’t save that right now"); return false; };
       const fb=el("div","zn-pfb"); fb.append(el("p","zn-pfk","Was this useful?")); const row=el("div","zn-pfrow"); const why=el("input","zn-cmini zn-pfwhy"); why.placeholder="What was missing?"; why.setAttribute("aria-label","What was missing?"); why.value=p.feedback_note||""; why.hidden=p.feedback!=="missed";
       const mk=(val,lab)=>{ const b=el("button","zn-chip"+(p.feedback===val?" on":""),lab); b.type="button"; b.setAttribute("aria-pressed",String(p.feedback===val)); b.addEventListener("click",async()=>{ const nv=p.feedback===val?"":val; if(await save({feedback:nv})){ row.querySelectorAll(".zn-chip").forEach(x=>{ const on=x===b&&!!nv; x.classList.toggle("on",on); x.setAttribute("aria-pressed",String(on)); }); why.hidden=nv!=="missed"; if(nv==="missed") why.focus({preventScroll:true}); toast(nv==="useful"?"Noted · more like this":nv==="missed"?"Noted · tell Alice what was missing":"Cleared"); } }); return b; };
-      row.append(mk("useful","Useful"),mk("missed","Missed something")); const saveWhy=async()=>{ const v=why.value.trim(); if(v!==(p.feedback_note||"")) { if(await save({feedback_note:v})) toast("Alice will use that next time"); } }; why.addEventListener("blur",saveWhy); why.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); why.blur(); } }); fb.append(row,why); box.append(fb);
+      row.append(mk("useful","Useful"),mk("missed","Missed something")); const saveWhy=async()=>{ const v=why.value.trim(); if(v!==(p.feedback_note||"")) { if(await save({feedback_note:v})) toast("Alice will use that next time"); } }; why.addEventListener("blur",saveWhy); why.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); why.blur(); } }); fb.append(row,why); pfoot=fb;
       if(p.kind==="event"){ const nb=el("div","zn-pnotes"); nb.append(el("p","zn-pfk","Your notes from this meeting")); const ta=el("textarea","zn-cta zn-pnta"); ta.rows=3; ta.placeholder="Decisions, open questions, who owes what. Alice opens the next prep for this meeting with these."; ta.setAttribute("aria-label","Your notes from this meeting"); ta.value=p.notes||""; const st=el("p","hint zn-pnst",p.notes?"Saved":""); const saveNotes=async()=>{ const v=ta.value.trim(); if(v===(p.notes||"")) return; st.textContent="Saving…"; st.textContent=(await save({notes:v}))?"Saved":"Not saved"; }; ta.addEventListener("blur",saveNotes); nb.append(ta,st); box.append(nb); } }
-    openSheet({kicker:"✨ Alice · prep",title:p.title,body:[box],from}); }
+    openSheet({kicker:"✨ Alice · prep",title:p.title,body:[box],from,foot:pfoot||undefined}); }
   function znPrepChip(date,title,when){ const p=znPrepFor(date,title); if(!p) return null; const b=el("button","zn-prepchip","✨ Prep"); b.type="button"; b.setAttribute("aria-label",`Prep for ${title}`); b.addEventListener("click",e=>{ e.stopPropagation(); znPrepSheet(p,b,when); }); return b; }
   function znPrepToday(box){ if(!box) return; box.querySelectorAll(":scope > .zn-preptoday").forEach(x=>x.remove()); if(!wkDay()) return; /* Nov 9: on weekdays prep lives on the timeline */ const T=TODAY(); const wd=new Date(T+"T12:00:00Z").getUTCDay(); if(wd===0||wd===6||!LIVE) return;
     const meets=busyOn(T).filter(b=>b.work); const rows=ZN_PREPS.filter(p=>p.date===T&&p.kind==="event").map(p=>({p,m:meets.find(m=>znPrepNorm(m.n)===znPrepNorm(p.title))})).filter(x=>x.m).sort((a,b)=>a.m.s-b.m.s);
@@ -2947,8 +2965,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const addRow=el("div","zn-radd"); const ai=el("input","zn-cmini"); ai.placeholder="Something else…"; ai.setAttribute("aria-label","Add something else for tomorrow"); const addIt=()=>{ const v=ai.value.replace(/\s+/g," ").trim(); if(!v) return; if(picked.size>=3){ toast("Three is the limit · tap one to drop it first"); return; } if(![...cands,...extra].some(c=>c.name.toLowerCase()===v.toLowerCase())) extra.push({name:v,why:"added now",score:0,it:null}); picked.add(([...cands,...extra].find(c=>c.name.toLowerCase()===v.toLowerCase())||{name:v}).name); ai.value=""; draw(); }; ai.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); addIt(); } }); const ab=el("button","zn-pill","Add"); ab.type="button"; ab.addEventListener("click",addIt); addRow.append(ai,ab);
     const go=el("button","zn-btn","Set tomorrow"); go.type="button"; go.disabled=!mcp;
     go.addEventListener("click",async()=>{ const order=[...cands,...extra].filter(c=>picked.has(c.name)).map(c=>c.name); go.disabled=true; try{ await writeToday({Tomorrow:order.length?order.map((l,i)=>`${i+1}. ${l}`).join("\n"):"none"},{silent:true}); if(order.length) twinsFor(order,T1).catch(()=>{}); toast(order.length?`${dayName} is set · ${order.length} picked`:"Left empty"); close&&close(); znRender(); try{ znPlanRender(); }catch(e){} }catch(e){ toast(writeErr(e)); go.disabled=false; } });
-    w.append(sugH,sugBox,moreH,moreBox,addRow,foot,go); draw();
-    const close=openSheet({kicker:"Tomorrow · two minutes",title:dayName,body:[w],from}); }
+    w.append(sugH,sugBox,moreH,moreBox,addRow); const rf=el("div","zn-rfootrow"); rf.append(foot,go); draw();
+    const close=openSheet({kicker:"Tomorrow · two minutes",title:dayName,body:[w],from,foot:rf}); }
   // Oct 29: the galaxy behind the night. Nebulae, a Milky Way band, ~170 stars twinkling on their own timing, a shooting star now and then.
   // Oct 31: the day sky (direction C, "Prism"). Phases follow the real sunrise and sunset (SUN), the sun's place follows the hour.
   function znDaySky(on){ let sky=document.querySelector(".zn-daysky"); if(!on){ if(sky) sky.remove(); document.body.classList.remove("zn-dayon"); return; }
@@ -3798,8 +3816,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const r=await fetch(APP.url+"/functions/v1/zone-ask",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify({person:PERSON.person||"claire",...payload})}); const j=await r.json(); return r.ok&&j.ok?j:{error:j.error||("zone-ask "+r.status)}; }catch(e){ return null; } }
   function znAskSheet(from,preset){ const box=el("div","zn-ask"); const ta=el("textarea","zn-cta"); ta.rows=3; ta.placeholder="What should Alice do? e.g. “Research dog boarding for Thanksgiving week and make me a task list”"; ta.setAttribute("aria-label","Ask Alice"); if(preset&&preset.ask) ta.value=preset.ask; box.append(ta);
     const hint=el("p","zn-chint"); hint.innerHTML="Alice can research, draft, break a job into tasks, or answer. She can’t send, pay or book — she’ll say when a job needs you. The result lands on your List under Alice."; box.append(hint);
-    const bar=el("div","zn-cbar"); const sp=el("span","zn-csp"); const go=el("button","zn-pill zn-dark","Ask Alice"); go.type="button"; go.disabled=!LIVE; bar.append(sp,go); box.append(bar);
-    const out=el("div","zn-askout"); out.hidden=true; box.append(out);
+    const bar=el("div","zn-cbar"); const sp=el("span","zn-csp"); const go=el("button","zn-pill zn-dark","Ask Alice"); go.type="button"; go.disabled=!LIVE; bar.append(sp,go); const out=el("div","zn-askout"); out.hidden=true; box.append(out);
     const run=async()=>{ const ask=ta.value.trim(); if(!ask) return; go.disabled=true; go.textContent="Alice is working…"; out.hidden=false; out.replaceChildren(el("p","hint","This can take up to a minute when it needs research."));
       const d=await znAskCall({ask,project:(preset&&preset.project)||undefined}); go.disabled=false; go.textContent="Ask again";
       if(!d||d.error){ out.replaceChildren(el("p","hint",d&&d.error?("Alice couldn’t do that one: "+d.error):"Alice isn’t reachable right now.")); return; }
@@ -3813,7 +3830,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const seeB=el("button","zn-pill","See it on the List"); seeB.type="button"; seeB.addEventListener("click",()=>{ ZN_PLAN.seg="list"; ZN_PLAN.filter="alice"; const o=$("#layer").querySelector(".ov:last-of-type .sheet > button.btn.ghost:last-of-type"); if(o) o.click(); show("ahead"); }); acts.append(seeB); out.append(acts);
       try{ ZN_PLAN.filter="alice"; }catch(e){} try{ if(typeof refreshIndex==="function") refreshIndex(); }catch(e){} };
     go.addEventListener("click",run); ta.addEventListener("keydown",e=>{ if(e.key==="Enter"&&(e.metaKey||e.ctrlKey)){ e.preventDefault(); run(); } });
-    openSheet({kicker:"🤝 Alice",title:"Ask Alice",body:[box],color:"var(--plan)",from}); setTimeout(()=>ta.focus({preventScroll:true}),60); }
+    openSheet({kicker:"🤝 Alice",title:"Ask Alice",body:[box],color:"var(--plan)",from,foot:bar}); setTimeout(()=>ta.focus({preventScroll:true}),60); }
   async function znDraftCall(payload,part){ try{ if(typeof APP==="undefined"||!APP.sb) return null; const s=await APP.sb.auth.getSession(); const tk=s&&s.data&&s.data.session&&s.data.session.access_token; if(!tk) return null;
     const r=await fetch(APP.url+"/functions/v1/zone-draft"+(part?"?part="+part:""),{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify(payload)}); const j=await r.json(); return r.ok&&j.ok?j:{error:j.error||("zone-draft "+r.status)}; }catch(e){ return null; } }
   function znDraftReply(raw,from){ const m=INBOX_MAIL[raw]; if(!m) return; const title=inboxTitle(raw);
