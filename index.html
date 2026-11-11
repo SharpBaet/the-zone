@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-11.2"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-11.3"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1110,11 +1110,11 @@ body.zn.zn-night .zn-card.zn-mast, body.zn.zn-night #znPlan .zn-mast.zn-card:not
    afternoon and golden hour by the real sunrise and sunset; the sun travels its arc throwing faint rainbow rays, glints twinkle around it,
    three color clouds drift, and a small butterfly crosses now and then. Cards turn to frosted glass. Reduce-motion holds everything still. */
 .zn-daysky{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;transition:background 2s ease}
-.zn-daysky.dawn{background:linear-gradient(180deg,#F7C3B0 0%,#F5D3E2 42%,#E4DCF7 100%)}
-.zn-daysky.morning{background:linear-gradient(180deg,#C9DEFF 0%,#E6DFFF 45%,#FFEEDF 100%)}
-.zn-daysky.midday{background:linear-gradient(180deg,#B9D8FF 0%,#D9E6FF 40%,#F2ECFF 100%)}
-.zn-daysky.afternoon{background:linear-gradient(180deg,#D3D5FF 0%,#F0DAF0 45%,#FFE3CC 100%)}
-.zn-daysky.golden{background:linear-gradient(180deg,#FFC39B 0%,#F7B2C0 46%,#D5C1F2 100%)}
+.zn-daysky.dawn{background:linear-gradient(180deg,#FFB79C 0%,#FFCBDB 42%,#E6D9FF 100%)}
+.zn-daysky.morning{background:linear-gradient(180deg,#BFD8FF 0%,#DCD6FF 45%,#FFE9E0 100%)}
+.zn-daysky.midday{background:linear-gradient(180deg,#BBDCFF 0%,#E4E6FF 42%,#FFF3D9 100%)}
+.zn-daysky.afternoon{background:linear-gradient(180deg,#E3D4FF 0%,#FFE0D2 50%,#FFD0B8 100%)}
+.zn-daysky.golden{background:linear-gradient(180deg,#FFB184 0%,#FFA3B8 46%,#CDB0F5 100%)}
 .zn-sun{position:absolute;left:var(--sx);top:var(--sy);width:360px;height:360px;margin:-180px 0 0 -180px;border-radius:50%;background:radial-gradient(circle,rgba(255,247,222,.95) 0%,rgba(255,228,170,.5) 26%,rgba(255,228,170,0) 64%)}
 .zn-blob{position:absolute;border-radius:50%;filter:blur(46px);opacity:.5;animation:znDrift 40s ease-in-out infinite alternate}
 .zn-blob.a{left:-18%;top:34%;width:72%;height:34%;background:#BFA8FF}
@@ -1659,6 +1659,33 @@ body.zn .zn-inv.done{opacity:.55}
 /* Nov 11: the "new version" pill */
 .zn-update{position:fixed;z-index:200;left:50%;transform:translateX(-50%);top:calc(10px + env(safe-area-inset-top,0px));padding:10px 16px;border-radius:999px;border:0;font:700 13.5px/1 'Plus Jakarta Sans',system-ui,sans-serif;background:#1F2340;color:#FFE27A;box-shadow:0 10px 30px rgba(0,0,0,.3);cursor:pointer;white-space:nowrap}
 @media (min-width:1200px){ .zn-update{top:74px} }
+
+/* Nov 11: the timer ring */
+body.zn .zn-timer{display:grid;grid-template-columns:136px minmax(0,1fr);gap:16px;align-items:center;margin:14px 0 6px}
+body.zn .zn-tring{position:relative;width:136px;height:136px;border:0;background:transparent;padding:0;cursor:pointer;border-radius:50%;color:inherit;font:inherit;-webkit-tap-highlight-color:transparent}
+body.zn .zn-ttrack{position:absolute;inset:0;border-radius:50%;background:rgba(255,255,255,.55);box-shadow:inset 0 0 0 11px rgba(31,35,64,.09)}
+body.zn .zn-tarc{position:absolute;inset:0;border-radius:50%;background:var(--ring);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 11.5px),#000 calc(100% - 11px)),conic-gradient(#000 0 var(--deg),transparent 0);-webkit-mask-composite:source-in;mask:radial-gradient(farthest-side,transparent calc(100% - 11.5px),#000 calc(100% - 11px)),conic-gradient(#000 0 var(--deg),transparent 0);mask-composite:intersect}
+body.zn .zn-tcap{position:absolute;left:50%;top:0;width:11px;height:11px;margin-left:-5.5px;border-radius:50%;background:var(--c0)}
+body.zn .zn-tknob{position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px;border-radius:50%;transform:rotate(var(--deg)) translateY(-62.5px);background:#FFF6CF;box-shadow:0 0 0 3px var(--ck),0 0 14px 3px var(--glow)}
+body.zn .zn-tc{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+body.zn .zn-tc b{font:500 36px/1 Fraunces,Georgia,serif;letter-spacing:-.02em}
+body.zn .zn-tc small{display:block;font-size:11.5px;font-weight:700;opacity:.65;margin-top:3px}
+body.zn .zn-tk-meet{--ring:conic-gradient(from 0deg,#7B6CF6,#B58CFF 45%,#FF8FC7);--c0:#7B6CF6;--ck:#FF8FC7;--glow:rgba(255,143,199,.6)}
+body.zn .zn-tk-task{--ring:conic-gradient(from 0deg,#FF7EB6,#FFA95E 55%,#FFD36E);--c0:#FF7EB6;--ck:#FFB25E;--glow:rgba(255,190,90,.7)}
+body.zn .zn-tk-open,body.zn .zn-tk-clear{--ring:conic-gradient(from 0deg,#B8F2D8,#5ED6B0 55%,#2FA98C);--c0:#B8F2D8;--ck:#2FA98C;--glow:rgba(94,214,176,.6)}
+body.zn .zn-tk-clear .zn-tc b{font-size:30px}
+body.zn .zn-tk-night{--ring:conic-gradient(from 0deg,#22D6FF,#6E60FF 22%,#D64AFF 45%,#FF5496 65%,#FFB042 85%,#FFE27A);--c0:#22D6FF;--ck:#FFE27A;--glow:rgba(255,226,122,.8)}
+body.zn .zn-tk-night .zn-ttrack{background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 11px rgba(255,255,255,.1)}
+body.zn .zn-tk-night .zn-tarc{filter:drop-shadow(0 0 9px rgba(214,74,255,.55))}
+body.zn .zn-ttext{min-width:0}
+body.zn .zn-ttext .zn-tk{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;opacity:.6;margin:0 0 6px}
+body.zn .zn-ttext .zn-tt{font:600 20px/1.2 Fraunces,Georgia,serif;margin:0 0 4px}
+body.zn .zn-ttext .zn-ts{margin:0;font-size:13px;opacity:.75;line-height:1.35}
+body.zn .zn-ttext .zn-tchip{display:inline-flex;margin-top:8px;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700;background:#E9E2FF;color:#3A2E7A}
+body.zn .zn-ttext .zn-tacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+body.zn .zn-ttext .zn-tacts .zn-pill{min-height:38px}
+body.zn .zn-hero:not(.zn-hero-night) .zn-ttext .zn-pill:not(.zn-dark){background:rgba(31,35,64,.08);color:#1F2340}
+.zn-dialsheet .zn-dial{display:grid;place-items:center;margin:4px auto 10px}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -3098,6 +3125,37 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       row.addEventListener("click",()=>{ const o=body.hidden; body.hidden=!o; row.classList.toggle("open",o); row.setAttribute("aria-expanded",String(o)); if(o) ZN_MEOPEN.add(g.k); else ZN_MEOPEN.delete(g.k); }); wrap.append(row,body); });
     if(!any) return; host.querySelectorAll(":scope > .zn-seclab:not(.zn-seclab2)").forEach(x=>x.remove()); hero.after(wrap); }
   function znUnfold(node){ try{ if(!node) return; const b=node.closest(".zn-mebody"); if(b&&b.hidden){ b.hidden=false; ZN_MEOPEN.add(b.dataset.key); const r=b.previousElementSibling; if(r){ r.classList.add("open"); r.setAttribute("aria-expanded","true"); } } const c=node.closest(".zn-tfold-hide"); if(c){ ZN_TFOLD=c.dataset.tkey||""; znTodayFold(); } }catch(e){} }
+  // Nov 11 (the timer ring): the sundial and "Next up" become one thing at the top of Today — a ring that is the block you're in, draining
+  // as it passes, with what it is and the one action beside it. Violet-to-pink ombré for a meeting or event, pink-to-gold for a picked
+  // task, mint-to-teal for open time; at night the galaxy band counts down the evening. Tap the ring for the whole day as the old dial.
+  function znTimerState(items,n){ const T=TODAY(); const fmt=m=>{ m=Math.max(0,Math.round(m)); return m>=60?`${Math.floor(m/60)}:${String(m%60).padStart(2,"0")}`:String(m); };
+    let PK={picks:[],done3:new Set()}; try{ const D3=parseDay(); PK={done3:new Set(listOf("Top 3 Done").map(x=>x.toLowerCase())),picks:[...D3.tasks.map(t=>({title:t.title})),...D3.untimed.map(u=>({title:u.title})),...D3.unplaced.map(u=>({title:u.replace(/\s*\(it comes after a step that didn't fit\)$/i,"")})),...(typeof extraPicks==="function"?extraPicks(D3):[]).map(x=>({title:x}))]}; }catch(e){}
+    const isD=t=>PK.done3.has(String(t||"").toLowerCase()); const twin=t=>(LIST||[]).find(i=>String(i.name||"").toLowerCase()===String(t||"").toLowerCase());
+    const done=async(title,b)=>{ b.disabled=true; try{ await setInList("Top 3 Done",title,true,"\n"); syncListDone(title,true); renderWeekday(); znRender(); }catch(e){ toast(writeErr(e)); b.disabled=false; } };
+    const live=items.filter(x=>x.e>n).sort((a,b)=>a.s-b.s); const curT=live.find(x=>x.k==="focus"&&x.s<=n&&!isD(x.name)); const curM=live.find(x=>x.k!=="focus"&&x.s<=n&&(x.e-x.s)<=5);
+    const cur=(curM&&curM.k==="work")?curM:(curT||curM); const nxt=live.find(x=>x.s>n&&!(x.k==="focus"&&isD(x.name)));
+    const loose=PK.picks.find(p=>!isD(p.title)&&!items.some(x=>x.k==="focus"&&String(x.name).toLowerCase()===p.title.toLowerCase()));
+    if(cur){ const left=(cur.e-n)*60, frac=Math.max(0,Math.min(1,(cur.e-n)/Math.max(.05,cur.e-cur.s))); const nm=String(cur.name).replace(/^💼\s*/,""); const acts=[]; let sub="", chip="";
+      if(cur.k==="focus"){ const it=twin(cur.name); sub=[it&&it.energy==="Deep"?"Deep work":"",it&&it.project?it.project:"",it&&it.est?znDur(it.est):""].filter(Boolean).join(" · "); acts.push({t:"Done",dark:true,fn:b=>done(cur.name,b)}); if(it) acts.push({t:"Open",fn:b=>openListItem(it,b)}); }
+      else { const p=cur.k==="work"?znPrepFor(T,nm):null; sub=p&&p.prep&&p.prep.summary?String(p.prep.summary).split(/(?<=\.)\s/)[0]:(cur.k==="us"?"together":""); if(p){ chip="✨ Prep ready"; acts.push({t:"Open the prep",dark:true,fn:b=>znPrepSheet(p,b,`Today ${hToLabel(cur.s)}`)}); } }
+      return {kind:cur.k==="focus"?"task":"meet",frac,big:fmt(left),small:left>=60?"left":"min left",k:`Now · until ${hToLabel(cur.e)}`,title:nm,sub,chip,acts}; }
+    const ended=items.filter(x=>x.e<=n).map(x=>x.e); const end=nxt?nxt.s:(n<WORK_H.to?WORK_H.to:null);
+    if(end!=null){ const p0=Math.max(ended.length?Math.max(...ended):0,Math.min(n-.01,WORK_H.from)); const gap=(end-n)*60, frac=Math.max(.02,Math.min(1,(end-n)/Math.max(.25,end-p0))); const acts=[]; let title="Open time", sub=nxt?`Next: ${shortName(String(nxt.name).replace(/^💼\s*/,""))} at ${hToLabel(nxt.s)}`:"Nothing else on the clock";
+      let cand=null; try{ const c=znFitCands(Math.round(gap)); cand=c&&c[0]?twin(c[0].name)||null:null; }catch(e){} const pickIt=loose?twin(loose.title):null; const it=pickIt||cand;
+      if(it&&gap>=15){ title=`${it.name.length>44?it.name.slice(0,42)+"…":it.name} fits`; if(calOK()) acts.push({t:"Place it",dark:true,fn:b=>openScheduleSheet(it,b)}); acts.push({t:"Open",fn:b=>openListItem(it,b)}); }
+      else if(loose){ title=loose.title; acts.push({t:"Done",dark:true,fn:b=>done(loose.title,b)}); }
+      return {kind:"open",frac,big:fmt(gap),small:"open",k:`Open until ${hToLabel(end)}`,title,sub,chip:"",acts}; }
+    return {kind:"clear",frac:1,big:znClock(n),small:"all clear",k:"All clear",title:"Nothing else on the clock today",sub:loose?`Still picked: ${loose.title}`:"",chip:"",acts:loose&&twin(loose.title)?[{t:"Open",fn:b=>openListItem(twin(loose.title),b)}]:[]}; }
+  function znNightTimerState(tom,n){ const set=SUN.set??19.2, endH=22; const fmt=m=>{ m=Math.max(0,Math.round(m)); return m>=60?`${Math.floor(m/60)}:${String(m%60).padStart(2,"0")}`:String(m); }; const late=n>=endH||n<12; const left=late?0:(endH-n)*60; const frac=late?0:Math.max(0,Math.min(1,(endH-n)/Math.max(.5,endH-Math.min(set,endH-.5))));
+    const first=tom[0]; const meets=tom.filter(x=>x.k==="work").length; const d1=new Date(addDays(TODAY(),1)+"T12:00:00Z");
+    return {kind:"night",frac,big:late?"✦":fmt(left),small:late?"day’s done":"of evening",k:"Tonight",title:first?`${DAYS_LONG[d1.getUTCDay()]} starts with ${shortName(String(first.name).replace(/^💼\s*/,""))} at ${hToLabel(first.s)}`:`Nothing on ${DAYS_LONG[d1.getUTCDay()]}’s clock yet`,sub:meets?`${meets} meeting${meets===1?"":"s"} tomorrow`:"",chip:"",acts:[]}; }
+  function znTimerMount(hero,st,sheetK,sheetT){ const grid=hero.querySelector(".zn-hgrid"); if(!grid) return; const dial=grid.querySelector(".zn-dial");
+    const wrap=el("div","zn-timer zn-tk-"+st.kind); const ring=el("button","zn-tring"); ring.type="button"; ring.style.setProperty("--deg",Math.round(st.frac*360)+"deg"); ring.setAttribute("aria-label",`${st.big} ${st.small}. ${st.k}: ${st.title}. Tap for the whole day as a dial.`);
+    ring.innerHTML=`<span class="zn-ttrack"></span><span class="zn-tarc"></span>${st.frac>.01?'<span class="zn-tcap"></span>':""}<span class="zn-tknob"></span><span class="zn-tc"><b>${znEsc(st.big)}</b><small>${znEsc(st.small)}</small></span>`;
+    ring.addEventListener("click",()=>{ const box=el("div","zn-dialsheet"); if(dial){ const d=dial.cloneNode(true); d.removeAttribute("id"); box.append(d); } box.append(el("p","hint","The ring on Today is the block you’re in. This is the whole day.")); openSheet({kicker:sheetK,title:sheetT,body:[box],from:ring}); });
+    const tx=el("div","zn-ttext"); tx.append(el("p","zn-tk",st.k),el("h2","zn-tt",st.title)); if(st.sub) tx.append(el("p","zn-ts",st.sub)); if(st.chip) tx.append(el("span","zn-tchip",st.chip));
+    if(st.acts&&st.acts.length){ const ac=el("div","zn-tacts"); st.acts.forEach(a=>{ const b=el("button","zn-pill"+(a.dark?" zn-dark":""),a.t); b.type="button"; b.addEventListener("click",()=>{ try{ a.fn(b); }catch(e){} }); ac.append(b); }); tx.append(ac); }
+    wrap.append(ring,tx); grid.replaceWith(wrap); hero.classList.add("zn-hero-timer"); }
   function znTomorrowPrep(tom,T1,opts){ opts=opts||{}; const c=znCard((opts.glass?"zn-glass ":"")+"zn-prep","","Tomorrow"); const d1=new Date(T1+"T12:00:00Z");
     const meets=tom.filter(x=>x.k==="work").sort((a,b)=>a.s-b.s); const evs=tom.filter(x=>x.k!=="work").sort((a,b)=>a.s-b.s);
     const due=LIST.filter(it=>it.status!=="Done"&&forClaire(it)&&isTask(it)&&(it.due===T1||it.focus===T1));
@@ -3361,6 +3419,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
         </div>
         <p class="zn-vibe">${(()=>{ const ev=clean(ROW.Evening).split(/\n+/).map(x=>x.trim()).filter(Boolean); return znEsc(ev[0]||(wk?(wk==="fri"?"The weekend’s here.":"An easy night."):"Land the day, then let it go.")); })()}</p>`,"Tonight at a glance"); /* Oct 29: the Day Wrap's headline */
       heroN.querySelectorAll(".zn-qgo").forEach(q=>q.addEventListener("click",()=>bed.scrollIntoView({behavior:"smooth",block:"start"})));
+      try{ znTimerMount(heroN,znNightTimerState(tom,n),"Tomorrow as a dial",DAYS_LONG[d1.getUTCDay()]); }catch(e){ console.error("night timer",e); } /* Nov 11 */
       box.append(heroN,bed); try{ box.append(znTomorrowPrep(tom,T1,{glass:true})); }catch(e){ console.error("prep",e); }
       NIGHT_TC=null; }
     else { NIGHT_TC=null; znSky(false); try{ znDaySky(true); }catch(e){} }
@@ -3374,8 +3433,9 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const hero=znCard("zn-hero",`<div class="zn-hrow"><span class="zn-date">${DN} <i>the ${ord}</i></span>${t!=null?`<button type="button" class="zn-pill" id="znWx">${t}°${hi!=null?` · high ${Math.round(hi)}`:""}</button>`:""}</div>
       <div class="zn-hgrid"><div class="zn-dial" id="znDial">${znDial(items,n,220,false,center,`Today as a 24-hour dial. Now ${hToLabel(n)}. ${items.filter(x=>x.e>n).map(x=>x.name+" at "+hToLabel(x.s)).slice(0,6).join(", ")}`)}</div><div class="zn-side">${znQuickCard(items,n,cur,nx)}</div></div>${vibe?`<p class="zn-vibe">${znEsc(vibe)}</p>`:""}`,"Today at a glance");
     if(!night) box.append(hero);
-    if(!night&&!wkDay()){ try{ const nu=znNextUp(); if(nu) box.append(nu); hero.querySelectorAll(".zn-fits").forEach(x=>{ const side=x.closest(".zn-side")||x; side.hidden=true; }); hero.classList.add("zn-hero-spine"); }catch(e){ console.error("next up",e); } } /* Nov 9: the spine */
-    znDialPlay(hero); znQuickWire(hero); const wb=hero.querySelector("#znWx"); if(wb) wb.addEventListener("click",()=>{ let body; try{ body=znWxBody(); }catch(e){ body=el("div","rs-wxsheet"); } openSheet({kicker:"Weather",title:t!=null?`${t}°`:"Weather",body,from:wb}); });
+    if(!night&&!wkDay()) hero.classList.add("zn-hero-spine");
+    znDialPlay(hero); znQuickWire(hero);
+    if(!night&&!wkDay()){ try{ znTimerMount(hero,znTimerState(items,n),"The whole day",`${DN} the ${ord}`); }catch(e){ console.error("timer",e); } } /* Nov 11: the timer ring (it absorbs Next up) */ const wb=hero.querySelector("#znWx"); if(wb) wb.addEventListener("click",()=>{ let body; try{ body=znWxBody(); }catch(e){ body=el("div","rs-wxsheet"); } openSheet({kicker:"Weather",title:t!=null?`${t}°`:"Weather",body,from:wb}); });
     // ---------- the three widgets ----------
     let walks=[], meals={}; try{ walks=walksTodayAll(); meals=mealsToday(); }catch(e){}
     const bNext=items.find(x=>x.k==="birdie"&&x.s>n); const usIt=items.filter(x=>x.k==="us").find(x=>x.e>n&&x.s>=16)||items.filter(x=>x.k==="us").find(x=>x.e>n);
