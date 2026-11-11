@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-11.1"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-11.2"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1655,6 +1655,10 @@ body.zn .zn-inv.done{opacity:.55}
  body.zn #view-today.zn-d3 > #znDeskPanel{top:78px;max-height:calc(100vh - 94px)}
  body.zn #main.wrap{padding-bottom:40px}
 }
+
+/* Nov 11: the "new version" pill */
+.zn-update{position:fixed;z-index:200;left:50%;transform:translateX(-50%);top:calc(10px + env(safe-area-inset-top,0px));padding:10px 16px;border-radius:999px;border:0;font:700 13.5px/1 'Plus Jakarta Sans',system-ui,sans-serif;background:#1F2340;color:#FFE27A;box-shadow:0 10px 30px rgba(0,0,0,.3);cursor:pointer;white-space:nowrap}
+@media (min-width:1200px){ .zn-update{top:74px} }
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -4945,6 +4949,22 @@ function hideSignin(){ const ov=document.getElementById("signin"); if(ov) ov.hid
 <script>
 // app package (Netlify): offline shell. The service worker only caches this page and its icons, never Zone data.
 if("serviceWorker" in navigator && !(window.claude&&typeof window.claude.use==="function")) addEventListener("load",()=>navigator.serviceWorker.register("./sw.js",{scope:"./"}).catch(()=>{}));
+// Nov 11: notice a newer build. An installed app (home screen, Dock) keeps the page it has in memory, so it could sit on an old build for
+// days. build.txt holds the id of the published build; when it's newer than this page's, the app reloads itself at the moment you come back
+// to it (never while a sheet is open or you're typing), and otherwise shows "New version ready". Checked on return, and every 30 minutes.
+(function(){ if(window.claude&&typeof window.claude.use==="function") return;
+  const cur=(document.querySelector('meta[name="zone-build"]')||{}).content||""; const key=b=>{ const m=String(b||"").trim().match(/^(\d{4})-(\d{2})-(\d{2})\.(\d+)$/); return m?Number(m[1]+m[2]+m[3])*1000+Number(m[4]):0; };
+  let last=0, told=false;
+  const busy=()=>{ const L=document.getElementById("layer"); if(L&&L.children.length) return true; const el=document.activeElement; return !!(el&&/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)&&el.type!=="checkbox"&&el.type!=="radio"); };
+  const pill=b=>{ if(told) return; told=true; const p=document.createElement("button"); p.type="button"; p.className="zn-update"; p.textContent="New version ready · tap to refresh"; p.setAttribute("aria-label","A new version of The Zone is ready ("+b+"). Tap to refresh."); p.addEventListener("click",()=>location.reload()); document.body.append(p); };
+  async function check(returning){ if(Date.now()-last<120000) return; last=Date.now(); try{ const r=await fetch("./build.txt?t="+Date.now(),{cache:"no-store"}); if(!r.ok) return; const b=(await r.text()).trim(); if(key(b)<=key(cur)) return;
+      let tried=false; try{ tried=!!sessionStorage.getItem("zone:reloaded:"+b); }catch(e){}
+      if(returning&&!busy()&&!tried){ try{ sessionStorage.setItem("zone:reloaded:"+b,"1"); }catch(e){} location.reload(); return; } pill(b); }catch(e){} }
+  window.__znBuildCheck=check;
+  document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible") check(true); });
+  window.addEventListener("pageshow",e=>{ if(e.persisted) check(true); });
+  setInterval(()=>check(false),30*60*1000); setTimeout(()=>check(false),20000);
+})();
 </script>
 </body>
 </html>
