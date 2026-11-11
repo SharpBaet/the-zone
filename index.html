@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-10.6"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-10.7"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1576,6 +1576,31 @@ body.zn .zn-mebody > .zn-card > .zn-h .zn-ht,body.zn .zn-mebody > .zn-card > .zn
 body.zn .zn-mebody > .zn-card > .zn-h:not(:has(button)){display:none}
 body.zn .zn-mebody > .zn-card > .zn-h{justify-content:flex-end;margin-bottom:4px}
 @media (min-width:1000px){ body.zn #znMe > .zn-merows{grid-column:1 / -1} }
+
+/* Nov 10: night on the desktop columns. The night card rules were written per tab id (#znToday, #znPlan, #znUs, #znMe), so the two new
+   desktop containers kept day-light cards under night-light text. Same dark glass here; chosen chips and the capacity bars flip to light. */
+body.zn.zn-night #znDeskPlan .zn-card:not(.zn-glass),body.zn.zn-night #znDeskPanel .zn-card:not(.zn-glass){background:rgba(255,255,255,.08) !important;border:1px solid rgba(255,255,255,.12);color:#F3EEFF !important;box-shadow:none !important}
+body.zn.zn-night #znDeskPlan .zn-card:not(.zn-glass) *,body.zn.zn-night #znDeskPanel .zn-card:not(.zn-glass) *{color:inherit}
+body.zn.zn-night #znDeskPlan .zn-mast.zn-card{background:none !important;border:0 !important;box-shadow:none !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important}
+body.zn.zn-night #znDeskPlan .zn-chip.on,body.zn.zn-night #znDeskPanel .zn-chip.on,body.zn.zn-night #znPlan .zn-tfil .zn-chip.on,body.zn.zn-night #znMe .zn-tfil .zn-chip.on{background:#F3EEFF !important;color:#1F2340 !important}
+body.zn.zn-night #znDeskPlan .zn-chip:not(.on),body.zn.zn-night #znDeskPanel .zn-chip:not(.on){background:rgba(255,255,255,.12) !important;color:#F3EEFF !important}
+body.zn.zn-night #znDeskPanel .zn-chip.soft,body.zn.zn-night #znDeskPlan .zn-chip.soft{background:transparent !important;border-color:rgba(255,255,255,.35)}
+body.zn.zn-night .zn-wcap > div{background:rgba(255,255,255,.08)}
+body.zn.zn-night .zn-wcap i{background:rgba(255,255,255,.18)}
+body.zn.zn-night .zn-wcap i em{background:#F3EEFF}
+body.zn.zn-night #znDeskPanel .zn-tsbig,body.zn.zn-night #znDeskPlan .zn-rchk,body.zn.zn-night #znDeskPanel .zn-rchk{border-color:rgba(243,238,255,.6)}
+body.zn.zn-night #znDeskPanel .zn-tsbig.on{background:#F3EEFF;border-color:#F3EEFF}
+body.zn.zn-night #znDeskPanel .zn-tstitle{border-bottom-color:rgba(255,255,255,.25)}
+body.zn.zn-night #znDeskPanel .zn-tsfold,body.zn.zn-night #znDeskPanel .zn-more{border-top-color:rgba(255,255,255,.14)}
+body.zn.zn-night #znDeskPanel .zn-dpx{background:rgba(255,255,255,.14);color:#F3EEFF}
+body.zn.zn-night #znDeskPlan .zn-trow.zn-sel{background:rgba(243,238,255,.14)}
+body.zn.zn-night #znDeskPanel .zn-tsacts .zn-warn{color:#FFB4A8 !important}
+
+/* Nov 10: night readability — the search placeholder, and starred rows keep their gold star */
+body.zn.zn-night .zn-tsearch input{color:#F3EEFF}
+body.zn.zn-night .zn-tsearch input::placeholder{color:rgba(243,238,255,.62)}
+body.zn.zn-night .zn-card .zn-tstar:not(.on){opacity:.32}
+body.zn.zn-night .zn-card .zn-tstar.on{color:#FFD76A !important;opacity:1}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
