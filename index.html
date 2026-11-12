@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-11.6"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-12.1"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1706,6 +1706,60 @@ body.zn .zn-heads b{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-t
 .set .zn-setdetail[hidden],.set .zn-sethome[hidden]{display:none}
 .set .zn-setdetail > section{margin-bottom:12px}
 .set .zn-synctag{display:inline-block;vertical-align:middle;font:700 11px/1 system-ui,sans-serif;padding:3px 8px;border-radius:999px;background:#E3F6EA;color:#1E6B45;margin-left:8px;letter-spacing:0}
+
+/* Nov 12: the planning board (Plan on a wide screen) */
+body.zn #znPlan > .zn-board{grid-column:1 / -1;display:grid;grid-template-columns:330px minmax(0,1fr);gap:18px;align-items:start}
+body.zn .zn-board > .zn-card{margin:0}
+body.zn .zn-bdlist{position:sticky;top:78px;max-height:calc(100vh - 96px);overflow:auto}
+body.zn .zn-bdh{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:0 0 8px}
+body.zn .zn-bdh h2{font:600 20px/1.2 Fraunces,Georgia,serif;margin:0}
+body.zn .zn-bdh small{font-size:12px;font-weight:600;opacity:.6}
+body.zn .zn-bdsearch{display:block;width:100%;box-sizing:border-box;border:0;border-radius:12px;padding:9px 12px;font:inherit;font-size:14px;background:rgba(127,127,160,.14);color:inherit;margin:0 0 8px}
+body.zn .zn-bdfil{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 4px}
+body.zn .zn-bdfil .zn-chip{min-height:30px;padding:4px 10px;font-size:12px}
+body.zn .zn-bdfil .zn-chip.on{background:#1F2340 !important;color:#fff !important}
+body.zn.zn-night .zn-bdfil .zn-chip.on{background:#F3EEFF !important;color:#1F2340 !important}
+body.zn .zn-bdg{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.6;margin:12px 0 2px}
+body.zn .zn-bdrow{display:flex;align-items:center;gap:8px;padding:8px;border-radius:12px;margin:2px -8px;cursor:grab;user-select:none}
+body.zn .zn-bdrow:hover{background:rgba(127,127,160,.12)}
+body.zn .zn-bdrow.drag{opacity:.45;outline:2px dashed #FFA95E}
+body.zn .zn-bdgrip{opacity:.35;font-size:14px}
+body.zn .zn-bdtx{flex:1;min-width:0}
+body.zn .zn-bdtx b{display:block;font-size:13.5px;line-height:1.25}
+body.zn .zn-bdtx small{display:block;font-size:11.5px;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.zn .zn-bdsz{flex:none;font-size:10.5px;font-weight:700;padding:3px 7px;border-radius:999px;background:rgba(127,127,160,.16);white-space:nowrap}
+body.zn .zn-bdhow{margin-top:12px}
+body.zn .zn-bdgrid{display:grid;grid-template-columns:42px repeat(7,minmax(0,1fr));gap:0 6px}
+body.zn .zn-bdday{padding:6px 2px 8px;text-align:center;border-radius:12px;border:2px dashed transparent}
+body.zn .zn-bdday small{display:block;font-size:10.5px;font-weight:800;letter-spacing:.06em;opacity:.6}
+body.zn .zn-bdday b{display:inline-block;font:600 18px/1.3 Fraunces,Georgia,serif;padding:0 9px;border-radius:999px}
+body.zn .zn-bdday.today b{background:#1F2340;color:#fff !important}
+body.zn.zn-night .zn-bdday.today b{background:#F3EEFF;color:#1F2340 !important}
+body.zn .zn-bdday span{display:block;font-size:11px;opacity:.7}
+body.zn .zn-bdday .zn-bddots{display:flex;gap:4px;justify-content:center;margin-top:5px;height:8px;opacity:1}
+body.zn .zn-bdday .zn-bddots i{width:8px;height:8px;border-radius:50%;background:rgba(127,127,160,.3)}
+body.zn .zn-bdday .zn-bddots i.on{background:#FF9E5E}
+body.zn .zn-board.dragging .zn-bdday{border-color:rgba(255,158,94,.45)}
+body.zn .zn-bdday.over{border-color:#FF9E5E;background:rgba(255,158,94,.16)}
+body.zn .zn-bdhrs{position:relative;height:var(--bdh);font-size:10.5px;font-weight:700;opacity:.55}
+body.zn .zn-bdhrs span{position:absolute;right:4px;transform:translateY(-6px);white-space:nowrap}
+body.zn .zn-bdcol{position:relative;height:var(--bdh);border-radius:14px;background:repeating-linear-gradient(180deg,rgba(127,127,160,.16) 0 1px,transparent 1px 52px),rgba(255,255,255,.4)}
+body.zn.zn-night .zn-bdcol{background:repeating-linear-gradient(180deg,rgba(255,255,255,.1) 0 1px,transparent 1px 52px),rgba(255,255,255,.04)}
+body.zn .zn-bdcol.wkend{background-color:rgba(255,214,230,.28)}
+body.zn.zn-night .zn-bdcol.wkend{background-color:rgba(255,160,200,.07)}
+body.zn .zn-bdb{position:absolute;left:3px;right:3px;box-sizing:border-box;border:0;border-radius:10px;padding:4px 7px;font:inherit;font-size:11.5px;line-height:1.2;text-align:left;overflow:hidden}
+body.zn .zn-bdb b{display:block;font-weight:700;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;color:inherit !important}
+body.zn .zn-bdb small{display:block;font-weight:600;opacity:.75;font-size:10.5px;color:inherit !important}
+body.zn .zn-bdb.m{background:#DCD4FF;color:#2E2470 !important}
+body.zn .zn-bdb.p{background:#E6E8F2;color:#4A4767 !important}
+body.zn .zn-bdb.t{background:linear-gradient(135deg,#FFD9B0,#FFC3D6);color:#5A2A12 !important;cursor:pointer}
+body.zn .zn-bdghost{background:rgba(255,169,94,.3);outline:2px dashed #FF9E5E;color:#7A3B0E !important;box-shadow:0 10px 26px rgba(255,158,94,.35);pointer-events:none;z-index:3}
+body.zn.zn-night .zn-bdghost{color:#FFE2C2 !important}
+body.zn .zn-bdghost.bad{background:rgba(228,87,46,.22);outline-color:#E4572E;box-shadow:none}
+body.zn .zn-bdnow{position:absolute;left:0;right:0;height:2px;background:#E4572E;z-index:2;pointer-events:none}
+body.zn .zn-bdnow::before{content:"";position:absolute;left:-4px;top:-3px;width:8px;height:8px;border-radius:50%;background:#E4572E}
+
+@media (min-width:1200px){ body.zn #main.wrap:has(#view-ahead:not([hidden]) .zn-board){max-width:1380px} }
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -2722,6 +2776,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function znPlanRender(){ try{ znDeskPlanRender(); }catch(e){ console.error("desk plan",e); } const host=$("#znPlan"); if(!host) return; if(!znOn()||!ROW){ host.hidden=true; return; } host.hidden=false; host.replaceChildren();
     const T=TODAY(); if(!ZN_PLAN.day||ZN_PLAN.day<T) ZN_PLAN.day=T; const days=znPlanDays();
     const mh=el("div","zn-mast zn-card"); mh.innerHTML=`<span class="zn-mt">Plan</span>`; const addb=el("button","zn-pill","+ Event"); addb.type="button"; addb.disabled=!calOK(); addb.hidden=!calOK(); /* Oct 31: hidden, not greyed, where adding events isn't wired (Victoria) */ addb.addEventListener("click",()=>openAddEvent(addb)); mh.append(addb); host.append(mh);
+    ZN_BOARD.wide=!!(window.matchMedia&&matchMedia("(min-width:1200px)").matches); if(ZN_BOARD.wide){ try{ znBoard(host); }catch(e){ console.error("board",e); } return; } /* Nov 12: the planning board on a wide screen */
     // Nov 10 (phone pass, part 2): Plan is one screen — a week strip, the day you tap (opens above the list, tap again to close), and the one
     // list. No segments: Work, Alice, Projects and Notes are filters in the list. (The old Week cards, Unplaced tray and projects rail are gone.)
     if(ZN_PLAN.seg==="work"){ ZN_PLAN.filter="Work"; } if(ZN_PLAN.seg==="waiting"){ ZN_PLAN.filter="alice"; } if(ZN_PLAN.seg==="projects"){ ZN_PLAN.filter="projects"; } ZN_PLAN.seg="list";
@@ -3130,7 +3185,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function znDeskPanelEmpty(){ const pn=$("#znDeskPanel"); if(!pn) return; window.__znSel=""; pn.replaceChildren(); const c=znCard("zn-deskpanel zn-deskempty",""); c.append(el("p","zn-dpk","Nothing selected"),el("p","zn-dpe","Pick a task, note or idea from Plan, or from Your day, and it opens here to edit.")); const ask=el("button","zn-pill","🤝 Ask Alice"); ask.type="button"; ask.addEventListener("click",()=>znAskSheet(ask)); if(!(PERSON.features&&PERSON.features.alice===false)) c.append(ask); pn.append(c); try{ document.querySelectorAll("#znDeskPlan .zn-sel").forEach(x=>x.classList.remove("zn-sel")); }catch(e){} }
   function znDeskPanelOpen(kicker,wrap){ if(!znDeskOn()) return null; const pn=$("#znDeskPanel"); if(!pn) return null; pn.replaceChildren(); const c=znCard("zn-deskpanel",""); const head=el("div","zn-dphead"); const x=el("button","zn-dpx","✕"); x.type="button"; x.setAttribute("aria-label","Close the panel"); head.append(el("span","zn-dpk",kicker),x); c.append(head,wrap); pn.append(c);
     const close=()=>znDeskPanelEmpty(); x.addEventListener("click",close); try{ document.querySelectorAll("#znDeskPlan .zn-trow").forEach(r=>r.classList.remove("zn-sel")); }catch(e){} try{ znDeskPlanRender(); }catch(e){} return close; }
-  window.addEventListener("resize",()=>{ try{ znDeskSync(); }catch(e){} });
+  window.addEventListener("resize",()=>{ try{ znDeskSync(); }catch(e){} try{ const w=!!(window.matchMedia&&matchMedia("(min-width:1200px)").matches); if(w!==ZN_BOARD.wide&&!$("#view-ahead").hidden) znPlanRender(); }catch(e){} });
   // Nov 10 (phone pass, part 4): shorter pages.
   // Today (where the spine is): every card under the timeline folds into a small tile showing its title and status; tap a tile and that
   // card opens right under the tiles, tap again to close. The weather / water tiles and the Done-today strip stay as they are.
@@ -3213,6 +3268,51 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     try{ const w=wxNow(); const r=String(w&&w.rain||"").trim(); const m=r.match(/(\d{2,3})\s*%/); if(on("rain")&&r&&m&&Number(m[1])>=50) return `Rain today: ${r.replace(/\.$/,"")}.`; }catch(e){}
     const us=live.find(x=>x.k==="us"&&x.s>=17); if(on("evening")&&us&&n>=14&&n<us.s-.5) return `${us.name} at ${tl(us.s)} tonight.`;
     return ""; }
+  // Nov 12 (desktop phase two, step 2): the planning board. On a wide screen the Plan tab is a board — "To place" on the left (open
+  // tasks with no time yet), the next seven days as columns on the right (meetings and events, tasks already placed, the now line).
+  // Drag a task onto a day to place it at that time (15-minute steps, its own size; it won't drop on top of something); drag it onto a
+  // day's name to pick it for that day without a time. Placing writes Scheduled and queues the calendar event, exactly like "Place it".
+  // Blocks that are already placed open the task on click; they can't be dragged yet (moving one would leave the old calendar event behind).
+  const ZN_BOARD={filter:"All",q:"",wide:null}; let ZN_DRAG=null;
+  async function znBoardPlace(it,d,s0){ const e0=s0+(it.est||30)/60; try{ if(calOK()) await queueCal("me",d,s0,e0,10,it.name); const iso=`${d}T${hm(s0)}:00`; const ok=await listUpdate(it,{"date:Scheduled:start":iso},{sched:iso}); if(ok!==false) toast(`Placed ${d===TODAY()?"today":dueLabel(d)} at ${hLabel(s0)}${calOK()?" · on your calendar in a few minutes":""}`); }catch(err){ toast(writeErr(err)); } znPlanRender(); try{ znRender(); }catch(e){} }
+  async function znBoardPick(it,d){ const T=TODAY(); try{ if(d===T) await pickToday(it.name); else if(d===addDays(T,1)) await addToTomorrow([it.name],"On tomorrow’s picks"); else await listUpdate(it,{"date:Focus:start":d},{focus:d},`Picked for ${DAYS_LONG[new Date(d+"T12:00:00Z").getUTCDay()]}`); }catch(err){ toast(writeErr(err)); } znPlanRender(); try{ znRender(); }catch(e){} }
+  function znBoard(host){ const T=TODAY(); const days=[...Array(7)].map((_,i)=>addDays(T,i)); const H0=Math.min(8,Math.floor(WORK_H.from)), H1=Math.max(18,Math.ceil(WORK_H.to)), PX=52; const yOf=h=>Math.round((h-H0)*PX);
+    const fmt=m=>m>=60?(m%60?`${Math.floor(m/60)}h ${m%60}m`:`${m/60}h`):`${m}m`; const AR={Work:"💼",Personal:"🌱",Home:"🏠",Birdie:"🐕",Us:"💕"};
+    const all=LIST.filter(it=>it.status==="Open"&&isTask(it)&&forClaire(it)&&!isSnoozed(it)&&!it.waiting&&!it.sched);
+    const board=el("div","zn-board"); const left=znCard("zn-bdlist",""); const right=znCard("zn-bdweek","");
+    // ----- left: to place
+    const F=ZN_BOARD.filter, q=ZN_BOARD.q.trim().toLowerCase(); const shown=all.filter(it=>(F==="All"||(F==="Deep"?it.energy==="Deep":it.area===F))&&(!q||it.name.toLowerCase().includes(q)||String(it.project||"").toLowerCase().includes(q)));
+    const total=shown.reduce((a,it)=>a+(it.est||30),0); const lh=el("div","zn-bdh"); lh.append(el("h2",null,"To place"),el("small",null,shown.length?`${shown.length} task${shown.length===1?"":"s"} · ${fmt(total)}`:"")); left.append(lh);
+    const sr=el("input","zn-bdsearch"); sr.type="search"; sr.placeholder="Search"; sr.value=ZN_BOARD.q; sr.setAttribute("aria-label","Search tasks to place"); sr.addEventListener("input",()=>{ ZN_BOARD.q=sr.value; clearTimeout(sr._t); sr._t=setTimeout(()=>{ znPlanRender(); const n2=document.querySelector("#znPlan .zn-bdsearch"); if(n2){ n2.focus(); try{ n2.setSelectionRange(n2.value.length,n2.value.length); }catch(e){} } },250); }); left.append(sr);
+    const fl=el("div","zn-bdfil"); ["All","Work","Personal","Home","Deep"].forEach(k=>{ const b=el("button","zn-chip"+(F===k?" on":""),(AR[k]?AR[k]+" ":"")+k); b.type="button"; b.setAttribute("aria-pressed",String(F===k)); b.addEventListener("click",()=>{ ZN_BOARD.filter=k; znPlanRender(); }); fl.append(b); }); left.append(fl);
+    const wkEnd=addDays(T,6); const groups=[["Due this week",shown.filter(it=>it.due&&it.due<=wkEnd)],["Due later",shown.filter(it=>it.due&&it.due>wkEnd)],["No date",shown.filter(it=>!it.due)]];
+    groups.forEach(([lab,items])=>{ if(!items.length) return; left.append(el("p","zn-bdg",lab)); items.sort((a,b)=>(b.star-a.star)||((a.due||"9999").localeCompare(b.due||"9999"))).forEach(it=>{ const r=el("div","zn-bdrow"); r.draggable=true; r.tabIndex=0; r.setAttribute("role","button"); r.setAttribute("aria-label",`${it.name}, ${fmt(it.est||30)}. Drag onto a day to place it, or press Enter to open.`);
+        const tx=el("span","zn-bdtx"); tx.append(el("b",null,(it.star?"★ ":"")+it.name+(it.priv?" 🔒":"")),el("small",null,[AR[it.area]||"",it.project||"",it.due?"due "+dueLabel(it.due):""].filter(Boolean).join(" · "))); r.append(el("span","zn-bdgrip","⠿"),tx,el("span","zn-bdsz",fmt(it.est||30)+(it.energy==="Deep"?" · Deep":"")));
+        r.addEventListener("dragstart",e=>{ ZN_DRAG=it; r.classList.add("drag"); try{ e.dataTransfer.effectAllowed="move"; e.dataTransfer.setData("text/plain",it.id||it.name); }catch(e2){} board.classList.add("dragging"); });
+        r.addEventListener("dragend",()=>{ ZN_DRAG=null; r.classList.remove("drag"); board.classList.remove("dragging"); board.querySelectorAll(".zn-bdghost").forEach(x=>x.remove()); board.querySelectorAll(".zn-bdday.over").forEach(x=>x.classList.remove("over")); });
+        r.addEventListener("click",()=>openListItem(it,r)); r.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); openListItem(it,r); } }); left.append(r); }); });
+    if(!shown.length) left.append(el("p","hint",all.length?"Nothing matches.":"Everything open has a time. Nice."));
+    left.append(el("p","hint zn-bdhow","Drag a task onto a day to give it a time. Drop it on the day’s name to pick it for that day."));
+    // ----- right: the week
+    const rh=el("div","zn-bdh"); rh.append(el("h2",null,"The next seven days")); { const d1=addDays(T,1), w1=new Date(d1+"T12:00:00Z").getUTCDay(); if(w1>=1&&w1<=5){ const pb=el("button","zn-pill",`Plan ${DAYS_LONG[w1]}`); pb.type="button"; pb.disabled=!mcp; pb.addEventListener("click",()=>znPlanTomorrow(pb)); rh.append(pb); } } right.append(rh);
+    const grid=el("div","zn-bdgrid"); grid.style.setProperty("--bdh",((H1-H0)*PX)+"px"); grid.append(el("div"));
+    const cols=[]; days.forEach(d=>{ const dd=new Date(d+"T12:00:00Z"), wd=dd.getUTCDay(), wk=wd===0||wd===6; const hd=el("div","zn-bdday"+(d===T?" today":"")+(wk?" wkend":"")); hd.dataset.d=d; let openH=0; try{ openH=wk?0:znWorkOpen(d); }catch(e){}
+      let picks=0; try{ picks=d===T&&window.__znPicks?window.__znPicks.picks.length:LIST.filter(it=>it.status==="Open"&&it.focus===d).length; }catch(e){}
+      hd.innerHTML=`<small>${d===T?"TODAY":DAYS_LONG[wd].slice(0,3).toUpperCase()}</small><b>${dd.getUTCDate()}</b><span>${wk?"weekend":openH>0?(Math.round(openH*2)/2)+"h open":"full"}</span><span class="zn-bddots">${[0,1,2].map(i=>`<i class="${i<Math.min(3,picks)?"on":""}"></i>`).join("")}</span>`;
+      hd.setAttribute("aria-label",`${DAYS_LONG[wd]} ${dd.getUTCDate()}: ${wk?"weekend":(Math.round(openH*2)/2)+" hours open"}, ${picks} picked. Drop a task here to pick it for this day.`);
+      hd.addEventListener("dragover",e=>{ if(!ZN_DRAG) return; e.preventDefault(); hd.classList.add("over"); }); hd.addEventListener("dragleave",()=>hd.classList.remove("over")); hd.addEventListener("drop",e=>{ e.preventDefault(); hd.classList.remove("over"); const it=ZN_DRAG; ZN_DRAG=null; if(it) znBoardPick(it,d); }); grid.append(hd); cols.push({d,wk}); });
+    const hrs=el("div","zn-bdhrs"); for(let h=H0;h<=H1;h++){ const sp=el("span",null,h===12?"12pm":h<12?h+"am":(h-12)+"pm"); sp.style.top=yOf(h)+"px"; hrs.append(sp); } grid.append(hrs);
+    cols.forEach(({d,wk})=>{ const col=el("div","zn-bdcol"+(wk?" wkend":"")); col.dataset.d=d; let busy=[]; try{ busy=busyOn(d).filter(b=>b.e>b.s&&(b.e-b.s)<=9&&!/work blocks?\b|work day/i.test(b.n||"")); }catch(e){} let placed=[]; try{ placed=znPlacedOn(d); }catch(e){}
+      const taken=[...busy,...placed].map(b=>({s:b.s,e:b.e,n:b.n})); const seen=new Set();
+      busy.filter(b=>b.e>H0&&b.s<H1).forEach(b=>{ const k=`${b.s}|${b.n}`; if(seen.has(k)||placed.some(p=>p.n===b.n&&Math.abs(p.s-b.s)<.01)) return; seen.add(k); const s1=Math.max(b.s,H0), e1=Math.min(b.e,H1); const mine=!b.work&&(LIST.some(x=>x.name===b.n&&isTask(x))||!!(window.__znPicks&&window.__znPicks.picks.some(p=>p.title===b.n))); const bl=el("div","zn-bdb "+(b.work?"m":mine?"t":"p")); bl.style.top=yOf(s1)+"px"; bl.style.height=Math.max(20,yOf(e1)-yOf(s1)-2)+"px"; bl.append(el("b",null,String(b.n).replace(/^💼\s*/,""))); if(e1-s1>=.75) bl.append(el("small",null,hLabel(b.s))); bl.title=`${b.n} · ${hLabel(b.s)}–${hLabel(b.e)}`; col.append(bl); });
+      placed.filter(b=>b.e>H0&&b.s<H1).forEach(b=>{ const s1=Math.max(b.s,H0), e1=Math.min(b.e,H1); const bl=el("button","zn-bdb t"); bl.type="button"; bl.style.top=yOf(s1)+"px"; bl.style.height=Math.max(20,yOf(e1)-yOf(s1)-2)+"px"; bl.append(el("b",null,b.n)); if(e1-s1>=.75) bl.append(el("small",null,hLabel(b.s))); bl.title=`${b.n} · ${hLabel(b.s)}–${hLabel(b.e)}`; bl.addEventListener("click",()=>{ const it=LIST.find(x=>x.name===b.n&&x.status==="Open"); if(it) openListItem(it,bl); }); col.append(bl); });
+      if(d===T){ const n=nowH(); if(n>H0&&n<H1){ const nl=el("div","zn-bdnow"); nl.style.top=yOf(n)+"px"; col.append(nl); } }
+      const spot=e=>{ const it=ZN_DRAG; if(!it) return null; const r=col.getBoundingClientRect(); const dur=(it.est||30)/60; let s0=H0+(e.clientY-r.top)/PX-dur/4; s0=Math.round(s0*4)/4; s0=Math.max(H0,Math.min(H1-dur,s0)); if(d===T) s0=Math.max(s0,Math.ceil(nowH()*4)/4); const e0=s0+dur; const hit=taken.find(b=>s0<b.e-.001&&e0>b.s+.001); return {s0,e0,hit,late:e0>H1+.001}; };
+      col.addEventListener("dragover",e=>{ const p=spot(e); if(!p) return; e.preventDefault(); let g=col.querySelector(".zn-bdghost"); if(!g){ board.querySelectorAll(".zn-bdghost").forEach(x=>x.remove()); g=el("div","zn-bdb zn-bdghost"); g.append(el("b"),el("small")); col.append(g); } g.classList.toggle("bad",!!p.hit||p.late); g.style.top=yOf(p.s0)+"px"; g.style.height=Math.max(20,yOf(p.e0)-yOf(p.s0)-2)+"px"; g.firstChild.textContent=ZN_DRAG.name; g.lastChild.textContent=p.hit?`overlaps ${String(p.hit.n).replace(/^💼\s*/,"")}`:p.late?"no room left today":`drop to place · ${hLabel(p.s0)}–${hLabel(p.e0)}`; });
+      col.addEventListener("dragleave",e=>{ if(!col.contains(e.relatedTarget)) col.querySelectorAll(".zn-bdghost").forEach(x=>x.remove()); });
+      col.addEventListener("drop",e=>{ const it=ZN_DRAG; const p=spot(e); col.querySelectorAll(".zn-bdghost").forEach(x=>x.remove()); if(!it||!p) return; e.preventDefault(); ZN_DRAG=null; if(p.hit){ toast(`That overlaps ${String(p.hit.n).replace(/^💼\s*/,"")}. Drop it in a clear spot.`); return; } if(p.late){ toast("No room left in that day."); return; } znBoardPlace(it,d,p.s0); });
+      grid.append(col); });
+    right.append(grid); board.append(left,right); host.append(board); }
   function znTomorrowPrep(tom,T1,opts){ opts=opts||{}; const c=znCard((opts.glass?"zn-glass ":"")+"zn-prep","","Tomorrow"); const d1=new Date(T1+"T12:00:00Z");
     const meets=tom.filter(x=>x.k==="work").sort((a,b)=>a.s-b.s); const evs=tom.filter(x=>x.k!=="work").sort((a,b)=>a.s-b.s);
     const due=LIST.filter(it=>it.status!=="Done"&&forClaire(it)&&isTask(it)&&(it.due===T1||it.focus===T1));
