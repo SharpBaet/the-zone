@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-11.4"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-11.5"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1686,6 +1686,10 @@ body.zn .zn-ttext .zn-tacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 body.zn .zn-ttext .zn-tacts .zn-pill{min-height:38px}
 body.zn .zn-hero:not(.zn-hero-night) .zn-ttext .zn-pill:not(.zn-dark){background:rgba(31,35,64,.08);color:#1F2340}
 .zn-dialsheet .zn-dial{display:grid;place-items:center;margin:4px auto 10px}
+
+/* Nov 11: the heads-up line */
+body.zn .zn-heads{margin:12px 0 0;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.55);font-size:13.5px;line-height:1.4;color:#1F2340}
+body.zn .zn-heads b{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.6;margin-right:6px}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -3157,6 +3161,22 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const tx=el("div","zn-ttext"); tx.append(el("p","zn-tk",st.k),el("h2","zn-tt",st.title)); if(st.sub) tx.append(el("p","zn-ts",st.sub)); if(st.chip) tx.append(el("span","zn-tchip",st.chip));
     if(st.acts&&st.acts.length){ const ac=el("div","zn-tacts"); st.acts.forEach(a=>{ const b=el("button","zn-pill"+(a.dark?" zn-dark":""),a.t); b.type="button"; b.addEventListener("click",()=>{ try{ a.fn(b); }catch(e){} }); ac.append(b); }); tx.append(ac); }
     wrap.append(ring,tx); grid.replaceWith(wrap); hero.classList.add("zn-hero-timer"); }
+  // Nov 11: the line under the ring. The brief's all-day "vibe" sentence is gone from the card; in its place a heads-up that shows only
+  // when something real is true, and says what no other part of Today says. At most one, in this order: a "leave by" within two hours;
+  // a stretch of 2.5+ hours with no break starting within three hours; picked tasks that need more time than is open (weekdays, before
+  // 3:30); sunset within three hours with Birdie not walked; a 50%+ chance of rain in the weather note; an evening plan together.
+  function znHeadsUp(items,n){ const tl=h=>hToLabel(Math.round(h*12)/12); const live=items.filter(x=>x.e>n).sort((a,b)=>a.s-b.s);
+    const lb=items.map(x=>{ const m=String(x.name).match(/leave by\s+(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i); if(!m) return null; let h=Number(m[1])+Number(m[2]||0)/60; if(m[3]){ if(/pm/i.test(m[3])&&h<12) h+=12; } else if(h<7) h+=12; return h; }).filter(h=>h!=null).find(h=>h>n&&h-n<=2);
+    if(lb!=null) return `Leave by ${tl(lb)}.`;
+    const busy=live.filter(x=>x.k!=="focus"&&(x.e-x.s)<=5).map(x=>({s:Math.max(x.s,n),e:x.e})); const runs=[]; busy.forEach(x=>{ const r=runs[runs.length-1]; if(r&&x.s-r.e<0.25) r.e=Math.max(r.e,x.e); else runs.push({s:x.s,e:x.e}); });
+    const run=runs.find(r=>r.e-r.s>=2.5&&r.s-n<=3); if(run){ if(run.s>n+0.1) return `No break from ${tl(run.s)} to ${tl(run.e)}.${run.s<=13.5&&run.e>=12.75?` Eat before ${tl(run.s)}.`:""}`; return `No break until ${tl(run.e)}.`; }
+    if(!wkDay()&&n<15.5){ try{ const D3=parseDay(); const done3=new Set(listOf("Top 3 Done").map(x=>x.toLowerCase())); const picks=[...D3.tasks.map(t=>t.title),...D3.untimed.map(u=>u.title),...(typeof extraPicks==="function"?extraPicks(D3):[])].filter(t=>!done3.has(String(t).toLowerCase())); const need=picks.reduce((a,t)=>{ const it=(LIST||[]).find(i=>String(i.name||"").toLowerCase()===String(t).toLowerCase()); return a+((it&&it.est)||30); },0);
+        let open=0, t0=Math.max(n,WORK_H.from); busy.filter(x=>x.s<WORK_H.to).forEach(x=>{ if(x.s>t0) open+=(x.s-t0)*60; t0=Math.max(t0,x.e); }); if(WORK_H.to>t0) open+=(WORK_H.to-t0)*60;
+        if(picks.length&&need>open+20) return `Your picks need about ${znDur(need)} and ${open>=1?znDur(Math.round(open)):"no time"} is open. Move one to tomorrow.`; }catch(e){} }
+    try{ const set=SUN.set; const away=typeof BD_AWAY!=="undefined"&&BD_AWAY&&BD_AWAY.away; if(set&&!away&&n<set-.75&&set-n<=3&&walksTodayAll().length===0) return `Sunset is ${hToLabel(set)}. Walk Birdie before ${tl(Math.floor((set-.5)*2)/2)}.`; }catch(e){}
+    try{ const w=wxNow(); const r=String(w&&w.rain||"").trim(); const m=r.match(/(\d{2,3})\s*%/); if(r&&m&&Number(m[1])>=50) return `Rain today: ${r.replace(/\.$/,"")}.`; }catch(e){}
+    const us=live.find(x=>x.k==="us"&&x.s>=17); if(us&&n>=14&&n<us.s-.5) return `${us.name} at ${tl(us.s)} tonight.`;
+    return ""; }
   function znTomorrowPrep(tom,T1,opts){ opts=opts||{}; const c=znCard((opts.glass?"zn-glass ":"")+"zn-prep","","Tomorrow"); const d1=new Date(T1+"T12:00:00Z");
     const meets=tom.filter(x=>x.k==="work").sort((a,b)=>a.s-b.s); const evs=tom.filter(x=>x.k!=="work").sort((a,b)=>a.s-b.s);
     const due=LIST.filter(it=>it.status!=="Done"&&forClaire(it)&&isTask(it)&&(it.due===T1||it.focus===T1));
@@ -3418,7 +3438,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const heroN=znCard("zn-hero zn-hero-night",`<div class="zn-hrow"><span class="zn-date">${DN} <i>night</i></span>${th?`<button type="button" class="zn-pill" id="znWxN">${th}°${tl?` · low ${tl}`:""}</button>`:""}</div>
         <div class="zn-hgrid"><div class="zn-dial">${znDial(tom,n,220,true,[DAYS_LONG[d1.getUTCDay()],first?`first · ${hToLabel(first.s)} ${shortName(first.name)}`:"nothing on the clock",""],`Tomorrow as a dial: ${tom.map(x=>x.name+" at "+hToLabel(x.s)).join(", ")||"nothing scheduled"}`)}</div>
         </div>
-        <p class="zn-vibe">${(()=>{ const ev=clean(ROW.Evening).split(/\n+/).map(x=>x.trim()).filter(Boolean); return znEsc(ev[0]||(wk?(wk==="fri"?"The weekend’s here.":"An easy night."):"Land the day, then let it go.")); })()}</p>`,"Tonight at a glance"); /* Oct 29: the Day Wrap's headline */
+`,"Tonight at a glance"); /* Oct 29: the Day Wrap's headline */
       heroN.querySelectorAll(".zn-qgo").forEach(q=>q.addEventListener("click",()=>bed.scrollIntoView({behavior:"smooth",block:"start"})));
       try{ znTimerMount(heroN,znNightTimerState(tom,n),"Tomorrow as a dial",DAYS_LONG[d1.getUTCDay()]); }catch(e){ console.error("night timer",e); } /* Nov 11 */
       box.append(heroN,bed); try{ box.append(znTomorrowPrep(tom,T1,{glass:true})); }catch(e){ console.error("prep",e); }
@@ -3432,7 +3452,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const nextCard=nx?`<div class="zn-nc zn-soft"><span class="zn-k">Next · ${znEsc(hToLabel(nx.s))}</span><b>${znEsc(nx.name)}</b><span>${znDur(Math.round((nx.s-n)*60))} from now</span></div>`:`<div class="zn-nc zn-soft"><span class="zn-k">Next</span><b>Nothing else today</b></div>`;
     const t=w&&w.t!=null?Math.round(w.t):hi!=null?Math.round(hi):null;
     const hero=znCard("zn-hero",`<div class="zn-hrow"><span class="zn-date">${DN} <i>the ${ord}</i></span>${t!=null?`<button type="button" class="zn-pill" id="znWx">${t}°${hi!=null?` · high ${Math.round(hi)}`:""}</button>`:""}</div>
-      <div class="zn-hgrid"><div class="zn-dial" id="znDial">${znDial(items,n,220,false,center,`Today as a 24-hour dial. Now ${hToLabel(n)}. ${items.filter(x=>x.e>n).map(x=>x.name+" at "+hToLabel(x.s)).slice(0,6).join(", ")}`)}</div><div class="zn-side">${znQuickCard(items,n,cur,nx)}</div></div>${vibe?`<p class="zn-vibe">${znEsc(vibe)}</p>`:""}`,"Today at a glance");
+      <div class="zn-hgrid"><div class="zn-dial" id="znDial">${znDial(items,n,220,false,center,`Today as a 24-hour dial. Now ${hToLabel(n)}. ${items.filter(x=>x.e>n).map(x=>x.name+" at "+hToLabel(x.s)).slice(0,6).join(", ")}`)}</div><div class="zn-side">${znQuickCard(items,n,cur,nx)}</div></div>${(()=>{ let hu=""; try{ hu=znHeadsUp(items,n); }catch(e){} return hu?`<p class="zn-heads"><b>Heads up</b> ${znEsc(hu)}</p>`:""; })()}`,"Today at a glance");
     if(!night) box.append(hero);
     if(!night) hero.classList.add("zn-hero-spine");
     znDialPlay(hero); znQuickWire(hero);
