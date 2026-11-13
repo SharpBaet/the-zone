@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-12.1"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-12.2"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2720,7 +2720,10 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     let gt=null; const guess=()=>{ clearTimeout(gt); const raw=ta.value.trim(); if(raw.length<4||st.mine) return; gt=setTimeout(async()=>{ const seq=++st.seq; const g=await znSizeGuess(raw); if(g&&seq===st.seq&&ta.value.trim()===raw){ st.guess=g; draw(); } },700); };
     ta.addEventListener("input",()=>{ ta.style.height="auto"; ta.style.height=Math.min(160,ta.scrollHeight)+"px"; if(!st.mine) st.guess=null; draw(); guess(); });
     const reset=()=>{ ta.value=""; ta.style.height=""; Object.assign(st,{kind:"",area:"",est:0,energy:"",when:null,project:(preset&&preset.project)||null,repeat:null,priv:false,mine:false,guess:null,sizeOpen:false,open:""}); draw(); };
-    const submit=async(andPick)=>{ const raw=ta.value.trim(); if(!raw) return; go.disabled=true; pick.disabled=true; try{ const e=eff(); const p=e.p; p.kind=e.kind; p.area=e.area; p.due=e.when||""; p.project=e.project||""; p.repeat=e.repeat||""; if(p.repeat&&!p.due) p.due=repeatFirst(p.repeat,T)||"";
+    const submit=async(andPick)=>{ const raw=ta.value.trim(); if(!raw) return; go.disabled=true; pick.disabled=true; try{ const e=eff(); const p=e.p; p.kind=e.kind; p.area=e.area;
+      /* Nov 12: no area chosen, tagged or guessed yet means the area was only the Personal fallback. Ask the engine first (up to 4s) so a work
+         task added in the evening or before the guess came back isn't filed as Personal. */
+      if(!st.area&&!/#(work|personal|home|birdie|us)\b/i.test(raw)&&!(st.guess&&st.guess.area)){ try{ const g=await Promise.race([znSizeGuess(p.name||raw),new Promise(ok=>setTimeout(()=>ok(null),4000))]); if(g&&g.area&&ZN_AREAS.includes(g.area)) p.area=g.area; }catch(eg){} } p.due=e.when||""; p.project=e.project||""; p.repeat=e.repeat||""; if(p.repeat&&!p.due) p.due=repeatFirst(p.repeat,T)||"";
         if(e.kind==="To-do"){ if(e.est){ p.est=e.est; p.estSource=e.mine?"Mine":"Guessed"; } else p.est=0; if(e.energy) p.energy=e.energy; } else { p.est=0; delete p.energy; } if(e.priv) p.priv=true;
         const ok=await listCreate(p,"Plan"); if(ok){ const made=LIST.find(x=>x.name===p.name&&!/^tmp/.test(x.id)); if(p.kind==="To-do"&&!p.est) znSizeAfter(made); if(andPick&&p.kind==="To-do"){ try{ await pickToday(p.name); }catch(e2){} } toast(`${andPick?"Picked for today":"Added"} · ${p.name}${p.est?" · "+fmt(p.est):""}`); reset(); onAdded&&onAdded(); } }catch(e){ toast(writeErr(e)); } go.disabled=!mcp; pick.disabled=!mcp; };
     go.addEventListener("click",()=>submit(false)); pick.addEventListener("click",()=>submit(true)); ta.addEventListener("keydown",e=>{ if(e.key==="Enter"&&!e.shiftKey){ e.preventDefault(); submit(false); } });
@@ -2766,8 +2769,10 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     draw(); return wrap; }
   // Nov 3: swipe a task row right for Done, left for Tomorrow (pointer events; a short drag just snaps back)
   function znSwipe(r,it){ let x0=null, dx=0, moved=false; r.classList.add("zn-swipe");
-    r.addEventListener("pointerdown",e=>{ if(e.target.closest("button:not(.zn-ttx)")) return; x0=e.clientX; dx=0; moved=false; r.setPointerCapture(e.pointerId); });
-    r.addEventListener("pointermove",e=>{ if(x0===null) return; dx=e.clientX-x0; if(Math.abs(dx)>8) moved=true; if(moved){ r.style.transform=`translateX(${Math.max(-120,Math.min(120,dx))}px)`; r.classList.toggle("sw-r",dx>40); r.classList.toggle("sw-l",dx<-40); } });
+    r.addEventListener("pointerdown",e=>{ if(e.target.closest("button:not(.zn-ttx)")) return; x0=e.clientX; dx=0; moved=false; });
+    /* Nov 12: capture the pointer only once it actually swipes. Capturing on pointerdown made Chrome send a plain click to the row instead of
+       the title button, so on desktop no swipeable task (any task outside the Work view) opened when clicked. */
+    r.addEventListener("pointermove",e=>{ if(x0===null) return; dx=e.clientX-x0; if(!moved&&Math.abs(dx)>8){ moved=true; try{ r.setPointerCapture(e.pointerId); }catch(err){} } if(moved){ r.style.transform=`translateX(${Math.max(-120,Math.min(120,dx))}px)`; r.classList.toggle("sw-r",dx>40); r.classList.toggle("sw-l",dx<-40); } });
     const end=async e=>{ if(x0===null) return; const d=dx; x0=null; r.style.transform=""; r.classList.remove("sw-r","sw-l"); if(!moved) return; e.preventDefault();
       if(d>80){ r.classList.add("on"); try{ await setDone(it,true); znPlanRender(); }catch(err){ toast(writeErr(err)); r.classList.remove("on"); } }
       else if(d<-80){ try{ if(await addToTomorrow([it.name],"On tomorrow's top 3")) znPlanRender(); }catch(err){ toast(writeErr(err)); } } };
