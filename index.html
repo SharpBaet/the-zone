@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-12.6"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
+<meta name="zone-build" content="2026-11-12.7"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1806,6 +1806,12 @@ body.zn .zn-bdnow::before{content:"";position:absolute;left:-4px;top:-3px;width:
 body.zn .zn-bdback{position:absolute;left:0;right:0;border-radius:12px;background:repeating-linear-gradient(135deg,rgba(123,108,246,.16) 0 8px,rgba(123,108,246,.07) 8px 16px);pointer-events:none}
 body.zn .zn-bdback span{position:absolute;left:6px;right:6px;bottom:4px;font-size:10px;font-weight:700;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 body.zn .zn-bdb b{-webkit-line-clamp:3}
+
+/* Nov 12: the "All day" line for backdrop events */
+body.zn .zn-allday{margin:8px 0 6px;padding:8px 10px;border-radius:12px;font-size:12.5px;line-height:1.35;background:repeating-linear-gradient(135deg,rgba(123,108,246,.14) 0 8px,rgba(123,108,246,.06) 8px 16px)}
+body.zn .zn-allday b{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.7;margin-right:6px}
+body.zn .zn-allday span{opacity:.65}
+body.zn .zn-riv > .zn-allday{grid-column:1 / -1}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -2209,7 +2215,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
         const j=out.findIndex((o,jx)=>jx<i&&/\bvs\.?\b/i.test(o.name)&&o.s<a.e&&a.s<o.e&&[...toks(o.name)].some(w=>ta.has(w)));
         if(j>=0){ const o=out[j]; o.s=Math.min(o.s,a.s); o.e=Math.max(o.e,a.e); if(a.name.length>o.name.length) o.name=a.name; out.splice(i,1); } } }
     D.tasks.forEach(t=>{ if(t.r) out.push({s:t.r.start,e:Math.max(t.r.end,t.r.start+.25),name:t.title,c:RC.red,k:"focus"}); });
-    znMergeBusy(out,x=>x.k==="work",x=>x.name); return out.sort((a,b)=>a.s-b.s);
+    znMergeBusy(out,x=>x.k==="work",x=>x.name); out.sort((a,b)=>a.s-b.s); ZN_BACKS=out.filter(znIsBack); return out.filter(x=>!znIsBack(x));
   }
   
   function risoTomItems(){ const T1=addDays(TODAY(),1); const out=[]; const p2=iso=>{ const p=new Intl.DateTimeFormat("en-CA",{timeZone:TZ,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(new Date(iso)); const g=k=>(p.find(x=>x.type===k)||{}).value; return {d:`${g("year")}-${g("month")}-${g("day")}`,h:Number(g("hour"))+Number(g("minute"))/60}; };
@@ -2841,7 +2847,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     // ---------- the chosen day ----------
     const d=ZN_PLAN.open, L=loads.find(x=>x.d===d)||dayLoad(d), dd=new Date(d+"T12:00:00Z"); const n=d===T?nowH():null;
     const dc=znCard("zn-planday","",`${DAYS_LONG[dd.getUTCDay()]}`); dc.innerHTML=znH(d===T?"Today":`${DAYS_LONG[dd.getUTCDay()]} ${dd.getUTCDate()}`,`${Math.round(L.openH*2)/2}h open`);
-    const riv=el("div","zn-riv"); const items=[...L.busy.filter(b=>!/work blocks?\b|work day/i.test(b.n||"")).map(b=>({s:b.s,e:b.e,name:b.n,k:b.work?"work":"you"}))];
+    const riv=el("div","zn-riv"); if(L.backs&&L.backs.length){ const ap=el("p","zn-allday"); ap.innerHTML=`<b>All day</b> ${L.backs.map(x=>`${znEsc(String(x.n).replace(/^💼\s*/,""))} · ${hToLabel(x.s)}–${hToLabel(x.e)}`).join(" · ")}<span> · planned around, not counted as busy</span>`; riv.append(ap); } const items=[...L.busy.filter(b=>!/work blocks?\b|work day/i.test(b.n||"")).map(b=>({s:b.s,e:b.e,name:b.n,k:b.work?"work":"you"}))];
     LIST.filter(it=>it.status==="Open"&&isTask(it)&&forClaire(it)&&it.sched&&String(it.sched).slice(0,10)===d).forEach(it=>{ const hh=String(it.sched).slice(11,16).split(":").map(Number); const s0=hh[0]+(hh[1]||0)/60; items.push({s:s0,e:s0+(it.est||30)/60,name:it.name,k:"task",it}); });
     items.sort((a,b)=>a.s-b.s); const wd=dd.getUTCDay(); const from=(wd===0||wd===6)?9:8, to=(wd===0||wd===6)?20.5:21; let prev=d===T?Math.max(from,n):from;
     const gapRow=(a,b)=>{ const m=Math.round((b-a)*60); if(m<45) return; const g=el("button","zn-gap",`${znDur(m)} open · place a task here`); g.type="button"; g.disabled=!calOK(); g.addEventListener("click",()=>znPlaceOn(d,a,b,g)); const rw=el("div","zn-rr zn-rgap"); rw.append(el("span","zn-rt",""),el("span","zn-rl"),g); riv.append(rw); };
@@ -2883,7 +2889,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function znWorkHours(){ const f=Number(znPref("workFrom",NaN)), t=Number(znPref("workTo",NaN)); if(f>=0&&t>f) return {from:f,to:t}; try{ const v=JSON.parse(localStorage.getItem("zone:workhours")||"null"); if(v&&v.from>=0&&v.to>v.from) return v; }catch(e){} return {from:9,to:17}; }
   function znPlacedOn(d){ return LIST.filter(it=>it.sched&&it.sched.slice(0,10)===d&&it.status==="Open").map(it=>{ const [h,m]=it.sched.slice(11,16).split(":").map(Number); const s=h+(m||0)/60; return {s,e:s+(it.est||30)/60,n:it.name,placed:true}; }); } /* Nov 2: what she already placed is busy too */
   function znWorkGaps(d){ const T=TODAY(); if(offFor(d)) return []; const wd=new Date(d+"T12:00:00Z").getUTCDay(); if(wd===0||wd===6) return []; let from=WORK_H.from; const to=WORK_H.to; if(d===T) from=Math.max(from,Math.ceil(nowH()*4)/4); if(d<T||from>=to) return [];
-    const busy=[...busyOn(d),...znPlacedOn(d)].filter(b=>b.e>from&&b.s<to&&!/work blocks?\b|work day/i.test(b.n||"")).sort((a,b)=>a.s-b.s); const gaps=[]; /* the brief's "N work blocks" summary line is the workday itself, not a meeting */ let cur=from; busy.forEach(b=>{ if(b.s>cur+1e-6) gaps.push({s:cur,e:Math.min(b.s,to)}); cur=Math.max(cur,b.e); }); if(cur<to) gaps.push({s:cur,e:to}); return gaps.filter(g=>g.e-g.s>=0.25); }
+    const busy=[...busyReal(d),...znPlacedOn(d)].filter(b=>b.e>from&&b.s<to&&!/work blocks?\b|work day/i.test(b.n||"")).sort((a,b)=>a.s-b.s); const gaps=[]; /* the brief's "N work blocks" summary line is the workday itself, not a meeting */ let cur=from; busy.forEach(b=>{ if(b.s>cur+1e-6) gaps.push({s:cur,e:Math.min(b.s,to)}); cur=Math.max(cur,b.e); }); if(cur<to) gaps.push({s:cur,e:to}); return gaps.filter(g=>g.e-g.s>=0.25); }
   function znWorkOpen(d){ return znWorkGaps(d).reduce((a,g)=>a+(g.e-g.s),0); }
   function znWorkSlot(d,it){ const need=(it.est||30)/60; const fits=znWorkGaps(d).filter(g=>g.e-g.s>=need); const pick=(it.energy==="Deep"&&fits.find(g=>g.s<14))||fits[0]; return pick?{s:pick.s,e:pick.s+need}:null; }
   async function znWorkPlace(it,btn){ const T=TODAY(); const days=[T,...Array.from({length:13},(_,i)=>addDays(T,i+1))]; const pref=it.due&&it.due>=T?it.due:""; const order=pref?[pref,...days.filter(x=>x!==pref)]:days; let d=null,slot=null;
@@ -3390,7 +3396,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     // Nov 12: an event of four hours or more (all-day office hours, a hold) is drawn as a soft band behind the day and doesn't block a drop
     // or count against open time on the board; the meetings inside it still do. Overlapping meetings sit side by side.
     const DAY={}; days.forEach(d=>{ let busy=[]; try{ busy=busyOn(d).filter(x=>x.e>x.s&&!/work blocks?\b|work day/i.test(x.n||"")); }catch(e){} let placed=[]; try{ placed=znPlacedOn(d).filter(p=>{ const it=LIST.find(x=>x.name===p.n&&x.status==="Open"); return !(it&&slipped(it)&&it.sched.slice(0,10)!==d); }); }catch(e){}
-      const backs=busy.filter(x=>x.e-x.s>=4), reg=busy.filter(x=>x.e-x.s<4&&!placed.some(p=>p.n===x.n&&Math.abs(p.s-x.s)<.01)); const taken=[...reg,...placed].map(x=>({s:x.s,e:x.e,n:x.n}));
+      const backs=busy.filter(x=>x.back), reg=busy.filter(x=>!x.back&&!placed.some(p=>p.n===x.n&&Math.abs(p.s-x.s)<.01)); const taken=[...reg,...placed].map(x=>({s:x.s,e:x.e,n:x.n}));
       let open=0; { let t0=Math.max(WORK_H.from,d===T?nowH():0); taken.filter(x=>x.e>t0&&x.s<WORK_H.to).sort((p,q)=>p.s-q.s).forEach(x=>{ if(x.s>t0) open+=x.s-t0; t0=Math.max(t0,x.e); }); if(WORK_H.to>t0) open+=WORK_H.to-t0; }
       DAY[d]={backs,reg,placed,taken,open}; });
     const cols=[]; days.forEach(d=>{ const dd=new Date(d+"T12:00:00Z"), wd=dd.getUTCDay(), wk=wd===0||wd===6; const hd=el("div","zn-bdday"+(d===T?" today":"")+(wk?" wkend":"")); hd.dataset.d=d; const openH=wk?0:DAY[d].open;
@@ -3443,7 +3449,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     open.filter(it=>!seen.has(it.name.toLowerCase())).sort((a,b)=>(a.due||"9").localeCompare(b.due||"9")).slice(0,6).forEach(it=>push(it.name,it.due?"due "+dueLabel(it.due):"on your list",20,it));
     cands.sort((a,b)=>b.score-a.score);
     const picked=new Set((cur.length?cands.filter(c=>c.score===200):cands.slice(0,3)).map(c=>c.name)); const extra=[];
-    let openH=0, meets=0; try{ openH=znWorkOpen(T1); meets=busyOn(T1).filter(x=>x.work).length; }catch(e){}
+    let openH=0, meets=0; try{ openH=znWorkOpen(T1); meets=busyReal(T1).filter(x=>x.work).length; }catch(e){}
     const w=el("div","zn-ritual"); w.append(el("p","zn-rsub",[meets?`${meets} meeting${meets===1?"":"s"}`:"no meetings",openH?`${openH%1?openH.toFixed(1):openH}h open in the workday`:""].filter(Boolean).join(" · ")));
     const sugH=el("p","zn-rk",cur.length?"Picked for tomorrow":"Alice suggests"); const sugBox=el("div"); const moreH=el("p","zn-rk","Or swap in"); const moreBox=el("div"); const foot=el("p","zn-rfoot");
     const row=(c)=>{ const on=picked.has(c.name); const r=el("button","zn-rrow"+(on?" on":"")); r.type="button"; r.setAttribute("aria-pressed",String(on)); r.append(el("span","zn-rcb",on?"✓":""),(()=>{ const t=el("span","zn-rtx"); t.append(el("b",null,c.name),el("small",null,[c.why,c.it&&c.it.est?znDur(c.it.est):"",c.it&&c.it.energy==="Deep"?"Deep":"",c.it&&c.it.area?c.it.area:""].filter(Boolean).join(" · "))); return t; })());
@@ -3757,7 +3763,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const ahead=items.filter(x=>x.e>n).sort((a,b)=>a.s-b.s); let openMin=0; { let cur2=Math.max(n,8); ahead.forEach(x=>{ if(x.s>cur2) openMin+=Math.round((Math.min(x.s,21)-cur2)*60); cur2=Math.max(cur2,x.e); }); if(cur2<21) openMin+=Math.round((21-cur2)*60); }
     const SP=true; /* Nov 11: weekend parity */ const PK=(window.__znPicks||{picks:[],done3:new Set()}); const isDone3=t=>PK.done3.has(String(t||"").toLowerCase());
     const nMeet=items.filter(x=>x.k==="work").length; const openTxt=openMin>=60?`${Math.round(openMin/30)/2}h open`:openMin?`${openMin}m open`:"no open time";
-    const day=znCard("zn-day"+(SP?" zn-spine":""),"",SP?"Your day":"The day"); day.innerHTML=znH(SP?"Your day":"The day",SP?[PK.picks.length?`${PK.picks.length} picked`:"nothing picked",nMeet?`${nMeet} meeting${nMeet===1?"":"s"}`:"",openTxt].filter(Boolean).join(" · "):(openMin>=60?`${Math.round(openMin/30)/2} open hours`:openMin?`${openMin} min open`:"no open time"))+`<div class="zn-strip">${strip}</div>`;
+    const day=znCard("zn-day"+(SP?" zn-spine":""),"",SP?"Your day":"The day"); day.innerHTML=znH(SP?"Your day":"The day",SP?[PK.picks.length?`${PK.picks.length} picked`:"nothing picked",nMeet?`${nMeet} meeting${nMeet===1?"":"s"}`:"",openTxt].filter(Boolean).join(" · "):(openMin>=60?`${Math.round(openMin/30)/2} open hours`:openMin?`${openMin} min open`:"no open time"))+`<div class="zn-strip">${strip}</div>`+(ZN_BACKS.length?`<p class="zn-allday"><b>All day</b> ${ZN_BACKS.map(x=>`${znEsc(String(x.name).replace(/^💼\s*/,""))} · ${hToLabel(x.s)}–${hToLabel(x.e)}`).join(" · ")}<span> · planned around, not counted as busy</span></p>`:"");
     const toggle3=async(title,isD,cb)=>{ cb.disabled=true; if(!isD) cb.textContent="✓"; try{ await setInList("Top 3 Done",title,!isD,"\n"); syncListDone(title,!isD); renderWeekday(); znRender(); }catch(e){ toast(writeErr(e)); cb.disabled=false; } };
     const taskBits=(title)=>{ const isD=isDone3(title); const cb=el("button","zn-cb",isD?"✓":""); cb.type="button"; cb.disabled=!mcp; cb.setAttribute("aria-pressed",String(isD)); cb.setAttribute("aria-label",(isD?"Undo: ":"Done: ")+title); cb.addEventListener("click",e=>{ e.stopPropagation(); toggle3(title,isD,cb); }); const it=(LIST||[]).find(i=>String(i.name||"").toLowerCase()===String(title||"").toLowerCase()); return {isD,cb,it}; };
     const riv=el("div","zn-riv"); const eveCut=n<15?17:99; let prev=n;
@@ -4502,6 +4508,12 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // Oct 23: her Procore meetings for the week, named, written by the morning engine ("YYYY-MM-DD|HH:MM|HH:MM|Title")
   function workWeek(){ const t=clean(ROW&&ROW["Work Week"]); if(workWeek.k===t) return workWeek.v; const hh=x=>{ const [a,b]=String(x||"").split(":").map(Number); return a+(b||0)/60; };
     const v=t.split(/\n+/).map(l=>l.trim().split("|")).filter(f=>f.length>=4&&/^\d{4}-\d{2}-\d{2}$/.test(f[0])).map(f=>({d:f[0],s:hh(f[1]),e:Math.max(hh(f[2]),hh(f[1])+.25),n:f.slice(3).join("|").trim()})); workWeek.k=t; workWeek.v=v; return v; }
+  // Nov 12 (Claire: yes, everywhere): a work-calendar event of four hours or more — all-day office hours, a hold — is a backdrop, not a
+  // meeting. busyOn() still returns it, flagged back:true, for the conflict warning when adding an event; everything that plans (open
+  // hours, gaps, slot suggestions, the week's load, plan tomorrow, the board) uses busyReal(), which leaves it out. Today's own item list
+  // (risoItems) drops it too and keeps it in ZN_BACKS for the "All day" line. Long personal events are not backdrops; they stay busy.
+  const znIsBack=b=>!!b&&(b.work===true||b.k==="work")&&(b.e-b.s)>=4; let ZN_BACKS=[];
+  function busyReal(d){ return busyOn(d).filter(b=>!b.back); }
   function busyOn(d){ const out=[]; const ww=workWeek().filter(x=>x.d===d);
     if(ww.length) ww.forEach(x=>out.push({s:x.s,e:x.e,n:x.n,work:true}));
     else try{ workBlocks(clean(ROW["Work Blocks"])).forEach(b=>{ const a=ctOf(b.start), z=ctOf(b.end); if(a.d===d&&z.h>a.h) out.push({s:a.h,e:z.h,n:b.summary||"a meeting",work:true}); }); }catch(e){}
@@ -4511,12 +4523,12 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     if(d===TODAY()){ try{ const D=parseDay(); D.items.forEach(x=>{ if(/mindful moment|skincare/i.test(x.text)) return; const nm=x.text.replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,""); if(/^💼/.test(x.text)&&out.some(o=>o.work&&Math.abs(o.s-x.start)<.02)) return; out.push({s:x.start,e:Math.max(x.end,x.start+.25),n:nm,work:/^💼/.test(x.text)}); }); D.tasks.forEach(t=>{ if(t.r) out.push({s:t.r.start,e:t.r.end,n:t.title}); }); }catch(e){} }
     LIST.forEach(it=>{ if(it.sched&&it.status==="Open"){ const a=ctOf(it.sched); if(a.d===d) out.push({s:a.h,e:a.h+Math.max(.25,(it.est||30)/60),n:it.name}); } });
     // Nov 2: a work block with a generic name (busy, Block: Appt, hold, personal, OOO) that overlaps a personal event is that event, not a second thing
-    znMergeBusy(out,o=>!!o.work,o=>o.n);
+    znMergeBusy(out,o=>!!o.work,o=>o.n); out.forEach(o=>{ if(znIsBack(o)) o.back=true; });
     return out.sort((a,b)=>a.s-b.s); }
   function suggestSlots(est,due){ const T=TODAY(), need=Math.max(15,est||30)/60, buf=10/60; const last=due&&due>=T?(dayDiff(T,due)>6?addDays(T,6):due):addDays(T,6); const out=[];
     for(let d=T; d<=last&&out.length<3; d=addDays(d,1)){ const wd=new Date(d+"T12:00:00Z").getUTCDay(); const wk=wd===0||wd===6;
       let from=wk?9:8, to=wk?20.5:21; if(d===T) from=Math.max(from,Math.ceil((nowH()+.25)*4)/4); if(from+need>to) continue;
-      const busy=busyOn(d); let cur=from, prev=null, perDay=0;
+      const busy=busyReal(d); let cur=from, prev=null, perDay=0;
       const list=[...busy,{s:to+buf,e:to+buf,n:""}]; let i=0;
       while(i<list.length){ const b=list[i]; if(b.e+buf<=cur){ i++; continue; } const gapEnd=b.s-buf; const st=Math.ceil(cur*4)/4;
         if(gapEnd-st>=need&&st+need<=to){ const lunch=st>=11.5&&st<=13; const why=prev?`right after ${prev.n}`:lunch?"lunch gap":st<=from+.01?(d===T?"next open time":"first open time"):"open time";
@@ -4673,11 +4685,11 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   
   // ---------- the week's capacity (shared by Ahead's planner and the Sunday review) ----------
   function dayLoad(d){ const T=TODAY(); const wd=new Date(d+"T12:00:00Z").getUTCDay(); const wk=wd===0||wd===6; let from=wk?9:8, to=wk?20.5:21; if(d===T) from=Math.max(from,nowH()); if(from>=to) from=to;
-    const busy=busyOn(d); let used=0, cur=from; busy.forEach(b=>{ const s0=Math.max(b.s,cur), e0=Math.min(b.e,to); if(e0>s0){ used+=e0-s0; cur=Math.max(cur,e0); } });
+    const allB=busyOn(d); const busy=allB.filter(b=>!b.back), backs=allB.filter(b=>b.back); let used=0, cur=from; busy.forEach(b=>{ const s0=Math.max(b.s,cur), e0=Math.min(b.e,to); if(e0>s0){ used+=e0-s0; cur=Math.max(cur,e0); } });
     const meet=busy.filter(b=>b.work).reduce((a,b)=>a+(b.e-b.s),0);
     const due=LIST.filter(it=>it.status==="Open"&&isTask(it)&&forClaire(it)&&it.due===d&&!isSnoozed(it)&&!it.waiting&&!it.sched);
     const needH=due.reduce((a,it)=>a+(it.est||30)/60,0); const openH=Math.max(0,to-from-used);
-    return {d,busy,meet,due,needH,openH,tight:due.length>0&&(needH>openH*0.7||(due.length>=3&&openH<2))}; }
+    return {d,busy,backs,meet,due,needH,openH,tight:due.length>0&&(needH>openH*0.7||(due.length>=3&&openH<2))}; }
   function openFixDay(L,from){ const T=TODAY(); const wrap=el("div","schd"); wrap.append(el("p","muted",`${L.due.length} due, about ${Math.round(L.needH*10)/10} hrs of work, ${Math.round(L.openH*10)/10} open hrs. Move one or put it on the calendar.`));
     const alt=[0,1,2,3,4,5,6].map(i=>addDays(T,i)).filter(d=>d!==L.d&&d<=addDays(T,6)).map(dayLoad).sort((a,b)=>(b.openH-b.needH)-(a.openH-a.needH))[0];
     const ul=el("ul","litems"); L.due.forEach(it=>{ const li=el("li","litem frow"); li.append(el("span","ln",`${it.name}${it.est?` · ${it.est}m`:""}`)); const a=el("div","wacts");
