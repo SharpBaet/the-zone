@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-12.3"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
+<meta name="zone-build" content="2026-11-12.2"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1486,21 +1486,6 @@ body.zn .zn-alsodue u{white-space:nowrap}
  body.zn .zn-deskpanel .zn-dpe{font-size:14px;line-height:1.45;opacity:.75;margin:8px 0 12px}
  body.zn #znDeskPlan .zn-trow.zn-sel{background:rgba(123,108,246,.14);border-radius:12px;margin:0 -8px;padding-left:8px;padding-right:8px}
 }
-/* Nov 12: the empty side panel, Up next + Waiting on you */
-body.zn .zn-deskpanel .zn-dpsec{margin:0 0 14px}
-body.zn .zn-deskpanel .zn-dpsec+.zn-dpsec{border-top:1px solid rgba(31,35,64,.1);padding-top:14px}
-body.zn .zn-deskpanel .zn-dpt{font:600 21px/1.25 Fraunces,Georgia,serif;margin:8px 0 4px;color:inherit}
-body.zn .zn-deskpanel .zn-dps{font-size:13.5px;opacity:.75;margin:0;line-height:1.4}
-body.zn .zn-deskpanel .zn-dpk2{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;opacity:.5;margin:16px 0 0}
-body.zn .zn-deskpanel .zn-dpacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-body.zn .zn-deskpanel .zn-dprow{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid rgba(31,35,64,.08);background:transparent;color:inherit;font:inherit;padding:9px 0;cursor:pointer}
-body.zn .zn-deskpanel .zn-dprow:last-child{border-bottom:0}
-body.zn .zn-deskpanel .zn-dprow b{display:block;font-size:14.5px;font-weight:600;line-height:1.35}
-body.zn .zn-deskpanel .zn-dprow small{display:block;font-size:12.5px;opacity:.7;margin-top:2px}
-body.zn .zn-deskpanel .zn-dprow:hover b,body.zn .zn-deskpanel .zn-dprow:focus-visible b{text-decoration:underline}
-body.zn .zn-deskpanel .zn-dphint{font-size:12.5px;margin:4px 0 10px}
-body.zn.zn-night #znDeskPanel .zn-dpsec+.zn-dpsec{border-top-color:rgba(255,255,255,.14)}
-body.zn.zn-night #znDeskPanel .zn-dprow{border-bottom-color:rgba(255,255,255,.1)}
 
 /* Nov 10: the sheet frame */
 .sheet.read .shead .shrow{display:flex;align-items:flex-start;gap:10px}
@@ -1775,6 +1760,11 @@ body.zn .zn-bdnow{position:absolute;left:0;right:0;height:2px;background:#E4572E
 body.zn .zn-bdnow::before{content:"";position:absolute;left:-4px;top:-3px;width:8px;height:8px;border-radius:50%;background:#E4572E}
 
 @media (min-width:1200px){ body.zn #main.wrap:has(#view-ahead:not([hidden]) .zn-board){max-width:1380px} }
+
+/* Nov 12: board fixes — backdrops and side-by-side overlaps */
+body.zn .zn-bdback{position:absolute;left:0;right:0;border-radius:12px;background:repeating-linear-gradient(135deg,rgba(123,108,246,.16) 0 8px,rgba(123,108,246,.07) 8px 16px);pointer-events:none}
+body.zn .zn-bdback span{position:absolute;left:6px;right:6px;bottom:4px;font-size:10px;font-weight:700;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.zn .zn-bdb b{-webkit-line-clamp:3}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -2735,10 +2725,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     let gt=null; const guess=()=>{ clearTimeout(gt); const raw=ta.value.trim(); if(raw.length<4||st.mine) return; gt=setTimeout(async()=>{ const seq=++st.seq; const g=await znSizeGuess(raw); if(g&&seq===st.seq&&ta.value.trim()===raw){ st.guess=g; draw(); } },700); };
     ta.addEventListener("input",()=>{ ta.style.height="auto"; ta.style.height=Math.min(160,ta.scrollHeight)+"px"; if(!st.mine) st.guess=null; draw(); guess(); });
     const reset=()=>{ ta.value=""; ta.style.height=""; Object.assign(st,{kind:"",area:"",est:0,energy:"",when:null,project:(preset&&preset.project)||null,repeat:null,priv:false,mine:false,guess:null,sizeOpen:false,open:""}); draw(); };
-    const submit=async(andPick)=>{ const raw=ta.value.trim(); if(!raw) return; go.disabled=true; pick.disabled=true; try{ const e=eff(); const p=e.p; p.kind=e.kind; p.area=e.area;
-      /* Nov 12: no area chosen, tagged or guessed yet means the area was only the Personal fallback. Ask the engine first (up to 4s) so a work
-         task added in the evening or before the guess came back isn't filed as Personal. */
-      if(!st.area&&!/#(work|personal|home|birdie|us)\b/i.test(raw)&&!(st.guess&&st.guess.area)){ try{ const g=await Promise.race([znSizeGuess(p.name||raw),new Promise(ok=>setTimeout(()=>ok(null),4000))]); if(g&&g.area&&ZN_AREAS.includes(g.area)) p.area=g.area; }catch(eg){} } p.due=e.when||""; p.project=e.project||""; p.repeat=e.repeat||""; if(p.repeat&&!p.due) p.due=repeatFirst(p.repeat,T)||"";
+    const submit=async(andPick)=>{ const raw=ta.value.trim(); if(!raw) return; go.disabled=true; pick.disabled=true; try{ const e=eff(); const p=e.p; p.kind=e.kind; p.area=e.area; p.due=e.when||""; p.project=e.project||""; p.repeat=e.repeat||""; if(p.repeat&&!p.due) p.due=repeatFirst(p.repeat,T)||"";
         if(e.kind==="To-do"){ if(e.est){ p.est=e.est; p.estSource=e.mine?"Mine":"Guessed"; } else p.est=0; if(e.energy) p.energy=e.energy; } else { p.est=0; delete p.energy; } if(e.priv) p.priv=true;
         const ok=await listCreate(p,"Plan"); if(ok){ const made=LIST.find(x=>x.name===p.name&&!/^tmp/.test(x.id)); if(p.kind==="To-do"&&!p.est) znSizeAfter(made); if(andPick&&p.kind==="To-do"){ try{ await pickToday(p.name); }catch(e2){} } toast(`${andPick?"Picked for today":"Added"} · ${p.name}${p.est?" · "+fmt(p.est):""}`); reset(); onAdded&&onAdded(); } }catch(e){ toast(writeErr(e)); } go.disabled=!mcp; pick.disabled=!mcp; };
     go.addEventListener("click",()=>submit(false)); pick.addEventListener("click",()=>submit(true)); ta.addEventListener("keydown",e=>{ if(e.key==="Enter"&&!e.shiftKey){ e.preventDefault(); submit(false); } });
@@ -2784,10 +2771,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     draw(); return wrap; }
   // Nov 3: swipe a task row right for Done, left for Tomorrow (pointer events; a short drag just snaps back)
   function znSwipe(r,it){ let x0=null, dx=0, moved=false; r.classList.add("zn-swipe");
-    r.addEventListener("pointerdown",e=>{ if(e.target.closest("button:not(.zn-ttx)")) return; x0=e.clientX; dx=0; moved=false; });
-    /* Nov 12: capture the pointer only once it actually swipes. Capturing on pointerdown made Chrome send a plain click to the row instead of
-       the title button, so on desktop no swipeable task (any task outside the Work view) opened when clicked. */
-    r.addEventListener("pointermove",e=>{ if(x0===null) return; dx=e.clientX-x0; if(!moved&&Math.abs(dx)>8){ moved=true; try{ r.setPointerCapture(e.pointerId); }catch(err){} } if(moved){ r.style.transform=`translateX(${Math.max(-120,Math.min(120,dx))}px)`; r.classList.toggle("sw-r",dx>40); r.classList.toggle("sw-l",dx<-40); } });
+    r.addEventListener("pointerdown",e=>{ if(e.target.closest("button:not(.zn-ttx)")) return; x0=e.clientX; dx=0; moved=false; r.setPointerCapture(e.pointerId); });
+    r.addEventListener("pointermove",e=>{ if(x0===null) return; dx=e.clientX-x0; if(Math.abs(dx)>8) moved=true; if(moved){ r.style.transform=`translateX(${Math.max(-120,Math.min(120,dx))}px)`; r.classList.toggle("sw-r",dx>40); r.classList.toggle("sw-l",dx<-40); } });
     const end=async e=>{ if(x0===null) return; const d=dx; x0=null; r.style.transform=""; r.classList.remove("sw-r","sw-l"); if(!moved) return; e.preventDefault();
       if(d>80){ r.classList.add("on"); try{ await setDone(it,true); znPlanRender(); }catch(err){ toast(writeErr(err)); r.classList.remove("on"); } }
       else if(d<-80){ try{ if(await addToTomorrow([it.name],"On tomorrow's top 3")) znPlanRender(); }catch(err){ toast(writeErr(err)); } } };
@@ -3197,47 +3182,12 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function znDeskSync(){ const v=$("#view-today"); if(!v) return; const on=ZN_DESK()&&znOn()&&!!ROW; v.classList.toggle("zn-d3",on); document.body.classList.toggle("zn-d3on",on&&!v.hidden);
     let pc=$("#znDeskPlan"), pn=$("#znDeskPanel"); if(!on){ if(pc) pc.hidden=true; if(pn) pn.hidden=true; return; }
     if(!pc){ pc=el("div","zn-today"); pc.id="znDeskPlan"; v.append(pc); } if(!pn){ pn=el("div","zn-today"); pn.id="znDeskPanel"; v.append(pn); znDeskPanelEmpty(); } pc.hidden=false; pn.hidden=false;
-    if(!pc.children.length) znDeskPlanRender(); if(pn.querySelector(".zn-deskempty")){ const st=pn.scrollTop; znDeskPanelEmpty(); pn.scrollTop=st; } }
+    if(!pc.children.length) znDeskPlanRender(); }
   function znDeskPlanRender(){ const pc=$("#znDeskPlan"); if(!pc||pc.hidden||!ZN_DESK()) return; const keep=document.activeElement&&pc.contains(document.activeElement)&&document.activeElement.matches(".zn-tsearch input"); const st=pc.scrollTop;
     pc.replaceChildren(); const T=TODAY(); const head=znCard("zn-mast zn-deskhead",""); head.innerHTML=`<span class="zn-mt">Plan</span>`; pc.append(head);
     try{ const wk=[...Array(7)].map((_,i)=>addDays(T,i)).filter(d=>{ const wd=new Date(d+"T12:00:00Z").getUTCDay(); return wd>=1&&wd<=5; }).slice(0,5); const c=znCard("zn-work zn-deskcap",""); const cap=el("div","zn-wcap"); wk.forEach(d=>{ const o=znWorkOpen(d); const off=offFor(d); const used=Math.max(0,(WORK_H.to-WORK_H.from)-o); const t=el("div"); t.innerHTML=`<small>${new Date(d+"T12:00:00Z").toLocaleDateString("en-US",{weekday:"short",timeZone:"UTC"})}</small><b>${off?"off":(o%1?o.toFixed(1):o)+"h open"}</b><i><em style="width:${Math.min(100,Math.round(used/Math.max(1,WORK_H.to-WORK_H.from)*100))}%"></em></i>`; cap.append(t); }); c.append(cap); pc.append(c); }catch(e){}
     const saveSeg=ZN_PLAN.seg; try{ const view=znTasksView(pc); pc.append(view); }catch(e){ console.error("desk tasks",e); } ZN_PLAN.seg=saveSeg; pc.scrollTop=st; if(keep){ const i=pc.querySelector(".zn-tsearch input"); if(i){ i.focus(); try{ i.setSelectionRange(i.value.length,i.value.length); }catch(e){} } } }
-  // Nov 12 (Claire chose A + C from the mockups): when nothing is selected, the side panel isn't blank. Top: "Up next", the next task
-  // (picked, placed today, due or overdue, starred) with Done / Place it / Open and the two after it; at night it turns to tomorrow's
-  // lined-up tasks and "Plan <day>". Below: "Waiting on you", Alice needing an answer, overdue tasks, things waiting on someone 3+ days,
-  // and tasks with no size. Every row opens its item here. Re-drawn on each render while the panel is empty.
-  function znDeskUpNext(c,shown){ const T=TODAY(); const night=document.body.classList.contains("zn-night"); const sec=el("div","zn-dpsec");
-    const open=(LIST||[]).filter(it=>forClaire(it)&&it.owner!=="Alice"&&isTask(it)&&it.status==="Open"&&!(it.snooze&&it.snooze>T));
-    const meta=it=>[it.est?znDur(it.est)+(it.energy==="Deep"?" · Deep":""):"",it.due?(it.due<T?"overdue":it.due===T?"due today":"due "+dueLabel(it.due)):"",it.sched&&it.sched.slice(0,10)>=T?"📅 "+(it.sched.slice(0,10)===T?"":dueLabel(it.sched.slice(0,10))+" ")+hLabel(Number(it.sched.slice(11,13))+Number(it.sched.slice(14,16))/60):"",it.project||""].filter(Boolean).join(" · ");
-    const row=(it,sub)=>{ const b=el("button","zn-dprow"); b.type="button"; b.append(el("b",null,it.name),el("small",null,sub||meta(it)||AREA_IC[it.area]&&it.area||"")); b.addEventListener("click",()=>openListItem(it,b)); return b; };
-    if(night){ const T1=addDays(T,1); const dn=DAYS_LONG[new Date(T1+"T12:00:00Z").getUTCDay()];
-      const q=open.filter(it=>it.focus===T1||it.due===T1||(it.sched&&it.sched.slice(0,10)===T1)).sort((a,b)=>(a.sched||"9").localeCompare(b.sched||"9")||(b.star?1:0)-(a.star?1:0));
-      sec.append(el("p","zn-dpk",`${dn} · lined up`)); if(q.length) q.slice(0,4).forEach(it=>{ shown.add(it.id); sec.append(row(it)); }); else sec.append(el("p","zn-dpe",`Nothing picked for ${dn} yet.`));
-      const a=el("div","zn-dpacts"); const pb=el("button","zn-pill zn-dark",`Plan ${dn}`); pb.type="button"; pb.addEventListener("click",()=>znPlanTomorrow(pb)); a.append(pb); sec.append(a); c.append(sec); return; }
-    let picks=[], done3=new Set(); const pickAt={}; try{ const D3=parseDay(); D3.tasks.forEach(t=>{ if(t&&t.r&&t.title) pickAt[String(t.title).toLowerCase()]=t.r; }); done3=new Set(listOf("Top 3 Done").map(x=>x.toLowerCase())); picks=[...D3.tasks.map(t=>t.title),...D3.untimed.map(u=>u.title),...D3.unplaced.map(u=>u.replace(/\s*\(it comes after a step that didn't fit\)$/i,"")),...(typeof extraPicks==="function"?extraPicks(D3):[])].filter(t=>t&&!done3.has(String(t).toLowerCase())); }catch(e){}
-    const byName=t=>open.find(i=>String(i.name).toLowerCase()===String(t).toLowerCase()); const q=[]; const add=it=>{ if(it&&!q.includes(it)) q.push(it); };
-    picks.forEach(t=>add(byName(t))); open.filter(it=>it.sched&&it.sched.slice(0,10)===T).sort((a,b)=>a.sched.localeCompare(b.sched)).forEach(add); open.filter(it=>it.due&&it.due<=T).sort((a,b)=>a.due.localeCompare(b.due)).forEach(add); open.filter(it=>it.star||it.focus===T).forEach(add);
-    sec.append(el("p","zn-dpk","Up next")); if(!q.length){ sec.append(el("p","zn-dpe","Nothing picked or due today. Everything open is in the Plan list.")); c.append(sec); return; }
-    const at=it=>{ const r=pickAt[String(it.name).toLowerCase()]; return r&&!(it.sched&&it.sched.slice(0,10)===T)?`🎯 ${hToLabel(r.start)}–${hToLabel(r.end)}`:""; };
-    const top=q[0]; shown.add(top.id); sec.append(el("h2","zn-dpt",top.name),el("p","zn-dps",[at(top),meta(top)].filter(Boolean).join(" · ")||"no date")); const a=el("div","zn-dpacts");
-    const btn=(t,dark,fn)=>{ const b=el("button","zn-pill"+(dark?" zn-dark":""),t); b.type="button"; b.addEventListener("click",()=>fn(b)); a.append(b); return b; };
-    btn("Done",true,async b=>{ b.disabled=true; try{ if(picks.some(t=>String(t).toLowerCase()===String(top.name).toLowerCase())){ await setInList("Top 3 Done",top.name,true,"\n"); syncListDone(top.name,true); } else await setDone(top,true); try{ znPlanRender(); }catch(e){} try{ renderWeekday(); }catch(e){} try{ znRender(); }catch(e){} }catch(e){ toast(writeErr(e)); b.disabled=false; } });
-    if(calOK()&&!(top.sched&&top.sched.slice(0,10)>=T)) btn("Place it",false,b=>openScheduleSheet(top,b)); btn("Open",false,b=>openListItem(top,b)); sec.append(a);
-    const more=q.slice(1,3); if(more.length){ sec.append(el("p","zn-dpk2","After that")); more.forEach(it=>{ shown.add(it.id); sec.append(row(it,[at(it),meta(it)].filter(Boolean).join(" · "))); }); } c.append(sec); }
-  function znDeskWaiting(c,shown){ const T=TODAY(); const L=(LIST||[]).filter(it=>it.status==="Open"&&!(it.snooze&&it.snooze>T)); const rows=[];
-    L.filter(it=>it.owner==="Alice"&&forClaire(it)).forEach(it=>rows.push([it,it.astat==="Needs Claire"?"Alice has a question":"Alice needs you to look"]));
-    L.filter(it=>forClaire(it)&&it.owner!=="Alice"&&isTask(it)&&it.due&&it.due<T&&!shown.has(it.id)).sort((a,b)=>a.due.localeCompare(b.due)).forEach(it=>{ const d=dayDiff(T,it.due); rows.push([it,`Overdue · ${d} day${d===1?"":"s"}`]); });
-    L.filter(it=>it.waiting&&it.wsince&&dayDiff(T,it.wsince)>=3&&!rows.some(r=>r[0]===it)).sort((a,b)=>a.wsince.localeCompare(b.wsince)).forEach(it=>rows.push([it,`Waiting on ${it.waiting} · ${dayDiff(T,it.wsince)} days`]));
-    const nosize=L.filter(it=>forClaire(it)&&it.owner!=="Alice"&&it.kind==="To-do"&&!it.est&&!it.waiting&&!shown.has(it.id)&&!rows.some(r=>r[0]===it));
-    const sec=el("div","zn-dpsec"); const n=rows.length+(nosize.length?1:0); sec.append(el("p","zn-dpk",n?`Waiting on you · ${rows.length+nosize.length}`:"Waiting on you"));
-    if(!n){ sec.append(el("p","zn-dpe","Nothing is waiting on you.")); c.append(sec); return; }
-    const mk=(it,label,title)=>{ const b=el("button","zn-dprow"); b.type="button"; b.append(el("b",null,title||it.name),el("small",null,label)); b.addEventListener("click",()=>openListItem(it,b)); return b; };
-    rows.slice(0,5).forEach(([it,label])=>sec.append(mk(it,label))); if(rows.length>5) sec.append(el("p","zn-dps",`and ${rows.length-5} more in the Plan list`));
-    if(nosize.length) sec.append(mk(nosize[0],nosize.length===1?"No size yet · size it to plan the week":`and ${nosize.length-1} more with no size · size them to plan the week`,nosize.length===1?nosize[0].name:`${nosize[0].name}`));
-    c.append(sec); }
-  function znDeskPanelEmpty(){ const pn=$("#znDeskPanel"); if(!pn) return; window.__znSel=""; pn.replaceChildren(); const c=znCard("zn-deskpanel zn-deskempty","");
-    const shown=new Set(); try{ znDeskUpNext(c,shown); }catch(e){ console.error("desk up next",e); } try{ znDeskWaiting(c,shown); }catch(e){ console.error("desk waiting",e); }
-    c.append(el("p","zn-dpe zn-dphint","Click any task, note or idea and it opens here to edit.")); const ask=el("button","zn-pill","🤝 Ask Alice"); ask.type="button"; ask.addEventListener("click",()=>znAskSheet(ask)); if(!(PERSON.features&&PERSON.features.alice===false)) c.append(ask); pn.append(c); try{ document.querySelectorAll("#znDeskPlan .zn-sel").forEach(x=>x.classList.remove("zn-sel")); }catch(e){} }
+  function znDeskPanelEmpty(){ const pn=$("#znDeskPanel"); if(!pn) return; window.__znSel=""; pn.replaceChildren(); const c=znCard("zn-deskpanel zn-deskempty",""); c.append(el("p","zn-dpk","Nothing selected"),el("p","zn-dpe","Pick a task, note or idea from Plan, or from Your day, and it opens here to edit.")); const ask=el("button","zn-pill","🤝 Ask Alice"); ask.type="button"; ask.addEventListener("click",()=>znAskSheet(ask)); if(!(PERSON.features&&PERSON.features.alice===false)) c.append(ask); pn.append(c); try{ document.querySelectorAll("#znDeskPlan .zn-sel").forEach(x=>x.classList.remove("zn-sel")); }catch(e){} }
   function znDeskPanelOpen(kicker,wrap){ if(!znDeskOn()) return null; const pn=$("#znDeskPanel"); if(!pn) return null; pn.replaceChildren(); const c=znCard("zn-deskpanel",""); const head=el("div","zn-dphead"); const x=el("button","zn-dpx","✕"); x.type="button"; x.setAttribute("aria-label","Close the panel"); head.append(el("span","zn-dpk",kicker),x); c.append(head,wrap); pn.append(c);
     const close=()=>znDeskPanelEmpty(); x.addEventListener("click",close); try{ document.querySelectorAll("#znDeskPlan .zn-trow").forEach(r=>r.classList.remove("zn-sel")); }catch(e){} try{ znDeskPlanRender(); }catch(e){} return close; }
   window.addEventListener("resize",()=>{ try{ znDeskSync(); }catch(e){} try{ const w=!!(window.matchMedia&&matchMedia("(min-width:1200px)").matches); if(w!==ZN_BOARD.wide&&!$("#view-ahead").hidden) znPlanRender(); }catch(e){} });
@@ -3333,16 +3283,18 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   async function znBoardPick(it,d){ const T=TODAY(); try{ if(d===T) await pickToday(it.name); else if(d===addDays(T,1)) await addToTomorrow([it.name],"On tomorrow’s picks"); else await listUpdate(it,{"date:Focus:start":d},{focus:d},`Picked for ${DAYS_LONG[new Date(d+"T12:00:00Z").getUTCDay()]}`); }catch(err){ toast(writeErr(err)); } znPlanRender(); try{ znRender(); }catch(e){} }
   function znBoard(host){ const T=TODAY(); const days=[...Array(7)].map((_,i)=>addDays(T,i)); const H0=Math.min(8,Math.floor(WORK_H.from)), H1=Math.max(18,Math.ceil(WORK_H.to)), PX=52; const yOf=h=>Math.round((h-H0)*PX);
     const fmt=m=>m>=60?(m%60?`${Math.floor(m/60)}h ${m%60}m`:`${m/60}h`):`${m}m`; const AR={Work:"💼",Personal:"🌱",Home:"🏠",Birdie:"🐕",Us:"💕"};
-    const all=LIST.filter(it=>it.status==="Open"&&isTask(it)&&forClaire(it)&&!isSnoozed(it)&&!it.waiting&&!it.sched);
+    // Nov 12 (from Claire's first real board): a task whose placed time has already passed is not "placed" any more. It comes back under Slipped.
+    const slipped=it=>{ if(!it.sched) return false; const d0=it.sched.slice(0,10); if(d0<T) return true; if(d0>T) return false; const [hh,mm]=it.sched.slice(11,16).split(":").map(Number); return (hh+(mm||0)/60+(it.est||30)/60)<=nowH(); };
+    const all=LIST.filter(it=>it.status==="Open"&&isTask(it)&&forClaire(it)&&!isSnoozed(it)&&!it.waiting&&(!it.sched||slipped(it)));
     const board=el("div","zn-board"); const left=znCard("zn-bdlist",""); const right=znCard("zn-bdweek","");
     // ----- left: to place
     const F=ZN_BOARD.filter, q=ZN_BOARD.q.trim().toLowerCase(); const shown=all.filter(it=>(F==="All"||(F==="Deep"?it.energy==="Deep":it.area===F))&&(!q||it.name.toLowerCase().includes(q)||String(it.project||"").toLowerCase().includes(q)));
     const total=shown.reduce((a,it)=>a+(it.est||30),0); const lh=el("div","zn-bdh"); lh.append(el("h2",null,"To place"),el("small",null,shown.length?`${shown.length} task${shown.length===1?"":"s"} · ${fmt(total)}`:"")); left.append(lh);
     const sr=el("input","zn-bdsearch"); sr.type="search"; sr.placeholder="Search"; sr.value=ZN_BOARD.q; sr.setAttribute("aria-label","Search tasks to place"); sr.addEventListener("input",()=>{ ZN_BOARD.q=sr.value; clearTimeout(sr._t); sr._t=setTimeout(()=>{ znPlanRender(); const n2=document.querySelector("#znPlan .zn-bdsearch"); if(n2){ n2.focus(); try{ n2.setSelectionRange(n2.value.length,n2.value.length); }catch(e){} } },250); }); left.append(sr);
     const fl=el("div","zn-bdfil"); ["All","Work","Personal","Home","Deep"].forEach(k=>{ const b=el("button","zn-chip"+(F===k?" on":""),(AR[k]?AR[k]+" ":"")+k); b.type="button"; b.setAttribute("aria-pressed",String(F===k)); b.addEventListener("click",()=>{ ZN_BOARD.filter=k; znPlanRender(); }); fl.append(b); }); left.append(fl);
-    const wkEnd=addDays(T,6); const groups=[["Due this week",shown.filter(it=>it.due&&it.due<=wkEnd)],["Due later",shown.filter(it=>it.due&&it.due>wkEnd)],["No date",shown.filter(it=>!it.due)]];
+    const wkEnd=addDays(T,6); const fresh=shown.filter(it=>!slipped(it)); const groups=[["Slipped · time has passed",shown.filter(slipped)],["Due this week",fresh.filter(it=>it.due&&it.due<=wkEnd)],["Due later",fresh.filter(it=>it.due&&it.due>wkEnd)],["No date",fresh.filter(it=>!it.due)]];
     groups.forEach(([lab,items])=>{ if(!items.length) return; left.append(el("p","zn-bdg",lab)); items.sort((a,b)=>(b.star-a.star)||((a.due||"9999").localeCompare(b.due||"9999"))).forEach(it=>{ const r=el("div","zn-bdrow"); r.draggable=true; r.tabIndex=0; r.setAttribute("role","button"); r.setAttribute("aria-label",`${it.name}, ${fmt(it.est||30)}. Drag onto a day to place it, or press Enter to open.`);
-        const tx=el("span","zn-bdtx"); tx.append(el("b",null,(it.star?"★ ":"")+it.name+(it.priv?" 🔒":"")),el("small",null,[AR[it.area]||"",it.project||"",it.due?"due "+dueLabel(it.due):""].filter(Boolean).join(" · "))); r.append(el("span","zn-bdgrip","⠿"),tx,el("span","zn-bdsz",fmt(it.est||30)+(it.energy==="Deep"?" · Deep":"")));
+        const tx=el("span","zn-bdtx"); tx.append(el("b",null,(it.star?"★ ":"")+it.name+(it.priv?" 🔒":"")),el("small",null,[AR[it.area]||"",it.project||"",slipped(it)?`was ${it.sched.slice(0,10)===T?"today":shortDate(it.sched.slice(0,10))} ${hLabel(Number(it.sched.slice(11,13))+Number(it.sched.slice(14,16)||0)/60)}`:"",it.due?"due "+dueLabel(it.due):""].filter(Boolean).join(" · "))); r.append(el("span","zn-bdgrip","⠿"),tx,el("span","zn-bdsz",fmt(it.est||30)+(it.energy==="Deep"?" · Deep":"")));
         r.addEventListener("dragstart",e=>{ ZN_DRAG=it; r.classList.add("drag"); try{ e.dataTransfer.effectAllowed="move"; e.dataTransfer.setData("text/plain",it.id||it.name); }catch(e2){} board.classList.add("dragging"); });
         r.addEventListener("dragend",()=>{ ZN_DRAG=null; r.classList.remove("drag"); board.classList.remove("dragging"); board.querySelectorAll(".zn-bdghost").forEach(x=>x.remove()); board.querySelectorAll(".zn-bdday.over").forEach(x=>x.classList.remove("over")); });
         r.addEventListener("click",()=>openListItem(it,r)); r.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); openListItem(it,r); } }); left.append(r); }); });
@@ -3351,16 +3303,25 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     // ----- right: the week
     const rh=el("div","zn-bdh"); rh.append(el("h2",null,"The next seven days")); { const d1=addDays(T,1), w1=new Date(d1+"T12:00:00Z").getUTCDay(); if(w1>=1&&w1<=5){ const pb=el("button","zn-pill",`Plan ${DAYS_LONG[w1]}`); pb.type="button"; pb.disabled=!mcp; pb.addEventListener("click",()=>znPlanTomorrow(pb)); rh.append(pb); } } right.append(rh);
     const grid=el("div","zn-bdgrid"); grid.style.setProperty("--bdh",((H1-H0)*PX)+"px"); grid.append(el("div"));
-    const cols=[]; days.forEach(d=>{ const dd=new Date(d+"T12:00:00Z"), wd=dd.getUTCDay(), wk=wd===0||wd===6; const hd=el("div","zn-bdday"+(d===T?" today":"")+(wk?" wkend":"")); hd.dataset.d=d; let openH=0; try{ openH=wk?0:znWorkOpen(d); }catch(e){}
+    // Nov 12: an event of four hours or more (all-day office hours, a hold) is drawn as a soft band behind the day and doesn't block a drop
+    // or count against open time on the board; the meetings inside it still do. Overlapping meetings sit side by side.
+    const DAY={}; days.forEach(d=>{ let busy=[]; try{ busy=busyOn(d).filter(x=>x.e>x.s&&!/work blocks?\b|work day/i.test(x.n||"")); }catch(e){} let placed=[]; try{ placed=znPlacedOn(d).filter(p=>{ const it=LIST.find(x=>x.name===p.n&&x.status==="Open"); return !(it&&slipped(it)&&it.sched.slice(0,10)!==d); }); }catch(e){}
+      const backs=busy.filter(x=>x.e-x.s>=4), reg=busy.filter(x=>x.e-x.s<4&&!placed.some(p=>p.n===x.n&&Math.abs(p.s-x.s)<.01)); const taken=[...reg,...placed].map(x=>({s:x.s,e:x.e,n:x.n}));
+      let open=0; { let t0=Math.max(WORK_H.from,d===T?nowH():0); taken.filter(x=>x.e>t0&&x.s<WORK_H.to).sort((p,q)=>p.s-q.s).forEach(x=>{ if(x.s>t0) open+=x.s-t0; t0=Math.max(t0,x.e); }); if(WORK_H.to>t0) open+=WORK_H.to-t0; }
+      DAY[d]={backs,reg,placed,taken,open}; });
+    const cols=[]; days.forEach(d=>{ const dd=new Date(d+"T12:00:00Z"), wd=dd.getUTCDay(), wk=wd===0||wd===6; const hd=el("div","zn-bdday"+(d===T?" today":"")+(wk?" wkend":"")); hd.dataset.d=d; const openH=wk?0:DAY[d].open;
       let picks=0; try{ picks=d===T&&window.__znPicks?window.__znPicks.picks.length:LIST.filter(it=>it.status==="Open"&&it.focus===d).length; }catch(e){}
-      hd.innerHTML=`<small>${d===T?"TODAY":DAYS_LONG[wd].slice(0,3).toUpperCase()}</small><b>${dd.getUTCDate()}</b><span>${wk?"weekend":openH>0?(Math.round(openH*2)/2)+"h open":"full"}</span><span class="zn-bddots">${[0,1,2].map(i=>`<i class="${i<Math.min(3,picks)?"on":""}"></i>`).join("")}</span>`;
+      hd.innerHTML=`<small>${d===T?"TODAY":DAYS_LONG[wd].slice(0,3).toUpperCase()}</small><b>${dd.getUTCDate()}</b><span>${wk?"weekend":openH>=.25?(Math.round(openH*2)/2)+"h open":"full"}</span><span class="zn-bddots">${[0,1,2].map(i=>`<i class="${i<Math.min(3,picks)?"on":""}"></i>`).join("")}</span>`;
       hd.setAttribute("aria-label",`${DAYS_LONG[wd]} ${dd.getUTCDate()}: ${wk?"weekend":(Math.round(openH*2)/2)+" hours open"}, ${picks} picked. Drop a task here to pick it for this day.`);
       hd.addEventListener("dragover",e=>{ if(!ZN_DRAG) return; e.preventDefault(); hd.classList.add("over"); }); hd.addEventListener("dragleave",()=>hd.classList.remove("over")); hd.addEventListener("drop",e=>{ e.preventDefault(); hd.classList.remove("over"); const it=ZN_DRAG; ZN_DRAG=null; if(it) znBoardPick(it,d); }); grid.append(hd); cols.push({d,wk}); });
     const hrs=el("div","zn-bdhrs"); for(let h=H0;h<=H1;h++){ const sp=el("span",null,h===12?"12pm":h<12?h+"am":(h-12)+"pm"); sp.style.top=yOf(h)+"px"; hrs.append(sp); } grid.append(hrs);
-    cols.forEach(({d,wk})=>{ const col=el("div","zn-bdcol"+(wk?" wkend":"")); col.dataset.d=d; let busy=[]; try{ busy=busyOn(d).filter(b=>b.e>b.s&&(b.e-b.s)<=9&&!/work blocks?\b|work day/i.test(b.n||"")); }catch(e){} let placed=[]; try{ placed=znPlacedOn(d); }catch(e){}
-      const taken=[...busy,...placed].map(b=>({s:b.s,e:b.e,n:b.n})); const seen=new Set();
-      busy.filter(b=>b.e>H0&&b.s<H1).forEach(b=>{ const k=`${b.s}|${b.n}`; if(seen.has(k)||placed.some(p=>p.n===b.n&&Math.abs(p.s-b.s)<.01)) return; seen.add(k); const s1=Math.max(b.s,H0), e1=Math.min(b.e,H1); const mine=!b.work&&(LIST.some(x=>x.name===b.n&&isTask(x))||!!(window.__znPicks&&window.__znPicks.picks.some(p=>p.title===b.n))); const bl=el("div","zn-bdb "+(b.work?"m":mine?"t":"p")); bl.style.top=yOf(s1)+"px"; bl.style.height=Math.max(20,yOf(e1)-yOf(s1)-2)+"px"; bl.append(el("b",null,String(b.n).replace(/^💼\s*/,""))); if(e1-s1>=.75) bl.append(el("small",null,hLabel(b.s))); bl.title=`${b.n} · ${hLabel(b.s)}–${hLabel(b.e)}`; col.append(bl); });
-      placed.filter(b=>b.e>H0&&b.s<H1).forEach(b=>{ const s1=Math.max(b.s,H0), e1=Math.min(b.e,H1); const bl=el("button","zn-bdb t"); bl.type="button"; bl.style.top=yOf(s1)+"px"; bl.style.height=Math.max(20,yOf(e1)-yOf(s1)-2)+"px"; bl.append(el("b",null,b.n)); if(e1-s1>=.75) bl.append(el("small",null,hLabel(b.s))); bl.title=`${b.n} · ${hLabel(b.s)}–${hLabel(b.e)}`; bl.addEventListener("click",()=>{ const it=LIST.find(x=>x.name===b.n&&x.status==="Open"); if(it) openListItem(it,bl); }); col.append(bl); });
+    cols.forEach(({d,wk})=>{ const col=el("div","zn-bdcol"+(wk?" wkend":"")); col.dataset.d=d; const {backs,reg,placed,taken}=DAY[d];
+      backs.filter(x=>x.e>H0&&x.s<H1).forEach(x=>{ const s1=Math.max(x.s,H0), e1=Math.min(x.e,H1); const bk=el("div","zn-bdback"); bk.style.top=yOf(s1)+"px"; bk.style.height=(yOf(e1)-yOf(s1))+"px"; bk.append(el("span",null,String(x.n).replace(/^💼\s*/,""))); bk.title=`${x.n} · ${hLabel(x.s)}–${hLabel(x.e)} · shown as a backdrop; you can still place inside it`; col.append(bk); });
+      const seen=new Set(); const evs=[]; reg.forEach(x=>{ const k=`${x.s}|${x.e}|${x.n}`; if(seen.has(k)) return; seen.add(k); const mine=!x.work&&(LIST.some(q2=>q2.name===x.n&&isTask(q2))||!!(window.__znPicks&&window.__znPicks.picks.some(p=>p.title===x.n))); evs.push({s:x.s,e:x.e,n:x.n,kind:x.work?"m":mine?"t":"p"}); }); placed.forEach(x=>evs.push({s:x.s,e:x.e,n:x.n,kind:"t",placed:true}));
+      const vis=evs.filter(x=>x.e>H0&&x.s<H1).sort((p,q)=>p.s-q.s||q.e-p.e); let cluster=[], cEnd=-1; const flush=()=>{ const ends=[]; cluster.forEach(ev=>{ let c=ends.findIndex(en=>en<=ev.s+.001); if(c<0){ c=ends.length; ends.push(ev.e); } else ends[c]=ev.e; ev.c=c; }); cluster.forEach(ev=>{ ev.nc=ends.length; }); cluster=[]; cEnd=-1; };
+      vis.forEach(ev=>{ if(cluster.length&&ev.s>=cEnd-.001) flush(); cluster.push(ev); cEnd=Math.max(cEnd,ev.e); }); flush();
+      vis.forEach(x=>{ const s1=Math.max(x.s,H0), e1=Math.min(x.e,H1); const bl=el(x.placed?"button":"div","zn-bdb "+x.kind); if(x.placed) bl.type="button"; bl.style.top=yOf(s1)+"px"; bl.style.height=Math.max(20,yOf(e1)-yOf(s1)-2)+"px"; if(x.nc>1){ bl.style.left=`calc(3px + ${x.c} * (100% - 6px) / ${x.nc})`; bl.style.right="auto"; bl.style.width=`calc((100% - 6px) / ${x.nc} - 2px)`; }
+        bl.append(el("b",null,String(x.n).replace(/^💼\s*/,""))); if(e1-s1>=.75) bl.append(el("small",null,hLabel(x.s))); bl.title=`${x.n} · ${hLabel(x.s)}–${hLabel(x.e)}`; if(x.placed) bl.addEventListener("click",()=>{ const it=LIST.find(q2=>q2.name===x.n&&q2.status==="Open"); if(it) openListItem(it,bl); }); col.append(bl); });
       if(d===T){ const n=nowH(); if(n>H0&&n<H1){ const nl=el("div","zn-bdnow"); nl.style.top=yOf(n)+"px"; col.append(nl); } }
       const spot=e=>{ const it=ZN_DRAG; if(!it) return null; const r=col.getBoundingClientRect(); const dur=(it.est||30)/60; let s0=H0+(e.clientY-r.top)/PX-dur/4; s0=Math.round(s0*4)/4; s0=Math.max(H0,Math.min(H1-dur,s0)); if(d===T) s0=Math.max(s0,Math.ceil(nowH()*4)/4); const e0=s0+dur; const hit=taken.find(b=>s0<b.e-.001&&e0>b.s+.001); return {s0,e0,hit,late:e0>H1+.001}; };
       col.addEventListener("dragover",e=>{ const p=spot(e); if(!p) return; e.preventDefault(); let g=col.querySelector(".zn-bdghost"); if(!g){ board.querySelectorAll(".zn-bdghost").forEach(x=>x.remove()); g=el("div","zn-bdb zn-bdghost"); g.append(el("b"),el("small")); col.append(g); } g.classList.toggle("bad",!!p.hit||p.late); g.style.top=yOf(p.s0)+"px"; g.style.height=Math.max(20,yOf(p.e0)-yOf(p.s0)-2)+"px"; g.firstChild.textContent=ZN_DRAG.name; g.lastChild.textContent=p.hit?`overlaps ${String(p.hit.n).replace(/^💼\s*/,"")}`:p.late?"no room left today":`drop to place · ${hLabel(p.s0)}–${hLabel(p.e0)}`; });
