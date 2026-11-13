@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-12.5"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
+<meta name="zone-build" content="2026-11-12.6"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1355,7 +1355,8 @@ body.zn.zn-night .zn-tsearch{background:rgba(255,255,255,.1)}
 /* Nov 3: capture, round two */
 body.zn .zn-cta{width:100%;box-sizing:border-box;font:inherit;font-size:17px;line-height:1.35;padding:12px 14px;border-radius:14px;border:1.5px solid rgba(31,35,64,.15);background:#fff;color:#1F2340;resize:none;min-height:60px}
 body.zn.zn-night .zn-cta{background:rgba(255,255,255,.1);color:#F3EEFF;border-color:rgba(255,255,255,.2)}
-body.zn .zn-cread{margin-top:10px}
+body.zn .zn-cread{margin-top:10px;position:relative}
+body.zn .zn-cread .zn-tsdate{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none} /* Nov 12: the date field is opened by the 📅 chip; it was showing as a stray mm/dd/yyyy box */
 body.zn .zn-crk{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.6;margin:0 0 6px}
 body.zn .zn-cchips{display:flex;flex-wrap:wrap;gap:6px}
 body.zn .zn-cchips .zn-chip{min-height:34px}
@@ -1504,6 +1505,28 @@ body.zn.zn-night #znDeskPanel .zn-dprow{border-bottom-color:rgba(255,255,255,.1)
 /* Nov 12 (desktop pass): the Plan column's filter chips wrap instead of running off the edge; no outline on buttons focused by the mouse or by the app */
 body.zn #znDeskPlan .zn-tfil{flex-wrap:wrap;overflow:visible}
 html:not(.kbd) button:focus-visible,html:not(.kbd) [role="tab"]:focus-visible{outline:none}
+/* Nov 12 (desktop pass, Claire's picks): no big column headings on the three-column Today; the add box is one line with Add always showing;
+   the open-hours strip is seven days; sheets that open in the side panel */
+body.zn #view-today.zn-d3 > #znToday > .zn-mast,body.zn #view-today.zn-d3 > #znDeskPlan > .zn-deskhead{display:none !important}
+body.zn #znDeskPlan .zn-wcap7{grid-template-columns:repeat(7,minmax(0,1fr))}
+body.zn #znDeskPlan .zn-wcap7 b{font-size:12.5px;white-space:nowrap}
+body.zn #znDeskPlan .zn-wcap7 .zn-we{background:rgba(123,108,246,.14)}
+body.zn #znDeskPlan .zn-wcap7 .zn-we i{background:transparent}
+body.zn.zn-night #znDeskPlan .zn-wcap7 .zn-we{background:rgba(190,170,255,.16)}
+body.zn #znDeskPlan .zn-tadd{display:grid;grid-template-columns:minmax(0,1fr) auto auto;column-gap:12px;align-items:center}
+body.zn #znDeskPlan .zn-tadd > .zn-cta{grid-column:1;grid-row:1;min-height:44px;height:auto;max-height:160px;padding:10px 14px;font-size:15.5px;field-sizing:content}
+body.zn #znDeskPlan .zn-tadd > .zn-clinks{grid-column:2;grid-row:1;margin:0;padding:0;border:0}
+body.zn #znDeskPlan .zn-tadd > .zn-cbar{grid-column:3;grid-row:1;margin:0}
+body.zn #znDeskPlan .zn-tadd > .zn-cbar .zn-csp{display:none}
+body.zn #znDeskPlan .zn-tadd > .zn-cread,body.zn #znDeskPlan .zn-tadd > .zn-chint{grid-column:1 / -1}
+body.zn #znDeskPlan .zn-tadd .zn-asklink{white-space:nowrap;font-size:12.5px}
+body.zn #znDeskPlan .zn-tadd .zn-chtog{display:none}
+body.zn #znDeskPlan .zn-tadd:has(.zn-cread:not([hidden])) > .zn-clinks{grid-column:1 / -1;grid-row:auto;margin-top:8px}
+body.zn #znDeskPlan .zn-tadd:has(.zn-cread:not([hidden])) .zn-chtog{display:inline}
+body.zn .zn-deskpanel .zn-dpsheet > .zn-dpt{margin-top:2px}
+body.zn .zn-deskpanel .zn-dpfoot{margin-top:14px;padding-top:12px;border-top:1px solid rgba(31,35,64,.1);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+body.zn .zn-deskpanel .zn-dpfoot .zn-cbar{margin-top:0;flex:1}
+body.zn.zn-night #znDeskPanel .zn-dpfoot{border-top-color:rgba(255,255,255,.14)}
 
 /* Nov 10: the sheet frame */
 .sheet.read .shead .shrow{display:flex;align-items:flex-start;gap:10px}
@@ -3172,7 +3195,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const mk=(val,lab)=>{ const b=el("button","zn-chip"+(p.feedback===val?" on":""),lab); b.type="button"; b.setAttribute("aria-pressed",String(p.feedback===val)); b.addEventListener("click",async()=>{ const nv=p.feedback===val?"":val; if(await save({feedback:nv})){ row.querySelectorAll(".zn-chip").forEach(x=>{ const on=x===b&&!!nv; x.classList.toggle("on",on); x.setAttribute("aria-pressed",String(on)); }); why.hidden=nv!=="missed"; if(nv==="missed") why.focus({preventScroll:true}); toast(nv==="useful"?"Noted · more like this":nv==="missed"?"Noted · tell Alice what was missing":"Cleared"); } }); return b; };
       row.append(mk("useful","Useful"),mk("missed","Missed something")); const saveWhy=async()=>{ const v=why.value.trim(); if(v!==(p.feedback_note||"")) { if(await save({feedback_note:v})) toast("Alice will use that next time"); } }; why.addEventListener("blur",saveWhy); why.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); why.blur(); } }); fb.append(row,why); pfoot=fb;
       if(p.kind==="event"){ const nb=el("div","zn-pnotes"); nb.append(el("p","zn-pfk","Your notes from this meeting")); const ta=el("textarea","zn-cta zn-pnta"); ta.rows=3; ta.placeholder="Decisions, open questions, who owes what. Alice opens the next prep for this meeting with these."; ta.setAttribute("aria-label","Your notes from this meeting"); ta.value=p.notes||""; const st=el("p","hint zn-pnst",p.notes?"Saved":""); const saveNotes=async()=>{ const v=ta.value.trim(); if(v===(p.notes||"")) return; st.textContent="Saving…"; st.textContent=(await save({notes:v}))?"Saved":"Not saved"; }; ta.addEventListener("blur",saveNotes); nb.append(ta,st); box.append(nb); } }
-    openSheet({kicker:"✨ Alice · prep",title:p.title,body:[box],from,foot:pfoot||undefined}); }
+    openSheet({kicker:"✨ Alice · prep",title:p.title,body:[box],from,foot:pfoot||undefined,panel:true}); }
   function znPrepChip(date,title,when){ const p=znPrepFor(date,title); if(!p) return null; const b=el("button","zn-prepchip","✨ Prep"); b.type="button"; b.setAttribute("aria-label",`Prep for ${title}`); b.addEventListener("click",e=>{ e.stopPropagation(); znPrepSheet(p,b,when); }); return b; }
   function znPrepToday(box){ if(!box) return; box.querySelectorAll(":scope > .zn-preptoday").forEach(x=>x.remove()); return; /* Nov 9 / Nov 11: prep lives on the timeline, every day */ const T=TODAY(); const wd=new Date(T+"T12:00:00Z").getUTCDay(); if(wd===0||wd===6||!LIVE) return;
     const meets=busyOn(T).filter(b=>b.work); const rows=ZN_PREPS.filter(p=>p.date===T&&p.kind==="event").map(p=>({p,m:meets.find(m=>znPrepNorm(m.n)===znPrepNorm(p.title))})).filter(x=>x.m).sort((a,b)=>a.m.s-b.m.s);
@@ -3208,7 +3231,10 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     if(!pc.children.length) znDeskPlanRender(); if(pn.querySelector(".zn-deskempty")){ const st=pn.scrollTop; znDeskPanelEmpty(); pn.scrollTop=st; } }
   function znDeskPlanRender(){ const pc=$("#znDeskPlan"); if(!pc||pc.hidden||!ZN_DESK()) return; const keep=document.activeElement&&pc.contains(document.activeElement)&&document.activeElement.matches(".zn-tsearch input"); const st=pc.scrollTop;
     pc.replaceChildren(); const T=TODAY(); const head=znCard("zn-mast zn-deskhead",""); head.innerHTML=`<span class="zn-mt">Plan</span>`; pc.append(head);
-    try{ const wk=[...Array(7)].map((_,i)=>addDays(T,i)).filter(d=>{ const wd=new Date(d+"T12:00:00Z").getUTCDay(); return wd>=1&&wd<=5; }).slice(0,5); const c=znCard("zn-work zn-deskcap",""); const cap=el("div","zn-wcap"); wk.forEach(d=>{ const o=znWorkOpen(d); const off=offFor(d); const used=Math.max(0,(WORK_H.to-WORK_H.from)-o); const t=el("div"); t.innerHTML=`<small>${new Date(d+"T12:00:00Z").toLocaleDateString("en-US",{weekday:"short",timeZone:"UTC"})}</small><b>${off?"off":(o%1?o.toFixed(1):o)+"h open"}</b><i><em style="width:${Math.min(100,Math.round(used/Math.max(1,WORK_H.to-WORK_H.from)*100))}%"></em></i>`; cap.append(t); }); c.append(cap); pc.append(c); }catch(e){}
+    try{ /* Nov 12 (desktop pass): all seven days, weekends tinted and counted in plans, to match the planning board */ const wk=[...Array(7)].map((_,i)=>addDays(T,i)); const c=znCard("zn-work zn-deskcap",""); const cap=el("div","zn-wcap zn-wcap7"); wk.forEach(d=>{ const wd=new Date(d+"T12:00:00Z").getUTCDay(); const we=wd===0||wd===6; const t=el("div",we?"zn-we":""); const lab=new Date(d+"T12:00:00Z").toLocaleDateString("en-US",{weekday:"short",timeZone:"UTC"});
+      if(we){ let n=0; try{ n=busyOn(d).length; }catch(e){} t.innerHTML=`<small>${lab}</small><b>${n?n+(n===1?" plan":" plans"):"free"}</b><i></i>`; }
+      else { const o=znWorkOpen(d); const off=offFor(d); const used=Math.max(0,(WORK_H.to-WORK_H.from)-o); t.innerHTML=`<small>${lab}</small><b>${off?"off":(o%1?o.toFixed(1):o)+"h open"}</b><i><em style="width:${Math.min(100,Math.round(used/Math.max(1,WORK_H.to-WORK_H.from)*100))}%"></em></i>`; }
+      cap.append(t); }); c.append(cap); pc.append(c); }catch(e){}
     const saveSeg=ZN_PLAN.seg; try{ const view=znTasksView(pc); pc.append(view); }catch(e){ console.error("desk tasks",e); } ZN_PLAN.seg=saveSeg; pc.scrollTop=st; if(keep){ const i=pc.querySelector(".zn-tsearch input"); if(i){ i.focus(); try{ i.setSelectionRange(i.value.length,i.value.length); }catch(e){} } } }
   // Nov 12 (Claire chose A + C from the mockups): when nothing is selected, the side panel isn't blank. Top: "Up next", the next task
   // (picked, placed today, due or overdue, starred) with Done / Place it / Open and the two after it; at night it turns to tomorrow's
@@ -3429,7 +3455,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const go=el("button","zn-btn","Set tomorrow"); go.type="button"; go.disabled=!mcp;
     go.addEventListener("click",async()=>{ const order=[...cands,...extra].filter(c=>picked.has(c.name)).map(c=>c.name); go.disabled=true; try{ await writeToday({Tomorrow:order.length?order.map((l,i)=>`${i+1}. ${l}`).join("\n"):"none"},{silent:true}); if(order.length) twinsFor(order,T1).catch(()=>{}); toast(order.length?`${dayName} is set · ${order.length} picked`:"Left empty"); close&&close(); znRender(); try{ znPlanRender(); }catch(e){} }catch(e){ toast(writeErr(e)); go.disabled=false; } });
     w.append(sugH,sugBox,moreH,moreBox,addRow); const rf=el("div","zn-rfootrow"); rf.append(foot,go); draw();
-    const close=openSheet({kicker:"Tomorrow · two minutes",title:dayName,body:[w],from,foot:rf}); }
+    const close=openSheet({kicker:"Tomorrow · two minutes",title:dayName,body:[w],from,foot:rf,panel:true}); }
   // Oct 29: the galaxy behind the night. Nebulae, a Milky Way band, ~170 stars twinkling on their own timing, a shooting star now and then.
   // Oct 31: the day sky (direction C, "Prism"). Phases follow the real sunrise and sunset (SUN), the sun's place follows the hour.
   function znDaySky(on){ let sky=document.querySelector(".zn-daysky"); if(!on){ if(sky) sky.remove(); document.body.classList.remove("zn-dayon"); return; }
@@ -4295,7 +4321,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const seeB=el("button","zn-pill","See it on the List"); seeB.type="button"; seeB.addEventListener("click",()=>{ ZN_PLAN.seg="list"; ZN_PLAN.filter="alice"; const o=$("#layer").querySelector(".ov:last-of-type .sheet > button.btn.ghost:last-of-type"); if(o) o.click(); show("ahead"); }); acts.append(seeB); out.append(acts);
       try{ ZN_PLAN.filter="alice"; }catch(e){} try{ if(typeof refreshIndex==="function") refreshIndex(); }catch(e){} };
     go.addEventListener("click",run); ta.addEventListener("keydown",e=>{ if(e.key==="Enter"&&(e.metaKey||e.ctrlKey)){ e.preventDefault(); run(); } });
-    openSheet({kicker:"🤝 Alice",title:"Ask Alice",body:[box],color:"var(--plan)",from,foot:bar}); setTimeout(()=>ta.focus({preventScroll:true}),60); }
+    openSheet({kicker:"🤝 Alice",title:"Ask Alice",body:[box],color:"var(--plan)",from,foot:bar,panel:true}); setTimeout(()=>ta.focus({preventScroll:true}),60); }
   async function znDraftCall(payload,part){ try{ if(typeof APP==="undefined"||!APP.sb) return null; const s=await APP.sb.auth.getSession(); const tk=s&&s.data&&s.data.session&&s.data.session.access_token; if(!tk) return null;
     const r=await fetch(APP.url+"/functions/v1/zone-draft"+(part?"?part="+part:""),{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify(payload)}); const j=await r.json(); return r.ok&&j.ok?j:{error:j.error||("zone-draft "+r.status)}; }catch(e){ return null; } }
   function znDraftReply(raw,from){ const m=INBOX_MAIL[raw]; if(!m) return; const title=inboxTitle(raw);
@@ -4348,7 +4374,14 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // Nov 1 (stage 3b): a sheet removed directly (several pickers close that way) skipped openSheet's close, leaving the page behind inert:
   // after logging a walk the whole app ignored taps until a reload. When no sheet is left in the layer, the page comes back.
   { const L=$("#layer"); if(L) new MutationObserver(()=>{ if(window.__SHEETS&&!L.querySelector(".ov")){ window.__SHEETS=0; [...document.body.children].forEach(x=>{ x.inert=false; }); } }).observe(L,{childList:true}); }
-  function openSheet({kicker,title,body,color,from,onClose,foot}){
+  function openSheet({kicker,title,body,color,from,onClose,foot,panel}){
+    // Nov 12 (desktop pass): on the three-column Today, prep, capture, Ask Alice and plan-tomorrow (panel:true) open in the right-hand panel
+    // instead of over the page, so the day and the Plan list stay usable. Anything stacked on another sheet, and every phone, keeps the sheet.
+    if(panel&&!window.__SHEETS){ try{ if(znDeskOn()){ const wrap=el("div","zn-dpsheet"); if(title) wrap.append(el("h2","zn-dpt",title)); wrap.append(...(Array.isArray(body)?body:[body]));
+      if(foot){ const f=el("div","zn-dpfoot"); f.append(...(Array.isArray(foot)?foot:[foot])); wrap.append(f); }
+      const shut=znDeskPanelOpen(kicker,wrap); if(shut){ window.__znSel=""; let gone=false; const fin=()=>{ if(gone) return; gone=true; onClose&&onClose(); };
+        const close=()=>{ if(!wrap.isConnected){ fin(); return; } shut(); fin(); }; const x=wrap.parentNode&&wrap.parentNode.querySelector(".zn-dpx"); if(x) x.addEventListener("click",fin);
+        const onKey=e=>{ if(!wrap.isConnected){ document.removeEventListener("keydown",onKey); return; } if(e.key==="Escape"&&!window.__SHEETS){ document.removeEventListener("keydown",onKey); close(); } }; document.addEventListener("keydown",onKey); try{ const pn=$("#znDeskPanel"); if(pn) pn.scrollTop=0; }catch(e){} return close; } } }catch(e){ console.error("panel sheet",e); } }
     const ov=el("div","ov"); const sh=el("div","sheet read"); sh.setAttribute("role","dialog"); sh.setAttribute("aria-modal","true"); sh.setAttribute("aria-label",kicker);
     sh.style.setProperty("--c",color||"var(--read)");
     const top=el("div","shead"); const hrow=el("div","shrow"); const htx=el("div","shtx"); htx.append(el("div","k",kicker)); if(title) htx.append(el("h2",null,title)); const xb=el("button","shx","✕"); xb.type="button"; xb.setAttribute("aria-label","Close"); hrow.append(htx,xb); top.append(el("div","grab"),hrow);
@@ -4395,7 +4428,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const mb=el("button","zn-chip","🙂 Mood"); mb.type="button"; mb.disabled=!mcp; mb.addEventListener("click",()=>znMoodSheet(mb)); lg.append(mb);
       body.push(el("div","label","Log today"),lg); }
     else body.push(el("p","hint","Logging opens once today's brief lands at 4:30am."));
-    openSheet({kicker:"Capture",title:"",body,color:"var(--you)",from:$("#logBtn")}); });
+    openSheet({kicker:"Capture",title:"",body,color:"var(--you)",from:$("#logBtn"),panel:true}); });
   
   async function bump(prop,label,d){ const prev=num(ROW&&ROW[prop])||0; const v=Math.max(0,prev+d); try{ await writeToday({[prop]:v},{silent:d>0});  if(d>0) toast(`${label} · ${v}`,()=>bump(prop,label,-1)); }catch(e){ toast(writeErr(e)); } }
   
