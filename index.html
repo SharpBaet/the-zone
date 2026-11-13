@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-12.7"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
+<meta name="zone-build" content="2026-11-12.8"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1794,6 +1794,13 @@ body.zn .zn-bdb small{display:block;font-weight:600;opacity:.75;font-size:10.5px
 body.zn .zn-bdb.m{background:#DCD4FF;color:#2E2470 !important}
 body.zn .zn-bdb.p{background:#E6E8F2;color:#4A4767 !important}
 body.zn .zn-bdb.t{background:linear-gradient(135deg,#FFD9B0,#FFC3D6);color:#5A2A12 !important;cursor:pointer}
+/* Nov 12: placed blocks move */
+body.zn .zn-bdb.mv{cursor:grab;padding-right:20px}
+body.zn .zn-bdb.mv.drag{opacity:.45}
+body.zn .zn-bdb.mv .zn-bdgrip{float:left;font-size:11px;line-height:1.25;margin-right:3px;opacity:.45}
+body.zn .zn-bdx{position:absolute;top:2px;right:3px;width:16px;height:16px;line-height:16px;text-align:center;border-radius:50%;font-size:10px;background:rgba(90,42,18,.16);opacity:0;cursor:pointer}
+body.zn .zn-bdb.mv:hover .zn-bdx,body.zn .zn-bdb.mv:focus-visible .zn-bdx,body.zn .zn-bdx:focus-visible{opacity:1}
+body.zn .zn-bdlist.over{outline:2px dashed rgba(123,108,246,.6);outline-offset:-4px}
 body.zn .zn-bdghost{background:rgba(255,169,94,.3);outline:2px dashed #FF9E5E;color:#7A3B0E !important;box-shadow:0 10px 26px rgba(255,158,94,.35);pointer-events:none;z-index:3}
 body.zn.zn-night .zn-bdghost{color:#FFE2C2 !important}
 body.zn .zn-bdghost.bad{background:rgba(228,87,46,.22);outline-color:#E4572E;box-shadow:none}
@@ -2052,7 +2059,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   let ZN_SOON=null; function znSoon(){ clearTimeout(ZN_SOON); ZN_SOON=setTimeout(()=>{  try{ znRender(); }catch(e){} try{ if(!ME_SHEET) znMe(); }catch(e){} },0); }
   let pingT=null;
   function savedPing(){ let p=$("#savedPing"); if(!p){ p=el("div","savedping","Saved ✓"); p.id="savedPing"; p.setAttribute("role","status"); $("#layer").append(p); } p.classList.add("on"); clearTimeout(pingT); pingT=setTimeout(()=>p.classList.remove("on"),1400); }
-  function writeErr(e){ const c=e&&e.code; if(c==="timeout"||c==="notion_timeout") return "Notion was slow to answer, so that didn't save. Try again."; return c==="no_row"?"Today's brief hasn't landed yet, so there's nowhere to save this. It arrives at 4:30am.":c==="not_granted"||c==="not_in_manifest"?"Allow Notion editing for this page when Claude asks, then try again.":c==="needs_reauth"?"Reconnect Notion in your connector settings, then try again.":"Couldn't save to Notion. Try again in a moment."; }
+  function writeErr(e){ const c=e&&e.code; if(c==="cal"&&e.message) return e.message; if(c==="timeout"||c==="notion_timeout") return "Notion was slow to answer, so that didn't save. Try again."; return c==="no_row"?"Today's brief hasn't landed yet, so there's nowhere to save this. It arrives at 4:30am.":c==="not_granted"||c==="not_in_manifest"?"Allow Notion editing for this page when Claude asks, then try again.":c==="needs_reauth"?"Reconnect Notion in your connector settings, then try again.":"Couldn't save to Notion. Try again in a moment."; }
   let toastT=null;
   function toast(msg,undo){ const L=$("#layer"); L.querySelector(".toast")?.remove(); clearTimeout(toastT); const t=el("div","toast"); t.setAttribute("role","status"); t.append(el("span",null,msg)); if(undo){ const b=el("button",null,"Undo"); b.type="button"; b.addEventListener("click",()=>{ t.remove(); undo(); }); t.append(b);} L.append(t); toastT=setTimeout(()=>t.remove(),5000); }
 
@@ -3368,8 +3375,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // Drag a task onto a day to place it at that time (15-minute steps, its own size; it won't drop on top of something); drag it onto a
   // day's name to pick it for that day without a time. Placing writes Scheduled and queues the calendar event, exactly like "Place it".
   // Blocks that are already placed open the task on click; they can't be dragged yet (moving one would leave the old calendar event behind).
-  const ZN_BOARD={filter:"All",q:"",wide:null}; let ZN_DRAG=null;
-  async function znBoardPlace(it,d,s0){ const e0=s0+(it.est||30)/60; try{ if(calOK()) await queueCal("me",d,s0,e0,10,it.name); const iso=`${d}T${hm(s0)}:00`; const ok=await listUpdate(it,{"date:Scheduled:start":iso},{sched:iso}); if(ok!==false) toast(`Placed ${d===TODAY()?"today":dueLabel(d)} at ${hLabel(s0)}${calOK()?" · on your calendar in a few minutes":""}`); }catch(err){ toast(writeErr(err)); } znPlanRender(); try{ znRender(); }catch(e){} }
+  const ZN_BOARD={filter:"All",q:"",wide:null}; let ZN_DRAG=null, ZN_MOVE=false; const ZN_STALE=new Set(); /* "date|name" of slots a task was just moved or taken out of: the calendar copy in Week Events lags until its next refresh, so the board hides it */ /* ZN_MOVE: the drag started on a block that is already placed */
+  async function znBoardPlace(it,d,s0){ const e0=s0+(it.est||30)/60; const was=!!(it.sched&&it.sched.slice(0,10)>=TODAY()); const old=it.sched?it.sched.slice(0,10)+"|"+it.name:""; try{ if(calOK()) await queueCal("me",d,s0,e0,10,it.name); if(old) ZN_STALE.add(old); ZN_STALE.delete(d+"|"+it.name); const iso=`${d}T${hm(s0)}:00`; const ok=await listUpdate(it,{"date:Scheduled:start":iso},{sched:iso}); if(ok!==false) toast(`${was?"Moved to":"Placed"} ${d===TODAY()?"today":dueLabel(d)} at ${hLabel(s0)}${calOK()?(was?" · calendar updated":" · on your calendar"):""}`); }catch(err){ toast(writeErr(err)); } znPlanRender(); try{ znRender(); }catch(e){} }
   async function znBoardPick(it,d){ const T=TODAY(); try{ if(d===T) await pickToday(it.name); else if(d===addDays(T,1)) await addToTomorrow([it.name],"On tomorrow’s picks"); else await listUpdate(it,{"date:Focus:start":d},{focus:d},`Picked for ${DAYS_LONG[new Date(d+"T12:00:00Z").getUTCDay()]}`); }catch(err){ toast(writeErr(err)); } znPlanRender(); try{ znRender(); }catch(e){} }
   function znBoard(host){ const T=TODAY(); const days=[...Array(7)].map((_,i)=>addDays(T,i)); const H0=Math.min(8,Math.floor(WORK_H.from)), H1=Math.max(18,Math.ceil(WORK_H.to)), PX=52; const yOf=h=>Math.round((h-H0)*PX);
     const fmt=m=>m>=60?(m%60?`${Math.floor(m/60)}h ${m%60}m`:`${m/60}h`):`${m}m`; const AR={Work:"💼",Personal:"🌱",Home:"🏠",Birdie:"🐕",Us:"💕"};
@@ -3385,18 +3392,20 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const wkEnd=addDays(T,6); const fresh=shown.filter(it=>!slipped(it)); const groups=[["Slipped · time has passed",shown.filter(slipped)],["Due this week",fresh.filter(it=>it.due&&it.due<=wkEnd)],["Due later",fresh.filter(it=>it.due&&it.due>wkEnd)],["No date",fresh.filter(it=>!it.due)]];
     groups.forEach(([lab,items])=>{ if(!items.length) return; left.append(el("p","zn-bdg",lab)); items.sort((a,b)=>(b.star-a.star)||((a.due||"9999").localeCompare(b.due||"9999"))).forEach(it=>{ const r=el("div","zn-bdrow"); r.draggable=true; r.tabIndex=0; r.setAttribute("role","button"); r.setAttribute("aria-label",`${it.name}, ${fmt(it.est||30)}. Drag onto a day to place it, or press Enter to open.`);
         const tx=el("span","zn-bdtx"); tx.append(el("b",null,(it.star?"★ ":"")+it.name+(it.priv?" 🔒":"")),el("small",null,[AR[it.area]||"",it.project||"",slipped(it)?`was ${it.sched.slice(0,10)===T?"today":shortDate(it.sched.slice(0,10))} ${hLabel(Number(it.sched.slice(11,13))+Number(it.sched.slice(14,16)||0)/60)}`:"",it.due?"due "+dueLabel(it.due):""].filter(Boolean).join(" · "))); r.append(el("span","zn-bdgrip","⠿"),tx,el("span","zn-bdsz",fmt(it.est||30)+(it.energy==="Deep"?" · Deep":"")));
-        r.addEventListener("dragstart",e=>{ ZN_DRAG=it; r.classList.add("drag"); try{ e.dataTransfer.effectAllowed="move"; e.dataTransfer.setData("text/plain",it.id||it.name); }catch(e2){} board.classList.add("dragging"); });
+        r.addEventListener("dragstart",e=>{ ZN_DRAG=it; ZN_MOVE=false; r.classList.add("drag"); try{ e.dataTransfer.effectAllowed="move"; e.dataTransfer.setData("text/plain",it.id||it.name); }catch(e2){} board.classList.add("dragging"); });
         r.addEventListener("dragend",()=>{ ZN_DRAG=null; r.classList.remove("drag"); board.classList.remove("dragging"); board.querySelectorAll(".zn-bdghost").forEach(x=>x.remove()); board.querySelectorAll(".zn-bdday.over").forEach(x=>x.classList.remove("over")); });
         r.addEventListener("click",()=>openListItem(it,r)); r.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); openListItem(it,r); } }); left.append(r); }); });
     if(!shown.length) left.append(el("p","hint",all.length?"Nothing matches.":"Everything open has a time. Nice."));
-    left.append(el("p","hint zn-bdhow","Drag a task onto a day to give it a time. Drop it on the day’s name to pick it for that day."));
+    left.addEventListener("dragover",e=>{ if(!ZN_DRAG||!ZN_MOVE) return; e.preventDefault(); left.classList.add("over"); }); left.addEventListener("dragleave",e=>{ if(!left.contains(e.relatedTarget)) left.classList.remove("over"); });
+    left.addEventListener("drop",async e=>{ if(!ZN_DRAG||!ZN_MOVE) return; e.preventDefault(); left.classList.remove("over"); const it=ZN_DRAG; ZN_DRAG=null; ZN_MOVE=false; await znUnplace(it); znPlanRender(); try{ znRender(); }catch(e2){} });
+    left.append(el("p","hint zn-bdhow","Drag a task onto a day to give it a time, or onto the day’s name to pick it for that day. A placed task can be dragged to a new time, or back here to take it off your calendar."));
     // ----- right: the week
     const rh=el("div","zn-bdh"); rh.append(el("h2",null,"The next seven days")); { const d1=addDays(T,1), w1=new Date(d1+"T12:00:00Z").getUTCDay(); if(w1>=1&&w1<=5){ const pb=el("button","zn-pill",`Plan ${DAYS_LONG[w1]}`); pb.type="button"; pb.disabled=!mcp; pb.addEventListener("click",()=>znPlanTomorrow(pb)); rh.append(pb); } } right.append(rh);
     const grid=el("div","zn-bdgrid"); grid.style.setProperty("--bdh",((H1-H0)*PX)+"px"); grid.append(el("div"));
     // Nov 12: an event of four hours or more (all-day office hours, a hold) is drawn as a soft band behind the day and doesn't block a drop
     // or count against open time on the board; the meetings inside it still do. Overlapping meetings sit side by side.
     const DAY={}; days.forEach(d=>{ let busy=[]; try{ busy=busyOn(d).filter(x=>x.e>x.s&&!/work blocks?\b|work day/i.test(x.n||"")); }catch(e){} let placed=[]; try{ placed=znPlacedOn(d).filter(p=>{ const it=LIST.find(x=>x.name===p.n&&x.status==="Open"); return !(it&&slipped(it)&&it.sched.slice(0,10)!==d); }); }catch(e){}
-      const backs=busy.filter(x=>x.back), reg=busy.filter(x=>!x.back&&!placed.some(p=>p.n===x.n&&Math.abs(p.s-x.s)<.01)); const taken=[...reg,...placed].map(x=>({s:x.s,e:x.e,n:x.n}));
+      const backs=busy.filter(x=>x.back), reg=busy.filter(x=>!x.back&&!placed.some(p=>p.n===x.n&&Math.abs(p.s-x.s)<.01)&&!(!x.work&&ZN_STALE.has(d+"|"+x.n))); const taken=[...reg,...placed].map(x=>({s:x.s,e:x.e,n:x.n}));
       let open=0; { let t0=Math.max(WORK_H.from,d===T?nowH():0); taken.filter(x=>x.e>t0&&x.s<WORK_H.to).sort((p,q)=>p.s-q.s).forEach(x=>{ if(x.s>t0) open+=x.s-t0; t0=Math.max(t0,x.e); }); if(WORK_H.to>t0) open+=WORK_H.to-t0; }
       DAY[d]={backs,reg,placed,taken,open}; });
     const cols=[]; days.forEach(d=>{ const dd=new Date(d+"T12:00:00Z"), wd=dd.getUTCDay(), wk=wd===0||wd===6; const hd=el("div","zn-bdday"+(d===T?" today":"")+(wk?" wkend":"")); hd.dataset.d=d; const openH=wk?0:DAY[d].open;
@@ -3411,10 +3420,17 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const vis=evs.filter(x=>x.e>H0&&x.s<H1).sort((p,q)=>p.s-q.s||q.e-p.e); let cluster=[], cEnd=-1; const flush=()=>{ const ends=[]; cluster.forEach(ev=>{ let c=ends.findIndex(en=>en<=ev.s+.001); if(c<0){ c=ends.length; ends.push(ev.e); } else ends[c]=ev.e; ev.c=c; }); cluster.forEach(ev=>{ ev.nc=ends.length; }); cluster=[]; cEnd=-1; };
       vis.forEach(ev=>{ if(cluster.length&&ev.s>=cEnd-.001) flush(); cluster.push(ev); cEnd=Math.max(cEnd,ev.e); }); flush();
       vis.forEach(x=>{ const s1=Math.max(x.s,H0), e1=Math.min(x.e,H1); const bl=el(x.placed?"button":"div","zn-bdb "+x.kind); if(x.placed) bl.type="button"; bl.style.top=yOf(s1)+"px"; bl.style.height=Math.max(20,yOf(e1)-yOf(s1)-2)+"px"; if(x.nc>1){ bl.style.left=`calc(3px + ${x.c} * (100% - 6px) / ${x.nc})`; bl.style.right="auto"; bl.style.width=`calc((100% - 6px) / ${x.nc} - 2px)`; }
-        bl.append(el("b",null,String(x.n).replace(/^💼\s*/,""))); if(e1-s1>=.75) bl.append(el("small",null,hLabel(x.s))); bl.title=`${x.n} · ${hLabel(x.s)}–${hLabel(x.e)}`; if(x.placed) bl.addEventListener("click",()=>{ const it=LIST.find(q2=>q2.name===x.n&&q2.status==="Open"); if(it) openListItem(it,bl); }); col.append(bl); });
+        bl.append(el("b",null,String(x.n).replace(/^💼\s*/,""))); if(e1-s1>=.75) bl.append(el("small",null,hLabel(x.s))); bl.title=`${x.n} · ${hLabel(x.s)}–${hLabel(x.e)}`; if(x.placed) bl.addEventListener("click",()=>{ const it=LIST.find(q2=>q2.name===x.n&&q2.status==="Open"); if(it) openListItem(it,bl); });
+        if(x.placed){ const it=LIST.find(q2=>q2.name===x.n&&q2.status==="Open"); if(it&&mcp){ /* Nov 12: a placed block can be dragged to a new time (its calendar event moves with it) or taken off with ✕ */
+          bl.classList.add("mv"); bl.draggable=true; bl.title+=" · drag to move"; bl.prepend(el("span","zn-bdgrip","⠿"));
+          bl.addEventListener("dragstart",e=>{ ZN_DRAG=it; ZN_MOVE=true; bl.classList.add("drag"); try{ e.dataTransfer.effectAllowed="move"; e.dataTransfer.setData("text/plain",it.id||it.name); }catch(e2){} board.classList.add("dragging"); });
+          bl.addEventListener("dragend",()=>{ ZN_DRAG=null; ZN_MOVE=false; bl.classList.remove("drag"); board.classList.remove("dragging"); board.querySelectorAll(".zn-bdghost").forEach(g=>g.remove()); board.querySelectorAll(".zn-bdday.over,.zn-bdlist.over").forEach(g=>g.classList.remove("over")); });
+          const xb=el("span","zn-bdx","✕"); xb.setAttribute("role","button"); xb.tabIndex=0; xb.setAttribute("aria-label",`Take ${it.name} off the calendar and put it back in To place`); const off=async e=>{ e.stopPropagation(); e.preventDefault(); await znUnplace(it); znPlanRender(); try{ znRender(); }catch(e2){} };
+          xb.addEventListener("click",off); xb.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" ") off(e); }); bl.append(xb); } }
+        col.append(bl); });
       if(d===T){ const n=nowH(); if(n>H0&&n<H1){ const nl=el("div","zn-bdnow"); nl.style.top=yOf(n)+"px"; col.append(nl); } }
-      const spot=e=>{ const it=ZN_DRAG; if(!it) return null; const r=col.getBoundingClientRect(); const dur=(it.est||30)/60; let s0=H0+(e.clientY-r.top)/PX-dur/4; s0=Math.round(s0*4)/4; s0=Math.max(H0,Math.min(H1-dur,s0)); if(d===T) s0=Math.max(s0,Math.ceil(nowH()*4)/4); const e0=s0+dur; const hit=taken.find(b=>s0<b.e-.001&&e0>b.s+.001); return {s0,e0,hit,late:e0>H1+.001}; };
-      col.addEventListener("dragover",e=>{ const p=spot(e); if(!p) return; e.preventDefault(); let g=col.querySelector(".zn-bdghost"); if(!g){ board.querySelectorAll(".zn-bdghost").forEach(x=>x.remove()); g=el("div","zn-bdb zn-bdghost"); g.append(el("b"),el("small")); col.append(g); } g.classList.toggle("bad",!!p.hit||p.late); g.style.top=yOf(p.s0)+"px"; g.style.height=Math.max(20,yOf(p.e0)-yOf(p.s0)-2)+"px"; g.firstChild.textContent=ZN_DRAG.name; g.lastChild.textContent=p.hit?`overlaps ${String(p.hit.n).replace(/^💼\s*/,"")}`:p.late?"no room left today":`drop to place · ${hLabel(p.s0)}–${hLabel(p.e0)}`; });
+      const spot=e=>{ const it=ZN_DRAG; if(!it) return null; const r=col.getBoundingClientRect(); const dur=(it.est||30)/60; let s0=H0+(e.clientY-r.top)/PX-dur/4; s0=Math.round(s0*4)/4; s0=Math.max(H0,Math.min(H1-dur,s0)); if(d===T) s0=Math.max(s0,Math.ceil(nowH()*4)/4); const e0=s0+dur; const hit=taken.find(b=>!(ZN_MOVE&&b.n===it.name)&&s0<b.e-.001&&e0>b.s+.001); /* a block being moved may overlap its own old slot */ return {s0,e0,hit,late:e0>H1+.001}; };
+      col.addEventListener("dragover",e=>{ const p=spot(e); if(!p) return; e.preventDefault(); let g=col.querySelector(".zn-bdghost"); if(!g){ board.querySelectorAll(".zn-bdghost").forEach(x=>x.remove()); g=el("div","zn-bdb zn-bdghost"); g.append(el("b"),el("small")); col.append(g); } g.classList.toggle("bad",!!p.hit||p.late); g.style.top=yOf(p.s0)+"px"; g.style.height=Math.max(20,yOf(p.e0)-yOf(p.s0)-2)+"px"; g.firstChild.textContent=ZN_DRAG.name; g.lastChild.textContent=p.hit?`overlaps ${String(p.hit.n).replace(/^💼\s*/,"")}`:p.late?"no room left today":`drop to ${ZN_MOVE?"move":"place"} · ${hLabel(p.s0)}–${hLabel(p.e0)}`; });
       col.addEventListener("dragleave",e=>{ if(!col.contains(e.relatedTarget)) col.querySelectorAll(".zn-bdghost").forEach(x=>x.remove()); });
       col.addEventListener("drop",e=>{ const it=ZN_DRAG; const p=spot(e); col.querySelectorAll(".zn-bdghost").forEach(x=>x.remove()); if(!it||!p) return; e.preventDefault(); ZN_DRAG=null; if(p.hit){ toast(`That overlaps ${String(p.hit.n).replace(/^💼\s*/,"")}. Drop it in a clear spot.`); return; } if(p.late){ toast("No room left in that day."); return; } znBoardPlace(it,d,p.s0); });
       grid.append(col); });
@@ -4537,7 +4553,17 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     }
     return out; }
   const dayWord=d=>d===TODAY()?"Today":d===addDays(TODAY(),1)?"Tomorrow":DAYS_LONG[new Date(d+"T12:00:00Z").getUTCDay()];
-  async function queueCal(target,d,s,e,remind,title){ const line=`!cal|${target}|${d}T${hm(s)}:00|${d}T${hm(e)}:00|${remind==null?"-":remind}|${b64u(title)}|${Date.now()}`; await setInList("Inbox Cleared",line,true,"\n"); }
+  // Nov 12 (desktop pass, moving placed tasks): a task placed on her own calendar owns ONE event, with an id the Zone picks ("pl" + the
+  // List page id), created, moved, removed and brought back by zone-calmove straight away. So placing a task again moves its event instead
+  // of adding a second one. Anything that isn't an open task with a saved id (Fam events, "Add an event") still goes through the !cal line.
+  async function znCalMove(op,it,d,s0,e0,remind){ try{ if(!it||!it.id||/^tmp/.test(it.id)||typeof APP==="undefined"||!APP.sb) return false; const ss=await APP.sb.auth.getSession(); const tk=ss&&ss.data&&ss.data.session&&ss.data.session.access_token; if(!tk) return false;
+      const body=op==="remove"?{op:"remove",page_id:it.id}:{op:"place",page_id:it.id,title:it.name,start:`${d}T${hm(s0)}:00`,end:`${d}T${hm(e0)}:00`,remind:remind==null?null:remind};
+      const r=await fetch(APP.url+"/functions/v1/zone-calmove",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify(body)}); const j=await r.json().catch(()=>null); return !!(r.ok&&j&&j.ok); }catch(e){ return false; } }
+  async function znUnplace(it){ if(!it||!it.sched) return false; if(calOK()&&!(await znCalMove("remove",it))){ toast("Couldn’t reach your calendar, so nothing changed. Try again in a moment."); return false; }
+    const old=it.sched.slice(0,10)+"|"+it.name; const ok=await listUpdate(it,{"date:Scheduled:start":null},{sched:""}); if(ok!==false){ try{ ZN_STALE.add(old); }catch(e){} } if(ok!==false) toast(`Back in To place${calOK()?" · off your calendar":""}`); return ok!==false; }
+  async function queueCal(target,d,s,e,remind,title,plain){
+    if(target==="me"&&!plain){ let it=null; try{ it=LIST.find(x=>x.name===title&&x.status==="Open"&&isTask(x)&&x.id&&!/^tmp/.test(x.id)); }catch(e2){} if(it){ if(await znCalMove("place",it,d,s,e,remind)) return; throw {code:"cal",message:"Couldn’t reach your calendar, so nothing was placed. Try again in a moment."}; } }
+    const line=`!cal|${target}|${d}T${hm(s)}:00|${d}T${hm(e)}:00|${remind==null?"-":remind}|${b64u(title)}|${Date.now()}`; await setInList("Inbox Cleared",line,true,"\n"); }
   function openScheduleSheet(it,from){ if(!calOK()){ toast("Scheduling works from Claire's Zone for now"); return; }
     const est=it.est||30; const slots=suggestSlots(est,it.due); let pick=slots[0]||null;
     const wrap=el("div","schd"); wrap.append(el("p","muted",slots.length?`Open spots${it.due?` before it's due ${dueLabel(it.due)}`:" this week"}, around your meetings, walks and plans.`:"No open spot fits before it's due. Pick a time yourself."));
@@ -4571,7 +4597,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       if(!title||s0==null){ toast("Give it a name and a start time"); return; } const end=e0!=null&&e0>s0?e0:s0+1;
       const r=rem.get(); const remind=r==="none"?null:r==="morning"?Math.max(0,Math.round((s0-8)*60)):Number(r); const who=whose.get();
       go.disabled=true; go.textContent="Saving…";
-      try{ await queueCal(who==="me"?"me":"fam",d,s0,end,remind,title);
+      try{ await queueCal(who==="me"?"me":"fam",d,s0,end,remind,title,true);
         if(who!=="me"){ const owner=who==="us"?"both":who; const lines=clean(SET.FamOwners&&SET.FamOwners.value).split(/\n+/).map(l=>l.trim()).filter(l=>l&&fnorm(l.split("|").slice(1).join("|"))!==fnorm(title)); lines.push(`${owner}|${fnorm(title)}`); try{ await saveSetting("FamOwners",lines); }catch(e){} }
         toast(`Added · on ${who==="me"?"your":"the Fam"} calendar in a few minutes`); close&&close(); }
       catch(e){ go.disabled=false; go.textContent="Add it"; toast(writeErr(e)); } }); }
