@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-14.2"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
+<meta name="zone-build" content="2026-11-14.3"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1124,6 +1124,39 @@ body.zn.zn-night .sheet.read .zn-finsheet .field::placeholder{ color:rgba(243,23
 body.zn.zn-night .sheet .zn-finsheet .zn-finhint{ color:#D9D2EE; }
 body.zn.zn-night .sheet .zn-finsheet .zn-finpass, body.zn.zn-night .sheet .zn-finsheet .zn-finpick{ background:rgba(255,255,255,.14) !important; color:#F3EEFF !important; }
 body.zn.zn-night .sheet .zn-finsheet .zn-finpass[aria-pressed="true"], body.zn.zn-night .sheet .zn-finsheet .zn-finpick[aria-pressed="true"], body.zn.zn-night .sheet .zn-finsheet .zn-btn{ background:#F3EEFF !important; color:#1F2340 !important; }
+/* ===== Nov 14 (bookshelf step 3): the companion card on the Me shelf, and Ask about the book ===== */
+  .zn-compbox:empty{ display:none; }
+  .zn-comp{ margin-top:12px; border-radius:18px; padding:14px; background:rgba(255,255,255,.72); border:1px solid rgba(31,35,64,.12); display:flex; flex-direction:column; gap:8px; color:inherit; }
+  .zn-compk{ font:700 10.5px/1.2 'Plus Jakarta Sans',sans-serif; letter-spacing:.12em; text-transform:uppercase; color:#6B5C3E; }
+  .zn-compt{ margin:0; font:400 17px/1.4 'Fraunces',Georgia,serif; }
+  .zn-compf{ display:flex; align-items:center; justify-content:space-between; gap:8px; } .zn-compf > span{ font:500 12px/1.35 'Plus Jakarta Sans',sans-serif; color:#5E5648; } .zn-compf > div{ display:flex; gap:6px; flex:none; }
+  body.zn .zn-comp .zn-compb{ min-height:44px; padding:0 14px; margin:0; border-radius:999px; border:1px solid rgba(31,35,64,.12); background:transparent; color:inherit; font:700 13px 'Plus Jakarta Sans',sans-serif; cursor:pointer; display:inline-flex; align-items:center; gap:6px; white-space:nowrap; } body.zn .zn-comp .zn-compb:disabled{ opacity:.5; }
+  .zn-compq{ margin:12px 0 0; font:500 12.5px/1.4 'Plus Jakarta Sans',sans-serif; color:#5E5648; }
+  body.zn .zn-shelfcard .zn-shacts .zn-pill{ min-height:44px; padding:0 16px; margin-top:0; font:700 13.5px 'Plus Jakarta Sans',sans-serif; opacity:1; }
+  body.zn .zn-shelfcard .zn-shacts .zn-pill.zn-line{ background:transparent; color:inherit; border:1px solid rgba(31,35,64,.12); }
+  body.zn.zn-night .zn-comp{ background:rgba(255,255,255,.10); border-color:rgba(255,255,255,.16); } body.zn.zn-night .zn-compk{ color:#D9CBFF; } body.zn.zn-night .zn-compf > span, body.zn.zn-night .zn-compq{ color:#D9D2EE; }
+  body.zn.zn-night .zn-comp .zn-compb, body.zn.zn-night .zn-shelfcard .zn-shacts .zn-pill.zn-line{ border-color:rgba(255,255,255,.16); }
+  body.zn.zn-night #znMe .zn-shelfcard .zn-shacts .zn-pill.zn-ink{ background:#F3EEFF; color:#1F2340; }
+  .zn-asksheet{ gap:14px !important; }
+  .zn-askw{ display:flex; flex-direction:column; gap:8px; } .zn-askw > b, .zn-askin > label{ font:700 12.5px 'Plus Jakarta Sans',sans-serif; } .zn-askw > div{ display:flex; gap:8px; flex-wrap:wrap; } .zn-askw > span{ font:500 12px 'Plus Jakarta Sans',sans-serif; color:#5F5B78; }
+  body.zn .sheet .zn-asksheet .zn-askp{ min-height:44px; padding:0 18px; border-radius:22px; border:0; background:rgba(31,35,64,.08) !important; color:#1F2340 !important; font:700 13px 'Plus Jakarta Sans',sans-serif; cursor:pointer; white-space:nowrap; }
+  body.zn .sheet .zn-asksheet .zn-askp[aria-pressed="true"]{ background:#1F2340 !important; color:#FFE27A !important; }
+  .zn-askt{ display:flex; flex-direction:column; gap:10px; } .zn-askt:empty{ display:none; } .zn-askqa{ display:flex; flex-direction:column; gap:6px; }
+  .zn-askq{ align-self:flex-end; max-width:82%; background:#1F2340; color:#FFE27A; border-radius:18px 18px 4px 18px; padding:10px 14px; font:600 14px/1.35 'Plus Jakarta Sans',sans-serif; overflow-wrap:anywhere; }
+  .zn-aska{ border-radius:18px; padding:12px 14px; background:rgba(185,166,245,.24); display:flex; flex-direction:column; gap:6px; } .zn-aska > span{ font:700 10.5px/1.2 'Plus Jakarta Sans',sans-serif; letter-spacing:.12em; text-transform:uppercase; color:#5E4F98; } .zn-aska > p{ margin:0; } body.zn .sheet .zn-asksheet .zn-aska > p{ font:400 16px/1.4 'Fraunces',Georgia,serif !important; color:inherit !important; }
+  .zn-askin{ display:flex; flex-direction:column; gap:6px; } .zn-askin > div{ display:flex; gap:8px; align-items:center; }
+  body.zn .sheet.read .zn-asksheet .field{ width:100%; max-width:none; flex:1; height:auto; min-height:46px; box-sizing:border-box; border:1px solid rgba(31,35,64,.22) !important; background:#FFFFFF !important; color:#1F2340; border-radius:14px !important; padding:12px !important; font:500 15px/1.4 'Plus Jakarta Sans',sans-serif !important; }
+  body.zn .sheet .zn-asksheet .zn-askgo{ flex:none; min-height:44px; padding:0 16px; border-radius:999px; border:0; background:#1F2340 !important; color:#FFE27A !important; font:700 13.5px 'Plus Jakarta Sans',sans-serif; cursor:pointer; white-space:nowrap; } body.zn .sheet .zn-asksheet .zn-askgo:disabled{ opacity:.45; }
+  body.zn.zn-night .sheet:has(.zn-asksheet){ background:#15152A !important; color:#F3EEFF !important; --zn-muted:#D9D2EE; }
+  body.zn.zn-night .sheet:has(.zn-asksheet) .shead{ background:#15152A !important; } body.zn.zn-night .sheet:has(.zn-asksheet) .shead .k{ color:#D9CBFF !important; } body.zn.zn-night .sheet:has(.zn-asksheet) .shead h2{ color:#F3EEFF !important; }
+  body.zn.zn-night .sheet:has(.zn-asksheet) .shx{ background:rgba(255,255,255,.14) !important; color:#F3EEFF !important; }
+  body.zn.zn-night .sheet .zn-asksheet .zn-askw > b, body.zn.zn-night .sheet .zn-asksheet .zn-askin > label{ color:#F3EEFF; } body.zn.zn-night .sheet .zn-asksheet .zn-askw > span{ color:#D9D2EE; }
+  body.zn.zn-night .sheet .zn-asksheet .zn-askp{ background:rgba(255,255,255,.14) !important; color:#F3EEFF !important; }
+  body.zn.zn-night .sheet .zn-asksheet .zn-askp[aria-pressed="true"], body.zn.zn-night .sheet .zn-asksheet .zn-askgo{ background:#F3EEFF !important; color:#1F2340 !important; }
+  body.zn.zn-night .sheet .zn-asksheet .zn-askq{ background:#F3EEFF; color:#1F2340; } body.zn.zn-night .sheet .zn-asksheet .zn-aska{ background:rgba(185,166,245,.20); } body.zn.zn-night .sheet .zn-asksheet .zn-aska > span{ color:#D9CBFF; }
+  body.zn.zn-night .sheet.read .zn-asksheet .field{ border:1px solid rgba(255,255,255,.28) !important; background:rgba(255,255,255,.10) !important; color:#F3EEFF !important; } body.zn.zn-night .sheet.read .zn-asksheet .field::placeholder{ color:rgba(243,238,255,.6) !important; }
+  @media (min-width:1200px){ html body.zn #layer .ov:has(.zn-asksheet){ align-items:flex-start; justify-content:flex-end; background:transparent !important; backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
+    body.zn .sheet.read:has(.zn-asksheet){ box-shadow:0 18px 50px rgba(23,27,54,.28) !important; max-width:400px; margin:96px 24px 24px; max-height:calc(100vh - 120px); overflow:auto; border-radius:24px !important; } body.zn .sheet.read:has(.zn-asksheet) .grab{ display:none; } }
 .zn-bcover.wl{ width:100%; max-width:96px; height:auto; aspect-ratio:96/140; }
 .zn-wall .zn-seg{ gap:8px; margin:0 0 4px; flex-wrap:wrap; } .zn-wall .zn-seg button{ min-height:44px; padding:0 14px; background:rgba(31,35,64,.08); } .zn-wall .zn-seg button[aria-pressed="true"]{ background:#1F2340; color:#FFE27A; }
 .zn-wyh{ display:flex; justify-content:space-between; align-items:baseline; margin:14px 0 12px; } .zn-wyh b{ font:400 22px 'Fraunces',Georgia,serif; } .zn-wyh span{ font:600 11.5px 'Plus Jakarta Sans',sans-serif; color:var(--zn-muted); }
@@ -2638,8 +2671,9 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const b=reading.find(x=>x.i&&x.i===BK_FOCUS)||reading[0];
     const ledge=el("div","zn-ledge"); reading.slice(0,2).forEach((bk2,i)=>{ const j=bkCoverEl(bk2,bk2===b?"lg":"md"); j.classList.add("zn-jacket"); if(bk2!==b) j.addEventListener("click",()=>{ BK_FOCUS=bk2.i; try{ c.replaceWith(znShelfCard()); }catch(e){} }); ledge.append(j); }); if(next[0]){ const j=bkCoverEl(next[0],"sm"); j.classList.add("zn-jacket","zn-jnext"); ledge.append(j); } const addj=el("button","zn-jadd","+"); addj.type="button"; addj.setAttribute("aria-label","Start a book"); addj.disabled=!mcp; addj.addEventListener("click",()=>bkAddSheet(addj)); ledge.append(addj); ledge.append(el("i","zn-wood")); c.append(ledge);
     if(b){ const info=el("div","zn-shinfo"); info.innerHTML=`<div class="zn-shtitle">${znEsc(b.t)}</div><div class="zn-gsub">${znEsc([b.a,b.fmt,b.who==="Both"?"together":""].filter(Boolean).join(" · "))}</div>`; c.append(info);
+      try{ c.append(bkCompEl(b)); }catch(e){ console.error("companion",e); } /* Nov 14 (step 3) */
       const q=(b.nt||[]).map(l=>l.split("|")).filter(x=>x[3]==="quote"&&x[1]===bkMe()).pop(); if(q){ const qq=el("p","zn-shquote",`“${q.slice(4).join("|")}”`); c.append(qq); }
-      const act=el("div","zn-hows"); const sv=el("button","zn-pill zn-ink","Save a line"); sv.type="button"; sv.disabled=!mcp; sv.addEventListener("click",()=>bkLineSheet(b,sv)); const fn=el("button","zn-pill zn-quiet","Finished"); fn.type="button"; fn.disabled=!mcp; fn.addEventListener("click",()=>bkFinishSheet(b,fn)); act.append(sv,fn); c.append(act); }
+      const act=el("div","zn-hows zn-shacts"); const ak=el("button","zn-pill zn-ink","Ask about it"); ak.type="button"; ak.disabled=typeof APP==="undefined"||!APP.sb; ak.addEventListener("click",()=>bkAskSheet(b,ak)); const sv=el("button","zn-pill zn-line","Save a line"); sv.type="button"; sv.disabled=!mcp; sv.addEventListener("click",()=>bkLineSheet(b,sv)); const fn=el("button","zn-pill zn-line","Finished"); fn.type="button"; fn.disabled=!mcp; fn.addEventListener("click",()=>bkFinishSheet(b,fn)); act.append(ak,sv,fn); c.append(act); }
     else { const e=el("p","zn-empty","Nothing on the go. Tap + to start a book."); c.append(e); }
     const other=bkOther(); const theirs=BOOKS.find(x=>x.s==="Reading"&&x.who===other); const both=BOOKS.find(x=>x.s==="Reading"&&x.who==="Both"); if(theirs||both){ const us=el("div","zn-shus"); us.innerHTML=`${theirs?`${znEsc(other)} is reading <i>${znEsc(theirs.t)}</i>`:""}${theirs&&both?" · ":""}${both?`together: <i>${znEsc(both.t)}</i>`:""}`; us.addEventListener("click",()=>show("us")); c.append(us); }
     return c; }
@@ -2821,6 +2855,52 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       }catch(e){ toast(writeErr(e)); busy(false); } });
     quit.addEventListener("click",async()=>{ busy(true); try{ await bkUpdate(b,{Status:"Dropped"},{s:"Dropped"}); if(BK_FOCUS===b.i) BK_FOCUS=""; toast(b.who==="Both"?`${b.t} is off the shelf for both of you`:`${b.t} is off your shelf`); close&&close(); bkRefresh(); }catch(e){ toast(writeErr(e)); busy(false); } });
     const close=openSheet({kicker:"Finished",title:b.t,body:[wrap],from}); }
+  // Nov 14 (bookshelf step 3): the companion card and Ask about the book. Both come from zone-books. A book's cards are written once by
+  // the engine, in its own words (never quotation from the book); one is dealt per open of the app and one more for each tap on Another.
+  // Only cards safe from page one are dealt. Ask opens with early / middle / late, which goes with each question and is saved nowhere.
+  async function bkBooks(part,body,ms){ if(typeof APP==="undefined"||!APP.sb) return null; const ac=new AbortController(); const tm=setTimeout(()=>ac.abort(),ms||30000);
+    try{ const s=await APP.sb.auth.getSession(); const tk=s&&s.data&&s.data.session&&s.data.session.access_token; if(!tk) return null;
+      const r=await fetch(APP.url+"/functions/v1/zone-books?part="+part,{method:"POST",signal:ac.signal,headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify(body||{})}); return await r.json().catch(()=>null); }
+    catch(e){ console.error("zone-books",part,e); return null; } finally{ clearTimeout(tm); } }
+  const BK_KIND={who:"Who’s who",say:"Say it",behind:"Behind it",author:"The author"};
+  const BK_COMP={}; let BK_SAY=null;
+  const bkCompKey=b=>b.i||b.t;
+  function bkCompLoad(b,another){ const k=bkCompKey(b); let st=BK_COMP[k]; const T=TODAY();
+    if(st&&st.loading) return st; if(st&&!another&&st.day===T&&st.status) return st;
+    if(!st) st=BK_COMP[k]={status:"",card:null,again:false,polls:0,paint:null}; st.loading=true; st.day=T;
+    bkBooks("card",{title:b.t,author:b.a||"",book_id:b.i||""}).then(j=>{ st.loading=false; if(!j||!j.ok) st.status=st.card?"ready":"off"; else { st.status=j.status||"off"; if(j.card){ st.card=j.card; st.again=!!j.again; } }
+      if(st.status==="building"&&st.polls<10){ st.polls++; clearTimeout(st.tm); st.tm=setTimeout(()=>{ st.status=""; bkCompLoad(b); },20000); }
+      try{ st.paint&&st.paint(); }catch(e){} });
+    return st; }
+  function bkCompEl(b){ const box=el("div","zn-compbox");
+    const paint=()=>{ const st=BK_COMP[bkCompKey(b)]; box.replaceChildren(); if(!st) return;
+      if(!st.card){ const tx=st.status==="building"?"Getting to know this book. Cards will be here in a minute or two.":st.status==="empty"?"I don’t know this book well enough to make cards for it.":st.status==="failed"?"No cards for this book yet.":""; if(tx) box.append(el("p","zn-compq",tx)); return; }
+      const c=st.card; const card=el("div","zn-comp"); card.append(el("span","zn-compk",BK_KIND[c.kind]||"About the book"),el("p","zn-compt",c.text));
+      const f=el("div","zn-compf"); const bx=el("div"); f.append(el("span",null,st.again?"You’ve seen them all. Going round again.":c.listen?"Tap Listen to hear it":"Safe from page one"),bx);
+      if(c.listen){ const lb=el("button","zn-compb"); lb.type="button"; const mine=()=>BK_SAY&&BK_SAY.id===c.id?BK_SAY:null; const playing=()=>{ const A=mine(); return !!(A&&A.audio&&!A.audio.paused&&!A.audio.ended); };
+        const lp=()=>{ const A=mine(); const on=playing(); lb.innerHTML=(on?"":'<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h4l5 4V6L8 10z"/><path d="M16.5 9a4 4 0 0 1 0 6"/></svg>')+(A&&A.loading?"Getting it…":on?"Stop":"Listen"); }; lp();
+        lb.addEventListener("click",async()=>{ let A=mine(); if(A&&A.loading) return; if(A&&A.audio){ if(playing()){ A.audio.pause(); try{ A.audio.currentTime=0; }catch(e){} } else A.audio.play().catch(()=>{}); lp(); return; }
+          if(BK_SAY&&BK_SAY.audio){ try{ BK_SAY.audio.pause(); }catch(e){} } A=BK_SAY={id:c.id,loading:true,audio:null}; lp();
+          const j=await bkBooks("say",{card_id:c.id},60000); A.loading=false; if(!j||!j.url){ if(BK_SAY===A) BK_SAY=null; toast("Couldn’t get the audio. Try again in a minute."); lp(); return; }
+          const au=new Audio(j.url); A.audio=au; ["play","pause","ended"].forEach(e2=>au.addEventListener(e2,()=>{ if(lb.isConnected) lp(); })); await au.play().catch(()=>{}); lp(); });
+        bx.append(lb); }
+      const an=el("button","zn-compb","Another"); an.type="button"; an.disabled=!!st.loading; an.addEventListener("click",()=>{ an.disabled=true; bkCompLoad(b,true); }); bx.append(an); card.append(f); box.append(card); };
+    const st=bkCompLoad(b); st.paint=paint; paint(); return box; }
+  function bkAskSheet(b,from){ const wrap=el("div","schd zn-asksheet"); let where="", busy=false; const hist=[];
+    const w=el("div","zn-askw"); const wl=el("b",null,"Where are you in it?"); wl.id="bkAskWhere"; const row=el("div"); row.setAttribute("role","group"); row.setAttribute("aria-labelledby","bkAskWhere");
+    const thread=el("div","zn-askt"); thread.setAttribute("aria-live","polite");
+    const f=el("div","zn-askin"); const lab=el("label",null,"Ask anything about the book"); lab.htmlFor="bkAskQ"; const inp=el("input","field"); inp.type="text"; inp.id="bkAskQ"; inp.maxLength=300; inp.placeholder="A name, a place, a word"; inp.autocomplete="off";
+    const go=el("button","zn-askgo","Ask"); go.type="button"; const r2=el("div"); r2.append(inp,go); f.append(lab,r2);
+    const sync=()=>{ go.disabled=busy||!where||!inp.value.trim(); }; inp.addEventListener("input",sync);
+    [["early","Early"],["middle","Middle"],["late","Late"]].forEach(([v,l])=>{ const p=el("button","zn-askp",l); p.type="button"; p.setAttribute("aria-pressed","false"); p.addEventListener("click",()=>{ where=v; row.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===p))); sync(); try{ inp.focus({preventScroll:true}); }catch(e){} }); row.append(p); });
+    w.append(wl,row,el("span",null,"Asked once when you open this. Not saved."));
+    const ask=async()=>{ const q=inp.value.replace(/\s+/g," ").trim(); if(busy||!q) return; if(!where){ toast("Tap where you are in it first"); return; } busy=true; inp.value=""; sync();
+      const qa=el("div","zn-askqa"); const a=el("div","zn-aska"); const p=el("p",null,"Thinking…"); a.append(el("span",null,"Answer"),p); qa.append(el("div","zn-askq",q),a); thread.append(qa); try{ qa.scrollIntoView({block:"nearest"}); }catch(e){}
+      const j=await bkBooks("ask",{title:b.t,author:b.a||"",where,q,history:hist.slice(-4)},75000); busy=false;
+      if(j&&j.ok&&j.answer){ p.textContent=j.answer; hist.push({q,a:j.answer}); } else { p.textContent=j&&j.error&&/tomorrow/i.test(String(j.error))?String(j.error):"That didn’t go through. Ask again."; if(!inp.value) inp.value=q; }
+      sync(); try{ f.scrollIntoView({block:"nearest"}); }catch(e){} };
+    go.addEventListener("click",ask); inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); ask(); } });
+    wrap.append(w,thread,f); sync(); openSheet({kicker:"Ask about the book",title:b.t,body:[wrap],from}); }
   // Nov 14 (bookshelf step 2): the Year in books wall. Covers by year for Mine, the other person, or Ours (Together books both have finished).
   // Tapping a cover shows the verdict and the line.
   let BK_WALL={who:"me",open:""};
@@ -2852,7 +2932,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     t.addEventListener("input",()=>{ clearTimeout(tm); const q=t.value.trim(); const my=++seq; if(q.length<3){ hit=null; paint(); return; } tm=setTimeout(()=>{ fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(q)}&limit=1&fields=title,author_name,cover_i,key`).then(r=>r.json()).then(j=>{ if(my!==seq) return; const d=j.docs&&j.docs[0]; hit=d&&d.title?{t:String(d.title),a:(d.author_name||[])[0]||"",cv:d.cover_i?`https://covers.openlibrary.org/b/id/${d.cover_i}-M.jpg`:"",ol:String(d.key||"").replace("/works/","")}:null; use=true; paint(); }).catch(()=>{}); },500); });
     let who=bkMe(); const g=el("div","zn-hows"); [["Mine",bkMe()],["Together","Both"]].forEach(([l,v])=>{ const bt=el("button","zn-pill",l); bt.type="button"; bt.setAttribute("aria-pressed",String(v===who)); bt.addEventListener("click",()=>{ who=v; g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===bt))); }); g.append(bt); }); wrap.append(el("p","muted","Whose book"),g);
     const go=el("button","zn-btn","Start reading"); go.type="button"; go.addEventListener("click",async()=>{ const typed=t.value.trim(); if(!typed) return; const m=hit&&use?hit:null; const title=m?m.t:typed; go.disabled=true; try{ const T=TODAY(); const props={Title:title,Who:who,Status:"Reading","date:Started:start":T}; if(m&&m.a) props.Author=m.a; if(m&&m.cv) props.Cover=m.cv; if(m&&m.ol) props.OLID=m.ol; const r=await mcp.callTool(SERVER,"notion-create-pages",{parent:{database_id:"36d3ae2751bb463cada25796aa5416fd"},pages:[{properties:props}]}); const id=(()=>{ try{ const tx=r&&r.payload&&r.payload.text||JSON.stringify(r); const mm=String(tx).match(/[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}/i); return mm?mm[0].replace(/-/g,""):""; }catch(e){ return ""; } })();
-        const nb={i:id,t:title,a:m?m.a:"",who,s:"Reading",st:T,...(m&&m.cv?{cv:m.cv}:{})}; BOOKS.unshift(nb); bkPatchSave(id,nb); BK_FOCUS=id; toast(`${title} is on the shelf`); close&&close(); bkRefresh(); }catch(e){ toast(writeErr(e)); go.disabled=false; } }); wrap.append(go,el("p","muted","Author and cover are filled in for you."));
+        const nb={i:id,t:title,a:m?m.a:"",who,s:"Reading",st:T,...(m&&m.cv?{cv:m.cv}:{})}; BOOKS.unshift(nb); bkPatchSave(id,nb); BK_FOCUS=id; toast(`${title} is on the shelf`); close&&close(); bkRefresh(); try{ bkBooks("pack",{title,author:m?m.a:"",book_id:id}); }catch(e2){} }catch(e){ toast(writeErr(e)); go.disabled=false; } }); wrap.append(go,el("p","muted","Author and cover are filled in for you."));
     const close=openSheet({kicker:"The shelf",title:"Start a book",body:[wrap],from}); }
   // the Reading now card (Today)
   function znReadingCard(){ const all=BOOKS.filter(bkGoing).sort((x,y)=>((y.who===bkMe())-(x.who===bkMe()))||(y.st||"").localeCompare(x.st||"")); const b=all[0]; if(!b) return null;
