@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-14.1"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
+<meta name="zone-build" content="2026-11-14.2"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1105,6 +1105,37 @@ body.zn #znOurShelf > .zn-seclab{ display:none; }
 .zn-shtx{ flex:1; min-width:0; display:flex; flex-direction:column; gap:4px; } .zn-shtx b{ font:700 14.5px 'Plus Jakarta Sans',sans-serif; } .zn-shtx span{ font:400 12.5px 'Plus Jakarta Sans',sans-serif; color:var(--zn-muted); } .zn-shtx .zn-bbar{ margin-top:2px; }
 .zn-ourshelf .zn-crail{ margin-top:8px; }
 body.zn.zn-night .zn-shrow{ border-color:rgba(255,255,255,.12); } body.zn.zn-night .zn-shnone{ background:rgba(255,255,255,.1); }
+/* Nov 14 (bookshelf step 2): the finish sheet and the Year in books wall */
+.zn-bcover.fin{ width:64px; height:92px; padding:7px; } .zn-bcover.fin b{ font-size:9px; }
+.zn-fintop{ display:flex; align-items:center; gap:14px; } .zn-finlede{ margin:0; font:400 17px/1.4 'Fraunces',Georgia,serif; }
+.zn-finf{ display:flex; flex-direction:column; gap:6px; } .zn-finf label{ font:700 12.5px 'Plus Jakarta Sans',sans-serif; } .zn-finhint{ font:500 12px/1.4 'Plus Jakarta Sans',sans-serif; color:#5F5B78; }
+body.zn .sheet.read .zn-finsheet .field{ width:100%; max-width:none; flex:none; height:auto; min-height:46px; box-sizing:border-box; border:1px solid rgba(31,35,64,.22) !important; background:#FFFFFF !important; color:#1F2340; border-radius:14px !important; padding:12px !important; font:500 15px/1.4 'Plus Jakarta Sans',sans-serif !important; }
+.zn-finpicks{ display:flex; flex-direction:column; gap:6px; } .zn-finpicks:empty{ display:none; }
+body.zn .zn-finpick{ justify-content:flex-start; text-align:left; white-space:normal; overflow-wrap:anywhere; max-width:100%; box-sizing:border-box; min-height:44px; padding:8px 12px; border-radius:14px; font:italic 400 14.5px/1.35 'Fraunces',Georgia,serif; }
+body.zn .sheet .zn-finsheet .zn-finpick[aria-pressed="true"]{ background:#1F2340 !important; color:#FFE27A !important; }
+body.zn .zn-finpass{ align-self:flex-start; min-height:44px; padding:0 14px; border-radius:22px; background:rgba(31,35,64,.08); font:700 13px 'Plus Jakarta Sans',sans-serif; }
+body.zn .sheet .zn-finsheet .zn-finpass[aria-pressed="true"]{ background:#1F2340 !important; color:#FFE27A !important; }
+.zn-finquit{ min-height:44px; border:0; background:transparent; color:inherit; font:600 13.5px 'Plus Jakarta Sans',sans-serif; text-decoration:underline; cursor:pointer; }
+body.zn.zn-night .sheet:has(.zn-finsheet){ background:#15152A !important; color:#F3EEFF !important; --zn-muted:#D9D2EE; }
+body.zn.zn-night .sheet:has(.zn-finsheet) .shead .k{ color:#D9CBFF !important; } body.zn.zn-night .sheet:has(.zn-finsheet) .shead h2{ color:#F3EEFF !important; }
+body.zn.zn-night .sheet:has(.zn-finsheet) .shx{ background:rgba(255,255,255,.14) !important; color:#F3EEFF !important; } body.zn.zn-night .sheet:has(.zn-finsheet) .shead{ background:#15152A !important; } body.zn.zn-night .sheet .zn-finsheet .zn-finlede, body.zn.zn-night .sheet .zn-finsheet label, body.zn.zn-night .sheet .zn-finsheet .zn-finquit{ color:#F3EEFF !important; }
+body.zn.zn-night .sheet.read .zn-finsheet .field{ border:1px solid rgba(255,255,255,.28) !important; background:rgba(255,255,255,.10) !important; color:#F3EEFF !important; }
+body.zn.zn-night .sheet.read .zn-finsheet .field::placeholder{ color:rgba(243,238,255,.6) !important; }
+body.zn.zn-night .sheet .zn-finsheet .zn-finhint{ color:#D9D2EE; }
+body.zn.zn-night .sheet .zn-finsheet .zn-finpass, body.zn.zn-night .sheet .zn-finsheet .zn-finpick{ background:rgba(255,255,255,.14) !important; color:#F3EEFF !important; }
+body.zn.zn-night .sheet .zn-finsheet .zn-finpass[aria-pressed="true"], body.zn.zn-night .sheet .zn-finsheet .zn-finpick[aria-pressed="true"], body.zn.zn-night .sheet .zn-finsheet .zn-btn{ background:#F3EEFF !important; color:#1F2340 !important; }
+.zn-bcover.wl{ width:100%; max-width:96px; height:auto; aspect-ratio:96/140; }
+.zn-wall .zn-seg{ gap:8px; margin:0 0 4px; flex-wrap:wrap; } .zn-wall .zn-seg button{ min-height:44px; padding:0 14px; background:rgba(31,35,64,.08); } .zn-wall .zn-seg button[aria-pressed="true"]{ background:#1F2340; color:#FFE27A; }
+.zn-wyh{ display:flex; justify-content:space-between; align-items:baseline; margin:14px 0 12px; } .zn-wyh b{ font:400 22px 'Fraunces',Georgia,serif; } .zn-wyh span{ font:600 11.5px 'Plus Jakarta Sans',sans-serif; color:var(--zn-muted); }
+.zn-wgrid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; justify-items:center; } @media (min-width:1000px){ .zn-wgrid{ grid-template-columns:repeat(auto-fill,96px); justify-content:start; } }
+.zn-wcover{ display:block; width:100%; max-width:96px; border:0; padding:0; background:transparent; color:inherit; cursor:pointer; border-radius:6px 10px 10px 6px; }
+.zn-wslot{ display:block; width:100%; max-width:96px; aspect-ratio:96/140; border-radius:6px 10px 10px 6px; border:1.5px dashed rgba(43,42,51,.45); box-sizing:border-box; }
+.zn-wdet{ border-radius:18px; padding:14px; background:rgba(185,166,245,.24); display:flex; flex-direction:column; gap:8px; margin-top:14px; }
+.zn-wk{ font:700 10.5px/1.2 'Plus Jakarta Sans',sans-serif; letter-spacing:.12em; text-transform:uppercase; color:#5E4F98; }
+.zn-wname{ font:600 12px 'Plus Jakarta Sans',sans-serif; color:var(--zn-muted); margin-top:4px; }
+.zn-wverd{ margin:0; font:700 15px/1.35 'Plus Jakarta Sans',sans-serif; } .zn-wline{ margin:0; font:italic 400 17px/1.4 'Fraunces',Georgia,serif; }
+body.zn.zn-night .zn-wslot{ border-color:rgba(243,238,255,.4); } body.zn.zn-night .zn-wk{ color:#D9CBFF; }
+body.zn.zn-night .zn-wall .zn-seg button{ background:rgba(255,255,255,.14) !important; color:#F3EEFF !important; } body.zn.zn-night .zn-wall .zn-seg button[aria-pressed="true"]{ background:#F3EEFF !important; color:#1F2340 !important; }
 body.zn.zn-night .zn-card.zn-mast, body.zn.zn-night #znPlan .zn-mast.zn-card:not(.zn-glass), body.zn.zn-night #znUs .zn-mast.zn-card:not(.zn-glass), body.zn.zn-night #znMe .zn-mast.zn-card:not(.zn-glass), body.zn.zn-night #znToday .zn-mast.zn-card:not(.zn-glass):not(.zn-hero){ background:none !important; border:0 !important; box-shadow:none !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important; } /* Oct 31: page titles are not cards */
 /* Oct 31: the day sky, the galaxy's daytime sibling (direction C, "Prism", chosen by Claire). The sky moves through dawn, morning, midday,
    afternoon and golden hour by the real sunrise and sunset; the sun travels its arc throwing faint rainbow rays, glints twinkle around it,
@@ -2534,6 +2565,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const b=el("button","zn-pill zn-ink",rd?"Read ✓":(g.review?"Reflect":"Read")); b.type="button"; b.addEventListener("click",()=>gitaSheet(g,b)); c.querySelector("div").append(b); host.append(c); }
     if(readingOn("recovery")){ const c=znRecovCard(); if(c) host.append(c); }
     try{ const sc=znShelfCard(); if(sc) host.append(sc); }catch(e){ console.error("shelfcard",e); }
+    try{ host.append(znWallCard()); }catch(e){ console.error("wall",e); } /* Nov 14: Year in books */
     // ---------- practices (Oct 29: from the Practices row; cards colored per practice) ----------
     const PD=practiceDefs(); const secl=el("div","zn-seclab zn-seclab2"); secl.innerHTML=`<span>Practices · tap one to open it</span>`; const nbp=el("button","zn-pill zn-dark","+ New"); nbp.type="button"; nbp.addEventListener("click",()=>znNewSheet(nbp)); secl.append(nbp); host.append(secl);
     const openKey=(()=>{ try{ return localStorage.getItem("zone:meopen")||prGet("open")||""; }catch(e){ return ""; } })();
@@ -2601,7 +2633,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     { const bm=document.querySelector('meta[name="zone-build"]'); const bl=el("p","zn-empty",`Zone build ${bm?bm.content:"?"}`); bl.style.cssText="text-align:center;opacity:.55;font-size:12px;margin:18px 0 90px"; host.append(bl); } // Oct 25: which version this phone is running
   }
   // the shelf card on Me: jackets on a ledge, pace, nights, a kept line
-  function znShelfCard(){ const mine=BOOKS.filter(bkMine); const reading=mine.filter(b=>b.s==="Reading").sort((x,y)=>((y.who===bkMe())-(x.who===bkMe()))||(y.st||"").localeCompare(x.st||"")); const next=mine.filter(b=>b.s==="Next"); const year=TODAY().slice(0,4); const fin=mine.filter(b=>b.s==="Finished"&&(b.fn||"").startsWith(year)).length;
+  function znShelfCard(){ const mine=BOOKS.filter(bkMine); const reading=mine.filter(bkGoing).sort((x,y)=>((y.who===bkMe())-(x.who===bkMe()))||(y.st||"").localeCompare(x.st||"")); const next=mine.filter(b=>b.s==="Next"); const year=TODAY().slice(0,4); const fin=mine.filter(b=>{ const f=bkFin(b,bkMe()); return !!f&&String(f.d||"").startsWith(year); }).length;
     const c=znCard("zn-shelfcard","","Your shelf"); c.innerHTML=znH("Your shelf",[reading.length?`${reading.length} going`:"",fin?`${fin} this year`:""].filter(Boolean).join(" · ")); // Nov 14: no nightly logging; a book is started and finished, nothing in between
     const b=reading.find(x=>x.i&&x.i===BK_FOCUS)||reading[0];
     const ledge=el("div","zn-ledge"); reading.slice(0,2).forEach((bk2,i)=>{ const j=bkCoverEl(bk2,bk2===b?"lg":"md"); j.classList.add("zn-jacket"); if(bk2!==b) j.addEventListener("click",()=>{ BK_FOCUS=bk2.i; try{ c.replaceWith(znShelfCard()); }catch(e){} }); ledge.append(j); }); if(next[0]){ const j=bkCoverEl(next[0],"sm"); j.classList.add("zn-jacket","zn-jnext"); ledge.append(j); } const addj=el("button","zn-jadd","+"); addj.type="button"; addj.setAttribute("aria-label","Start a book"); addj.disabled=!mcp; addj.addEventListener("click",()=>bkAddSheet(addj)); ledge.append(addj); ledge.append(el("i","zn-wood")); c.append(ledge);
@@ -2621,7 +2653,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const pg=await mcp.callTool(SERVER,"notion-fetch",{id:r0.id}); const row=parseProps(pg&&pg.payload); PARTNER={at:Date.now(),row,date:T}; return row; }catch(e){ console.error("partner",e); return null; } }
   function usFeed(){ const out=String(SET.UsFeed&&SET.UsFeed.value||"").replace(/\\/g,"").split(/\n+/).map(l=>{ const a=l.split("|"); return a.length>=4?{from:a[0].trim(),t:a[1].trim(),kind:a[2].trim(),text:a.slice(3).join("|").trim()}:null; }).filter(Boolean);
     try{ usNotes().forEach(n=>{ if(!out.some(x=>x.t===n.t&&x.from===n.from)) out.push({from:n.from,t:n.t,kind:"note",text:n.text}); }); }catch(e){}
-    try{ (BOOKS||[]).forEach(b=>{ if(b.fn&&b.fn>=addDays(TODAY(),-14)){ const who=b.who==="Victoria"?"victoria":b.who==="Claire"?"claire":""; if(who) out.push({from:who,t:b.fn+"T21:00:00",kind:"book",text:`Finished ${b.t}${b.r?" · "+"★".repeat(Math.round(b.r))+"":""}`}); } }); }catch(e){}
+    try{ const since=addDays(TODAY(),-14); (BOOKS||[]).forEach(b=>{ if(b.s==="Dropped") return; ["claire","victoria"].forEach(p=>{ const f=bkFin(b,NAME(p)); if(f&&f.d&&f.d>=since) out.push({from:p,t:f.d+"T21:00:00",kind:"book",text:`Finished ${b.t}`}); }); }); }catch(e){}
     return out.sort((a,b)=>String(b.t).localeCompare(String(a.t))); }
   async function usSend(kind,text){ const lines=String(SET.UsFeed&&SET.UsFeed.value||"").split(/\n+/).filter(Boolean).slice(-79); lines.push(`${ME()}|${new Date().toISOString()}|${kind}|${String(text).replace(/\|/g,"/").replace(/\n/g," ")}`); await saveSetting("UsFeed",lines); SET.UsFeed={value:lines.join("\n")}; }
   // Oct 31: the bedtime episode's player. One audio element for the whole app, so re-rendering Us never interrupts playback.
@@ -2669,7 +2701,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
         const hh=s=>{ const [h,m]=String(s).split(":").map(Number); return isNaN(h)?s:hToLabel(h+(m||0)/60); };
         pc.append(row("💼",meet?`${meet} meeting${meet===1?"":"s"}`:"No meetings today",meet&&first?`${hh(first)} – ${hh(last)}`:""));
         const today=W&&W.days.find(d=>d.date===T); const st=today?String(today.status||""):""; pc.append(row("🌙","Tonight",st==="together"?"plans together":st==="both free"?"free, like you":st.includes(other)?"she’s busy":st==="both busy"?"you’re both busy":"nothing on either calendar"));
-        const bk=(BOOKS||[]).find(b=>b.who===NAME(other)&&b.s==="Reading")||(BOOKS||[]).find(b=>b.who==="Both"&&b.s==="Reading"); if(bk) pc.append(row("📖",bk.t,`${bk.a||""}${bk.p!=null?" · "+bk.p+"%":""}${bk.lr?" · read "+(bk.lr===T?"today":bk.lr===addDays(T,-1)?"last night":bk.lr):""}`));
+        const bk=(BOOKS||[]).find(b=>b.who===NAME(other)&&b.s==="Reading")||(BOOKS||[]).find(b=>b.who==="Both"&&b.s==="Reading"&&!bkFin(b,NAME(other))); if(bk) pc.append(row("📖",bk.t,bk.a||""));
         const gt=clean(r.Gita); if(gt){ try{ const g=JSON.parse(gt); if(g&&g.word) pc.append(row("🪷",`Her word today: ${g.word}`,g.title||"")); }catch(e){} }
       }
       const acts=el("div","zn-hows"); const hb=el("button","zn-chip","💛 Send a heart"); hb.type="button"; hb.disabled=!mcp; hb.addEventListener("click",async()=>{ hb.disabled=true; try{ await usSend("heart","💛"); toast(`Sent ${NAME(other)} a heart`); znUs(); }catch(e){ toast(writeErr(e)); hb.disabled=false; } });
@@ -2738,17 +2770,76 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   const bkMe=()=>NAME(ME()), bkOther=()=>NAME(OTHER());
   const bkMine=b=>b.who===bkMe()||b.who==="Both"; 
   let BK_FOCUS=""; // which of the books going the Me card is about
+  // Nov 14 (bookshelf step 2): Verdict and Loved Line hold one line per reader, date|Name|text. Her Verdict line is the record that she finished.
+  const bkLine=(arr,who)=>{ const l=(arr||[]).map(x=>String(x).split("|")).filter(x=>x.length>=3&&x[1]===who).pop(); return l?{d:l[0],x:l.slice(2).join("|").trim()}:null; };
+  const bkFin=(b,who)=>{ const v=bkLine(b.vd,who); if(v){ const l=bkLine(b.ll,who); return {d:v.d,v:v.x,l:l?l.x:""}; } return b.s==="Finished"&&(b.who===who||b.who==="Both")?{d:b.fn||"",v:"",l:""}:null; };
+  const bkGoing=b=>b.s==="Reading"&&bkMine(b)&&!bkFin(b,bkMe());
+  // What this phone just wrote to a book is kept here until an index built after the write arrives (the index is rebuilt hourly), so a
+  // finished book does not come back onto the shelf on a reload.
+  const bkPatches=()=>{ try{ return JSON.parse(localStorage.getItem("zone:bkpatch")||"{}")||{}; }catch(e){ return {}; } };
+  function bkPatchSave(id,local){ if(!id||!local) return; try{ const P=bkPatches(); P[id]={at:Date.now(),v:{...((P[id]&&P[id].v)||{}),...local}}; localStorage.setItem("zone:bkpatch",JSON.stringify(P)); }catch(e){} }
+  function bkOverlay(list,indexAt){ try{ const P=bkPatches(); let ch=false; const now=Date.now(); Object.keys(P).forEach(id=>{ const p=P[id]; if(!p||!p.v||indexAt>p.at+90000||now-p.at>6*3600000){ delete P[id]; ch=true; return; } const b=list.find(x=>x.i===id); if(b) Object.assign(b,p.v); else if(p.v.t) list.unshift({i:id,...p.v}); }); if(ch) localStorage.setItem("zone:bkpatch",JSON.stringify(P)); }catch(e){} return list; }
+  // the engine side of a finish (zone-books): marks the book read in the home library and, when it was passed on, sends the other person one push
+  async function bkEngine(body){ try{ if(typeof APP==="undefined"||!APP.sb) return null; const s=await APP.sb.auth.getSession(); const tk=s&&s.data&&s.data.session&&s.data.session.access_token; if(!tk) return null; const r=await fetch(APP.url+"/functions/v1/zone-books?part=finish",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify(body)}); return await r.json(); }catch(e){ console.error("zone-books",e); return null; } }
+  const bkNewId=r=>{ try{ const tx=r&&r.payload&&r.payload.text||JSON.stringify(r); const mm=String(tx).match(/[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}/i); return mm?mm[0].replace(/-/g,""):""; }catch(e){ return ""; } };
+  // "Pass it to Victoria": the book goes on her shelf as Next, marked as passed by me with my verdict. False when she already has it.
+  async function bkPassOn(b,v,T){ const me=bkMe(), other=bkOther(); if(BOOKS.some(x=>x!==b&&String(x.t).toLowerCase()===String(b.t).toLowerCase()&&(x.who===other||x.who==="Both")&&x.s!=="Dropped")) return false;
+    const props={Title:b.t,Who:other,Status:"Next",Notes:`${T}|${me}||pass|${v}`}; if(b.a) props.Author=b.a; if(b.cv) props.Cover=b.cv; if(b.ol) props.OLID=b.ol;
+    const r=await mcp.callTool(SERVER,"notion-create-pages",{parent:{database_id:"36d3ae2751bb463cada25796aa5416fd"},pages:[{properties:props}]}); const id=bkNewId(r);
+    const nb={i:id,t:b.t,a:b.a||"",who:other,s:"Next",nt:[props.Notes],...(b.cv?{cv:b.cv}:{})}; BOOKS.unshift(nb); bkPatchSave(id,nb); return true; }
   const bkRefresh=()=>{ try{ znRender(); }catch(e){} try{ if(typeof znMe==="function") znMe(); }catch(e){} try{ znOurShelf(); }catch(e){} };
-  async function bkUpdate(b,props,local){ if(!mcp) throw {code:"not_granted"}; await mcp.callTool(SERVER,"notion-update-page",{page_id:b.i,command:"update_properties",properties:props,allow_async:false}); Object.assign(b,local||{}); }
+  async function bkUpdate(b,props,local){ if(!mcp) throw {code:"not_granted"}; await mcp.callTool(SERVER,"notion-update-page",{page_id:b.i,command:"update_properties",properties:props,allow_async:false}); Object.assign(b,local||{}); bkPatchSave(b.i,local); }
   function bkCover(b,el2){ const put=u=>{ el2.style.backgroundImage=`url("${u}")`; el2.classList.add("has"); }; if(b.cv){ put(b.cv); return; }
     let cache={}; try{ cache=JSON.parse(localStorage.getItem("zone:covers")||"{}"); }catch(e){} const k=(b.t+"|"+(b.a||"")).toLowerCase(); if(cache[k]){ put(cache[k]); return; }
     fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(b.t)}${b.a?"&author="+encodeURIComponent(b.a):""}&limit=1&fields=cover_i,key`).then(r=>r.json()).then(j=>{ const d=j.docs&&j.docs[0]; if(!d||!d.cover_i) return; const u=`https://covers.openlibrary.org/b/id/${d.cover_i}-M.jpg`; cache[k]=u; try{ localStorage.setItem("zone:covers",JSON.stringify(cache)); }catch(e){} put(u); if(mcp&&!b.cv){ bkUpdate(b,{Cover:u,OLID:String(d.key||"").replace("/works/","")},{cv:u}).catch(()=>{}); } }).catch(()=>{}); }
   function bkCoverEl(b,size){ const c=el("span","zn-bcover"+(size?" "+size:"")); c.setAttribute("aria-hidden","true"); c.innerHTML=`<b>${znEsc(b.t)}</b>`; bkCover(b,c); return c; }
-  function bkFinishSheet(b,from){ const wrap=el("div","schd"); const go=el("button","zn-btn","Mark finished"); go.type="button"; const quit=el("button","zn-quit","Not for me. Take it off my shelf."); quit.type="button"; quit.style.cssText="min-height:44px;border:0;background:transparent;color:inherit;font:inherit;font-weight:600;text-decoration:underline;cursor:pointer";
-    const done=async(props,local,msg)=>{ go.disabled=quit.disabled=true; try{ await bkUpdate(b,props,local); if(BK_FOCUS===b.i) BK_FOCUS=""; toast(msg); close&&close(); bkRefresh(); }catch(e){ toast(writeErr(e)); go.disabled=quit.disabled=false; } };
-    go.addEventListener("click",()=>{ const T=TODAY(); done({Status:"Finished","date:Finished:start":T},{s:"Finished",fn:T},`Finished ${b.t}`); });
-    quit.addEventListener("click",()=>done({Status:"Dropped"},{s:"Dropped"},b.who==="Both"?`${b.t} is off the shelf for both of you`:`${b.t} is off your shelf`)); wrap.append(go,quit);
+  // Nov 14 (bookshelf step 2): the finish ritual. A one-line verdict, a line she loved (picked from her saved lines or typed), an optional
+  // pass to the other person, then the wall. A Together book is finished by each reader on her own: it leaves her shelf and goes on her wall,
+  // and Status only becomes Finished when the second reader is done. "Not for me" is unchanged from step 1.
+  function bkFinishSheet(b,from){ const me=bkMe(), other=bkOther(); const one=x=>String(x||"").replace(/\|/g,"/").replace(/\s+/g," ").trim(); const lns=v=>clean(v).split(/\n+/).map(x=>x.trim()).filter(Boolean);
+    const wrap=el("div","schd zn-finsheet"); const top=el("div","zn-fintop"); top.append(bkCoverEl(b,"fin"),el("p","zn-finlede","You finished it. Two small things, then it goes on the wall.")); wrap.append(top);
+    const f1=el("div","zn-finf"); const l1=el("label",null,"Your verdict, in one line"); l1.htmlFor="bkVerdict"; const vd=el("input","field"); vd.type="text"; vd.id="bkVerdict"; vd.maxLength=200; vd.placeholder="Whatever you would tell a friend"; f1.append(l1,vd); wrap.append(f1);
+    const f2=el("div","zn-finf"); const l2=el("label",null,"A line you loved"); l2.htmlFor="bkLoved"; const picks=el("div","zn-finpicks"); const ta=el("textarea","field"); ta.id="bkLoved"; ta.rows=3; ta.maxLength=400; ta.placeholder="Type it, or leave it blank"; const hint=el("span","zn-finhint",""); f2.append(l2,picks,ta,hint); wrap.append(f2);
+    const quotes=nt=>(nt||[]).map(l=>String(l).split("|")).filter(x=>x[3]==="quote"&&x[1]===me).map(x=>x.slice(4).join("|").trim()).filter(Boolean);
+    const drawPicks=nt=>{ const q=[...new Set(quotes(nt))].slice(-6); picks.replaceChildren(); q.forEach(tx=>{ const pk=el("button","zn-chip zn-finpick",`“${tx}”`); pk.type="button"; pk.setAttribute("aria-pressed",String(ta.value.trim()===tx)); pk.addEventListener("click",()=>{ ta.value=tx; picks.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===pk))); }); picks.append(pk); });
+      hint.textContent=q.length?"Tap a line you saved while reading, or type one.":"Lines you saved while reading show here to pick from. None saved for this book yet."; };
+    drawPicks(b.nt); ta.addEventListener("input",()=>picks.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(ta.value.trim()===x.textContent.slice(1,-1)))));
+    let pass=false; if(b.who!=="Both"){ const pb=el("button","zn-pill zn-finpass",`Pass it to ${other}`); pb.type="button"; pb.setAttribute("aria-pressed","false"); pb.addEventListener("click",()=>{ pass=!pass; pb.setAttribute("aria-pressed",String(pass)); }); wrap.append(pb); }
+    const go=el("button","zn-btn","Put it on the wall"); go.type="button"; const quit=el("button","zn-finquit","Not for me. Take it off my shelf."); quit.type="button"; wrap.append(go,quit);
+    // read the book's own page, not the hourly index: her saved lines in full, and the other reader's verdict if she finished first
+    let fresh=null; const load=async()=>{ try{ const pg=await mcp.callTool(SERVER,"notion-fetch",{id:b.i}); const pr=parseProps(pg&&pg.payload); if(!pr) return null; fresh={nt:lns(pr.Notes),vd:lns(pr.Verdict),ll:lns(pr["Loved Line"])}; return fresh; }catch(e){ return null; } };
+    if(mcp&&b.i) load().then(f=>{ if(f&&wrap.isConnected) drawPicks(f.nt); });
+    const busy=v=>{ go.disabled=quit.disabled=v; };
+    go.addEventListener("click",async()=>{ busy(true); try{ const T=TODAY(); const v=one(vd.value).slice(0,200), l=one(ta.value).slice(0,400); const cur=(await load())||fresh||{vd:b.vd||[],ll:b.ll||[]};
+        const keep=arr=>(arr||[]).filter(x=>String(x).split("|")[1]!==me); const nvd=[...keep(cur.vd),`${T}|${me}|${v}`].slice(-4); const nll=l?[...keep(cur.ll),`${T}|${me}|${l}`].slice(-4):keep(cur.ll);
+        const all=b.who!=="Both"||nvd.some(x=>String(x).split("|")[1]===other); const props={Verdict:nvd.join("\n")}, local={vd:nvd,ll:nll}; if(l||(cur.ll||[]).length!==nll.length) props["Loved Line"]=nll.join("\n");
+        if(all){ props.Status="Finished"; props["date:Finished:start"]=T; local.s="Finished"; local.fn=T; }
+        await bkUpdate(b,props,local); if(BK_FOCUS===b.i) BK_FOCUS=""; BK_WALL.who="me"; BK_WALL.open=b.i;
+        let passed=false, passMsg=""; if(pass&&b.who!=="Both"){ try{ passed=await bkPassOn(b,v,T); passMsg=passed?` and passed to ${other}`:`. ${other} already has it`; }catch(e){ console.error("pass",e); passMsg=`, but passing it to ${other} didn’t save`; } }
+        toast(b.who==="Both"?(all?`${b.t} is on the wall for both of you`:`On your wall. It stays on the shelf until ${other} finishes too.`):`${b.t} is on the wall${passMsg}`); close&&close(); bkRefresh();
+        bkEngine({title:b.t,author:b.a||"",...(passed?{pass:{verdict:v}}:{})});
+      }catch(e){ toast(writeErr(e)); busy(false); } });
+    quit.addEventListener("click",async()=>{ busy(true); try{ await bkUpdate(b,{Status:"Dropped"},{s:"Dropped"}); if(BK_FOCUS===b.i) BK_FOCUS=""; toast(b.who==="Both"?`${b.t} is off the shelf for both of you`:`${b.t} is off your shelf`); close&&close(); bkRefresh(); }catch(e){ toast(writeErr(e)); busy(false); } });
     const close=openSheet({kicker:"Finished",title:b.t,body:[wrap],from}); }
+  // Nov 14 (bookshelf step 2): the Year in books wall. Covers by year for Mine, the other person, or Ours (Together books both have finished).
+  // Tapping a cover shows the verdict and the line.
+  let BK_WALL={who:"me",open:""};
+  function bkWallList(seg){ const me=bkMe(), other=bkOther(); const out=[]; (BOOKS||[]).forEach(b=>{ if(b.s!=="Reading"&&b.s!=="Finished") return; const fm=bkFin(b,me), fo=bkFin(b,other);
+      if(seg==="ours"){ if(b.who==="Both"&&fm&&fo) out.push({b,d:(String(fm.d)>String(fo.d)?fm.d:fo.d)||b.fn||"",parts:[{n:me,...fm},{n:other,...fo}]}); }
+      else { const f=seg==="me"?fm:fo; if(f) out.push({b,d:f.d||b.fn||"",parts:[{n:seg==="me"?me:other,...f}]}); } });
+    return out.sort((x,y)=>String(y.d).localeCompare(String(x.d))); }
+  function znWallCard(){ const other=bkOther(); const c=znCard("zn-wall","","Year in books"); const Y=TODAY().slice(0,4); const yr=x=>String(x.d||"").slice(0,4)||Y; const cnt=n=>`${n} book${n===1?"":"s"}`;
+    const draw=focus=>{ const seg=BK_WALL.who; const mineN=bkWallList("me").filter(x=>yr(x)===Y).length; c.innerHTML=znH("Year in books",`${Y} · ${mineN?cnt(mineN):"nothing finished yet"}`);
+      const sg=el("div","zn-seg"); sg.setAttribute("role","group"); sg.setAttribute("aria-label","Whose wall"); [["me","Mine"],["other",other],["ours","Ours"]].forEach(([k,l])=>{ const bt=el("button",null,l); bt.type="button"; bt.dataset.seg=k; bt.setAttribute("aria-pressed",String(seg===k)); bt.addEventListener("click",()=>{ if(BK_WALL.who===k) return; BK_WALL.who=k; BK_WALL.open=""; draw(`[data-seg="${k}"]`); }); sg.append(bt); }); c.append(sg);
+      const list=bkWallList(seg); const years=[...new Set([Y,...list.map(yr)])].sort().reverse();
+      years.forEach(y=>{ const items=list.filter(x=>yr(x)===y); const h=el("div","zn-wyh"); h.append(el("b",null,y),el("span",null,items.length?cnt(items.length):"")); c.append(h);
+        const g=el("div","zn-wgrid"); items.forEach(it=>{ const bt=el("button","zn-wcover"); bt.type="button"; bt.dataset.book=it.b.i||""; bt.setAttribute("aria-expanded",String(BK_WALL.open===it.b.i)); bt.setAttribute("aria-label",`${it.b.t}: the verdict and the line`); bt.append(bkCoverEl(it.b,"wl")); bt.addEventListener("click",()=>{ BK_WALL.open=BK_WALL.open===it.b.i?"":it.b.i; draw(`[data-book="${it.b.i||""}"]`); }); g.append(bt); });
+        const pad=y===Y?Math.max(6,Math.ceil(items.length/3)*3):Math.ceil(items.length/3)*3; for(let i=items.length;i<pad;i++){ const sl=el("i","zn-wslot"); sl.setAttribute("aria-hidden","true"); g.append(sl); } c.append(g);
+        const op=BK_WALL.open?items.find(it=>it.b.i===BK_WALL.open):null; if(op){ const d=el("div","zn-wdet"); const dt=op.d?new Date(op.d+"T12:00:00Z"):null; d.append(el("span","zn-wk",`${op.b.t}${dt&&!isNaN(dt)?` · finished ${WD_MONTHS[dt.getUTCMonth()].slice(0,3)}`:""}`));
+          op.parts.forEach(pt=>{ if(op.parts.length>1) d.append(el("span","zn-wname",pt.n)); if(pt.v) d.append(el("p","zn-wverd",pt.v)); if(pt.l) d.append(el("p","zn-wline",`“${pt.l}”`)); if(!pt.v&&!pt.l) d.append(el("p","zn-empty","No verdict or line kept.")); }); c.append(d); } });
+      if(!list.length) c.append(el("p","zn-empty",seg==="me"?"Nothing finished yet. Finish a book and it goes here.":seg==="other"?`${other} has not finished a book in the Zone yet.`:"Nothing finished together yet."));
+      if(focus){ const fx=c.querySelector(focus); if(fx) try{ fx.focus({preventScroll:true}); }catch(e){} } };
+    draw(); return c; }
   function bkLineSheet(b,from){ const wrap=el("div","schd"); const ta=el("textarea","field"); ta.rows=3; ta.placeholder="The line, as written"; ta.setAttribute("aria-label","A line from the book"); const where=el("input","field"); where.placeholder="Page or chapter (optional)"; where.setAttribute("aria-label","Page or chapter"); wrap.append(ta,where);
     const go=el("button","zn-btn","Keep it"); go.type="button"; go.addEventListener("click",async()=>{ const v=ta.value.trim().replace(/\|/g,"/").replace(/\n/g," "); if(!v) return; go.disabled=true; try{ const line=`${TODAY()}|${bkMe()}||quote|${v}${where.value.trim()?" — "+where.value.trim().replace(/\|/g,"/"):""}`; const lines=[...(b.nt||[]),line].slice(-30); await bkUpdate(b,{Notes:lines.join("\n")},{nt:lines}); toast("Kept"); close&&close(); bkRefresh(); }catch(e){ toast(writeErr(e)); go.disabled=false; } }); wrap.append(go);
     const close=openSheet({kicker:"Save a line",title:b.t,body:[wrap],from}); }
@@ -2761,10 +2852,10 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     t.addEventListener("input",()=>{ clearTimeout(tm); const q=t.value.trim(); const my=++seq; if(q.length<3){ hit=null; paint(); return; } tm=setTimeout(()=>{ fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(q)}&limit=1&fields=title,author_name,cover_i,key`).then(r=>r.json()).then(j=>{ if(my!==seq) return; const d=j.docs&&j.docs[0]; hit=d&&d.title?{t:String(d.title),a:(d.author_name||[])[0]||"",cv:d.cover_i?`https://covers.openlibrary.org/b/id/${d.cover_i}-M.jpg`:"",ol:String(d.key||"").replace("/works/","")}:null; use=true; paint(); }).catch(()=>{}); },500); });
     let who=bkMe(); const g=el("div","zn-hows"); [["Mine",bkMe()],["Together","Both"]].forEach(([l,v])=>{ const bt=el("button","zn-pill",l); bt.type="button"; bt.setAttribute("aria-pressed",String(v===who)); bt.addEventListener("click",()=>{ who=v; g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===bt))); }); g.append(bt); }); wrap.append(el("p","muted","Whose book"),g);
     const go=el("button","zn-btn","Start reading"); go.type="button"; go.addEventListener("click",async()=>{ const typed=t.value.trim(); if(!typed) return; const m=hit&&use?hit:null; const title=m?m.t:typed; go.disabled=true; try{ const T=TODAY(); const props={Title:title,Who:who,Status:"Reading","date:Started:start":T}; if(m&&m.a) props.Author=m.a; if(m&&m.cv) props.Cover=m.cv; if(m&&m.ol) props.OLID=m.ol; const r=await mcp.callTool(SERVER,"notion-create-pages",{parent:{database_id:"36d3ae2751bb463cada25796aa5416fd"},pages:[{properties:props}]}); const id=(()=>{ try{ const tx=r&&r.payload&&r.payload.text||JSON.stringify(r); const mm=String(tx).match(/[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}/i); return mm?mm[0].replace(/-/g,""):""; }catch(e){ return ""; } })();
-        BOOKS.unshift({i:id,t:title,a:m?m.a:"",who,s:"Reading",st:T,...(m&&m.cv?{cv:m.cv}:{})}); BK_FOCUS=id; toast(`${title} is on the shelf`); close&&close(); bkRefresh(); }catch(e){ toast(writeErr(e)); go.disabled=false; } }); wrap.append(go,el("p","muted","Author and cover are filled in for you."));
+        const nb={i:id,t:title,a:m?m.a:"",who,s:"Reading",st:T,...(m&&m.cv?{cv:m.cv}:{})}; BOOKS.unshift(nb); bkPatchSave(id,nb); BK_FOCUS=id; toast(`${title} is on the shelf`); close&&close(); bkRefresh(); }catch(e){ toast(writeErr(e)); go.disabled=false; } }); wrap.append(go,el("p","muted","Author and cover are filled in for you."));
     const close=openSheet({kicker:"The shelf",title:"Start a book",body:[wrap],from}); }
   // the Reading now card (Today)
-  function znReadingCard(){ const all=BOOKS.filter(x=>x.s==="Reading"&&bkMine(x)).sort((x,y)=>((y.who===bkMe())-(x.who===bkMe()))||(y.st||"").localeCompare(x.st||"")); const b=all[0]; if(!b) return null;
+  function znReadingCard(){ const all=BOOKS.filter(bkGoing).sort((x,y)=>((y.who===bkMe())-(x.who===bkMe()))||(y.st||"").localeCompare(x.st||"")); const b=all[0]; if(!b) return null;
     const c=znCard("zn-readnow","","Reading now");
     c.innerHTML=`<div class="zn-rnrow"></div><div class="zn-rnact"></div>`; const row=c.querySelector(".zn-rnrow"); row.append(bkCoverEl(b,"md")); const tx=el("div","zn-rntx"); tx.innerHTML=`<span class="zn-k">Reading now${b.fmt?" · "+znEsc(b.fmt):""}${b.who==="Both"?" · together":""}</span><b>${znEsc(b.t)}</b>${b.a?`<span class="zn-rnau">${znEsc(b.a)}</span>`:""}`; row.append(tx);
     const act=c.querySelector(".zn-rnact"); const sv=el("button","zn-pill zn-dark","Save a line"); sv.type="button"; sv.disabled=!mcp; sv.addEventListener("click",()=>bkLineSheet(b,sv)); const fn=el("button","zn-pill zn-quiet","Finished"); fn.type="button"; fn.disabled=!mcp; fn.addEventListener("click",()=>bkFinishSheet(b,fn)); act.append(sv,fn);
@@ -2779,7 +2870,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const c=znCard("zn-ourshelf","","Our shelf"); c.innerHTML=znH("Our shelf","");
     const row=(b,who)=>{ const r=el("div","zn-shrow"); if(b){ r.append(bkCoverEl(b,"sm")); const t=el("div","zn-shtx"); t.innerHTML=`<b>${znEsc(b.t)}</b><span>${znEsc([who,b.a].filter(Boolean).join(" · "))}</span>`; r.append(t); } else { r.innerHTML=`<span class="zn-bcover sm zn-shnone" aria-hidden="true"></span><div class="zn-shtx"><b>${who===me?"Nothing going":"Nothing on her shelf yet"}</b><span>${znEsc(who)}${who===me?" · start one on Me":""}</span></div>`; } return r; };
     c.append(row(mineR,me),row(theirR,other));
-    both.forEach(b=>{ c.append(el("div","zn-rslot","Reading together")); const r=el("div","zn-shrow"); r.append(bkCoverEl(b,"sm")); const t=el("div","zn-shtx"); t.innerHTML=`<b>${znEsc(b.t)}</b><span>${znEsc(b.a||"")}</span>`; r.append(t); c.append(r); });
+    both.forEach(b=>{ c.append(el("div","zn-rslot","Reading together")); const r=el("div","zn-shrow"); r.append(bkCoverEl(b,"sm")); const t=el("div","zn-shtx"); const fm=bkFin(b,me), fo=bkFin(b,other); const half=fm&&!fo?`${me} finished · ${other} still reading`:fo&&!fm?`${other} finished · ${me} still reading`:""; t.innerHTML=`<b>${znEsc(b.t)}</b><span>${znEsc(b.a||"")}</span>${half?`<span>${znEsc(half)}</span>`:""}`; r.append(t); c.append(r); });
     host.append(c); }
 
   // ======================= Oct 24: the rebuild, phase 2 — Plan (the week, a day, the unplaced tray, projects, waiting) =======================
@@ -3380,6 +3471,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       {k:"notebook",ic:"📓",t:"Notebook",nodes:[q(".zn-notebook")],st:n=>hr(n[0])||(()=>{ const c=n[0].querySelectorAll(".zn-nbrow").length; return c?`${c} recent`:"nothing yet"; })()},
       {k:"readings",ic:"🕯️",t:"Readings",nodes:[q(".zn-readings2"),...host.querySelectorAll(":scope > .zn-gsmall")],st:n=>hr(n[0])||"open"},
       {k:"shelf",ic:"📚",t:"Your shelf",nodes:[q(".zn-shelfcard")],st:n=>{ const b=n[0].querySelector(".zn-jacket b, .zn-bcover b"); return [b?b.textContent.trim():"",hr(n[0])].filter(Boolean).join(" · "); }},
+      {k:"wall",ic:"🖼️",t:"Year in books",nodes:[q(".zn-wall")],st:n=>hr(n[0])},
       {k:"practices",ic:"💧",t:"Practices",nodes:[q(".zn-seclab2"),q(".zn-ptiles")],st:n=>{ const tl=n.find(x=>x&&x.classList.contains("zn-ptiles")); return tl?[...tl.querySelectorAll(".zn-ptile")].slice(0,3).map(p=>{ const nm=p.querySelector("b"); const v=p.querySelector(".zn-pbigv"); return `${nm?nm.textContent.trim():""} ${v?v.textContent.replace(/\s+/g,"").trim():""}`.trim(); }).join(" · "):""; }},
       {k:"journal",ic:"✍️",t:"Journal",nodes:[q(".zn-words")],st:n=>{ const p=n[0].querySelectorAll(".zn-jq, .zn-prompt, [data-prompt]").length; return p?`${p} prompt${p===1?"":"s"} today`:hr(n[0]); }},
       {k:"body",ic:"🌙",t:"Body, this morning",nodes:[q(".zn-body")],st:n=>hr(n[0])} ];
@@ -3773,11 +3865,11 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       host.append(el("p","zn-pnote","Every reading opens as it was, with Listen. Both books wait for you: the next one comes after you finish today’s.")); };
     draw(); openSheet({kicker:"Readings",title:"Past readings",body:[host],from}); }
   // Settings: what comes next. A queue only; the first in line is loaded before a current book ends.
-  function znShelfBlock(RP){ const box=el("div","zn-shelfx"); box.append(el("b",null,"On the shelf"),el("p",null,"Queue what comes next. The first in line starts when one of your books ends."));
+  function znShelfBlock(RP){ const box=el("div","zn-shelfx"); box.append(el("b",null,"Up next"),el("p",null,"Queue what comes next. The first in line starts when one of your books ends."));
     const cur=String((RP.shelf||{}).book||"").split(",").map(x=>x.trim()).filter(Boolean);
     RD_SHELF.forEach(bk=>{ const at=cur.indexOf(bk.k); const row=el("div","zn-shrow"); const cv=el("span","zn-shcover",bk.t.charAt(0)); cv.style.background=bk.c; cv.setAttribute("aria-hidden","true");
       const tx=el("span","zn-shtx"); tx.append(el("b",null,bk.t),el("span",null,bk.s));
-      const b=el("button","zn-shbtn"+(at>=0?" on":""),at===0?"Up next":at>0?`Queued · ${at+1}`:"Queue"); b.type="button"; b.setAttribute("aria-pressed",String(at>=0)); b.setAttribute("aria-label",`${bk.t}: ${at>=0?"take off the queue":"add to the queue"}`); b.disabled=!LOADED.has("Readings");
+      const b=el("button","zn-shbtn"+(at>=0?" on":""),at===0?"First":at>0?`Queued · ${at+1}`:"Queue"); b.type="button"; b.setAttribute("aria-pressed",String(at>=0)); b.setAttribute("aria-label",`${bk.t}: ${at>=0?"take off the queue":"add to the queue"}`); b.disabled=!LOADED.has("Readings");
       b.addEventListener("click",async()=>{ b.disabled=true; const next=at>=0?cur.filter(x=>x!==bk.k):[...cur,bk.k]; try{ await readingSet("shelf",{on:true,book:next.join(",")}); toast(at>=0?`${bk.t} is off the queue`:`${bk.t} is queued`); RD.at=0; openSettings(); }catch(e){ toast(writeErr(e)); b.disabled=false; } });
       row.append(cv,tx,b); box.append(row); });
     return box; }
@@ -5450,7 +5542,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:INDEX_ID},ev=>{
       if(ev.type!=="data"){ handleError(ev.error); return; } const pr=parseProps(ev.result.payload); let idx=null; try{ idx=JSON.parse(clean(pr&&pr.Value)); }catch(e){}
       if(!idx||!Array.isArray(idx.rows)){ if(PERSON.person!=="claire"){ showAlert(`Welcome, ${PERSON.name}`,"Your Zone is being built. Your first morning brief will show up here soon."); } else showAlert("Setting things up","The dashboard index is being built. Refresh in a minute."); return; }
-      INDEX_AT=Date.parse(idx.at)||0; INDEX_ROWS=idx.rows||[]; BOOKS=Array.isArray(idx.books)?idx.books:BOOKS; INDEX_REC=Array.isArray(idx.rec)?idx.rec:[];  try{ primeSettings(); }catch(e){} LIST=mergeLocal(idx.list.map(x=>listItem({url:"https://www.notion.so/"+x.id,Name:x.n,Kind:x.k,Area:x.a,Status:x.s,Star:x.star?"__YES__":"__NO__","date:Due:start":x.due||null,Created:x.c,"date:Done On:start":x.done||null,"date:Focus:start":x.f||null,Source:x.src,Owner:x.own||"","Alice Status":x.as||"","Alice Notes":Array.isArray(x.an)?x.an.join("\n"):(x.an||""),"date:Alice Updated:start":x.au||null,"Job Type":x.jt||"","Alice Options":Array.isArray(x.ao)?x.ao.join("\n"):"","Claire Reply":Array.isArray(x.cr)?x.cr.join("\n"):"",Outcome:x.out||"",Repeat:x.rp||"","date:Snooze Until:start":x.sz||null,"Waiting On":x.wo||"","date:Waiting Since:start":x.ws||null,Project:x.pj||"",Estimate:x.est||null,Energy:x.en||"","Estimate Source":x.es||"",Private:x.pv?"__YES__":"__NO__",Actual:x.ac||null,Steps:Array.isArray(x.st)?x.st.join("\n"):"","date:Last Done:start":x.ld||null,"date:Scheduled:start":x.sc||null}))).filter(it=>it.id&&it.name); LIST=LIST.filter(x=>!znIsGone(x.id)); LIST_LOADED=true;
+      INDEX_AT=Date.parse(idx.at)||0; INDEX_ROWS=idx.rows||[]; BOOKS=Array.isArray(idx.books)?bkOverlay(idx.books,INDEX_AT):BOOKS; INDEX_REC=Array.isArray(idx.rec)?idx.rec:[];  try{ primeSettings(); }catch(e){} LIST=mergeLocal(idx.list.map(x=>listItem({url:"https://www.notion.so/"+x.id,Name:x.n,Kind:x.k,Area:x.a,Status:x.s,Star:x.star?"__YES__":"__NO__","date:Due:start":x.due||null,Created:x.c,"date:Done On:start":x.done||null,"date:Focus:start":x.f||null,Source:x.src,Owner:x.own||"","Alice Status":x.as||"","Alice Notes":Array.isArray(x.an)?x.an.join("\n"):(x.an||""),"date:Alice Updated:start":x.au||null,"Job Type":x.jt||"","Alice Options":Array.isArray(x.ao)?x.ao.join("\n"):"","Claire Reply":Array.isArray(x.cr)?x.cr.join("\n"):"",Outcome:x.out||"",Repeat:x.rp||"","date:Snooze Until:start":x.sz||null,"Waiting On":x.wo||"","date:Waiting Since:start":x.ws||null,Project:x.pj||"",Estimate:x.est||null,Energy:x.en||"","Estimate Source":x.es||"",Private:x.pv?"__YES__":"__NO__",Actual:x.ac||null,Steps:Array.isArray(x.st)?x.st.join("\n"):"","date:Last Done:start":x.ld||null,"date:Scheduled:start":x.sc||null}))).filter(it=>it.id&&it.name); LIST=LIST.filter(x=>!znIsGone(x.id)); LIST_LOADED=true;
       watchRows(idx.rows.slice(0,7)); 
     },{cache:{staleTime:60000},refetchInterval:600000}));
     unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:SET_IDS.SideB},ev=>{ if(ev.type==="data"){ const pr=parseProps(ev.result.payload); if(pr){ SET.SideB={value:clean(pr.Value),check:clean(pr.Check)}; if(ROW) renderSideB(); } } },{cache:{staleTime:300000},refetchInterval:1800000}));
