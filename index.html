@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-13.1"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
+<meta name="zone-build" content="2026-11-13.2"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1177,6 +1177,101 @@ body.zn #znToday .zn-recov, body.zn #znToday > .zn-reading, body.zn #znMe > .zn-
 .zn-arc .zn-chip.on{ background:var(--rc) !important; color:#fff !important; }
 .zn-rsfoot{ position:sticky; bottom:0; padding:12px 0 4px; background:linear-gradient(rgba(251,248,255,0), #FBF8FF 35%); display:flex; gap:10px; z-index:2; } .zn-rsfoot .zn-btn{ flex:1; }
 body.zn.zn-night .zn-rdrow2{ background:rgba(255,255,255,.08); color:#F3EEFF; } body.zn.zn-night .zn-rdic{ background:rgba(255,255,255,.12); } body.zn.zn-night .zn-rdk, body.zn.zn-night .zn-rdgo{ color:color-mix(in srgb, var(--rc) 55%, #FFFFFF); } body.zn.zn-night .zn-rdword{ background:rgba(255,255,255,.12); color:#F3EEFF; } body.zn.zn-night .zn-rdtry{ color:rgba(243,238,255,.85); }
+  /* ===== Nov 13: readings, redone (Claire's picks from the mockups): Listen, the path so far, past readings, one-tap look-back, the shelf ===== */
+  .zn-rx{ background:var(--rbg); border-radius:20px; padding:12px; margin-top:10px; color:#1F2340; }
+  .zn-rxmain{ display:flex; align-items:center; gap:12px; width:100%; text-align:left; border:0; background:none; padding:0; cursor:pointer; font:inherit; color:inherit; }
+  .zn-rxem{ width:44px; height:44px; border-radius:14px; background:color-mix(in srgb, var(--rc) 82%, #1F2340); display:inline-flex; align-items:center; justify-content:center; flex:none; }
+  .zn-rxem svg{ width:22px; height:22px; fill:var(--rbg); stroke:color-mix(in srgb, var(--rc) 82%, #1F2340); }
+  .zn-rxtx{ flex:1; min-width:0; display:flex; flex-direction:column; gap:3px; }
+  .zn-rxtx b{ font:600 18px/1.2 'Fraunces',Georgia,serif; }
+  .zn-rxsub{ font:500 12.5px/1.35 'Plus Jakarta Sans',sans-serif; color:#5F5B78; }
+  .zn-rxring{ position:relative; width:44px; height:44px; flex:none; display:inline-flex; align-items:center; justify-content:center; font:700 12px 'Plus Jakarta Sans',sans-serif; color:color-mix(in srgb, var(--rc) 70%, #1F2340); }
+  .zn-rxring svg{ position:absolute; left:0; top:0; width:44px; height:44px; }
+  .zn-rxfoot{ display:flex; align-items:center; gap:10px; margin-top:10px; }
+  .zn-rxfoot .zn-rdword{ margin-left:auto; flex:none; }
+  .zn-rx.done .zn-rxmain{ opacity:.8; }
+  .zn-rxlinks{ margin-top:12px; }
+  .zn-rp{ display:flex; align-items:center; gap:10px; flex:1; min-width:0; }
+  .zn-rpb{ width:44px; height:44px; border-radius:50%; border:0; background:color-mix(in srgb, var(--rc) 82%, #1F2340); display:inline-flex; align-items:center; justify-content:center; flex:none; cursor:pointer; box-shadow:0 6px 14px rgba(31,35,64,.18); padding:0; }
+  .zn-rpb svg{ width:16px; height:16px; fill:#fff; }
+  .zn-rptx{ display:flex; flex-direction:column; gap:4px; flex:1; min-width:0; }
+  .zn-rptx b{ font:700 13px 'Plus Jakarta Sans',sans-serif; color:#1F2340; letter-spacing:0; }
+  .zn-rptx > span{ font:500 12px 'Plus Jakarta Sans',sans-serif; color:#5F5B78; letter-spacing:0; }
+  .zn-rpbar{ display:block; height:4px; border-radius:2px; background:rgba(31,35,64,.12); overflow:hidden; }
+  .zn-rpbar i{ display:block; height:100%; width:0; background:color-mix(in srgb, var(--rc) 82%, #1F2340); }
+  .zn-rp.big{ background:#fff; border-radius:20px; padding:10px 14px; box-shadow:0 10px 24px rgba(31,35,64,.10); flex:none; }
+  .zn-rxnote{ font:500 12.5px 'Plus Jakarta Sans',sans-serif; color:#5F5B78; text-align:center; margin:0 0 8px; }
+  .zn-rsfoot.zn-rxf{ flex-direction:column; gap:0; padding-top:26px; background:linear-gradient(rgba(251,248,255,0), #FBF8FF 24px); }
+  body.zn.zn-night .zn-rx{ background:rgba(255,255,255,.08); color:#F3EEFF; }
+  body.zn.zn-night .zn-rx .zn-rxsub, body.zn.zn-night .zn-rx .zn-rptx > span{ color:rgba(243,238,255,.78); }
+  body.zn.zn-night .zn-rx .zn-rptx b{ color:#F3EEFF; }
+  body.zn.zn-night .zn-rx .zn-rxring{ color:color-mix(in srgb, var(--rc) 45%, #FFFFFF); }
+  body.zn.zn-night .zn-rx .zn-rpbar{ background:rgba(255,255,255,.18); }
+  .zn-lookback{ background:#1B1930 !important; background-image:none !important; color:#F3EEFF !important; border:1px solid #34305A !important; }
+  .zn-lookback .zn-n3k{ color:#C9C2E6 !important; opacity:1 !important; }
+  .zn-lb{ padding:14px 0 2px; border-top:1px solid #34305A; margin-top:12px; }
+  .zn-lb:first-of-type{ border-top:0; padding-top:0; margin-top:0; }
+  .zn-lbh{ display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; }
+  .zn-lbh b{ font:italic 600 22px 'Fraunces',Georgia,serif; color:color-mix(in srgb, var(--rc) 45%, #FFFFFF); }
+  .zn-lbh span{ font:500 12px 'Plus Jakarta Sans',sans-serif; color:#C9C2E6; }
+  .zn-lbq{ font:400 15px/1.45 'Plus Jakarta Sans',sans-serif; margin:8px 0 10px; color:#F3EEFF; }
+  .zn-lbchips{ display:flex; gap:8px; }
+  .zn-lbchip{ flex:1; min-height:46px; border-radius:23px; border:0; background:#2C2947; color:#F3EEFF; font:700 13px 'Plus Jakarta Sans',sans-serif; cursor:pointer; padding:0 10px; }
+  .zn-lbchip.on{ background:color-mix(in srgb, var(--rc) 45%, #FFFFFF); color:#1F2340; }
+  .zn-lbmore{ margin-top:10px; min-height:44px; padding:0 16px; border-radius:22px; border:1px solid #5B567F; background:none; color:#F3EEFF; font:600 12px 'Plus Jakarta Sans',sans-serif; cursor:pointer; }
+  .zn-lbmore:disabled{ opacity:.75; cursor:default; }
+  .zn-lookback .zn-rsta{ background:#2C2947; color:#F3EEFF; border-color:#5B567F; }
+  .zn-lbkeep{ margin-top:8px; flex:none; width:auto; padding:0 22px; }
+  .zn-path{ position:relative; width:340px; max-width:100%; margin:0 auto; border-radius:24px; overflow:hidden; background:#0E0C22; flex:none; font-family:'Plus Jakarta Sans',system-ui,sans-serif; }
+  .zn-path > svg{ position:absolute; left:0; top:0; }
+  .zn-phead{ position:absolute; left:18px; top:20px; right:18px; color:#F3EEFF; }
+  .zn-phead b{ display:block; font:400 26px/1.1 'Fraunces',Georgia,serif; letter-spacing:-.02em; }
+  .zn-phead span{ display:block; margin-top:4px; font:500 12.5px 'Plus Jakarta Sans',sans-serif; color:#C9C2E6; }
+  .zn-pstop{ position:absolute; width:44px; height:44px; border-radius:50%; border:2px solid #fff; background:rgba(255,255,255,.84); color:#3A3560; font:700 14px 'Plus Jakarta Sans',sans-serif; cursor:pointer; transform:translate(-50%,-50%); display:flex; align-items:center; justify-content:center; padding:0; }
+  .zn-pstop.some{ background:#FFF1DC; border-color:#C9821F; color:#7A4E0C; }
+  .zn-pstop.done{ background:#8A5A0F; border:3px solid #fff; box-shadow:0 6px 16px rgba(138,90,15,.45); }
+  .zn-pstop.done svg{ width:18px; height:18px; fill:#FFF1DC; }
+  .zn-pstop.now{ width:52px; height:52px; border:3px solid #1F2340; background:#FFE27A; color:#1F2340; font-size:17px; box-shadow:0 0 28px 8px rgba(255,226,122,.7); }
+  .zn-plab{ position:absolute; background:#fff; color:#1F2340; border-radius:14px; padding:6px 10px; font:700 11.5px 'Plus Jakarta Sans',sans-serif; box-shadow:0 8px 20px rgba(31,35,64,.14); transform:translateY(-50%); white-space:nowrap; pointer-events:none; }
+  .zn-plab span{ display:block; font-weight:500; color:#5F5B78; }
+  .zn-phere{ position:absolute; width:186px; box-sizing:border-box; background:#1F2340; color:#F3EEFF; border-radius:16px; padding:10px 12px; border:0; text-align:left; cursor:pointer; box-shadow:0 12px 26px rgba(31,35,64,.3); font:inherit; }
+  .zn-phere small{ display:block; font:700 10px 'Plus Jakarta Sans',sans-serif; letter-spacing:.1em; text-transform:uppercase; color:#FFE27A; }
+  .zn-phere b{ display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; margin-top:3px; font:400 15.5px/1.2 'Fraunces',Georgia,serif; }
+  .zn-phere span{ display:block; margin-top:3px; font:500 11.5px 'Plus Jakarta Sans',sans-serif; color:#C9C2E6; }
+  .zn-pban{ position:absolute; left:0; right:0; display:flex; justify-content:center; pointer-events:none; transform:translateY(-50%); }
+  .zn-pban span{ background:#fff; border-radius:999px; padding:4px 12px; font:700 10px 'Plus Jakarta Sans',sans-serif; letter-spacing:.1em; text-transform:uppercase; color:#3A3560; box-shadow:0 6px 14px rgba(31,35,64,.12); }
+  .zn-chhead{ border-radius:24px; padding:16px; background:linear-gradient(160deg,#8A5A0F 0%,#C9821F 100%); color:#FFF7EA; display:flex; flex-direction:column; gap:5px; box-shadow:0 14px 30px rgba(138,90,15,.3); }
+  .zn-chhead small{ font:700 10.5px 'Plus Jakarta Sans',sans-serif; letter-spacing:.12em; text-transform:uppercase; color:#FFE9C4; }
+  .zn-chhead b{ font:400 26px/1.1 'Fraunces',Georgia,serif; letter-spacing:-.02em; }
+  .zn-chhead span{ font:600 12.5px 'Plus Jakarta Sans',sans-serif; color:#FFF1DC; }
+  .zn-prow{ display:flex; align-items:center; gap:12px; width:100%; text-align:left; border:0; background:#fff; border-radius:18px; padding:10px 12px; min-height:56px; font:inherit; color:#1F2340; cursor:pointer; box-shadow:0 6px 16px rgba(130,100,220,.10); box-sizing:border-box; }
+  .zn-prow.off{ background:rgba(31,35,64,.05); box-shadow:none; cursor:default; color:#5F5B78; }
+  .zn-pnum{ width:30px; height:30px; border-radius:50%; background:color-mix(in srgb, var(--rc) 82%, #1F2340); color:var(--rbg); font:700 12px 'Plus Jakarta Sans',sans-serif; display:inline-flex; align-items:center; justify-content:center; flex:none; box-sizing:border-box; }
+  .zn-prow.unread .zn-pnum, .zn-prow.off .zn-pnum{ background:#fff; border:2px solid color-mix(in srgb, var(--rc) 82%, #1F2340); color:color-mix(in srgb, var(--rc) 82%, #1F2340); }
+  .zn-ptx2{ flex:1; min-width:0; display:flex; flex-direction:column; gap:3px; }
+  .zn-ptx2 b{ font:400 16.5px/1.2 'Fraunces',Georgia,serif; }
+  .zn-ptx2 > span{ font:500 11.5px 'Plus Jakarta Sans',sans-serif; color:#5F5B78; }
+  .zn-ptags{ display:flex; gap:6px; flex-wrap:wrap; align-items:center; margin-top:2px; }
+  .zn-ptag{ font:700 11px 'Plus Jakarta Sans',sans-serif; color:#35543F; background:#E4EFDD; border-radius:999px; padding:3px 9px; }
+  .zn-ptag.plain{ color:#3A3560; background:#EFEBF6; }
+  .zn-pword{ font:italic 600 13px 'Fraunces',Georgia,serif; color:color-mix(in srgb, var(--rc) 70%, #1F2340); background:var(--rbg); border-radius:999px; padding:3px 10px; flex:none; }
+  .zn-pgroup{ border-radius:24px; padding:12px; background:var(--rbg); display:flex; flex-direction:column; gap:8px; }
+  .zn-pgh{ display:flex; align-items:center; gap:10px; font:700 11px 'Plus Jakarta Sans',sans-serif; letter-spacing:.1em; text-transform:uppercase; color:color-mix(in srgb, var(--rc) 70%, #1F2340); padding:2px; }
+  .zn-pgh .zn-rxem{ width:32px; height:32px; border-radius:10px; } .zn-pgh .zn-rxem svg{ width:16px; height:16px; }
+  .zn-pnote{ font:500 12.5px/1.45 'Plus Jakarta Sans',sans-serif; color:#5F5B78; margin:0; }
+  .zn-pfilter{ display:flex; gap:8px; flex-wrap:wrap; }
+  .zn-pfilter .zn-chip{ min-height:44px; padding:0 16px; border-radius:22px; }
+  .zn-pfilter .zn-chip[aria-pressed="true"]{ background:#1F2340; color:#FFE27A; }
+  .zn-shelfx{ margin-top:14px; display:flex; flex-direction:column; gap:10px; }
+  .zn-shelfx > b{ font:700 15px 'Plus Jakarta Sans',sans-serif; }
+  .zn-shelfx > p{ margin:0; font:500 12.5px/1.45 'Plus Jakarta Sans',sans-serif; opacity:.75; }
+  .zn-shrow{ display:flex; align-items:center; gap:12px; }
+  .zn-shcover{ width:40px; height:56px; border-radius:6px 10px 10px 6px; box-shadow:inset 5px 0 0 rgba(0,0,0,.18), 0 8px 16px rgba(31,35,64,.18); display:flex; align-items:flex-end; justify-content:center; padding-bottom:7px; box-sizing:border-box; flex:none; font:italic 400 22px 'Fraunces',Georgia,serif; color:#FFF7EA; }
+  .zn-shtx{ flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
+  .zn-shtx b{ font:400 16.5px/1.15 'Fraunces',Georgia,serif; }
+  .zn-shtx span{ font:500 12px 'Plus Jakarta Sans',sans-serif; opacity:.75; }
+  .zn-shbtn{ min-height:44px; padding:0 14px; border-radius:22px; border:0; background:color-mix(in srgb, currentColor 10%, transparent); color:inherit; font:700 12px 'Plus Jakarta Sans',sans-serif; cursor:pointer; flex:none; }
+  .zn-shbtn.on{ background:#1F2340; color:#FFE27A; }
 /* Oct 31: Birdie, reworked */
 body.zn #znToday .zn-birdie{ display:none !important; } /* Oct 31 / Nov 1: weekends nest it too */
 .zn-bd2{ --bc:#A8642C; --bbg:#FBEDE0; }
@@ -3139,10 +3234,11 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
         const bt=el("button","zn-end"+(r.done?" on":"")); bt.type="button"; bt.setAttribute("aria-label",`${label}${small?": "+small:""}`); bt.append(el("i",null,r.done?"✓":(r.ic==="✓"?"✦":r.ic)),el("b",null,label),el("small",null,small||"")); if(!mcp||!LIVE) bt.disabled=true; if(r.co){ coBtn=bt; bt.setAttribute("aria-expanded",String(ZN_CO_OPEN)); bt.setAttribute("aria-controls","znCloseOut"); }
         bt.addEventListener("click",()=>{ if(r.done&&!r.co) return; try{ r.go(bt); }catch(e){} }); er.append(bt); });
       ec.append(er); if(coBtn&&ZN_CO_OPEN&&open) ec.append(...znCloseOut()); wrap.append(ec); }
+    try{ const lb=znLookBack(); if(lb) wrap.append(lb); }catch(e){ console.error("look back",e); } /* Nov 13: one-tap look-back */
     // 4. For tonight, if you like
     { const cards=[]; try{ const ep=(typeof US_POD!=="undefined"&&US_POD&&US_POD.data&&US_POD.data.episodes&&US_POD.data.episodes[0])||null; if(ep&&ep.date===T) cards.push({k:"Zone Radio",ic:"📻",t:"Tonight’s episode",s:`${Math.max(1,Math.round((ep.seconds||0)/60))} min · play`,go:()=>show("us")}); }catch(e){}
       try{ const pr=znReadingsList({prophet:true}).find(x=>x.k==="prophet"); if(pr) cards.push({k:`Bedtime · night ${pr.day}`,ic:"🕊️",t:pr.title||pr.book||"Tonight’s reading",s:pr.min?`${pr.min} min`:"",go:()=>{ try{ znReadingRow(pr).click(); }catch(e){} }}); }catch(e){}
-      invs.forEach(r=>{ const parts=String(r.tx).split(" · "); const isBook=r.ic==="📖", isJ=r.ic==="📓"; cards.push({k:isBook?"Reading now":parts[0],ic:r.ic,t:isBook?(parts.slice(1).join(" · ")||"Your book"):isJ?(parts[1]||"A few lines"):(parts.slice(1).join(" · ")||parts[0]),s:r.done?"done":isBook?"log pages":isJ?"free write":r.st,done:r.done,go:bb=>r.go(bb)}); });
+      invs.filter(r=>!((r.ic==="🪷"||r.ic==="📘")&&(r.st==="look back"||r.st==="✓")&&!/review/.test(String(r.tx)))).forEach(r=>{ const parts=String(r.tx).split(" · "); const isBook=r.ic==="📖", isJ=r.ic==="📓"; cards.push({k:isBook?"Reading now":parts[0],ic:r.ic,t:isBook?(parts.slice(1).join(" · ")||"Your book"):isJ?(parts[1]||"A few lines"):(parts.slice(1).join(" · ")||parts[0]),s:r.done?"done":isBook?"log pages":isJ?"free write":r.st,done:r.done,go:bb=>r.go(bb)}); });
       if(cards.length){ const fc=znCard("zn-fortonight",""); fc.append(el("p","zn-n3k","For tonight, if you like")); const rail=el("div","zn-invrail"); cards.forEach((cd,i2)=>{ const bt=el("button","zn-inv zn-inv"+(i2%4)+(cd.done?" done":"")); bt.type="button"; bt.append(el("small",null,cd.k),el("em",null,cd.done?"✓":cd.ic),el("b",null,cd.t),el("span",null,cd.s||"")); if(!LIVE) bt.disabled=true; bt.addEventListener("click",()=>{ try{ cd.go(bt); }catch(e){} }); rail.append(bt); }); fc.append(rail); wrap.append(fc); } }
     return wrap; }
   // Oct 26: the listening card: Zone Radio, two new episodes from her shows (ROW.Episodes 🎧 lines) and the day's discovery
@@ -3533,7 +3629,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     try{ const P=US_POD&&US_POD.data&&US_POD.data.reading; if(P&&(opts.prophet||nowH()>=17)) out.push({k:"prophet",title:P.title,ref:P.aired?"read in tonight’s episode":"tonight, in Zone Radio · Us",day:P.n,of:P.of,word:"",min:Math.max(2,Math.round(String(P.body||"").split(/\s+/).length/150)),read:false,src:{paras:String(P.body||"").split(/\n\n+/).filter(Boolean),cite:P.source}}); }catch(e){}
     return out; }
   const rdUnit=r=>r.k==="prophet"?"night":"day";
-  function znReadingRow(r){ const S=RD_STYLE[r.k]; const b=el("button","zn-rdrow2"+(r.read?" done":"")); b.type="button"; b.style.setProperty("--rc",S.c); b.style.setProperty("--rbg",S.bg);
+  function znReadingRowOld(r){ const S=RD_STYLE[r.k]; const b=el("button","zn-rdrow2"+(r.read?" done":"")); b.type="button"; b.style.setProperty("--rc",S.c); b.style.setProperty("--rbg",S.bg);
     const pct=r.of?Math.round(r.day/r.of*100):0; const book=r.book||S.book;
     b.innerHTML=`<span class="zn-rdic" aria-hidden="true">${S.ic}</span><span class="zn-rdtx"><span class="zn-rdk">${znEsc(book)} · ${r.review?"this week, in review":`${rdUnit(r)} ${r.day} of ${r.of}`}</span><b>${znEsc(r.title||"")}</b><span class="zn-rdbar" aria-hidden="true"><i style="width:${Math.max(2,pct)}%"></i></span>${r.read&&r.src&&r.src.try?`<span class="zn-rdtry">Today, try: ${znEsc(r.src.try)}</span>`:""}</span><span class="zn-rdside">${r.word?`<span class="zn-rdword">${znEsc(r.word)}</span>`:""}<span class="zn-rdgo">${r.read?"✓ read":r.min+" min"}</span></span>`;
     b.setAttribute("aria-label",`${book}, ${rdUnit(r)} ${r.day} of ${r.of}: ${r.title}${r.read?", read":""}`);
@@ -3547,39 +3643,178 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const refl=String(r.k==="gita"?gl(R.reflection||""):R.reflection||"").split(/\n\s*\n|\n/).filter(x=>x.trim()).map(t=>`<p class="zn-rsp">${znHiWord(t,R.word)}</p>`).join("");
     if(refl||R.sit) step("This morning","Reflect",refl+(R.sit?`<p class="zn-arcsit"><span>In your sit</span> ${znEsc(R.sit)}</p>`:""));
     if(R.try) step("Today","Try",`<p class="zn-arctry">${znEsc(R.try)}</p>`);
-    const q=R.journal||R.check; if(!q) return a;
-    const answered=R.journal&&clean(ROW.Reflection).includes(`» ${R.journal.slice(0,40)}`);
-    const checked=r.k==="gita"?clean(ROW["Gita Check"]).trim():(plog(ROW).recovery_check||"");
-    const t=step("Tonight","Look back",`<p class="zn-rsjq">${znEsc(q)}</p>`,eve||answered||checked?"":"later");
-    if(!eve&&!answered&&!checked){ t.append(el("p","zn-arclater","Opens this evening. Come back after you’ve tried it.")); return a; }
-    if(R.check){ const ch=el("div","zn-hows"); ["yes","sort of","not really"].forEach(v=>{ const b=el("button","zn-chip"+(checked===v?" on":""),v.charAt(0).toUpperCase()+v.slice(1)); b.type="button"; b.disabled=!mcp; b.setAttribute("aria-pressed",String(checked===v));
-      b.addEventListener("click",async()=>{ ch.querySelectorAll("button").forEach(x=>{ x.classList.remove("on"); x.setAttribute("aria-pressed","false"); }); b.classList.add("on"); b.setAttribute("aria-pressed","true"); try{ if(r.k==="gita") await writeToday({"Gita Check":v}); else await plogSet("recovery_check",v); toast("Kept"); try{ znMe(); }catch(e){} }catch(e){ toast(writeErr(e)); } }); ch.append(b); }); t.append(ch); }
-    if(R.journal){ if(answered) t.append(el("p","zn-arclater","You wrote about it tonight ✓ (it’s in your journal on Me)."));
-      else { const ta=el("textarea","zn-rsta"); ta.rows=3; ta.placeholder="A few lines about it…"; const keep=el("button","zn-pill zn-dark","Keep"); keep.type="button"; keep.disabled=!mcp;
-        keep.addEventListener("click",async()=>{ const v=ta.value.trim(); if(!v) return; keep.disabled=true; try{ const cur=clean(ROW.Reflection).trim(); await writeToday({Reflection:(cur?cur+"\n\n":"")+`${hmNow()} · #${r.k} » ${R.journal.replace(/\n/g," ")}\n${v}`}); toast("Kept"); ta.replaceWith(el("p","zn-arclater","You wrote about it tonight ✓")); keep.remove(); try{ znMe(); }catch(e){} }catch(e){ toast(writeErr(e)); keep.disabled=false; } });
-        const kr=el("div","zn-hows"); kr.append(keep); t.append(ta,kr); } }
+    /* Nov 13: the evening look-back moved to the Tonight card (znLookBack); the sheet is for reading */
     return a; }
   function znReadingSheet(r,from){ const S=RD_STYLE[r.k]; const w=el("div","zn-rsheet2"); w.style.setProperty("--rc",S.c); w.style.setProperty("--rbg",S.bg); const R=r.src||{}; let close=null;
     w.append(el("p","zn-rsref",[r.ref,R.cite&&r.k!=="gita"?R.cite:"",r.k==="gita"?"Annie Besant’s translation (1922)":""].filter(Boolean).join(" · ")));
+    if(r.k!=="prophet"){ try{ w.append(znRdPlayer(r.k,r.day,r.past?"":TODAY(),znRdMins(R),true)); }catch(e){} } /* Nov 13: Listen */
     w.append(el("div","zn-rssec","Read"));
-    if(r.k==="gita"){ (R.verses||[]).forEach(v=>{ const p=el("p","zn-rsp"); p.innerHTML=`<sup>${znEsc(v.v)}</sup> ${znEsc(v.t)}`; w.append(p); }); if(R.echo){ const q=el("blockquote","zn-rsq"); q.innerHTML=`<span class="zn-k">The same passage in Edwin Arnold’s verse (1885)</span>${znEsc(gl(R.echo)).replace(/\n/g,"<br>")}`; w.append(q); } }
+    if(r.k==="gita"){ (R.verses||[]).forEach(v=>{ const p=el("p","zn-rsp"); p.innerHTML=`<sup>${znEsc(v.v)}</sup> ${znEsc(gl(v.t))}`; w.append(p); }); if(R.echo){ const q=el("blockquote","zn-rsq"); q.innerHTML=`<span class="zn-k">The same passage in Edwin Arnold’s verse (1885)</span>${znEsc(gl(R.echo)).replace(/\n/g,"<br>")}`; w.append(q); } }
     else (R.paras||[]).forEach(t=>w.append(el("p","zn-rsp",t)));
-    if(R.reflection||R.try||R.journal) w.append(znCarryArc(r,R,()=>close&&close()));
-    const foot=el("div","zn-rsfoot");
-    if(r.k==="prophet"){ const d=el("button","zn-btn","Done"); d.type="button"; d.addEventListener("click",()=>close&&close()); foot.append(d); }
-    else { const mk=el("button","zn-btn",r.read?"Read ✓":"Mark as read"); mk.type="button"; mk.disabled=r.read||!mcp;
-      mk.addEventListener("click",async()=>{ mk.disabled=true; mk.textContent="Saving…"; try{ await writeToday(r.k==="gita"?{"Gita Read":String(R.n)}:{"Recovery Read":String(R.n)}); mk.textContent="Read ✓"; toast(r.src&&r.src.try?"Read. Today, try it":"Read"); try{ znRender(); }catch(e){} try{ znMe(); }catch(e){} try{ renderPrMini(); }catch(e){} }catch(e){ toast(writeErr(e)); mk.disabled=false; mk.textContent="Mark as read"; } }); foot.append(mk); }
+    if(R.reflection||R.try) w.append(znCarryArc(r,R,()=>close&&close()));
+    const foot=el("div","zn-rsfoot zn-rxf");
+    if(r.k==="prophet"||r.past){ const d=el("button","zn-btn",r.past&&r.readOn?`Read ${znRdDay(r.readOn)} ✓ · Close`:"Done"); d.type="button"; d.addEventListener("click",()=>close&&close()); foot.append(d); }
+    else { if(!r.read&&(R.check||R.journal)) foot.append(el("p","zn-rxnote","Tonight asks one question about it. One tap."));
+      const mk=el("button","zn-btn",r.read?"Read ✓":"Done reading"); mk.type="button"; mk.disabled=r.read||!mcp;
+      mk.addEventListener("click",async()=>{ mk.disabled=true; mk.textContent="Saving…"; try{ await writeToday(r.k==="gita"?{"Gita Read":String(R.n)}:{"Recovery Read":String(R.n)}); mk.textContent="Read ✓"; RD.at=0; toast(r.src&&r.src.try?"Read. Today, try it":"Read"); try{ znRender(); }catch(e){} try{ znMe(); }catch(e){} try{ renderPrMini(); }catch(e){} }catch(e){ toast(writeErr(e)); mk.disabled=false; mk.textContent="Done reading"; } }); foot.append(mk); }
     w.append(foot);
     close=openSheet({kicker:`${r.book||S.book} · ${rdUnit(r)} ${r.day} of ${r.of}`,title:r.title||"",body:[w],from}); }
   function znReadingsCard(where){ const L=znReadingsList({prophet:where==="us"}); if(!L.length) return null; const left=L.filter(r=>!r.read&&r.k!=="prophet").length;
     const c=znCard("zn-readings2","",where==="me"?"Readings":"Today’s readings"); c.innerHTML=znH(where==="me"?"Readings":"Today’s readings",left?`${left} to read`:"all read ✓");
     L.forEach(r=>c.append(znReadingRow(r)));
-    if(where==="me"){ const m=el("div","zn-hows"); const s=el("button","zn-chip","Reading settings"); s.type="button"; s.addEventListener("click",()=>{ const g=$("#gear"); if(g) g.click(); }); m.append(s); c.append(m); }
+    { const m=el("div","zn-hows zn-rxlinks"); const lk=(t,f)=>{ const s=el("button","zn-chip",t); s.type="button"; s.addEventListener("click",()=>f(s)); m.append(s); }; /* Nov 13 */
+      if(readingOn("gita")) lk("The path so far",s=>znPathSheet(s)); lk("Past readings",s=>znPastSheet(s)); if(where==="me") lk("Reading settings",()=>{ const g=$("#gear"); if(g) g.click(); }); c.append(m); }
     return c; }
   function znReadingsToday(box){ if(!box) return; box.querySelectorAll(":scope > .zn-readings2").forEach(x=>x.remove()); if(!ROW||document.body.classList.contains("zn-night")) return;
     if(nowH()>=17&&!(US_POD&&US_POD.data)) znUsFeedLoad().then(ok=>{ if(ok) try{ znReadingsToday($("#znToday")); }catch(e){} });
+    { const stamp=RD.at; znRdLoad().then(()=>{ if(RD.at!==stamp){ try{ znReadingsToday($("#znToday")); }catch(e){} try{ znReadingsMe(); }catch(e){} } }).catch(()=>{}); } /* Nov 13 */
     const c=znReadingsCard("today"); if(!c) return; const anchor=box.querySelector(":scope > .zn-top")||box.querySelector(":scope > .zn-donestrip")||box.querySelector(":scope > .zn-togtoday")||box.querySelector(":scope > .zn-hero"); if(anchor) anchor.after(c); else box.append(c); }
   function znReadingsMe(){ const me=$("#znMe"); if(!me||!ROW) return; me.querySelectorAll(":scope > .zn-readings2").forEach(x=>x.remove()); const c=znReadingsCard("me"); if(!c) return; const a=me.querySelector(":scope > .zn-gsmall")||me.querySelector(":scope > .zn-shelfcard"); if(a) a.before(c); else me.append(c); }
+  // ===== Nov 13: readings, redone (Claire's picks from the mockups). Both books wait for her (engine: zone-readings ?part=plan),
+  // Listen reads a passage aloud in her Zone Radio voice (zone-readings ?part=audio, made on first ask, pre-made each morning),
+  // the path so far and past readings open anything she has read (zone-readings ?part=state / ?part=reading), the evening
+  // look-back is one tap on Tonight, and the reading sheet no longer carries the journal. Both people; weekdays and weekends.
+  const RD_EM={gita:'<svg viewBox="0 0 24 24" aria-hidden="true" stroke="none"><path d="M12 2.5c.8 3.7 4.7 5.6 4.7 10.3a4.7 4.7 0 0 1-9.4 0c0-1.9.9-3.3 1.9-4.3.3 1.5.9 2.4 1.9 2.9-.1-3.3-.9-5.8.9-8.9z"/></svg>',recovery:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19C5 11 10 6 19 5c0 9-5 14-13 14z" stroke="none"/><path d="M5 19l8-8" fill="none" stroke-width="1.6" stroke-linecap="round"/></svg>'};
+  const RD_PARTS=["","Part one · the way of action","Part two · the way of devotion","Part three · the way of knowledge"];
+  const RD_SHELF=[{k:"tao",t:"Tao Te Ching",s:"James Legge, 1891 · 81 short chapters",c:"#2E6E73"},{k:"dhammapada",t:"The Dhammapada",s:"Max Müller, 1881 · 423 verses",c:"#B4572A"},{k:"julian",t:"Revelations of Divine Love",s:"Julian of Norwich · Warrack, 1901",c:"#8E3B5A"},{k:"meditations",t:"Meditations",s:"Marcus Aurelius · George Long, 1862",c:"#3D4A6B"}];
+  let RD={at:0,data:null,loading:null}, RD_AU=null;
+  const znRdDay=iso=>{ try{ return new Date(String(iso).slice(0,10)+"T12:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"UTC"}); }catch(e){ return ""; } };
+  const znRdKey=()=>"zone:rd:"+((typeof PERSON!=="undefined"&&PERSON&&PERSON.person)||"claire");
+  async function znRdFetch(part,body,ms){ if(typeof APP==="undefined"||!APP.sb) throw {code:"not_signed_in"};
+    const s=await APP.sb.auth.getSession(); const tk=s&&s.data&&s.data.session&&s.data.session.access_token; if(!tk) throw {code:"not_signed_in"};
+    const ac=new AbortController(); const tm=setTimeout(()=>ac.abort(),ms||30000);
+    try{ const r=await fetch(APP.url+"/functions/v1/zone-readings?part="+part,{method:"POST",signal:ac.signal,headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify(body||{})}); const j=await r.json().catch(()=>null);
+      if(!r.ok||!j||j.error) throw {code:"rd",message:(j&&j.error&&(j.error.message||j.error))||("HTTP "+r.status)}; return j; }
+    finally{ clearTimeout(tm); } }
+  // where she is in each book and what she has read; kept for ten minutes, and in localStorage so the card draws at once
+  function znRdNow(){ if(RD.data) return RD.data; try{ const c=JSON.parse(localStorage.getItem(znRdKey())||"null"); if(c&&c.gita&&c.recovery) return c; }catch(e){} return null; }
+  function znRdLoad(force){ if(!force&&RD.data&&Date.now()-RD.at<10*60*1000) return Promise.resolve(RD.data); if(RD.loading) return RD.loading;
+    RD.loading=(async()=>{ try{ const j=await znRdFetch("state",{}); RD.data=j; RD.at=Date.now(); try{ localStorage.setItem(znRdKey(),JSON.stringify(j)); }catch(e){} return j; }catch(e){ return RD.data; } finally{ RD.loading=null; } })(); return RD.loading; }
+  async function znRdNeed(){ const d=await znRdLoad(); if(!d) toast("Couldn’t load your reading history. Try again in a moment."); return d; }
+  const znRdMins=R=>{ try{ const words=[...(R.verses||[]).map(v=>v.t),...(R.paras||[]),R.reflection||"",R.try||""].join(" ").split(/\s+/).filter(Boolean).length; return Math.max(1,Math.round(words/150)); }catch(e){ return 0; } };
+  // Listen: one player at a time; the audio keeps going when a sheet closes
+  function znRdPlayer(k,n,date,mins,big){ const S=RD_STYLE[k]||RD_STYLE.gita; const key=k+":"+n+":"+(date||""); const box=el("div","zn-rp"+(big?" big":"")); box.style.setProperty("--rc",S.c);
+    const b=el("button","zn-rpb"); b.type="button"; const tx=el("span","zn-rptx"); const lab=el("b",null,"Listen"); const bar=el("span","zn-rpbar"); const fill=el("i"); bar.append(fill); const sub=el("span",null,"");
+    tx.append(lab); if(big) tx.append(bar); tx.append(sub);
+    const IC={play:'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 2l9.5 6-9.5 6z"/></svg>',pause:'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 2h3v12h-3zM9.5 2h3v12h-3z"/></svg>'};
+    const fmt=s=>{ s=Math.max(0,Math.round(s||0)); return Math.floor(s/60)+":"+String(s%60).padStart(2,"0"); };
+    const paint=()=>{ const A=RD_AU&&RD_AU.key===key?RD_AU:null; const au=A&&A.audio; const playing=!!(au&&!au.paused&&!au.ended);
+      b.innerHTML=playing?IC.pause:IC.play; b.setAttribute("aria-label",playing?"Pause":"Listen to this reading");
+      lab.textContent=A&&A.loading?"Getting the audio…":playing?"Playing":au&&au.currentTime>0&&!au.ended?"Paused":au?"Ready · tap to play":"Listen";
+      if(au&&au.duration&&isFinite(au.duration)){ fill.style.width=Math.min(100,au.currentTime/au.duration*100)+"%"; sub.textContent=fmt(au.currentTime)+" / "+fmt(au.duration); }
+      else { fill.style.width="0"; sub.textContent=A&&A.loading?"The first time can take up to a minute":(mins?`about ${mins} min`:""); } };
+    b.addEventListener("click",async ev=>{ ev.stopPropagation(); let A=RD_AU&&RD_AU.key===key?RD_AU:null;
+      if(A&&A.loading) return;
+      if(A&&A.audio){ if(A.audio.paused||A.audio.ended) A.audio.play().catch(()=>{}); else A.audio.pause(); return; }
+      if(RD_AU&&RD_AU.audio){ try{ RD_AU.audio.pause(); }catch(e){} }
+      A=RD_AU={key,loading:true,audio:null,paints:new Set([paint])}; paint();
+      try{ const j=await znRdFetch("audio",{k,n,date:date||undefined},140000); if(RD_AU!==A) return; const au=new Audio(j.url); A.audio=au; A.loading=false;
+        ["play","pause","timeupdate","ended","loadedmetadata"].forEach(e2=>au.addEventListener(e2,()=>{ A.paints.forEach(p=>{ try{ p(); }catch(e){} }); })); await au.play().catch(()=>{}); }
+      catch(e){ if(RD_AU===A) RD_AU=null; toast("Couldn’t get the audio. Try again in a minute."); }
+      paint(); });
+    if(RD_AU&&RD_AU.key===key) RD_AU.paints.add(paint);
+    paint(); box.append(b,tx); return box; }
+  // Today's and Me's row for a book: the emblem, where she is, how long it has waited, Listen, the word
+  function znReadingRow(r){ if(r.k==="prophet"||r.review||!RD_EM[r.k]) return znReadingRowOld(r);
+    const S=RD_STYLE[r.k]; const R=r.src||{}; const box=el("div","zn-rx"+(r.read?" done":"")); box.style.setProperty("--rc",S.c); box.style.setProperty("--rbg",S.bg); const book=r.book||S.book;
+    const st=znRdNow(); const me=st&&st[r.k]; const since=me&&me.n===r.day&&me.since&&me.since<TODAY()?me.since:"";
+    const sub=r.read?(R.try?`Read ✓ · Today, try: ${R.try}`:"Read ✓"):since?`Waiting for you since ${znRdDay(since)}`:`${r.min} min read`;
+    const pct=r.of?Math.max(1,Math.min(100,r.day/r.of*100)):0; const C=2*Math.PI*18;
+    const b=el("button","zn-rxmain"); b.type="button";
+    b.innerHTML=`<span class="zn-rxem">${RD_EM[r.k]}</span><span class="zn-rxtx"><span class="zn-rdk">${znEsc(book)} · day ${r.day} of ${r.of}</span><b>${znEsc(r.title||"")}</b><span class="zn-rxsub">${znEsc(sub)}</span></span><span class="zn-rxring" aria-hidden="true"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="4"/><circle cx="22" cy="22" r="18" fill="none" stroke="${S.c}" stroke-width="4" stroke-linecap="round" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C*(1-pct/100)).toFixed(1)}" transform="rotate(-90 22 22)"/></svg>${r.day}</span>`;
+    b.setAttribute("aria-label",`${book}, day ${r.day} of ${r.of}: ${r.title}${r.read?", read":""}`);
+    b.addEventListener("click",()=>znOpenReadingRow(r,b));
+    const foot=el("div","zn-rxfoot"); try{ foot.append(znRdPlayer(r.k,r.day,TODAY(),znRdMins(R),false)); }catch(e){} if(r.word) foot.append(el("span","zn-rdword",r.word));
+    box.append(b,foot); box.click=()=>b.click(); return box; }
+  // Tonight: the look-back, answered in place. Only for a reading finished today; writing a line is optional.
+  function znLookBack(){ if(!ROW) return null; const items=[];
+    try{ const g=readingOn("gita")?gita():null; if(g&&!g.review&&gitaReadN()>=(g.n||0)&&(g.check||g.journal)) items.push({k:"gita",R:g,day:g.n,book:RD_STYLE.gita.book,get:()=>clean(ROW["Gita Check"]).trim(),set:v=>writeToday({"Gita Check":v})}); }catch(e){}
+    try{ const R=znRecovNow(); if(R&&(parseInt(clean(ROW["Recovery Read"]).trim())||0)>=R.n&&(R.check||R.journal)) items.push({k:"recovery",R,day:R.n,book:R.book_title||RD_STYLE.recovery.book,get:()=>plog(ROW).recovery_check||"",set:v=>plogSet("recovery_check",v)}); }catch(e){}
+    if(!items.length) return null;
+    const c=znCard("zn-lookback","","Look back"); c.append(el("p","zn-n3k",items.length>1?"Look back · one tap each":"Look back · one tap"));
+    items.forEach(it=>{ const S=RD_STYLE[it.k]; const box=el("div","zn-lb"); box.style.setProperty("--rc",S.c);
+      const hd=el("div","zn-lbh"); if(it.R.word) hd.append(el("b",null,gl(it.R.word))); hd.append(el("span",null,`${it.book} · day ${it.day}`)); box.append(hd);
+      box.append(el("p","zn-lbq",gl(it.R.check||it.R.journal)));
+      if(it.R.check){ const cur=it.get(); const row=el("div","zn-lbchips"); ["yes","sort of","not really"].forEach(v=>{ const b=el("button","zn-lbchip"+(cur===v?" on":""),v.charAt(0).toUpperCase()+v.slice(1)); b.type="button"; b.setAttribute("aria-pressed",String(cur===v)); b.disabled=!mcp;
+        b.addEventListener("click",async()=>{ row.querySelectorAll("button").forEach(x=>{ x.classList.remove("on"); x.setAttribute("aria-pressed","false"); }); b.classList.add("on"); b.setAttribute("aria-pressed","true");
+          try{ await it.set(v); toast("Kept"); RD.at=0; try{ znMe(); }catch(e){} }catch(e){ toast(writeErr(e)); } }); row.append(b); }); box.append(row); }
+      if(it.R.journal){ const jq=gl(it.R.journal).replace(/\n/g," "); const answered=clean(ROW.Reflection).includes(`» ${jq.slice(0,40)}`);
+        const more=el("button","zn-lbmore",answered?"You wrote about it ✓":"Write a line (optional)"); more.type="button"; more.disabled=answered||!mcp;
+        more.addEventListener("click",()=>{ more.hidden=true; const ta=el("textarea","zn-rsta"); ta.rows=3; ta.placeholder=jq; ta.setAttribute("aria-label",jq); const keep=el("button","zn-lbchip on zn-lbkeep","Keep"); keep.type="button";
+          keep.addEventListener("click",async()=>{ const v=ta.value.trim(); if(!v) return; keep.disabled=true; try{ const cur=clean(ROW.Reflection).trim(); await writeToday({Reflection:(cur?cur+"\n\n":"")+`${hmNow()} · #${it.k} » ${jq}\n${v}`}); toast("Kept"); ta.remove(); keep.remove(); more.hidden=false; more.textContent="You wrote about it ✓"; more.disabled=true; try{ znMe(); }catch(e){} }catch(e){ toast(writeErr(e)); keep.disabled=false; } });
+          box.append(ta,keep); try{ ta.focus(); }catch(e){} }); box.append(more); }
+      c.append(box); });
+    return c; }
+  // a past reading, in full, opened in the same sheet (read-only: marking only ever happens on today's reading)
+  async function znRdOpenPast(k,n,from,meta){ let j; try{ j=await znRdFetch("reading",{k,n}); }catch(e){ toast(e&&e.code==="rd"&&e.message?String(e.message):"Couldn’t open that reading. Try again in a moment."); return; }
+    const d=j.data||{}; const S=RD_STYLE[k];
+    const r=k==="gita"?{k,title:gl(d.title||""),ref:d.ref||"",day:d.n||n,of:d.of||158,word:gl(d.word||""),read:true,src:d,past:true,readOn:meta&&meta.date}
+      :{k,title:d.title||"",ref:d.ref||"",day:d.n||n,of:d.total||0,word:d.word||"",read:true,src:d,book:d.book_title||S.book,past:true,readOn:meta&&meta.date};
+    znReadingSheet(r,from); }
+  function znRdRow(k,o){ const S=RD_STYLE[k]; const b=el(o.off?"div":"button","zn-prow"+(o.off?" off":"")+(o.unread?" unread":"")); if(!o.off) b.type="button"; b.style.setProperty("--rc",S.c); b.style.setProperty("--rbg",S.bg);
+    const tags=[o.word?`<span class="zn-pword">${znEsc(o.word)}</span>`:"",o.check?`<span class="zn-ptag">Tried it: ${znEsc(o.check)}</span>`:"",o.tag?`<span class="zn-ptag plain">${znEsc(o.tag)}</span>`:""].filter(Boolean).join("");
+    b.innerHTML=`<span class="zn-pnum">${o.n}</span><span class="zn-ptx2"><b>${znEsc(o.title||`Reading ${o.n}`)}</b><span>${znEsc(o.sub||"")}</span>${tags?`<span class="zn-ptags">${tags}</span>`:""}</span>`;
+    if(!o.off&&o.go) b.addEventListener("click",()=>o.go(b)); return b; }
+  // the path so far: the Gita's 18 chapters as a trail from dawn to night; a chapter opens its readings
+  async function znPathSheet(from){ const d=await znRdNeed(); if(!d) return; const G=d.gita||{}; const plan=G.plan||[]; if(!plan.length){ toast("Couldn’t load the path. Try again in a moment."); return; }
+    const byCh={}; plan.forEach((p,i)=>{ (byCh[p[0]]=byCh[p[0]]||[]).push(i+1); }); const readSet=new Set((G.read||[]).map(x=>x.n)); const cur=(plan[(G.n||1)-1]||[1])[0]; const NCH=Math.max(...Object.keys(byCh).map(Number));
+    const W=340, xs=i=>i%2===0?72:268; const ys=new Array(NCH); ys[NCH-1]=176; for(let i=NCH-2;i>=0;i--) ys[i]=ys[i+1]+60+(i+1===cur-1?48:0); const H=ys[0]+132;
+    const pts=ys.map((y,i)=>[xs(i),y]); const seg=(a,b)=>` C ${a[0]} ${a[1]-34}, ${b[0]} ${b[1]+34}, ${b[0]} ${b[1]}`;
+    let dAll=`M ${pts[0][0]} ${pts[0][1]}`, dDone=dAll; for(let i=1;i<NCH;i++){ dAll+=seg(pts[i-1],pts[i]); if(i<=cur-1) dDone+=seg(pts[i-1],pts[i]); }
+    let seed=7; const rnd=()=>{ seed=(seed*16807)%2147483647; return seed/2147483647; }; let stars=""; for(let i=0;i<70;i++) stars+=`<circle cx="${(rnd()*W).toFixed(0)}" cy="${(rnd()*H*.34).toFixed(0)}" r="${[.7,1,1.4][Math.floor(rnd()*3)]}" fill="#fff" opacity="${[.4,.6,.9][Math.floor(rnd()*3)]}"/>`;
+    const hy=f=>Math.round(H*f); const hill=(f,c,o)=>`<path d="M0 ${hy(f)} C ${W*.2} ${hy(f)-46}, ${W*.42} ${hy(f)-30}, ${W*.6} ${hy(f)+4} S ${W*.9} ${hy(f)+30}, ${W} ${hy(f)-14} V ${H} H0z" fill="${c}" opacity="${o}"/>`;
+    const svg=`<svg aria-hidden="true" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><defs><linearGradient id="znpSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0E0C22"/><stop offset=".2" stop-color="#2B2357"/><stop offset=".4" stop-color="#7A5DB5"/><stop offset=".56" stop-color="#E9A9C9"/><stop offset=".68" stop-color="#FFC9A8"/><stop offset="1" stop-color="#FFE9D6"/></linearGradient><radialGradient id="znpSun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF6D0"/><stop offset=".35" stop-color="#FFE27A" stop-opacity=".9"/><stop offset="1" stop-color="#FFB48A" stop-opacity="0"/></radialGradient><linearGradient id="znpRb" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FF8FB8"/><stop offset=".25" stop-color="#FFE27A"/><stop offset=".5" stop-color="#8EE3B0"/><stop offset=".75" stop-color="#8EC5FF"/><stop offset="1" stop-color="#C9B8F0"/></linearGradient><filter id="znpBl"><feGaussianBlur stdDeviation="14"/></filter></defs>`
+      +`<rect width="${W}" height="${H}" fill="url(#znpSky)"/><path d="M-30 ${hy(.2)} C ${W*.25} ${hy(.2)-110}, ${W*.65} ${hy(.2)-20}, ${W+40} ${hy(.2)-150}" fill="none" stroke="url(#znpRb)" stroke-width="40" opacity=".3" filter="url(#znpBl)"/>${stars}`
+      +`<circle cx="${W*.78}" cy="${hy(.56)}" r="140" fill="url(#znpSun)"/><circle cx="${W*.78}" cy="${hy(.56)}" r="28" fill="#FFF6D0"/>`
+      +hill(.6,"#C9A0D8",.55)+hill(.69,"#E7B3CF",.7)+hill(.78,"#F6C3B4",.85)+hill(.87,"#FBD9C2",1)+hill(.95,"#FFEBDD",1)
+      +`<path d="${dAll}" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round" opacity=".55"/><path d="${dAll}" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="2 9" stroke-linecap="round"/>`
+      +(cur>1?`<path d="${dDone}" fill="none" stroke="#C9821F" stroke-width="16" stroke-linecap="round"/><path d="${dDone}" fill="none" stroke="#FFE27A" stroke-width="2" stroke-dasharray="2 9" stroke-linecap="round"/>`:"")+`</svg>`;
+    const wrap=el("div","zn-path"); wrap.style.height=H+"px"; wrap.innerHTML=svg;
+    const hd=el("div","zn-phead"); hd.append(el("b",null,"The path so far"),el("span",null,`${readSet.size} of ${G.of||158} readings · 18 chapters, dawn to night`)); wrap.append(hd);
+    const ban=(t,y)=>{ const s=el("div","zn-pban"); s.style.top=y+"px"; s.append(el("span",null,t)); wrap.append(s); };
+    const partOf=c=>c<=6?1:c<=12?2:3; [[1,ys[0]+92],[7,(ys[5]+ys[6])/2],[13,(ys[11]+ys[12])/2]].forEach(([c,y])=>{ if(c<=NCH) ban(RD_PARTS[partOf(c)],y); });
+    let g0=null; try{ g0=gita(); }catch(e){}
+    for(let i=0;i<NCH;i++){ const c=i+1; const ns=byCh[c]||[]; const done=ns.filter(n=>readSet.has(n)).length; const all=ns.length&&done===ns.length; const now=c===cur;
+      const b=el("button","zn-pstop"+(now?" now":all?" done":done?" some":"")); b.type="button"; b.style.left=pts[i][0]+"px"; b.style.top=pts[i][1]+"px";
+      if(all&&!now) b.innerHTML=RD_EM.gita; else b.textContent=String(c);
+      b.setAttribute("aria-label",`Chapter ${c}: ${done} of ${ns.length} read${now?", you are here":""}`); b.addEventListener("click",()=>znChapterSheet(c,b)); wrap.append(b);
+      const left=pts[i][0]<W/2;
+      if(now){ const h=el("button","zn-phere"); h.type="button"; h.style.top=(pts[i][1]-22)+"px"; if(left) h.style.right="12px"; else h.style.left="12px";
+        h.append(el("small",null,`You are here · day ${G.n}`),el("b",null,g0&&!g0.review&&g0.n===G.n?gl(g0.title||""):`Chapter ${c}`),el("span",null,`Chapter ${c} · ${done} of ${ns.length} read`)); h.addEventListener("click",()=>znChapterSheet(c,h)); wrap.append(h); }
+      else if(done){ const l=el("div","zn-plab"); l.style.top=pts[i][1]+"px"; if(left) l.style.left=(pts[i][0]+32)+"px"; else l.style.right=(W-pts[i][0]+32)+"px"; const last=(G.read||[]).filter(x=>ns.includes(x.n)).map(x=>String(x.date)).sort().pop()||""; l.append(document.createTextNode(`Chapter ${c}`),el("span",null,all&&last?`${done} of ${ns.length} read · finished ${znRdDay(last)}`:`${done} of ${ns.length} read`)); wrap.append(l); } }
+    openSheet({kicker:"The Bhagavad Gita",title:"",body:[wrap,el("p","zn-pnote","Tap a chapter to open its readings.")],from});
+    try{ const nb=wrap.querySelector(".zn-pstop.now"); if(nb) nb.scrollIntoView({block:"center"}); }catch(e){} }
+  // one chapter: every reading in it, each with its title, verses, the day she read it, its word and her answer that night
+  async function znChapterSheet(c,from){ const d=await znRdNeed(); if(!d) return; const G=d.gita||{}; const plan=G.plan||[]; const ns=[]; plan.forEach((p,i)=>{ if(p[0]===c) ns.push(i+1); });
+    const read={}; (G.read||[]).forEach(x=>{ read[x.n]=x; }); const done=ns.filter(n=>read[n]).length; const part=c<=6?1:c<=12?2:3;
+    const hd=el("div","zn-chhead"); hd.append(el("small",null,`The Bhagavad Gita · chapter ${c} of 18`),el("b",null,`Chapter ${c}`),el("span",null,`${RD_PARTS[part]} · ${done} of ${ns.length} read`));
+    const body=[hd]; let g0=null; try{ g0=gita(); }catch(e){}
+    ns.forEach(n=>{ const p=plan[n-1]; const vs=p[1]===p[2]?`Verse ${p[1]}`:`Verses ${p[1]}–${p[2]}`; const x=read[n];
+      if(x) body.push(znRdRow("gita",{n,title:x.title,sub:`${vs} · read ${znRdDay(x.date)}`,word:x.word,check:x.check,go:b=>znRdOpenPast("gita",n,b,x)}));
+      else if(n===G.n) body.push(znRdRow("gita",{n,unread:true,title:g0&&!g0.review&&g0.n===n?gl(g0.title||""):`Reading ${n}`,sub:vs,tag:"Next up",go:b=>{ if(g0&&!g0.review&&g0.n===n) znOpenReading("gita",b); else znRdOpenPast("gita",n,b,null); }}));
+      else body.push(znRdRow("gita",{n,off:true,title:`Reading ${n}`,sub:vs})); });
+    openSheet({kicker:"The path so far",title:"",body,from}); }
+  // past readings: everything she has read in both books, newest first, and the recovery days below where she is that she never opened
+  async function znPastSheet(from){ const d=await znRdNeed(); if(!d) return; const G=d.gita||{}, Rv=d.recovery||{}; let filt="all"; const host=el("div","zn-rsheet2");
+    const group=(k,title,rows)=>{ const S=RD_STYLE[k]; const g=el("div","zn-pgroup"); g.style.setProperty("--rc",S.c); g.style.setProperty("--rbg",S.bg); const h=el("div","zn-pgh"); h.innerHTML=`<span class="zn-rxem">${RD_EM[k]}</span><span>${znEsc(title)}</span>`; g.append(h); if(rows.length) g.append(...rows); else g.append(el("p","zn-pnote","Nothing read yet. The first one is waiting on Today.")); return g; };
+    const draw=()=>{ host.replaceChildren(); const fr=el("div","zn-pfilter"); [["all","All"],["gita","Gita"],["recovery",Rv.book_title||"Recovery"]].forEach(([k,l])=>{ if(k!=="all"&&!readingOn(k)&&!((k==="gita"?G.read:Rv.read)||[]).length) return; const b=el("button","zn-chip",l); b.type="button"; b.setAttribute("aria-pressed",String(filt===k)); b.addEventListener("click",()=>{ filt=k; draw(); }); fr.append(b); }); host.append(fr);
+      const plan=G.plan||[];
+      if(filt!=="recovery"){ const rows=[...(G.read||[])].sort((a,b)=>b.n-a.n).map(x=>{ const p=plan[x.n-1]||[]; return znRdRow("gita",{n:x.n,title:x.title,sub:`Read ${znRdDay(x.date)}${x.ref?" · "+x.ref:p.length?` · Chapter ${p[0]}`:""}`,word:x.word,check:x.check,go:b=>znRdOpenPast("gita",x.n,b,x)}); }); host.append(group("gita",`The Bhagavad Gita · ${rows.length} read`,rows)); }
+      if(filt!=="gita"){ const items=[...(Rv.read||[]).map(x=>({...x,read:true})),...(Rv.missed||[]).map(x=>({...x,read:false}))].sort((a,b)=>b.n-a.n);
+        const rows=items.map(x=>x.read?znRdRow("recovery",{n:x.n,title:x.title||x.chapter,sub:`Read ${znRdDay(x.date)}${x.chapter?" · "+x.chapter:""}`,word:x.word,check:x.check,go:b=>znRdOpenPast("recovery",x.n,b,x)})
+          :znRdRow("recovery",{n:x.n,unread:true,title:x.title||x.chapter,sub:x.chapter||"",tag:"Not read",go:b=>znRdOpenPast("recovery",x.n,b,null)}));
+        host.append(group("recovery",`${Rv.book_title||"Daily reading"} · ${(Rv.read||[]).length} read`,rows)); }
+      host.append(el("p","zn-pnote","Every reading opens as it was, with Listen. Both books wait for you: the next one comes after you finish today’s.")); };
+    draw(); openSheet({kicker:"Readings",title:"Past readings",body:[host],from}); }
+  // Settings: what comes next. A queue only; the first in line is loaded before a current book ends.
+  function znShelfBlock(RP){ const box=el("div","zn-shelfx"); box.append(el("b",null,"On the shelf"),el("p",null,"Queue what comes next. The first in line starts when one of your books ends."));
+    const cur=String((RP.shelf||{}).book||"").split(",").map(x=>x.trim()).filter(Boolean);
+    RD_SHELF.forEach(bk=>{ const at=cur.indexOf(bk.k); const row=el("div","zn-shrow"); const cv=el("span","zn-shcover",bk.t.charAt(0)); cv.style.background=bk.c; cv.setAttribute("aria-hidden","true");
+      const tx=el("span","zn-shtx"); tx.append(el("b",null,bk.t),el("span",null,bk.s));
+      const b=el("button","zn-shbtn"+(at>=0?" on":""),at===0?"Up next":at>0?`Queued · ${at+1}`:"Queue"); b.type="button"; b.setAttribute("aria-pressed",String(at>=0)); b.setAttribute("aria-label",`${bk.t}: ${at>=0?"take off the queue":"add to the queue"}`); b.disabled=!LOADED.has("Readings");
+      b.addEventListener("click",async()=>{ b.disabled=true; const next=at>=0?cur.filter(x=>x!==bk.k):[...cur,bk.k]; try{ await readingSet("shelf",{on:true,book:next.join(",")}); toast(at>=0?`${bk.t} is off the queue`:`${bk.t} is queued`); RD.at=0; openSettings(); }catch(e){ toast(writeErr(e)); b.disabled=false; } });
+      row.append(cv,tx,b); box.append(row); });
+    return box; }
   // ===== Oct 31: Birdie, reworked (Claire's design pass). One card on Today every day: meals first (who fed her, when; dinner nudges after 6),
   // walks with their spots and who took her, the next walk from the calendar, a weekend adventure that suggests the spot she's seen least lately,
   // care items due within a week, camp. "At camp" (zone-birdie, shared by both apps and read by the engine) turns the card into a camp view.
@@ -5072,7 +5307,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
         const wrapR=el("div","zn-plans"); plans.forEach(p=>{ const on=!!(RP[p.k]||{}).on; const r=el("div","zn-plan"+(on?" on":"")); const row=el("div","zn-planrow"); row.innerHTML=`<span class="zn-plantx"><b>${znEsc(p.name)}</b><span>${znEsc(p.sub)}</span></span>`; const sw=el("button","zn-switch"); sw.type="button"; sw.setAttribute("role","switch"); sw.setAttribute("aria-checked",String(on)); sw.setAttribute("aria-label",p.name); sw.append(el("i")); sw.disabled=!LOADED.has("Readings");
           sw.addEventListener("click",async()=>{ sw.disabled=true; try{ await readingSet(p.k,{on:!on}); toast(!on?`${p.name} is back on`:`${p.name} is off`); openSettings(); try{ znMe(); znRender(); }catch(e){} }catch(e){ toast(writeErr(e)); sw.disabled=false; } }); row.append(sw); r.append(row);
           if(p.books){ const bk=(RP.recovery||{}).book||"dharma"; const lens=el("div","lens zn-planbooks"); [["dharma","Recovery Dharma"],["bigbook","Big Book (1939)"]].forEach(([v,l])=>{ const c=el("button","chip",l); c.type="button"; c.setAttribute("aria-pressed",String(bk===v)); c.disabled=!LOADED.has("Readings"); c.addEventListener("click",async()=>{ if(bk===v) return; try{ await readingSet("recovery",{book:v}); toast(`Reading ${l} from tomorrow`); openSettings(); }catch(e){ toast(writeErr(e)); } }); lens.append(c); }); r.append(lens); }
-          wrapR.append(r); }); mc.append(wrapR); if(!LOADED.has("Readings")) mc.append(el("p","hint","The plan switches couldn't load from Notion; close and reopen Settings to try again.")); }
+          wrapR.append(r); }); mc.append(wrapR); try{ mc.append(znShelfBlock(RP)); }catch(e){ console.error("shelf",e); } if(!LOADED.has("Readings")) mc.append(el("p","hint","The plan switches couldn't load from Notion; close and reopen Settings to try again.")); }
       const mDirty=saveBar(mc,()=>saveSetting("Pathway",[mode==="pw"?`Letting Go · ${start}`:"Four traditions"]),"Pathway");
       draw(); }
 
