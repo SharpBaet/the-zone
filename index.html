@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-16.1"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
+<meta name="zone-build" content="2026-11-16.2"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -367,8 +367,11 @@ body.loading #view-today > section:not(#vibe){ display:none !important; }
 @media (prefers-reduced-motion: reduce){ .sk i{ animation:none; } }
 .savedping{ position:fixed; top:calc(12px + env(safe-area-inset-top,0px)); left:50%; transform:translate(-50%,-8px); opacity:0; pointer-events:none; z-index:60; background:var(--sage); color:#1F2A1B; font-size:var(--fs-xs); font-weight:600; border-radius:999px; padding:6px 12px; transition:opacity .2s, transform .2s; }
 .savedping.on{ opacity:1; transform:translate(-50%,0); }
-.toast{ position:fixed; left:50%; transform:translateX(-50%); bottom:calc(92px + env(safe-area-inset-bottom,0px)); background:var(--ink); color:#222920; border-radius:999px; padding:10px 12px 10px 16px; display:flex; gap:12px; align-items:center; font-weight:600; z-index:70; box-shadow:0 6px 24px rgba(0,0,0,.35); }
-.toast button{ border:0; background:transparent; color:#B04E25; font-weight:700; }
+.toast{ position:fixed; left:50%; transform:translateX(-50%); bottom:calc(92px + env(safe-area-inset-bottom,0px)); background:#1F2340; color:#F7F4FF; /* Nov 16: fixed colours, readable in every theme (it was dark text on the day theme's teal) */ border-radius:999px; padding:10px 12px 10px 16px; display:flex; gap:12px; align-items:center; font-weight:600; z-index:70; box-shadow:0 6px 24px rgba(0,0,0,.35); }
+.toast button{ border:0; background:transparent; color:#FFE27A; font-weight:700; cursor:pointer; padding:4px 6px; }
+.toast{ max-width:min(560px, calc(100vw - 24px)); line-height:1.35; }
+body.zn-night .toast, body.riso-night .toast{ border:1px solid rgba(255,255,255,.22); }
+@media (min-width:1200px){ body.zn .toast{ bottom:calc(28px + env(safe-area-inset-bottom,0px)); } } /* Nov 16: the desktop tab bar is at the top */
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
 
 /* color families */
@@ -1663,6 +1666,18 @@ body.zn.zn-night #znDeskPanel .zn-dpsec+.zn-dpsec{border-top-color:rgba(255,255,
 body.zn.zn-night #znDeskPanel .zn-dprow{border-bottom-color:rgba(255,255,255,.1)}
 /* Nov 12 (desktop pass): the Plan column's filter chips wrap instead of running off the edge; no outline on buttons focused by the mouse or by the app */
 body.zn #znDeskPlan .zn-tfil{flex-wrap:wrap;overflow:visible}
+body.zn #znPlan .zn-tfil{flex-wrap:wrap;overflow:visible} /* Nov 16: the phone too */
+body.zn .zn-picklink{cursor:pointer}
+body.zn .zn-picklink:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+body.zn .zn-picklink:focus-visible{outline:2px solid currentColor;outline-offset:2px;border-radius:4px}
+body.zn .zn-prowgo{cursor:pointer}
+body.zn .zn-tdonehd{display:block;width:100%;border:0;background:none;padding:0;margin:0;text-align:left;font:inherit;color:inherit;cursor:pointer}
+body.zn .zn-tdonehd .zn-h{margin:0}
+body.zn .zn-tdonehd .zn-hr{display:inline-flex;align-items:center;gap:8px}
+body.zn .zn-tdonech{font-style:normal;font-size:18px;line-height:1;display:inline-block;transition:transform .2s ease}
+body.zn .zn-tdonehd[aria-expanded="true"] .zn-tdonech{transform:rotate(90deg)}
+body.zn .zn-tdonebody{margin-top:8px}
+body.zn .zn-tdonehd:focus-visible{outline:2px solid currentColor;outline-offset:4px;border-radius:8px}
 html:not(.kbd) button:focus-visible,html:not(.kbd) [role="tab"]:focus-visible{outline:none}
 /* Nov 12 (desktop pass, Claire's picks): no big column headings on the three-column Today; the add box is one line with Add always showing;
    the open-hours strip is seven days; sheets that open in the side panel */
@@ -3046,13 +3061,19 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const row=(it,done)=>{ const r=el("div","zn-trow"+(done?" on":"")+(window.__znSel===it.id?" zn-sel":"")); const chk=el("button","zn-rchk",done?"✓":""); chk.type="button"; chk.setAttribute("aria-label",done?`Reopen: ${it.name}`:`Done: ${it.name}`); chk.disabled=!mcp||!isTask(it);
       chk.addEventListener("click",async()=>{ chk.disabled=true; try{ await setDone(it,!done); znPlanRender(); }catch(e){ toast(writeErr(e)); chk.disabled=false; } });
       const tx=el("button","zn-ttx"); tx.type="button"; tx.setAttribute("aria-label",`Open ${it.name}`); tx.addEventListener("click",()=>openListItem(it,tx));
-      const when=it.due?(it.due<T?"overdue":it.due===T?"due today":dueLabel(it.due)):""; const placed=it.sched&&it.sched.slice(0,10)>=T?"📅 "+(it.sched.slice(0,10)===T?"":dueLabel(it.sched.slice(0,10))+" ")+hLabel(Number(it.sched.slice(11,13))+Number(it.sched.slice(14,16))/60):"";
+      const when=done?(it.doneOn?(it.doneOn===T?"done today":`done ${new Date(it.doneOn+"T12:00:00Z").toLocaleDateString("en-US",{weekday:"short",timeZone:"UTC"})}`):""):it.due?(it.due<T?"overdue":it.due===T?"due today":dueLabel(it.due)):""; /* Nov 16: a done task never says overdue */ const placed=!done&&it.sched&&it.sched.slice(0,10)>=T?"📅 "+(it.sched.slice(0,10)===T?"":dueLabel(it.sched.slice(0,10))+" ")+hLabel(Number(it.sched.slice(11,13))+Number(it.sched.slice(14,16))/60):"";
       tx.innerHTML=`<b>${znEsc(it.name)}${it.priv?" 🔒":""}</b><span>${[AREA_IC[it.area]?AREA_IC[it.area]+" "+it.area:"",it.project||"",!isTask(it)?it.kind:"",when,placed,it.owner==="Alice"?"with Alice":"",it.waiting?"waiting on "+it.waiting:"",it.repeat?"↻ "+it.repeat:""].filter(Boolean).join(" · ")}</span>`;
       r.append(chk,tx); if(isTask(it)&&it.est) r.append(el("span","zn-wsz"+(it.energy==="Deep"?" zn-deep":""),`${znDur(it.est)}${it.energy==="Deep"?" · Deep":""}`));
       if(isTask(it)&&!done){ const star=el("button","zn-tstar"+(it.star?" on":""),"★"); star.type="button"; star.setAttribute("aria-label",(it.star?"Unstar ":"Star ")+it.name); star.disabled=!mcp; star.addEventListener("click",async()=>{ await listUpdate(it,{Star:it.star?"__NO__":"__YES__"},{star:!it.star}); znPlanRender(); }); r.append(star); }
       if(isTask(it)&&!done&&mcp) znSwipe(r,it); return r; };
     const grp=(name,sub,rows,empty)=>{ const c=znCard("zn-tgroup",""); c.innerHTML=znH(name,rows.length?sub||String(rows.length):"nothing"); if(!rows.length){ if(empty) c.append(el("p","zn-empty",empty)); else return; } rows.forEach(it=>c.append(row(it,it.status==="Done"))); body.append(c); };
     const byDue=(a,b)=>(a.due||"9").localeCompare(b.due||"9")||(b.star?1:0)-(a.star?1:0);
+    // Nov 16: Done this week is one line, closed by default; it remembers being opened (on this device)
+    const doneGrp=rows=>{ const c=znCard("zn-tgroup zn-tdonew","","Done this week"); let open=false; try{ open=localStorage.getItem("zone:done-week-open")==="1"; }catch(e){}
+      const hd=el("button","zn-tdonehd"); hd.type="button"; hd.setAttribute("aria-expanded",String(open)); hd.innerHTML=`<div class="zn-h"><span class="zn-ht">Done this week</span><span class="zn-hr">${rows.length}<i class="zn-tdonech" aria-hidden="true">›</i></span></div>`;
+      const list=el("div","zn-tdonebody"); list.hidden=!open; rows.slice(0,12).forEach(it=>list.append(row(it,true)));
+      hd.addEventListener("click",()=>{ open=!open; list.hidden=!open; hd.setAttribute("aria-expanded",String(open)); try{ localStorage.setItem("zone:done-week-open",open?"1":"0"); }catch(e){} });
+      c.append(hd,list); body.append(c); };
     const draw=()=>{ body.replaceChildren(); const {q,open,someday,doneW}=calc();
       if(F==="ideas"){ grp("Notes, ideas & thoughts","",open.sort((a,b)=>b.created.localeCompare(a.created)),"Nothing captured yet. Try “Idea: …” in capture."); return; }
       if(F==="someday"){ grp("Someday","",someday,"Nothing parked."); return; }
@@ -3062,7 +3083,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const notes=F==="all"?open.filter(it=>!isTask(it)):[];
       const mins=rows=>znDur(rows.reduce((a,x)=>a+(x.est||30),0));
       grp("Today",`${today.length} · ${mins(today)}`,today,q?"":"Nothing picked, starred or due today."); grp("This week",`${week.length} · ${mins(week)}`,week,""); grp("No date",String(nodate.length),nodate,""); if(notes.length) grp("Notes & ideas",String(notes.length),notes,"");
-      if(someday.length&&F!=="all") grp("Someday",String(someday.length),someday,""); if(doneW.length) grp("Done this week",String(doneW.length),doneW.slice(0,12),"");
+      if(someday.length&&F!=="all") grp("Someday",String(someday.length),someday,""); if(doneW.length) doneGrp(doneW);
       if(!today.length&&!week.length&&!nodate.length&&!notes.length) body.append(el("p","zn-empty",q?"Nothing matches.":"Nothing here.")); };
     draw(); return wrap; }
   // Nov 3: swipe a task row right for Done, left for Tomorrow (pointer events; a short drag just snaps back)
@@ -3319,7 +3340,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // Every write goes through writeToday, which redraws Today, so a handled item leaves and the count drops.
   let ZN_CO_OPEN=false;
   function znCloseOut(){ const box=el("div","zn-co"); box.id="znCloseOut";
-    for(const t of unfinishedTasks()){ const it=el("div","zn-coit"); it.append(el("b",null,t)); const bs=el("div","zn-cobtns");
+    for(const t of unfinishedTasks()){ const it=el("div","zn-coit"); it.append(znPickLabel(t)); const bs=el("div","zn-cobtns");
       const mk=(lab,aria,cls,fn)=>{ const b=el("button","zn-pill "+cls,lab); b.type="button"; b.setAttribute("aria-label",aria); b.disabled=!mcp||!LIVE;
         b.addEventListener("click",async()=>{ bs.querySelectorAll("button").forEach(x=>x.disabled=true); try{ await fn(); }catch(e){ toast(writeErr(e)); bs.querySelectorAll("button").forEach(x=>x.disabled=false); } }); return b; };
       bs.append(mk("✓ Done","Mark done: "+t,"zn-copri",async()=>{ await setInList("Top 3 Done",t,true,"\n"); syncListDone(t,true); }),
@@ -3353,7 +3374,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const WK="zone:wind:"+T; const flags=(()=>{ try{ return JSON.parse(localStorage.getItem(WK)||"{}")||{}; }catch(e){ return {}; } })(); const setFlag=(k,v)=>{ flags[k]=v; try{ localStorage.setItem(WK,JSON.stringify(flags)); }catch(e){} };
     // 1. Today, in short
     { const sofar=clean(ROW.Evening).split(/\n+/).map(x=>x.trim()).find(x=>x.startsWith("🌗")); const story=(sofar?sofar.replace(/^🌗\s*(Today so far:?\s*)?/i,""):"").replace(/^./,ch=>ch.toUpperCase());
-      const wins=[]; try{ const D3=parseDay(); const picks=[...D3.tasks.map(t=>t.title),...D3.untimed.map(u=>u.title),...(typeof extraPicks==="function"?extraPicks(D3):[])]; const done3=new Set(listOf("Top 3 Done").map(x=>x.toLowerCase())); const all3=new Set([...picks.map(x=>String(x).toLowerCase()),...done3]); const dn=done3.size; if(dn) wins.push([`✓ ${dn} of ${all3.size} picked`,1]); }catch(e){}
+      const wins=[]; try{ const D3=parseDay(); const picks=[...D3.tasks.map(t=>t.title),...D3.untimed.map(u=>u.title),...(typeof extraPicks==="function"?extraPicks(D3):[])]; const done3=znDone3(); const all3=new Set([...picks.map(x=>String(x).toLowerCase()),...done3]); const dn=done3.size; if(dn) wins.push([`✓ ${dn} of ${all3.size} picked`,1]); }catch(e){}
       try{ const w=walksOf(ROW).length; if(w) wins.push([`✓ Birdie walked${w>1?" ×"+w:""}`,1]); }catch(e){}
       try{ const defs=routineDefs().filter(rtDays).filter(d=>d.action!=="walk"); const dn=defs.filter(d=>rtDone(ROW,d)); if(defs.length&&dn.length===defs.length) wins.push(["✓ Routines",1]); else dn.slice(0,2).forEach(d=>wins.push([`✓ ${d.name}`,1])); }catch(e){}
       if(g>0) wins.push([`${g>=tg?"✓ ":""}${g} of ${tg} glasses`,g>=tg?1:0]);
@@ -3457,21 +3478,21 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const anchor=box.querySelector(":scope > .zn-review")||box.querySelector(":scope > .zn-hero"); if(anchor) anchor.after(c); else box.append(c); }
   // Nov 9 (Today as the spine): "Next up" — the one next thing, with one action. A picked task in progress ("Now"), else the next thing on
   // the clock (a meeting with its prep, a placed task, an event), else the first picked task with no slot. Nothing to show = no card.
-  function znNextUp(){ const n=nowH(), T=TODAY(); const PK=(()=>{ const D3=parseDay(); const done3=new Set(listOf("Top 3 Done").map(x=>x.toLowerCase())); const picks=[...D3.tasks.map(t=>({title:t.title})),...D3.untimed.map(u=>({title:u.title})),...D3.unplaced.map(u=>({title:u.replace(/\s*\(it comes after a step that didn't fit\)$/i,"")})),...(typeof extraPicks==="function"?extraPicks(D3):[]).map(x=>({title:x}))]; return {picks,done3}; })();
+  function znNextUp(){ const n=nowH(), T=TODAY(); const PK=(()=>{ const D3=parseDay(); const done3=znDone3(); const picks=[...D3.tasks.map(t=>({title:t.title})),...D3.untimed.map(u=>({title:u.title})),...D3.unplaced.map(u=>({title:u.replace(/\s*\(it comes after a step that didn't fit\)$/i,"")})),...(typeof extraPicks==="function"?extraPicks(D3):[]).map(x=>({title:x}))]; return {picks,done3}; })();
     const isD=t=>PK.done3.has(String(t||"").toLowerCase()); const items=risoItems().filter(x=>x.e>n).sort((a,b)=>a.s-b.s);
     const cur=items.find(x=>x.k==="focus"&&x.s<=n&&!isD(x.name)); const nxt=items.find(x=>x.s>n&&!(x.k==="focus"&&isD(x.name))); const loose=PK.picks.find(p=>!isD(p.title)&&!items.some(x=>x.k==="focus"&&String(x.name).toLowerCase()===p.title.toLowerCase()));
     const c=znCard("zn-nextup",""); const k=el("p","zn-nuk"); const h=el("h2","zn-nut"); const sub=el("p","zn-nus"); const acts=el("div","zn-nuacts"); c.append(k,h,sub,acts);
     const btn=(t,dark,fn)=>{ const b=el("button","zn-pill"+(dark?" zn-dark":""),t); b.type="button"; b.addEventListener("click",()=>fn(b)); acts.append(b); return b; };
-    const twin=t=>(LIST||[]).find(i=>String(i.name||"").toLowerCase()===String(t||"").toLowerCase());
+    const twin=t=>znPickTask(t);
     const done=async(title,b)=>{ b.disabled=true; try{ await setInList("Top 3 Done",title,true,"\n"); syncListDone(title,true); renderWeekday(); znRender(); }catch(e){ toast(writeErr(e)); b.disabled=false; } };
-    if(cur){ k.textContent=`Now · until ${hToLabel(cur.e)}`; h.textContent=cur.name; const it=twin(cur.name); sub.textContent=[`${znDur(Math.max(1,Math.round((cur.e-n)*60)))} left`,it&&it.energy==="Deep"?"Deep work":"",it&&it.project?it.project:""].filter(Boolean).join(" · "); btn("Done",true,b=>done(cur.name,b)); if(it) btn("Open",false,b=>openListItem(it,b)); return c; }
+    if(cur){ k.textContent=`Now · until ${hToLabel(cur.e)}`; h.textContent=cur.name; const it=twin(cur.name); sub.textContent=[`${znDur(Math.max(1,Math.round((cur.e-n)*60)))} left`,it&&it.energy==="Deep"?"Deep work":"",it&&it.project?it.project:""].filter(Boolean).join(" · "); btn("Done",true,b=>done(cur.name,b)); btn("Open",false,b=>znOpenPick(cur.name,b)); return c; }
     if(nxt){ const mins=Math.round((nxt.s-n)*60); k.textContent=`Next up · in ${znDur(mins)}`; const nm=String(nxt.name).replace(/^💼\s*/,""); h.textContent=nm;
       if(nxt.k==="work"){ const p=znPrepFor(T,nm); sub.textContent=[hToLabel(nxt.s),znDur(Math.round((nxt.e-nxt.s)*60)),p&&p.prep&&p.prep.summary?"Alice’s prep: "+p.prep.summary.split(/(?<=\.)\s/)[0]:""].filter(Boolean).join(" · "); if(p) btn("Open the prep",true,b=>znPrepSheet(p,b,`Today ${hToLabel(nxt.s)}`)); }
-      else if(nxt.k==="focus"){ const it=twin(nxt.name); sub.textContent=[`${hToLabel(nxt.s)}–${hToLabel(nxt.e)}`,it&&it.est?znDur(it.est):"",it&&it.energy==="Deep"?"Deep":""].filter(Boolean).join(" · "); if(it) btn("Open",true,b=>openListItem(it,b)); btn("Done already",false,b=>done(nxt.name,b)); }
+      else if(nxt.k==="focus"){ const it=twin(nxt.name); sub.textContent=[`${hToLabel(nxt.s)}–${hToLabel(nxt.e)}`,it&&it.est?znDur(it.est):"",it&&it.energy==="Deep"?"Deep":""].filter(Boolean).join(" · "); btn("Open",true,b=>znOpenPick(nxt.name,b)); btn("Done already",false,b=>done(nxt.name,b)); }
       else sub.textContent=[hToLabel(nxt.s),nxt.e-nxt.s>=0.5?`until ${hToLabel(nxt.e)}`:""].filter(Boolean).join(" · ");
       if(loose&&mins>=30){ const it=twin(loose.title); const m=el("p","zn-numore"); m.textContent=`Until then: ${loose.title}${it&&it.est?" · "+znDur(it.est):""}`; c.insertBefore(m,acts); if(it&&calOK()) btn("Place it",false,b=>openScheduleSheet(it,b)); }
       return c; }
-    if(loose){ const it=twin(loose.title); k.textContent="Next up"; h.textContent=loose.title; sub.textContent=[it&&it.est?znDur(it.est):"",it&&it.energy==="Deep"?"Deep":"","no slot yet"].filter(Boolean).join(" · "); btn("Done",true,b=>done(loose.title,b)); if(it&&calOK()) btn("Place it",false,b=>openScheduleSheet(it,b)); if(it) btn("Open",false,b=>openListItem(it,b)); return c; }
+    if(loose){ const it=twin(loose.title); k.textContent="Next up"; h.textContent=loose.title; sub.textContent=[it&&it.est?znDur(it.est):"",it&&it.energy==="Deep"?"Deep":"","no slot yet"].filter(Boolean).join(" · "); btn("Done",true,b=>done(loose.title,b)); if(it&&calOK()) btn("Place it",false,b=>openScheduleSheet(it,b)); btn("Open",false,b=>znOpenPick(loose.title,b)); return c; }
     return null; }
   // Nov 9 (phase 3, desktop phase one): at 1200px and wider the Today tab is three columns — the spine, the Plan list (capacity strip,
   // search, filters, groups), and whatever is selected as a side panel instead of a sheet. Narrower screens are untouched.
@@ -3500,14 +3521,14 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const q=open.filter(it=>it.focus===T1||it.due===T1||(it.sched&&it.sched.slice(0,10)===T1)).sort((a,b)=>(a.sched||"9").localeCompare(b.sched||"9")||(b.star?1:0)-(a.star?1:0));
       sec.append(el("p","zn-dpk",`${dn} · lined up`)); if(q.length) q.slice(0,4).forEach(it=>{ shown.add(it.id); sec.append(row(it)); }); else sec.append(el("p","zn-dpe",`Nothing picked for ${dn} yet.`));
       const a=el("div","zn-dpacts"); const pb=el("button","zn-pill zn-dark",`Plan ${dn}`); pb.type="button"; pb.addEventListener("click",()=>znPlanTomorrow(pb)); a.append(pb); sec.append(a); c.append(sec); return; }
-    let picks=[], done3=new Set(); const pickAt={}; try{ const D3=parseDay(); D3.tasks.forEach(t=>{ if(t&&t.r&&t.title) pickAt[String(t.title).toLowerCase()]=t.r; }); done3=new Set(listOf("Top 3 Done").map(x=>x.toLowerCase())); picks=[...D3.tasks.map(t=>t.title),...D3.untimed.map(u=>u.title),...D3.unplaced.map(u=>u.replace(/\s*\(it comes after a step that didn't fit\)$/i,"")),...(typeof extraPicks==="function"?extraPicks(D3):[])].filter(t=>t&&!done3.has(String(t).toLowerCase())); }catch(e){}
-    const byName=t=>open.find(i=>String(i.name).toLowerCase()===String(t).toLowerCase()); const q=[]; const add=it=>{ if(it&&!q.includes(it)) q.push(it); };
+    let picks=[], done3=new Set(); const pickAt={}; try{ const D3=parseDay(); D3.tasks.forEach(t=>{ if(t&&t.r&&t.title) pickAt[String(t.title).toLowerCase()]=t.r; }); done3=znDone3(); picks=[...D3.tasks.map(t=>t.title),...D3.untimed.map(u=>u.title),...D3.unplaced.map(u=>u.replace(/\s*\(it comes after a step that didn't fit\)$/i,"")),...(typeof extraPicks==="function"?extraPicks(D3):[])].filter(t=>t&&!done3.has(String(t).toLowerCase())); }catch(e){}
+    const byName=t=>{ const it=znPickTask(t); return it&&open.includes(it)?it:null; }; const q=[]; const add=it=>{ if(it&&!q.includes(it)) q.push(it); };
     picks.forEach(t=>add(byName(t))); open.filter(it=>it.sched&&it.sched.slice(0,10)===T).sort((a,b)=>a.sched.localeCompare(b.sched)).forEach(add); open.filter(it=>it.due&&it.due<=T).sort((a,b)=>a.due.localeCompare(b.due)).forEach(add); open.filter(it=>it.star||it.focus===T).forEach(add);
     sec.append(el("p","zn-dpk","Up next")); if(!q.length){ sec.append(el("p","zn-dpe","Nothing picked or due today. Everything open is in the Plan list.")); c.append(sec); return; }
     const at=it=>{ const r=pickAt[String(it.name).toLowerCase()]; return r&&!(it.sched&&it.sched.slice(0,10)===T)?`🎯 ${hToLabel(r.start)}–${hToLabel(r.end)}`:""; };
     const top=q[0]; shown.add(top.id); sec.append(el("h2","zn-dpt",top.name),el("p","zn-dps",[at(top),meta(top)].filter(Boolean).join(" · ")||"no date")); const a=el("div","zn-dpacts");
     const btn=(t,dark,fn)=>{ const b=el("button","zn-pill"+(dark?" zn-dark":""),t); b.type="button"; b.addEventListener("click",()=>fn(b)); a.append(b); return b; };
-    btn("Done",true,async b=>{ b.disabled=true; try{ if(picks.some(t=>String(t).toLowerCase()===String(top.name).toLowerCase())){ await setInList("Top 3 Done",top.name,true,"\n"); syncListDone(top.name,true); } else await setDone(top,true); try{ znPlanRender(); }catch(e){} try{ renderWeekday(); }catch(e){} try{ znRender(); }catch(e){} }catch(e){ toast(writeErr(e)); b.disabled=false; } });
+    btn("Done",true,async b=>{ b.disabled=true; try{ const pt=picks.find(t=>{ const p=znPickTask(t); return p&&p.id===top.id; }); if(pt){ await setInList("Top 3 Done",pt,true,"\n"); syncListDone(pt,true); } else await setDone(top,true); try{ znPlanRender(); }catch(e){} try{ renderWeekday(); }catch(e){} try{ znRender(); }catch(e){} }catch(e){ toast(writeErr(e)); b.disabled=false; } });
     if(calOK()&&!(top.sched&&top.sched.slice(0,10)>=T)) btn("Place it",false,b=>openScheduleSheet(top,b)); btn("Open",false,b=>openListItem(top,b)); sec.append(a);
     const more=q.slice(1,3); if(more.length){ sec.append(el("p","zn-dpk2","After that")); more.forEach(it=>{ shown.add(it.id); sec.append(row(it,[at(it),meta(it)].filter(Boolean).join(" · "))); }); } c.append(sec); }
   function znDeskWaiting(c,shown){ const T=TODAY(); const L=(LIST||[]).filter(it=>it.status==="Open"&&!(it.snooze&&it.snooze>T)); const rows=[];
@@ -3567,8 +3588,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // as it passes, with what it is and the one action beside it. Violet-to-pink ombré for a meeting or event, pink-to-gold for a picked
   // task, mint-to-teal for open time; at night the galaxy band counts down the evening. Tap the ring for the whole day as the old dial.
   function znTimerState(items,n){ const T=TODAY(); const fmt=m=>{ m=Math.max(0,Math.round(m)); return m>=60?`${Math.floor(m/60)}:${String(m%60).padStart(2,"0")}`:String(m); };
-    let PK={picks:[],done3:new Set()}; try{ const D3=parseDay(); PK={done3:new Set(listOf("Top 3 Done").map(x=>x.toLowerCase())),picks:[...D3.tasks.map(t=>({title:t.title})),...D3.untimed.map(u=>({title:u.title})),...D3.unplaced.map(u=>({title:u.replace(/\s*\(it comes after a step that didn't fit\)$/i,"")})),...(typeof extraPicks==="function"?extraPicks(D3):[]).map(x=>({title:x}))]}; }catch(e){}
-    const isD=t=>PK.done3.has(String(t||"").toLowerCase()); const twin=t=>(LIST||[]).find(i=>String(i.name||"").toLowerCase()===String(t||"").toLowerCase());
+    let PK={picks:[],done3:new Set()}; try{ const D3=parseDay(); PK={done3:znDone3(),picks:[...D3.tasks.map(t=>({title:t.title})),...D3.untimed.map(u=>({title:u.title})),...D3.unplaced.map(u=>({title:u.replace(/\s*\(it comes after a step that didn't fit\)$/i,"")})),...(typeof extraPicks==="function"?extraPicks(D3):[]).map(x=>({title:x}))]}; }catch(e){}
+    const isD=t=>PK.done3.has(String(t||"").toLowerCase()); const twin=t=>znPickTask(t);
     const done=async(title,b)=>{ b.disabled=true; try{ await setInList("Top 3 Done",title,true,"\n"); syncListDone(title,true); renderWeekday(); znRender(); }catch(e){ toast(writeErr(e)); b.disabled=false; } };
     const live=items.filter(x=>x.e>n).sort((a,b)=>a.s-b.s); const curT=live.find(x=>x.k==="focus"&&x.s<=n&&!isD(x.name)); const curM=live.find(x=>x.k!=="focus"&&x.s<=n&&(x.e-x.s)<=5);
     const cur=(curM&&curM.k==="work")?curM:(curT||curM); const nxt=live.find(x=>x.s>n&&!(x.k==="focus"&&isD(x.name)));
@@ -3603,7 +3624,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     if(lb!=null&&on("leave")) return `Leave by ${tl(lb)}.`;
     const busy=live.filter(x=>x.k!=="focus"&&(x.e-x.s)<=5).map(x=>({s:Math.max(x.s,n),e:x.e})); const runs=[]; busy.forEach(x=>{ const r=runs[runs.length-1]; if(r&&x.s-r.e<0.25) r.e=Math.max(r.e,x.e); else runs.push({s:x.s,e:x.e}); });
     const run=on("nobreak")?runs.find(r=>r.e-r.s>=2.5&&r.s-n<=3):null; if(run){ if(run.s>n+0.1) return `No break from ${tl(run.s)} to ${tl(run.e)}.${run.s<=13.5&&run.e>=12.75?` Eat before ${tl(run.s)}.`:""}`; return `No break until ${tl(run.e)}.`; }
-    if(on("fit")&&!wkDay()&&n<15.5){ try{ const D3=parseDay(); const done3=new Set(listOf("Top 3 Done").map(x=>x.toLowerCase())); const picks=[...D3.tasks.map(t=>t.title),...D3.untimed.map(u=>u.title),...(typeof extraPicks==="function"?extraPicks(D3):[])].filter(t=>!done3.has(String(t).toLowerCase())); const need=picks.reduce((a,t)=>{ const it=(LIST||[]).find(i=>String(i.name||"").toLowerCase()===String(t).toLowerCase()); return a+((it&&it.est)||30); },0);
+    if(on("fit")&&!wkDay()&&n<15.5){ try{ const D3=parseDay(); const done3=znDone3(); const picks=[...D3.tasks.map(t=>t.title),...D3.untimed.map(u=>u.title),...(typeof extraPicks==="function"?extraPicks(D3):[])].filter(t=>!done3.has(String(t).toLowerCase())); const need=picks.reduce((a,t)=>{ const it=(LIST||[]).find(i=>String(i.name||"").toLowerCase()===String(t).toLowerCase()); return a+((it&&it.est)||30); },0);
         let open=0, t0=Math.max(n,WORK_H.from); busy.filter(x=>x.s<WORK_H.to).forEach(x=>{ if(x.s>t0) open+=(x.s-t0)*60; t0=Math.max(t0,x.e); }); if(WORK_H.to>t0) open+=(WORK_H.to-t0)*60;
         if(picks.length&&need>open+20) return `Your picks need about ${znDur(need)} and ${open>=1?znDur(Math.round(open)):"no time"} is open. Move one to tomorrow.`; }catch(e){} }
     try{ const set=SUN.set; const away=typeof BD_AWAY!=="undefined"&&BD_AWAY&&BD_AWAY.away; if(on("sunset")&&set&&!away&&n<set-.75&&set-n<=3&&walksTodayAll().length===0) return `Sunset is ${hToLabel(set)}. Walk Birdie before ${tl(Math.floor((set-.5)*2)/2)}.`; }catch(e){}
@@ -3713,8 +3734,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const line=(ic,name,sub,right,go)=>{ const r=el(opts.rowsAsButtons?"button":"div","zn-prow2"); if(opts.rowsAsButtons) r.type="button"; r.innerHTML=`<span class="zn-pic2">${ic}</span><span class="zn-rtx"><b>${znEsc(name)}</b>${sub?`<span>${znEsc(sub)}</span>`:""}</span>${right?`<span class="zn-ptime">${znEsc(right)}</span>`:""}`; if(go) r.addEventListener("click",go); c.append(r); return r; };
     if(meets.length){ sec("Meetings"); meets.forEach((m,i)=>{ const nm=String(m.name).replace(/^💼\s*/,""); const r=line("💼",nm,i===0?"first of the day":b2b.includes(i)?"straight after the last one":"",`${hToLabel(m.s)}–${hToLabel(m.e)}`); try{ const ch=znPrepChip(T1,nm,`${DAYS_LONG[d1.getUTCDay()]} ${hToLabel(m.s)}`); if(ch){ if(r.tagName==="BUTTON"){ const sp=el("span","zn-prepchip","✨ Prep"); r.querySelector(".zn-rtx").append(sp); r.addEventListener("click",()=>znPrepSheet(znPrepFor(T1,nm),r,`${DAYS_LONG[d1.getUTCDay()]} ${hToLabel(m.s)}`)); } else r.querySelector(".zn-rtx").append(ch); } }catch(e){} }); } /* Nov 2: prep chips */
     if(evs.length){ sec("Also"); evs.forEach(e=>line("📅",String(e.name).replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,""),"",e.s!=null?hToLabel(e.s):"")); }
-    if(due.length){ sec("Due tomorrow"); due.slice(0,5).forEach(it=>line(AREA_IC[it.area]||"✓",it.name,it.area||"",it.star?"★":"")); }
-    sec("Tomorrow’s Top 3"); if(top.length){ top.slice(0,3).forEach((x,i)=>line(String(i+1),x,"","")); } else c.append(el("p","zn-empty","Nothing picked yet."));
+    if(due.length){ sec("Due tomorrow"); due.slice(0,5).forEach(it=>{ const r=line(AREA_IC[it.area]||"✓",it.name,it.area||"",it.star?"★":""); r.classList.add("zn-prowgo"); r.addEventListener("click",()=>openListItem(it,r)); }); }
+    sec("Tomorrow’s Top 3"); if(top.length){ top.slice(0,3).forEach((x,i)=>{ const r=line(String(i+1),znPickName(x,T1),"",""); r.classList.add("zn-prowgo"); r.addEventListener("click",()=>znOpenPick(x,r,T1)); }); } else c.append(el("p","zn-empty","Nothing picked yet."));
     const pk=el("button","zn-pill zn-dark",top.length?"Change the Top 3":"Pick the Top 3"); pk.type="button"; pk.disabled=!mcp||!LIVE; pk.addEventListener("click",()=>znPickTop3(T1,due,pk)); c.append(pk);
     if(!meets.length&&!evs.length&&!due.length) c.append(el("p","zn-empty",`A clear ${DAYS_LONG[d1.getUTCDay()]}. The brief lands at ${PERSON&&PERSON.person==="victoria"?"4:15am":"4:30am"}.`));
     return c; }
@@ -4044,7 +4065,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     try{ practiceDefs().forEach(d=>{ const v=pval(ROW,d); if(d.type==="sit"&&v>0) items.push({ic:"sit",l:`Sit · ${v} min`,act:()=>openTile(d.k)||$("#tab-you").click()}); else if(d.type==="check"&&v) items.push({ic:"check",l:d.name,act:()=>openTile(d.k)||$("#tab-you").click()}); else if(d.type==="count"&&v>=(pTarget(d)||1)) items.push({ic:MAP[d.icon]||"check",l:`${d.name} · ${v} ${d.unit||""}`.trim(),act:()=>openTile(d.k)||$("#tab-you").click()}); else if(d.type==="taper"&&v&&v.took) items.push({ic:"pill",l:d.name,act:()=>openTile(d.k)||$("#tab-you").click()}); }); }catch(e){}
     try{ const g=typeof gita==="function"&&readingOn("gita")?gita():null; if(g&&g.n&&gitaReadN()>=g.n) items.push({ic:"sit",l:`Gita · day ${g.n}`,act:(b)=>znOpenReading("gita",b)}); }catch(e){}
     try{ const R=readingOn("recovery")?znJSON(ROW&&((ROW.__raw&&ROW.__raw.Recovery)||ROW.Recovery)):null; const rn=parseInt(clean(ROW["Recovery Read"]).trim())||0; if(R&&rn>=R.n){ items.push({ic:"book",l:`Reading · day ${R.n}`,go:"recov"}); box.querySelectorAll(".zn-recov").forEach(c=>c.classList.add("zn-folded")); } }catch(e){}
-    try{ const D3=parseDay(); const picks=D3.tasks||[]; const done3=new Set(listOf("Top 3 Done").map(x=>x.toLowerCase())); const dn=picks.filter(x=>done3.has(String(x.title||x).toLowerCase())).length; if(dn){ items.push({ic:"target",l:`${dn} of ${picks.length} Top 3`,go:"top"}); if(dn>=picks.length) box.querySelectorAll(".zn-top").forEach(c=>c.classList.add("zn-folded")); } }catch(e){}
+    try{ const D3=parseDay(); const picks=D3.tasks||[]; const done3=znDone3(); const dn=picks.filter(x=>done3.has(String(x.title||x).toLowerCase())).length; if(dn){ items.push({ic:"target",l:`${dn} of ${picks.length} Top 3`,go:"top"}); if(dn>=picks.length) box.querySelectorAll(".zn-top").forEach(c=>c.classList.add("zn-folded")); } }catch(e){}
     try{ const w=walksOf(ROW).length; if(w) items.push({ic:"paw",l:`Birdie · ${w} walk${w===1?"":"s"}`,go:"birdie"}); }catch(e){}
     if(!items.length) return;
     const ds=znCard("zn-donestrip","","Done today"); ds.innerHTML=`<div class="zn-h"><span class="zn-ht">Done today</span><span class="zn-hr">${items.length} thing${items.length===1?"":"s"} · tap to open</span></div>`; const wrap=el("div","zn-dchips");
@@ -4169,14 +4190,14 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     else box.append(row);
     if(!night){
     // ---------- top three ----------
-    const D3=parseDay(); const done3=new Set(listOf("Top 3 Done").map(x=>x.toLowerCase()));
+    const D3=parseDay(); const done3=znDone3();
     const picks=[...D3.tasks.map(t3=>({title:t3.title,sub:`${fmtH(t3.r.start)}–${fmtH(t3.r.end)}`})),...D3.untimed.map(u=>({title:u.title,sub:u.note||""})),...D3.unplaced.map(u=>({title:u.replace(/\s*\(it comes after a step that didn't fit\)$/i,""),sub:"no clean window today"})),...(typeof extraPicks==="function"?extraPicks(D3):[]).map(x=>({title:x,sub:""}))].slice(0,5);
     if(picks.length&&!wk||!wk){ const dn=picks.filter(x=>done3.has(x.title.toLowerCase())).length; const top=znCard("zn-top","","Top three");
       top.innerHTML=znH("Top 3",picks.length?`${dn} of ${picks.length}`:"nothing picked yet");
       if(!picks.length){ const b=el("button","zn-btn","Pick today’s Top 3"); b.type="button"; b.disabled=!mcp; b.addEventListener("click",()=>openPickToday(b)); top.append(b); }
       picks.forEach(x=>{ const isD=done3.has(x.title.toLowerCase()); const r=el("div","zn-chk"+(isD?" done":"")); const cb=el("button","zn-cb",isD?"✓":""); cb.type="button"; cb.disabled=!mcp; cb.setAttribute("aria-pressed",String(isD)); cb.setAttribute("aria-label",(isD?"Undo: ":"Done: ")+x.title);
         cb.addEventListener("click",async()=>{ cb.disabled=true; if(!isD) cb.textContent="✓"; try{ await setInList("Top 3 Done",x.title,!isD,"\n"); syncListDone(x.title,!isD); renderWeekday(); znRender(); }catch(e){ toast(writeErr(e)); cb.disabled=false; } });
-        const tx=el("span","zn-ct"); tx.append(el("b",null,x.title)); { const it=(LIST||[]).find(i=>String(i.name||"").toLowerCase()===String(x.title||"").toLowerCase()); if(it){ tx.style.cursor="pointer"; tx.setAttribute("role","button"); tx.tabIndex=0; tx.setAttribute("aria-label",`Edit ${x.title}`); tx.addEventListener("click",()=>znEditTask(it,tx)); } } if(x.sub) tx.append(el("span",null,x.sub)); r.append(cb,tx); top.append(r); });
+        const tx=el("span","zn-ct"); tx.append(el("b",null,x.title)); { const it=znPickTask(x.title); if(it){ tx.style.cursor="pointer"; tx.setAttribute("role","button"); tx.tabIndex=0; tx.setAttribute("aria-label",`Edit ${x.title}`); tx.addEventListener("click",()=>znEditTask(it,tx)); } } if(x.sub) tx.append(el("span",null,x.sub)); r.append(cb,tx); top.append(r); });
       window.__znPicks={picks,done3}; /* Nov 11: weekends use the timeline too, so the separate Top 3 card is gone everywhere */ } else window.__znPicks={picks,done3}; }
 
     if(!night){
@@ -4188,25 +4209,25 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const nMeet=items.filter(x=>x.k==="work").length; const openTxt=openMin>=60?`${Math.round(openMin/30)/2}h open`:openMin?`${openMin}m open`:"no open time";
     const day=znCard("zn-day"+(SP?" zn-spine":""),"",SP?"Your day":"The day"); day.innerHTML=znH(SP?"Your day":"The day",SP?[PK.picks.length?`${PK.picks.length} picked`:"nothing picked",nMeet?`${nMeet} meeting${nMeet===1?"":"s"}`:"",openTxt].filter(Boolean).join(" · "):(openMin>=60?`${Math.round(openMin/30)/2} open hours`:openMin?`${openMin} min open`:"no open time"))+`<div class="zn-strip">${strip}</div>`+(ZN_BACKS.length?`<p class="zn-allday"><b>All day</b> ${ZN_BACKS.map(x=>`${znEsc(String(x.name).replace(/^💼\s*/,""))} · ${hToLabel(x.s)}–${hToLabel(x.e)}`).join(" · ")}<span> · planned around, not counted as busy</span></p>`:"");
     const toggle3=async(title,isD,cb)=>{ cb.disabled=true; if(!isD) cb.textContent="✓"; try{ await setInList("Top 3 Done",title,!isD,"\n"); syncListDone(title,!isD); renderWeekday(); znRender(); }catch(e){ toast(writeErr(e)); cb.disabled=false; } };
-    const taskBits=(title)=>{ const isD=isDone3(title); const cb=el("button","zn-cb",isD?"✓":""); cb.type="button"; cb.disabled=!mcp; cb.setAttribute("aria-pressed",String(isD)); cb.setAttribute("aria-label",(isD?"Undo: ":"Done: ")+title); cb.addEventListener("click",e=>{ e.stopPropagation(); toggle3(title,isD,cb); }); const it=(LIST||[]).find(i=>String(i.name||"").toLowerCase()===String(title||"").toLowerCase()); return {isD,cb,it}; };
+    const taskBits=(title)=>{ const isD=isDone3(title); const cb=el("button","zn-cb",isD?"✓":""); cb.type="button"; cb.disabled=!mcp; cb.setAttribute("aria-pressed",String(isD)); cb.setAttribute("aria-label",(isD?"Undo: ":"Done: ")+title); cb.addEventListener("click",e=>{ e.stopPropagation(); toggle3(title,isD,cb); }); const it=znPickTask(title); return {isD,cb,it}; };
     const riv=el("div","zn-riv"); const eveCut=n<15?17:99; let prev=n;
     const gapRow=(a,b)=>{ const m=Math.round((b-a)*60); if(m<45) return; const fn=(typeof znFitCands==="function")?(()=>{ try{ const c=znFitCands(m); return c&&c[0]?c[0].name:""; }catch(e){ return ""; } })():""; const g=el("button","zn-gap",fn?`${znDur(m)} open · ${fn.length>34?fn.slice(0,32)+"…":fn} fits · Place`:`${znDur(m)} open · place a task here`); g.type="button"; g.disabled=!calOK(); g.addEventListener("click",()=>znPlace(a,b,g)); const rw=el("div","zn-rr zn-rgap"); rw.append(el("span","zn-rt",""),el("span","zn-rl"),g); riv.append(rw); };
     if(SP){ // Nov 9: what already happened today stays visible, dimmed, above a "now" line
-      items.filter(x=>x.e<=n&&x.s>=6).sort((a,b)=>a.s-b.s).forEach(x=>{ const rw=el("div","zn-rr zn-past"); const ln=el("span","zn-rl"); const di=el("i"); di.style.background=znCol(x.k); ln.append(di); const cd=el("div","zn-rc zn-rcflat"); if(x.k==="focus"){ const tb=taskBits(x.name); if(tb.isD) cd.classList.add("zn-done"); const row=el("span","zn-rtask"); row.append(tb.cb,el("b",null,x.name)); cd.append(row); if(!tb.isD) cd.append(el("span",null,"slipped · still open")); } else cd.append(el("b",null,x.name)); rw.append(el("span","zn-rt",fmtH(x.s)),ln,cd); riv.append(rw); });
+      items.filter(x=>x.e<=n&&x.s>=6).sort((a,b)=>a.s-b.s).forEach(x=>{ const rw=el("div","zn-rr zn-past"); const ln=el("span","zn-rl"); const di=el("i"); di.style.background=znCol(x.k); ln.append(di); const cd=el("div","zn-rc zn-rcflat"); if(x.k==="focus"){ const tb=taskBits(x.name); if(tb.isD) cd.classList.add("zn-done"); const row=el("span","zn-rtask"); row.append(tb.cb,znPickLabel(x.name)); cd.append(row); if(!tb.isD) cd.append(el("span",null,"slipped · still open")); } else cd.append(el("b",null,x.name)); rw.append(el("span","zn-rt",fmtH(x.s)),ln,cd); riv.append(rw); });
       const nl=el("div","zn-nowline"); nl.setAttribute("aria-label","Now, "+fmtH(n)); nl.append(el("span",null,"now · "+fmtH(n))); riv.append(nl); }
     const fitName=(a,b)=>{ try{ const c=znFitCands(Math.round((b-a)*60)); return c&&c[0]?c[0].name:""; }catch(e){ return ""; } };
     const later=[]; ahead.forEach(x=>{ if(x.s>=eveCut&&!ZN_EVE_OPEN){ later.push(x); return; } if(x.s>prev) gapRow(Math.max(prev,8),x.s); const isNow=x.s<=n&&x.e>n;
       const rw=el("div","zn-rr"+(isNow?" now":"")); const tm=el("span","zn-rt",isNow?"now":fmtH(x.s)); const ln=el("span","zn-rl"); const dotI=el("i"); dotI.style.background=znCol(x.k); ln.append(dotI);
       const cd=el("div","zn-rc"+(SP?" zn-rcflat":"")); if(!SP){ cd.style.background=znCol(x.k); cd.style.color=znFg(x.k); }
       const sub=isNow?`${znDur(Math.max(1,Math.round((x.e-n)*60)))} left`:x.k==="us"?`together · until ${hToLabel(x.e)}`:x.e-x.s>=1.5?`until ${hToLabel(x.e)}`:(SP?znDur(Math.round((x.e-x.s)*60)):"");
-      if(SP&&x.k==="focus"){ const tb=taskBits(x.name); if(tb.isD) cd.classList.add("zn-done"); const row=el("span","zn-rtask"); const nm=el("b",null,x.name); if(tb.it){ nm.style.cursor="pointer"; nm.setAttribute("role","button"); nm.tabIndex=0; nm.addEventListener("click",()=>openListItem(tb.it,nm)); } row.append(tb.cb,nm); cd.append(row); cd.append(el("span",null,[`until ${hToLabel(x.e)}`,tb.it&&tb.it.est?znDur(tb.it.est):"",tb.it&&tb.it.energy==="Deep"?"Deep":""].filter(Boolean).join(" · "))); }
+      if(SP&&x.k==="focus"){ const tb=taskBits(x.name); if(tb.isD) cd.classList.add("zn-done"); const row=el("span","zn-rtask"); row.append(tb.cb,znPickLabel(x.name)); cd.append(row); cd.append(el("span",null,[`until ${hToLabel(x.e)}`,tb.it&&tb.it.est?znDur(tb.it.est):"",tb.it&&tb.it.energy==="Deep"?"Deep":""].filter(Boolean).join(" · "))); }
       else { cd.append(el("b",null,x.name)); if(sub) cd.append(el("span",null,sub)); if(SP&&x.k==="work"){ try{ const ch=znPrepChip(TODAY(),String(x.name).replace(/^💼\s*/,""),`Today ${hToLabel(x.s)}`); if(ch) cd.append(ch); }catch(e){} } }
       rw.append(tm,ln,cd); riv.append(rw); prev=Math.max(prev,x.e); });
     if(later.length){ const b=el("button","zn-evebtn"); b.type="button"; b.setAttribute("aria-expanded","false"); b.innerHTML=`<span>${later.map(x=>`${znEsc(shortName(x.name))} ${znEsc(hToLabel(x.s))}`).join(" · ")}</span><span aria-hidden="true">▾</span>`; b.addEventListener("click",()=>{ ZN_EVE_OPEN=true; znRender(); }); const rw=el("div","zn-rr"); const ln=el("span","zn-rl"); const di=el("i"); di.style.background=ZC.pnk; ln.append(di); rw.append(el("span","zn-rt","eve"),ln,b); riv.append(rw); }
     if(ZN_EVE_OPEN&&ahead.some(x=>x.s>=eveCut)){ const c=el("button","zn-evebtn zn-evelss"); c.type="button"; c.setAttribute("aria-expanded","true"); c.innerHTML=`<span>Show less</span><span aria-hidden="true">▴</span>`; c.addEventListener("click",()=>{ ZN_EVE_OPEN=false; znRender(); }); const rw=el("div","zn-rr"); rw.append(el("span","zn-rt",""),el("span","zn-rl"),c); riv.append(rw); } // Oct 25: the evening fold closes again
     if(!ahead.length) riv.append(el("p","zn-empty","Nothing else on the clock today."));
     if(SP){ // picked but not on the clock yet
-      const timed=new Set(items.filter(x=>x.k==="focus").map(x=>String(x.name).toLowerCase())); PK.picks.filter(p=>!timed.has(p.title.toLowerCase())).forEach(p=>{ const tb=taskBits(p.title); const rw=el("div","zn-rr zn-unslot"); const ln=el("span","zn-rl"); const di=el("i"); di.style.background=znCol("focus"); ln.append(di); const cd=el("div","zn-rc zn-rcflat"+(tb.isD?" zn-done":"")); const row=el("span","zn-rtask"); const nm=el("b",null,p.title); if(tb.it){ nm.style.cursor="pointer"; nm.setAttribute("role","button"); nm.tabIndex=0; nm.addEventListener("click",()=>openListItem(tb.it,nm)); } row.append(tb.cb,nm); cd.append(row);
+      const timed=new Set(items.filter(x=>x.k==="focus").map(x=>String(x.name).toLowerCase())); PK.picks.filter(p=>!timed.has(p.title.toLowerCase())).forEach(p=>{ const tb=taskBits(p.title); const rw=el("div","zn-rr zn-unslot"); const ln=el("span","zn-rl"); const di=el("i"); di.style.background=znCol("focus"); ln.append(di); const cd=el("div","zn-rc zn-rcflat"+(tb.isD?" zn-done":"")); const row=el("span","zn-rtask"); row.append(tb.cb,znPickLabel(p.title)); cd.append(row);
         const sub=el("span",null,tb.isD?"done":[tb.it&&tb.it.est?znDur(tb.it.est):"",p.sub||"no slot yet"].filter(Boolean).join(" · ")); cd.append(sub); if(!tb.isD&&tb.it&&calOK()){ const pb=el("button","zn-prepchip zn-placechip","Place"); pb.type="button"; pb.addEventListener("click",()=>openScheduleSheet(tb.it,pb)); cd.append(pb); } rw.append(el("span","zn-rt","—"),ln,cd); riv.append(rw); });
       if(!PK.picks.length){ const b=el("button","zn-btn","Pick today’s Top 3"); b.type="button"; b.disabled=!mcp; b.addEventListener("click",()=>openPickToday(b)); const w=el("div","zn-pickrow"); w.append(b); riv.append(w); } }
     day.append(riv);
@@ -4485,7 +4506,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   
   
   // unfinished = today's top 3 tasks (placed or not) that aren't checked off or already moved
-  function unfinishedTasks(){ const D=parseDay(); const done=new Set(listOf("Top 3 Done").map(x=>x.toLowerCase())); const moved=new Set(listOf("Top 3 Moved").map(x=>x.toLowerCase()));
+  function unfinishedTasks(){ const D=parseDay(); const done=znDone3(); const moved=new Set(listOf("Top 3 Moved").map(x=>x.toLowerCase()));
     return [...D.tasks.map(t=>t.title),...D.untimed.map(u=>u.title),...D.unplaced.map(u=>u.replace(/\s*\(it comes after a step that didn't fit\)$/i,"")),...extraPicks(D)].filter(x=>{ if(done.has(x.toLowerCase())||moved.has(x.toLowerCase())) return false; const tw=twinOf(x); return !tw||(tw.owner!=="Alice"&&tw.status!=="Dropped"); }); }
   const tomLines=()=>clean(ROW&&ROW.Tomorrow).split(/\n+/).map(x=>x.replace(/^\s*(\d+[.)]|[-•*])\s*/,"").trim()).filter(x=>x&&!/^none$/i.test(x));
   async function moveTasks(titles){
@@ -5071,7 +5092,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     try{ await mcp.callTool(SERVER,"notion-update-page",{page_id:it.id,command:"update_properties",properties:props,allow_async:false}); rememberLocal(it,patch);
       if(msg) toast(msg,undoProps?async()=>{ await listUpdate(it,undoProps,undoPatch||prev); }:null); return true; }
     catch(e){ Object.assign(it,prev);  toast(writeErr(e)); return false; } }
-  const setDone=(it,on)=>{ if(on&&it.repeat){ const nx=repeatNext(it.repeat,TODAY()); if(nx){ const steps=it.steps?it.steps.split(/\n/).map(l=>l.replace(/^\[x\]\s*/i,"")).join("\n"):"";
+  const setDone0=(it,on)=>{ if(on&&it.repeat){ const nx=repeatNext(it.repeat,TODAY()); if(nx){ const steps=it.steps?it.steps.split(/\n/).map(l=>l.replace(/^\[x\]\s*/i,"")).join("\n"):"";
       return listUpdate(it,{"date:Due:start":nx,"date:Last Done:start":TODAY(),"date:Snooze Until:start":null,...(it.steps?{Steps:steps}:{})},{due:nx,lastDone:TODAY(),snooze:"",...(it.steps?{steps}:{})},`Done. Back ${dueLabel(nx)}`,{"date:Due:start":it.due||null,"date:Last Done:start":it.lastDone||null},{due:it.due,lastDone:it.lastDone}); } }
     // Nov 2 (tasks & planning, step 4): the learning loop. Checking off a task that was placed today records Actual (minutes from its
     // placed start to now, 5 min to 8 h, skipped when it's wildly off the estimate) and turns an engine guess into Learned, so zone-size
@@ -5081,8 +5102,9 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     if(!on&&it.actual){ unlearn.Actual=null; unlearn.actual=0; }
     const nP=o=>Object.fromEntries(Object.entries(o).filter(([k])=>/^[A-Z]/.test(k))), nL=o=>Object.fromEntries(Object.entries(o).filter(([k])=>/^[a-z]/.test(k)));
     return listUpdate(it,on?{Status:"Done","date:Done On:start":TODAY(),...nP(learn)}:{Status:"Open","date:Done On:start":null,...nP(unlearn)},on?{status:"Done",doneOn:TODAY(),...nL(learn)}:{status:"Open",doneOn:"",...nL(unlearn)}); };
+  const setDone=async(it,on)=>{ const r=await setDone0(it,on); if(r) znPickSync(it,on); return r; }; /* Nov 16: a task checked off anywhere checks off its pick */
   // a top 3 task checked off on Today also checks off its twin on the list
-  function syncListDone(title,on){ const it=twinOf(title); if(it&&(it.status==="Open"||it.status==="Done")&&(it.status==="Done")!==on) setDone(it,on); }
+  function syncListDone(title,on){ const it=znPickTask(title)||twinOf(title); if(it&&(it.status==="Open"||it.status==="Done")&&(it.status==="Done")!==on) setDone(it,on); }
   // ---- task model (Oct 16): every top 3 line has a twin on the Zone List, with Focus = the day it's on her top 3 ----
   const bareTitle=t=>String(t||"").replace(/★/g,"").replace(/\s*!{2,}\s*$/,"").trim();
   function twinOf(title){ const nm=bareTitle(title).toLowerCase(); if(!nm) return null; const tasks=LIST.filter(x=>isTask(x)&&x.name);
@@ -5092,6 +5114,36 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     if(it){ if(focus&&it.status==="Open"&&it.focus!==focus&&!String(it.id).startsWith("tmp")) await listUpdate(it,{"date:Focus:start":focus},{focus}); return it; }
     const p=parseCapture(bareTitle(title)); if(!p.name) return null; if(!isTask(p)) p.kind="To-do"; p.focus=focus||"";
     if(!await listCreate(p,"List")) return null; return twinOf(p.name); }
+
+  // ---- Nov 16 (planning, step 3): a pick is its task ----
+  // Today's picks still live as titles on the day's row (Forecast 🎯 lines, Top 3, Tomorrow, Top 3 Done) because the morning engine
+  // reads them, and that format is unchanged. The app treats the List task as the pick: znPickTask finds it (a task whose Focus is that
+  // day, then the title, then the one picked task left over, so a renamed task keeps its pick), a pick counts as done when its task is
+  // done, checking a task off anywhere checks off its pick, renaming a picked task renames it in Tomorrow, and every pick opens.
+  function znPickTitles(){ try{ const D=parseDay(); return [...D.tasks.map(t=>t.title),...D.untimed.map(u=>u.title),...D.unplaced.map(u=>u.replace(/\s*\(it comes after a step that didn't fit\)$/i,"")),...extraPicks(D)].filter(Boolean); }catch(e){ return []; } }
+  function znPickFind(nm,d){ if(!nm||!Array.isArray(LIST)) return null; const tasks=LIST.filter(x=>isTask(x)&&x.name); const low=x=>String(x.name).toLowerCase(); const onDay=tasks.filter(x=>x.focus===d);
+    const near=x=>nm.length>=5&&(low(x).includes(nm)||nm.includes(low(x)));
+    const fresh=x=>x.status!=="Done"||!x.doneOn||x.doneOn>=addDays(TODAY(),-1); /* an old finished task with the same name is not today's pick */
+    return onDay.find(x=>low(x)===nm)||tasks.find(x=>low(x)===nm&&x.status==="Open")||tasks.find(x=>low(x)===nm&&fresh(x))||onDay.find(near)||tasks.find(x=>x.status==="Open"&&near(x))||null; }
+  function znPickTask(title,day){ const d=day||TODAY(); const nm=bareTitle(title).toLowerCase(); if(!nm||!Array.isArray(LIST)) return null;
+    const hit=znPickFind(nm,d); if(hit) return hit;
+    try{ const T=TODAY(); const titles=(d===T?znPickTitles():d===addDays(T,1)?tomLines():[]).map(x=>bareTitle(x).toLowerCase()).filter(Boolean); if(!titles.includes(nm)) return null;
+      const named=t=>LIST.some(x=>isTask(x)&&String(x.name||"").toLowerCase()===t); const left=titles.filter(t=>!znPickFind(t,d)&&!named(t)); if(left.length!==1||left[0]!==nm) return null;
+      const taken=new Set(titles.map(t=>znPickFind(t,d)).filter(Boolean).map(x=>x.id)); const spare=LIST.filter(x=>isTask(x)&&x.name&&x.focus===d&&x.status!=="Dropped"&&!taken.has(x.id));
+      return spare.length===1?spare[0]:null; }catch(e){ return null; } }
+  const znPickIsDone=it=>!!it&&(it.status==="Done"||it.lastDone===TODAY());
+  // the Top 3 Done list, plus every pick whose task is done (checked off in Plan, the task sheet, a swipe or Up next)
+  function znDone3(){ const s=new Set(listOf("Top 3 Done").map(x=>String(x).toLowerCase())); for(const t of znPickTitles()){ if(znPickIsDone(znPickTask(t))){ s.add(String(t).toLowerCase()); s.add(bareTitle(t).toLowerCase()); } } return s; }
+  function znPickName(title,day){ const it=znPickTask(title,day); return it&&it.name?it.name:bareTitle(title)||title; } /* the task's own name, so a rename shows straight away */
+  async function znPickSync(it,on){ try{ if(!ROW||!LIVE||!it||!it.id) return; const t=znPickTitles().find(x=>{ const p=znPickTask(x); return p&&p.id===it.id; }); if(!t) return;
+    const have=listOf("Top 3 Done").some(x=>x.toLowerCase()===String(t).toLowerCase()); if(!!on===have) return; await setInList("Top 3 Done",t,!!on,"\n"); }catch(e){} }
+  async function znPickRename(old,nw){ try{ if(!ROW||!LIVE||!old||!nw) return; const o=bareTitle(old).toLowerCase(); const props={};
+    const swap=field=>{ const raw=clean(ROW[field]); if(!raw) return; let ch=false; const out=raw.split(/\n/).map(l=>{ const m=l.match(/^(\s*(?:\d+[.)]|[-•*])?\s*)(.*)$/); const pre=m?m[1]:"", body=m?m[2]:l; if(bareTitle(body).toLowerCase()!==o) return l; ch=true; return pre+(/★/.test(body)?"★ ":"")+nw+(/!{2,}\s*$/.test(body)?" !!":""); }); if(ch) props[field]=out.join("\n"); };
+    swap("Tomorrow"); /* tomorrow's brief reads it */
+    const D=parseDay(); const fc=[...D.tasks.map(t=>t.title),...D.untimed.map(u=>u.title),...D.unplaced].map(x=>bareTitle(x).toLowerCase()); if(!fc.includes(o)) swap("Top 3"); /* a pick made after the brief; one the brief placed keeps its title so Top 3 Done still matches */
+    if(Object.keys(props).length) await writeToday(props,{silent:true}); }catch(e){} }
+  async function znOpenPick(title,from,day){ let it=znPickTask(title,day); if(!it&&mcp&&LIVE){ try{ it=await ensureTwin(title,day||TODAY()); }catch(e){} } if(it) openListItem(it,from); else toast("Couldn't find that one on your List. Try again in a moment."); }
+  function znPickLabel(title,day){ const nm=el("b","zn-picklink",znPickName(title,day)); nm.setAttribute("role","button"); nm.tabIndex=0; nm.setAttribute("aria-label","Open "+bareTitle(title)); const go=e=>{ e.stopPropagation(); znOpenPick(title,nm,day); }; nm.addEventListener("click",go); nm.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); go(e); } }); return nm; }
   async function twinsFor(titles,focus){ for(const t of titles){ try{ await ensureTwin(t,focus); }catch(e){} } }
   const topField=()=>clean(ROW&&ROW["Top 3"]).split(/\n+/).map(x=>x.replace(/^\s*(\d+[.)]|[-•*])\s*/,"").trim()).filter(x=>x&&!/^none$/i.test(x));
   // today's picks made after the brief (the 6am fallback) live only in the Top 3 field, not the schedule
@@ -5165,7 +5217,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const lockB=el("button","zn-tsico"+(it.priv?" on":""),"🔒"); lockB.type="button"; lockB.setAttribute("aria-label",it.priv?"Private, tap to make it visible to the brief":"Make it private"); lockB.addEventListener("click",async()=>{ await put({Private:it.priv?"__NO__":"__YES__"},{priv:!it.priv},it.priv?"Private · out of the brief and the radio":"Visible to the brief again"); lockB.classList.toggle("on",it.priv); });
     st.append(big,lab,el("span","zn-tssp"),starB,lockB); wrap.append(st);
     // title
-    const ta=el("textarea","zn-tstitle"); ta.rows=1; const taFit=()=>{ ta.style.height="auto"; ta.style.height=Math.max(30,ta.scrollHeight)+"px"; }; ta.addEventListener("input",taFit); setTimeout(taFit,0); setTimeout(taFit,250); /* Nov 10: the title box is as tall as the title */ ta.value=it.name; ta.setAttribute("aria-label","Title"); ta.addEventListener("blur",async()=>{ const name=ta.value.replace(/\s+/g," ").trim(); if(name&&name!==it.name) await put({Name:name},{name}); else if(!name) ta.value=it.name; }); wrap.append(ta);
+    const ta=el("textarea","zn-tstitle"); ta.rows=1; const taFit=()=>{ ta.style.height="auto"; ta.style.height=Math.max(30,ta.scrollHeight)+"px"; }; ta.addEventListener("input",taFit); setTimeout(taFit,0); setTimeout(taFit,250); /* Nov 10: the title box is as tall as the title */ ta.value=it.name; ta.setAttribute("aria-label","Title"); ta.addEventListener("blur",async()=>{ const name=ta.value.replace(/\s+/g," ").trim(); if(name&&name!==it.name){ const old=it.name; if(await put({Name:name},{name})) znPickRename(old,name); } else if(!name) ta.value=it.name; }); wrap.append(ta);
     const sec=(k)=>{ const d=el("div","zn-tssec"); d.append(el("p","zn-tsk",k)); wrap.append(d); return d; };
     const rowsec=(label,subFn)=>{ const r=el("button","zn-tsfold zn-tsrow"); r.type="button"; r.setAttribute("aria-expanded","false"); const val=el("b","zn-tsval"); r.append(el("span","zn-tsrk",label),val,el("span","zn-tsgo","›")); const body=el("div","zn-tssec zn-tsrowbody"); body.hidden=true; body.append(el("p","zn-tsk","")); r.addEventListener("click",()=>{ body.hidden=!body.hidden; r.setAttribute("aria-expanded",String(!body.hidden)); r.classList.toggle("open",!body.hidden); }); wrap.append(r,body); const upd=()=>{ val.textContent=subFn(); }; upd(); return {body,upd}; };
     const chips=(parent,items)=>{ const row=el("div","zn-tschips"); items.forEach(([lab,on,fn,aria])=>{ const c=el("button","zn-chip"+(on?" on":""),lab); c.type="button"; if(aria) c.setAttribute("aria-label",aria); c.setAttribute("aria-pressed",String(!!on)); c.addEventListener("click",()=>fn(c)); row.append(c); }); parent.append(row); return row; };
@@ -5232,7 +5284,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // Oct 18: Alice's desk lives at the bottom of List (tab bar: Today, Ahead, List, You; Us comes next). Set to false to give her a tab again.
   
   function show(view){ if(view==="alice"||view==="list"){ ZN_PLAN.seg=view==="alice"?"waiting":"list"; view="ahead"; } /* Nov 1 (3e): the old List and Alice pages are retired; their homes are Plan → With Alice / All tasks */ if((view==="you"||view==="us")&&typeof znMe==="function"){ setTimeout(()=>{ try{ if(view==="you"){ znMe(); } else { znUs(); znOurShelf(); } }catch(e){ console.error("shelf",e); } },0); } if(view==="ahead"&&typeof znPlanRender==="function"){ setTimeout(()=>{ try{ znPlanRender(); }catch(e){ console.error("plan",e); } },0); }
-  $("#main").classList.toggle("wide",view==="today"&&$("#view-today").classList.contains("spread"));  if(view==="us"){ try{ renderUs(); }catch(e){ console.error("us",e); } } for(const v of VIEWS){ const on=v===view; const n=$("#view-"+v); n.hidden=!on; n.style.display=on?"flex":"none"; $("#tab-"+v).setAttribute("aria-selected",String(on)); } window.scrollTo({top:0}); }
+  $("#main").classList.toggle("wide",view==="today"&&$("#view-today").classList.contains("spread"));  if(view==="us"){ try{ renderUs(); }catch(e){ console.error("us",e); } } for(const v of VIEWS){ const on=v===view; const n=$("#view-"+v); n.hidden=!on; n.style.display=on?"flex":"none"; $("#tab-"+v).setAttribute("aria-selected",String(on)); } if(view==="today"){ try{ if(typeof znDeskSync==="function") znDeskSync(); }catch(e){} } window.scrollTo({top:0}); }
   document.querySelectorAll(".tab[data-view]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.view)));
   document.addEventListener("click",e=>{ const g=e.target.closest("[data-goto]"); if(g) show(g.dataset.goto); });
 
