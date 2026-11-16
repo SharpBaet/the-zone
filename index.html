@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-16.3"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
+<meta name="zone-build" content="2026-11-16.4"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1167,7 +1167,7 @@ body.zn.zn-night .sheet .zn-finsheet .zn-finpass[aria-pressed="true"], body.zn.z
 .zn-wcover{ display:block; width:100%; max-width:96px; border:0; padding:0; background:transparent; color:inherit; cursor:pointer; border-radius:6px 10px 10px 6px; }
 .zn-wslot{ display:block; width:100%; max-width:96px; aspect-ratio:96/140; border-radius:6px 10px 10px 6px; border:1.5px dashed rgba(43,42,51,.45); box-sizing:border-box; }
 .zn-wdet{ border-radius:18px; padding:14px; background:rgba(185,166,245,.24); display:flex; flex-direction:column; gap:8px; margin-top:14px; }
-.zn-wk{ font:700 10.5px/1.2 'Plus Jakarta Sans',sans-serif; letter-spacing:.12em; text-transform:uppercase; color:#5E4F98; }
+.zn-wk:not(body) /* Nov 16: the weekend body class is zn-wk too; this label style had been turning every weekend screen into capitals */{ font:700 10.5px/1.2 'Plus Jakarta Sans',sans-serif; letter-spacing:.12em; text-transform:uppercase; color:#5E4F98; }
 .zn-wname{ font:600 12px 'Plus Jakarta Sans',sans-serif; color:var(--zn-muted); margin-top:4px; }
 .zn-wverd{ margin:0; font:700 15px/1.35 'Plus Jakarta Sans',sans-serif; } .zn-wline{ margin:0; font:italic 400 17px/1.4 'Fraunces',Georgia,serif; }
 body.zn.zn-night .zn-wslot{ border-color:rgba(243,238,255,.4); } body.zn.zn-night .zn-wk{ color:#D9CBFF; }
