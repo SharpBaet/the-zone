@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-16.5"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
+<meta name="zone-build" content="2026-11-16.6"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1730,6 +1730,57 @@ body.zn .zn-alsodue u{white-space:nowrap}
 }
 @keyframes zndIn{from{transform:translateX(24px);opacity:0}to{transform:none;opacity:1}}
 @media (prefers-reduced-motion:reduce){body.zn #znD2 #znDeskPanel.znd-drawer{animation:none}}
+/* Nov 16: A+B 2 band — sundial, Now card, next 8 hours */
+@media (min-width:1200px){
+ body.zn #znD2 .znd-bandcard{position:relative;display:grid;grid-template-columns:252px minmax(280px,346px) minmax(0,1fr);gap:28px;align-items:start;min-height:296px;padding:22px 24px 22px 18px;border-radius:22px;color:#1F2340;background:linear-gradient(120deg,#DCD2FF 0%,#E6DCFF 40%,#FFE3D2 100%);box-shadow:0 14px 36px rgba(130,100,220,.18)}
+ body.zn #znD2.znd-wk .znd-bandcard{background:linear-gradient(120deg,#FFE0CF 0%,#FFD6E6 50%,#E3D9FF 100%);box-shadow:0 14px 36px rgba(230,120,150,.16)}
+ body.zn #znD2 .znd-dial{position:relative;width:252px;height:252px;color:#1F2340}
+ body.zn #znD2 .znd-dial svg{display:block;overflow:visible}
+ body.zn #znD2 .znd-dc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 62px;pointer-events:none}
+ body.zn #znD2 .znd-dc b{font:400 30px/1 'Fraunces',Georgia,serif;letter-spacing:-.02em}
+ body.zn #znD2 .znd-dc span{font:600 11.5px/1.25 'Plus Jakarta Sans',sans-serif;opacity:.72;margin-top:5px}
+ body.zn #znD2 .znd-now{padding-top:4px;min-width:0}
+ body.zn #znD2 .znd-nowtop{display:flex;align-items:center;justify-content:space-between;gap:10px}
+ body.zn #znD2 .znd-date{font:400 24px/1.1 'Fraunces',Georgia,serif}
+ body.zn #znD2 .znd-wx{height:34px;padding:0 13px;border-radius:999px;border:0;background:rgba(255,255,255,.62);color:inherit;font:600 13px 'Plus Jakarta Sans',sans-serif;white-space:nowrap;cursor:pointer}
+ body.zn #znD2 .znd-k{margin:28px 0 0;font:700 11.5px/1.3 'Plus Jakarta Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;opacity:.72}
+ body.zn #znD2 .znd-title{display:block;margin:6px 0 0;padding:0;border:0;background:none;color:inherit;text-align:left;font:400 36px/1.06 'Fraunces',Georgia,serif;letter-spacing:-.02em;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+ body.zn #znD2 button.znd-title{cursor:pointer} body.zn #znD2 button.znd-title:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px}
+ body.zn #znD2 .znd-bar{margin-top:14px;height:8px;border-radius:8px;background:rgba(255,255,255,.6);overflow:hidden}
+ body.zn #znD2 .znd-bar i{display:block;height:100%;background:#1F2340;border-radius:8px}
+ body.zn #znD2 .znd-nowr{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-top:8px;font:500 13.5px 'Plus Jakarta Sans',sans-serif}
+ body.zn #znD2 .znd-nowr b{font-weight:700} body.zn #znD2 .znd-nowr span{opacity:.75;white-space:nowrap}
+ body.zn #znD2 .znd-next{min-width:0;padding-top:6px}
+ body.zn #znD2 .znd-nexth{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+ body.zn #znD2 .znd-nextt{font:400 22px/1.2 'Fraunces',Georgia,serif}
+ body.zn #znD2 .znd-nexts{font:500 13px 'Plus Jakarta Sans',sans-serif;opacity:.7}
+ body.zn #znD2 .znd-strip{position:relative;height:104px;margin:30px 0 26px}
+ body.zn #znD2 .znd-ticks{position:absolute;inset:0;pointer-events:none}
+ body.zn #znD2 .znd-tick{position:absolute;top:0;bottom:0;width:0;border-left:1px solid rgba(31,35,64,.10)}
+ body.zn #znD2 .znd-tick small{position:absolute;bottom:-22px;left:0;transform:translateX(-50%);font:600 11px 'Plus Jakarta Sans',sans-serif;opacity:.7;white-space:nowrap}
+ body.zn #znD2 .znd-eve{position:absolute;top:-4px;bottom:-4px;border-radius:14px;background:rgba(91,75,184,.10);pointer-events:none}
+ body.zn #znD2 .znd-eve span{position:absolute;left:10px;bottom:4px;font:600 12px 'Plus Jakarta Sans',sans-serif;color:#5B4BB8}
+ body.zn #znD2 .znd-lane{position:absolute;left:0;right:0;height:46px}
+ body.zn #znD2 .znd-lcal{top:0} body.zn #znD2 .znd-ltask{top:56px}
+ body.zn #znD2 .znd-blk{position:absolute;top:0;height:46px;border-radius:12px;padding:6px 8px;overflow:hidden;border:0;text-align:left;color:#1F2340;font:600 12px/1.25 'Plus Jakarta Sans',sans-serif;background:rgba(31,35,64,.13);min-width:6px}
+ body.zn #znD2 .znd-blk b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ body.zn #znD2 .znd-blk small{display:block;font:500 11px/1.2 'Plus Jakarta Sans',sans-serif;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ body.zn #znD2 button.znd-blk{cursor:pointer} body.zn #znD2 button.znd-blk:hover{filter:brightness(.97);box-shadow:inset 0 0 0 2px rgba(31,35,64,.35)}
+ body.zn #znD2 .znd-blk.znd-tiny{padding:0}
+ body.zn #znD2 .znd-blk.znd-now{box-shadow:inset 0 0 0 2px #1F2340}
+ body.zn #znD2 .znd-blk.znd-past{opacity:.5}
+ body.zn #znD2 .znd-blk.znd-done b{text-decoration:line-through}
+ body.zn #znD2 .znd-blk.znd-open{background:repeating-linear-gradient(135deg,rgba(255,255,255,.7) 0 6px,rgba(255,255,255,.35) 6px 12px);border:1.5px dashed rgba(31,35,64,.28);color:#55516E}
+ body.zn #znD2 .znd-nowl{position:absolute;top:-14px;bottom:-6px;width:0;border-left:2px solid #1F2340;pointer-events:none;z-index:2}
+ body.zn #znD2 .znd-nowl i{position:absolute;top:-12px;left:-11px;width:20px;height:20px;border-radius:50%}
+ body.zn #znD2 .znd-sun{background:radial-gradient(circle at 40% 40%,#FFF6C8,#FFD84A 55%,#FFB23A);box-shadow:0 0 0 6px rgba(255,216,74,.35),0 0 24px 10px rgba(255,200,60,.55)}
+ body.zn #znD2 .znd-moon{background:#F3EEFF;box-shadow:0 0 0 6px rgba(243,238,255,.16),0 0 22px 8px rgba(200,190,255,.45)}
+}
+@media (min-width:1200px) and (max-width:1359px){
+ body.zn #znD2 .znd-bandcard{grid-template-columns:220px minmax(240px,300px) minmax(0,1fr);gap:22px}
+ body.zn #znD2 .znd-dial{transform:scale(.873);transform-origin:top left;width:220px;height:220px}
+ body.zn #znD2 .znd-title{font-size:30px}
+}
 
 /* Nov 12: the empty side panel, Up next + Waiting on you */
 body.zn .zn-deskpanel .zn-dpsec{margin:0 0 14px}
@@ -3863,7 +3914,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function znD2Card(tone,title,right){ const c=el("section","znd-card znd-"+tone); c.setAttribute("aria-label",title); const h=el("div","znd-h"); const t=el("span","znd-ht",title); const r=el("span","znd-hr"); if(right!=null&&right!=="") r.append(typeof right==="string"?document.createTextNode(right):right); h.append(t,r); const b=el("div","znd-b"); c.append(h,b); return c; }
   var ZN_D2_LAYOUT={ day:{band:["band"],c1:["top3","add","week","planline","shelf"],c2:["track","needs","readings"],c3:["teams","listen","heads"]} };
   // which phone card fills which slot (taken fresh from #znToday after every render)
-  var ZN_D2_TAKE={ band:":scope > .zn-hero", needs:":scope > .zn-needs", readings:":scope > .zn-readings2", shelf:":scope > .zn-readnow", track:":scope > .zn-wids2, :scope > .zn-bd2" };
+  var ZN_D2_TAKE={ needs:":scope > .zn-needs", readings:":scope > .zn-readings2", shelf:":scope > .zn-readnow", track:":scope > .zn-wids2, :scope > .zn-bd2" };
   function znD2Sync(full){ const v=$("#view-today"); if(!v) return; ZN_D2_WIDE=ZN_DESK(); const on=znD2Active(); v.classList.toggle("zn-d2",on); document.body.classList.toggle("zn-d2on",on&&!v.hidden);
     let root=$("#znD2"); const pn=$("#znDeskPanel");
     if(!on){ if(root) root.hidden=true; if(pn&&pn.parentElement!==v) v.append(pn); return; }
@@ -3882,7 +3933,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const els=box&&box.querySelector(":scope > .zn-else"); if(els){ znD2Else(els,S); els.remove(); } else if(full){ ["teams","listen","heads"].forEach(k=>{ const s=S(k); if(s) s.replaceChildren(); }); }
       // desktop-only cards, rebuilt on a full render
       if(full){ const mk=(k,fn)=>{ const s=S(k); if(!s) return; try{ const n=fn(); s.replaceChildren(); if(n) s.append(n); }catch(e){ console.error("desk "+k,e); } };
-        mk("top3",znD2Top3); mk("week",znD2Week); mk("planline",znD2PlanLine);
+        mk("band",znD2BandDay); mk("top3",znD2Top3); mk("week",znD2Week); mk("planline",znD2PlanLine);
         { const s=S("add"); if(s&&!s.firstChild){ try{ s.append(znAddTaskCard(()=>{ try{ znRender(); }catch(e){} })); }catch(e){ console.error("desk add",e); } } } }
     }finally{ ZN_D2_BUSY=false; }
     // phone-only pieces that may be left in #znToday stay out of sight (the whole #znToday is hidden on desktop)
@@ -3924,6 +3975,69 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function znD2Watch(){ const box=$("#znToday"); if(!box||ZN_D2_OBS) return; ZN_D2_OBS=new MutationObserver(()=>{ if(ZN_D2_BUSY||!znD2Active()) return; clearTimeout(ZN_D2_T); ZN_D2_T=setTimeout(()=>{ try{ znD2Sync(false); }catch(e){ console.error("desk sync",e); } },30); }); ZN_D2_OBS.observe(box,{childList:true}); }
   window.addEventListener("resize",()=>{ const w=ZN_DESK(); if(ZN_D2_WIDE!==null&&w!==ZN_D2_WIDE&&LIVE&&ROW){ ZN_D2_WIDE=w; try{ znRender(); }catch(e){} } });
   document.addEventListener("keydown",e=>{ if(e.key!=="Escape"||!znD2Active()) return; const pn=$("#znDeskPanel"); if(!pn||pn.hidden) return; if(document.getElementById("layer")&&document.getElementById("layer").children.length) return; const x=pn.querySelector(".zn-dpx"); if(x) x.click(); });
+  // ---- Nov 16 (A+B 2, stage 2): the band. Sundial (outer ring calendar, inner ring placed tasks), the Now card, the next 8 hours ----
+  // colour by meaning, as planning polish B: work ink tint, Birdie mint, Fam/Us pink, her own events lilac, tasks lime, overdue coral
+  const znD2Col=x=>x.k==="work"?"rgba(31,35,64,.16)":x.k==="birdie"?ZC.mint:x.k==="us"?ZC.pnk:x.k==="focus"?ZC.lim:ZC.lil;
+  const znD2Ring=x=>x.k==="work"?"#7C7896":x.k==="birdie"?"#3FAF86":x.k==="us"?"#E86FA6":x.k==="focus"?"#9DB52A":"#8E7BE0";
+  const znD2Fg=x=>x.k==="work"?"#1F2340":"#1F2340";
+  // overlapping calendar events merge into one block, the planning board's way
+  function znD2Merge(list){ const out=[]; list.slice().sort((a,b)=>a.s-b.s).forEach(x=>{ const last=out[out.length-1]; if(last&&x.s<last.e-1e-6){ last.e=Math.max(last.e,x.e); last.all.push(x); } else out.push({s:x.s,e:x.e,k:x.k,name:x.name,all:[x]}); }); return out; }
+  function znD2Dial(items,n,o){ o=o||{}; const S=252, c=126, R1=96, R2=72; const rise=SUN.rise??7.3, set=SUN.set??18.9; const night=!!o.night; const u="d"+Math.random().toString(36).slice(2,7);
+    const pt=(h,r)=>{ const a=(h/24)*2*Math.PI+Math.PI; return [c+r*Math.sin(a),c-r*Math.cos(a)]; };
+    let s=`<svg role="img" aria-label="${znEsc(o.label||"Today as a 24-hour dial")}" width="${S}" height="${S}" viewBox="0 0 ${S} ${S}"><defs><radialGradient id="g${u}"><stop offset="0" stop-color="${night?"#F3EEFF":"#FFD84A"}" stop-opacity=".9"/><stop offset="1" stop-color="${night?"#B79CFF":"#FFB23A"}" stop-opacity="0"/></radialGradient><radialGradient id="f${u}" cx=".4" cy=".4"><stop offset="0" stop-color="#FFF6C8"/><stop offset=".55" stop-color="#FFD84A"/><stop offset="1" stop-color="#FFB23A"/></radialGradient></defs>`;
+    s+=`<circle cx="${c}" cy="${c}" r="${R1}" fill="none" stroke="${night?"rgba(255,255,255,.10)":"rgba(255,255,255,.7)"}" stroke-width="18"/>`;
+    s+=`<path d="${znArc(c,R1,set,rise+24)}" fill="none" stroke="${night?"rgba(170,150,255,.20)":"rgba(61,47,140,.22)"}" stroke-width="18"/>`; /* the night part of the day */
+    s+=`<circle cx="${c}" cy="${c}" r="${R2}" fill="none" stroke="${night?"rgba(255,255,255,.08)":"rgba(255,255,255,.45)"}" stroke-width="10"/>`;
+    const seg=(x,r,w,extra)=>{ const e=Math.min(x.e,x.s+23.9); if(e-x.s<.05) return ""; const past=!night&&x.e<=n; return `<path d="${znArc(c,r,x.s+.03,Math.max(x.s+.08,e-.03))}" fill="none" stroke="${extra&&extra.col||znD2Ring(x)}" stroke-opacity="${past?.45:1}" stroke-width="${w}"${extra&&extra.dash?` stroke-dasharray="4 4"`:""}${r===R2?` stroke-linecap="round"`:""}><title>${znEsc(x.name)} · ${znEsc(hToLabel(x.s))}</title></path>`; };
+    items.filter(x=>x.k!=="focus").forEach(x=>{ s+=seg(x,R1,18); });
+    items.filter(x=>x.k==="focus").forEach(x=>{ s+=seg(x,R2,10,{col:x.over?"#FF8E70":null}); });
+    (o.gaps||[]).forEach(g=>{ s+=seg({s:g.a,e:g.b,name:"open",k:"gap"},R2,10,{col:night?"rgba(243,238,255,.45)":"rgba(85,81,110,.6)",dash:true}); });
+    const lab=(t,h,r,w)=>{ const [x,y]=pt(h,r); return `<text x="${x.toFixed(1)}" y="${(y+4).toFixed(1)}" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif" font-size="11" font-weight="${w}" fill="currentColor" opacity="${w===700?.8:.55}">${t}</text>`; };
+    s+=lab("noon",12,118,700)+lab("6p",18,118,700)+lab("midnight",0,118,700)+lab("6a",6,118,700)+lab("9",9,118,500)+lab("3",15,118,500)+lab("9",21,118,500)+lab("3",3,118,500);
+    if(n!=null){ const [x0,y0]=pt(n,R2-14), [x1,y1]=pt(n,R1+8), [sx,sy]=pt(n,R1+2); s+=`<line x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}" stroke="currentColor" stroke-width="2"/>`;
+      s+=night?`<circle cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="24" fill="url(#g${u})"/><circle cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="10" fill="#F3EEFF"/><circle cx="${(sx+4).toFixed(1)}" cy="${(sy-3).toFixed(1)}" r="8" fill="#1B1640"/>`
+              :`<circle cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="26" fill="url(#g${u})"/><circle cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="11" fill="url(#f${u})" stroke="#fff" stroke-width="2"/>`; }
+    return `<div class="znd-dial">${s}</svg><div class="znd-dc"><b>${znEsc(o.big||"")}</b><span>${znEsc(o.small||"")}</span></div></div>`; }
+  // open stretches of 30 minutes or more between now and 9pm (waking hours from 8), across both lanes
+  function znD2Gaps(items,a0,b0){ const out=[]; let cur=Math.max(a0,8); items.filter(x=>x.e>cur).sort((a,b)=>a.s-b.s).forEach(x=>{ if(x.s>cur&&x.s-cur>=.5) out.push({a:cur,b:Math.min(x.s,b0)}); cur=Math.max(cur,x.e); }); if(b0-cur>=.5) out.push({a:cur,b:b0}); return out.filter(g=>g.b-g.a>=.5&&g.a<b0); }
+  // the strip: hours h0..h0+8, calendar lane on top, tasks below
+  function znD2Strip(items,n,h0,o){ o=o||{}; const H=8, W=100/H; const X=h=>((h-h0)/H*100); const wrap=el("div","znd-strip"); const lane=(cls)=>{ const d=el("div","znd-lane "+cls); wrap.append(d); return d; };
+    const ticks=el("div","znd-ticks"); for(let i=0;i<=H;i++){ const h=h0+i; const t=el("span","znd-tick"); t.style.left=X(h)+"%"; t.append(el("small",null,znbT(h%24).replace(/:00$/,"")+((h%24)<12?"a":"p"))); ticks.append(t); } wrap.append(ticks);
+    const eve=Math.max(h0,18); if(eve<h0+H){ const e=el("div","znd-eve"); e.style.left=X(eve)+"%"; e.style.width=(X(h0+H)-X(eve))+"%"; if(o.eveLabel) e.append(el("span",null,o.eveLabel)); wrap.append(e); }
+    const cal=lane("znd-lcal"), tsk=lane("znd-ltask"); const W0=o.width||680;
+    const blk=(host,x,cls,label,sub,title,onClick)=>{ const a=Math.max(x.s,h0), b=Math.min(x.e,h0+H); if(b<=a) return null; const left=X(a), wd=X(b)-X(a); const px=wd/100*W0; const t=el(onClick?"button":"div","znd-blk "+(cls||"")); if(onClick){ t.type="button"; t.addEventListener("click",()=>onClick(t)); }
+      t.style.left=left+"%"; t.style.width=`calc(${wd}% - 3px)`; t.title=title||label; if(x.col) t.style.background=x.col; if(px>=50){ t.append(el("b",null,label)); if(sub) t.append(el("small",null,sub)); } else { t.classList.add("znd-tiny"); t.setAttribute("aria-label",title||label); } host.append(t); return t; };
+    znD2Merge(items.filter(x=>x.k!=="focus")).forEach(m=>{ const one=m.all.length===1; const nm=String(m.name).replace(/^💼\s*/,""); const now=m.s<=n&&m.e>n;
+      const sub=now?"now":one?znDur(Math.round((m.e-m.s)*60)):`+${m.all.length-1} more`; const title=m.all.map(x=>`${String(x.name).replace(/^💼\s*/,"")} · ${hToLabel(x.s)}–${hToLabel(x.e)}`).join("\n");
+      const b=blk(cal,{s:m.s,e:m.e,col:znD2Col(m)},(now?"znd-now":"")+(m.e<=n?" znd-past":""),nm,sub,title); });
+    items.filter(x=>x.k==="focus").forEach(x=>{ const now=x.s<=n&&x.e>n; const done=o.isDone&&o.isDone(x.name); const st=x.over?"overdue":done?"done":now?"now":`${znbT(x.s)} · ${znDur(Math.round((x.e-x.s)*60))}`;
+      blk(tsk,{s:x.s,e:x.e,col:x.over?ZC.cor:ZC.lim},(now?"znd-now":"")+(done?" znd-done":"")+(x.e<=n?" znd-past":""),x.name,st,`${x.name} · ${hToLabel(x.s)}–${hToLabel(x.e)}`,o.openPick?(t=>o.openPick(x.name,t)):null); });
+    (o.gaps||[]).forEach(g=>{ const m=Math.round((g.b-g.a)*60); blk(tsk,{s:g.a,e:g.b},"znd-open",`${znDur(m)} open`,"place one",`${znDur(m)} open · place a task here`,o.place?(t=>o.place(g.a,g.b,t)):null); });
+    if(n!=null&&n>=h0&&n<=h0+H){ const nl=el("div","znd-nowl"); nl.style.left=X(n)+"%"; nl.append(el("i",o.night?"znd-moon":"znd-sun")); wrap.append(nl); }
+    return wrap; }
+  // the whole band for a weekday
+  function znD2BandDay(){ const T=TODAY(), dt=new Date(T+"T12:00:00Z"), n=nowH(); let items=[]; try{ items=risoItems(); }catch(e){} const PK=window.__znPicks||{picks:[],done3:new Set()}; const done3=PK.done3||new Set();
+    const isD=t=>done3.has(String(t||"").toLowerCase()); items=items.map(x=>{ if(x.k!=="focus") return x; const it=znPickTask(x.name); const st=it&&!isD(x.name)?znState(it,{slot:{s:x.s,e:x.e}}):null; return {...x,over:!!(st&&st.k==="over")}; });
+    const cur=items.filter(x=>x.s<=n&&x.e>n).sort((a,b)=>(a.k==="focus")-(b.k==="focus")||a.e-b.e)[0]; const nx=items.filter(x=>x.s>n).sort((a,b)=>a.s-b.s)[0];
+    const gaps=znD2Gaps(items,n,Math.max(18,Math.min(21,n+1))); /* open slots to place a task stop at 6pm; the evening shows as its own tint */
+    const DN=DAYS_LONG[dt.getUTCDay()], ord=(d=>d+(d%10===1&&d!==11?"st":d%10===2&&d!==12?"nd":d%10===3&&d!==13?"rd":"th"))(dt.getUTCDate());
+    const w=wxNow(), hi=num(ROW.High); const t=w&&w.t!=null?Math.round(w.t):hi!=null?Math.round(hi):null; const uv=w&&(w.uv!=null?w.uv:w.uvNow!=null?w.uvNow:null);
+    const shortN=s=>String(s||"").replace(/^💼\s*/,""); let big="", small="";
+    if(cur){ big=znDur(Math.max(1,Math.round((cur.e-n)*60))); small="left"; } else if(nx){ big=znDur(Math.round((nx.s-n)*60)); small=`to ${shortName(shortN(nx.name)).toLowerCase()}`; } else { big=hToLabel(n).replace(/\s*(am|pm)$/i,""); small="all clear"; }
+    const band=el("section","znd-bandcard"); band.setAttribute("aria-label","Now and your day");
+    band.innerHTML=znD2Dial(items,n,{big,small,gaps:gaps.filter(g=>g.b>n),label:`Today as a 24-hour dial. Now ${hToLabel(n)}. ${items.filter(x=>x.e>n).map(x=>shortN(x.name)+" at "+hToLabel(x.s)).slice(0,6).join(", ")}`});
+    const nc=el("div","znd-now"); const top=el("div","znd-nowtop"); top.append(el("span","znd-date")); top.firstChild.innerHTML=`${DN} <i>the ${ord}</i>`;
+    if(t!=null){ const wb=el("button","znd-wx",`${t}°${uv!=null?` · UV ${Math.round(uv)}`:hi!=null?` · high ${Math.round(hi)}`:""}`); wb.type="button"; wb.setAttribute("aria-label","Weather"); wb.addEventListener("click",()=>{ let body; try{ body=znWxBody(); }catch(e){ body=el("div","rs-wxsheet"); } openSheet({kicker:"Weather",title:`${t}°`,body,from:wb}); }); top.append(wb); }
+    nc.append(top); const pk=PK.picks||[]; const dn=pk.filter(p=>isD(p.title)).length; const tally=pk.length?`${pk.length} picked · ${dn} done`:"nothing picked";
+    if(cur){ const p=Math.round((n-cur.s)/Math.max(.01,cur.e-cur.s)*100); nc.append(el("p","znd-k",`Now · until ${hToLabel(cur.e)}`)); const h=el(cur.k==="focus"?"button":"h2","znd-title",shortN(cur.name)); if(cur.k==="focus"){ h.type="button"; h.addEventListener("click",()=>znOpenPick(cur.name,h)); } nc.append(h);
+      const bar=el("div","znd-bar"); bar.setAttribute("role","progressbar"); bar.setAttribute("aria-valuenow",String(p)); bar.setAttribute("aria-valuemin","0"); bar.setAttribute("aria-valuemax","100"); bar.setAttribute("aria-label","Time through this block"); const fi=el("i"); fi.style.width=Math.max(2,Math.min(100,p))+"%"; bar.append(fi); nc.append(bar);
+      const r=el("div","znd-nowr"); r.append(el("b",null,`${znDur(Math.max(1,Math.round((cur.e-n)*60)))} left`),el("span",null,tally)); nc.append(r); }
+    else { const part=n<12?"morning":n<17?"afternoon":"evening"; nc.append(el("p","znd-k",`Now · open ${part}`)); nc.append(el("h2","znd-title",nx?`${shortName(shortN(nx.name))} in ${znDur(Math.round((nx.s-n)*60))}`:"Nothing else on the clock"));
+      const r=el("div","znd-nowr"); r.append(el("b",null,nx?`${hToLabel(nx.s)} · ${shortN(nx.name)}`:"the evening is yours"),el("span",null,tally)); nc.append(r); }
+    band.append(nc);
+    const sw=el("div","znd-next"); const hd=el("div","znd-nexth"); hd.append(el("span","znd-nextt","Next 8 hours"),el("span","znd-nexts","the dial shows the whole day")); sw.append(hd);
+    const h0=Math.floor(n); sw.append(znD2Strip(items,n,h0,{width:Math.max(380,Math.min(innerWidth,1412)-64-(innerWidth<1360?600:690)),gaps:gaps,isDone:isD,openPick:(nm,b)=>znOpenPick(nm,b),place:calOK()?(a,b,t)=>znPlace(a,b,t):null,eveLabel:items.some(x=>x.s>=18&&x.s<h0+8)?"Evening":"Evening · free"})); band.append(sw);
+    return band; }
   // Nov 10 (phone pass, part 4): shorter pages.
   // Today (where the spine is): every card under the timeline folds into a small tile showing its title and status; tap a tile and that
   // card opens right under the tiles, tap again to close. The weather / water tiles and the Done-today strip stay as they are.
@@ -5213,7 +5327,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function openSheet({kicker,title,body,color,from,onClose,foot,panel}){
     // Nov 12 (desktop pass): on the three-column Today, prep, capture, Ask Alice and plan-tomorrow (panel:true) open in the right-hand panel
     // instead of over the page, so the day and the Plan list stay usable. Anything stacked on another sheet, and every phone, keeps the sheet.
-    if((panel||(kicker==="Inbox"&&znD2Active()))&&!window.__SHEETS){ try{ if(znDeskOn()){ const wrap=el("div","zn-dpsheet"); if(title) wrap.append(el("h2","zn-dpt",title)); wrap.append(...(Array.isArray(body)?body:[body]));
+    if((panel||((kicker==="Inbox"||kicker==="Open time")&&znD2Active()))&&!window.__SHEETS){ try{ if(znDeskOn()){ const wrap=el("div","zn-dpsheet"); if(title) wrap.append(el("h2","zn-dpt",title)); wrap.append(...(Array.isArray(body)?body:[body]));
       if(foot){ const f=el("div","zn-dpfoot"); f.append(...(Array.isArray(foot)?foot:[foot])); wrap.append(f); }
       const shut=znDeskPanelOpen(kicker,wrap); if(shut){ window.__znSel=""; let gone=false; const fin=()=>{ if(gone) return; gone=true; onClose&&onClose(); };
         const close=()=>{ if(!wrap.isConnected){ fin(); return; } shut(); fin(); }; const x=wrap.parentNode&&wrap.parentNode.querySelector(".zn-dpx"); if(x) x.addEventListener("click",fin);
