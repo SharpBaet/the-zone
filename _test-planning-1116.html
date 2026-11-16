@@ -3069,7 +3069,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const grp=(name,sub,rows,empty)=>{ const c=znCard("zn-tgroup",""); c.innerHTML=znH(name,rows.length?sub||String(rows.length):"nothing"); if(!rows.length){ if(empty) c.append(el("p","zn-empty",empty)); else return; } rows.forEach(it=>c.append(row(it,it.status==="Done"))); body.append(c); };
     const byDue=(a,b)=>(a.due||"9").localeCompare(b.due||"9")||(b.star?1:0)-(a.star?1:0);
     // Nov 16: Done this week is one line, closed by default; it remembers being opened (on this device)
-    const doneGrp=rows=>{ const c=znCard("zn-tgroup zn-tdone","","Done this week"); let open=false; try{ open=localStorage.getItem("zone:done-week-open")==="1"; }catch(e){}
+    const doneGrp=rows=>{ const c=znCard("zn-tgroup zn-tdonew","","Done this week"); let open=false; try{ open=localStorage.getItem("zone:done-week-open")==="1"; }catch(e){}
       const hd=el("button","zn-tdonehd"); hd.type="button"; hd.setAttribute("aria-expanded",String(open)); hd.innerHTML=`<div class="zn-h"><span class="zn-ht">Done this week</span><span class="zn-hr">${rows.length}<i class="zn-tdonech" aria-hidden="true">›</i></span></div>`;
       const list=el("div","zn-tdonebody"); list.hidden=!open; rows.slice(0,12).forEach(it=>list.append(row(it,true)));
       hd.addEventListener("click",()=>{ open=!open; list.hidden=!open; hd.setAttribute("aria-expanded",String(open)); try{ localStorage.setItem("zone:done-week-open",open?"1":"0"); }catch(e){} });
@@ -5133,7 +5133,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   const znPickIsDone=it=>!!it&&(it.status==="Done"||it.lastDone===TODAY());
   // the Top 3 Done list, plus every pick whose task is done (checked off in Plan, the task sheet, a swipe or Up next)
   function znDone3(){ const s=new Set(listOf("Top 3 Done").map(x=>String(x).toLowerCase())); for(const t of znPickTitles()){ if(znPickIsDone(znPickTask(t))){ s.add(String(t).toLowerCase()); s.add(bareTitle(t).toLowerCase()); } } return s; }
-  function znPickName(title,day){ const it=znPickTask(title,day); return it&&it.focus===(day||TODAY())&&it.name?it.name:title; }
+  function znPickName(title,day){ const it=znPickTask(title,day); return it&&it.name?it.name:bareTitle(title)||title; } /* the task's own name, so a rename shows straight away */
   async function znPickSync(it,on){ try{ if(!ROW||!LIVE||!it||!it.id) return; const t=znPickTitles().find(x=>{ const p=znPickTask(x); return p&&p.id===it.id; }); if(!t) return;
     const have=listOf("Top 3 Done").some(x=>x.toLowerCase()===String(t).toLowerCase()); if(!!on===have) return; await setInList("Top 3 Done",t,!!on,"\n"); }catch(e){} }
   async function znPickRename(old,nw){ try{ if(!ROW||!LIVE||!old||!nw) return; const o=bareTitle(old).toLowerCase(); const props={};
