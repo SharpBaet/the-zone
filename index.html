@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-16.6"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
+<meta name="zone-build" content="2026-11-16.7"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1780,6 +1780,36 @@ body.zn .zn-alsodue u{white-space:nowrap}
  body.zn #znD2 .znd-bandcard{grid-template-columns:220px minmax(240px,300px) minmax(0,1fr);gap:22px}
  body.zn #znD2 .znd-dial{transform:scale(.873);transform-origin:top left;width:220px;height:220px}
  body.zn #znD2 .znd-title{font-size:30px}
+}
+/* Nov 16: A+B 2 stage 3 — Today's tracking, the bookshelf card, a shorter Needs you and readings */
+@media (min-width:1200px){
+ body.zn #znD2 .znd-rainbow{box-shadow:0 12px 30px rgba(110,90,210,.16)}
+ body.zn #znD2 .znd-rainbow > .znd-h{background:linear-gradient(100deg,#D6EC63 0%,#AFD6F2 50%,#B9A6F5 100%);color:#1F2340}
+ body.zn #znD2 .znd-rainbow > .znd-b{padding:12px}
+ body.zn #znD2 .znd-trk{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+ body.zn #znD2 .znd-tt{position:relative;border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:6px;color:#1F2340;min-height:122px;min-width:0}
+ body.zn #znD2 .znd-tsky{background:#AFD6F2} body.zn #znD2 .znd-tmint{background:#A6DEC5} body.zn #znD2 .znd-tlil{background:#CDBEFA} body.zn #znD2 .znd-tpeach{background:#FFC2A1}
+ body.zn #znD2 .znd-allring{box-shadow:0 0 0 3px #fff,0 0 0 6px transparent;background:linear-gradient(#CDBEFA,#CDBEFA) padding-box,conic-gradient(from 200deg,#FFE27A,#FFA3CB,#B9A6F5,#AFD6F2,#A6DEC5,#FFE27A) border-box;border:4px solid transparent}
+ body.zn #znD2 .znd-ttc{display:flex;align-items:center;justify-content:space-between;gap:6px;font:700 11.5px/1.3 'Plus Jakarta Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:rgba(31,35,64,.72)}
+ body.zn #znD2 .znd-ttfix{border:0;background:none;padding:0;font:600 11.5px 'Plus Jakarta Sans',sans-serif;letter-spacing:0;text-transform:none;color:rgba(31,35,64,.62);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+ body.zn #znD2 .znd-ttb{font:400 30px/1 'Fraunces',Georgia,serif;letter-spacing:-.02em}
+ body.zn #znD2 .znd-tts{font:600 12.5px/1.3 'Plus Jakarta Sans',sans-serif;color:rgba(31,35,64,.78);overflow-wrap:anywhere}
+ body.zn #znD2 .znd-ttgo{margin-top:auto;align-self:flex-start;max-width:100%;height:32px;padding:0 12px;border-radius:999px;border:0;background:rgba(255,255,255,.78);color:#1F2340;font:700 12.5px 'Plus Jakarta Sans',sans-serif;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ body.zn #znD2 .znd-ttgo:hover{background:#fff}
+ body.zn #znD2 .znd-pips{display:flex;gap:5px;flex-wrap:wrap} body.zn #znD2 .znd-pips i{width:16px;height:22px;border-radius:5px;border:2px solid rgba(31,35,64,.45)} body.zn #znD2 .znd-pips i.on{background:#1F2340;border-color:#1F2340}
+ body.zn #znD2 .znd-seg{display:flex;gap:4px} body.zn #znD2 .znd-seg i{flex:1;height:8px;border-radius:8px;background:rgba(255,255,255,.65)} body.zn #znD2 .znd-seg i.on{background:#1F2340}
+ body.zn #znD2 .znd-shelf .znd-b{padding:8px 16px 14px}
+ body.zn #znD2 .znd-bt b{display:block;font:400 24px/1.2 'Fraunces',Georgia,serif}
+ body.zn #znD2 .znd-bt span{display:block;font:500 13px 'Plus Jakarta Sans',sans-serif;opacity:.7;margin:2px 0 10px}
+ body.zn #znD2 .znd-more{display:inline-block;margin:8px 0 2px}
+ body.zn #znD2 .zn-needs .zn-mrow[hidden]{display:none}
+ body.zn #znD2 .znd-slot > .zn-readings2 .zn-rxfoot{display:none}
+ body.zn #znD2 .znd-slot > .zn-readings2 .zn-rx{margin-top:0;margin-bottom:0;padding-top:6px;padding-bottom:6px}
+ body.zn #znD2 .znd-slot > .zn-readings2 .zn-rxlinks{margin-top:6px}
+}
+@media (min-width:1200px){
+ body.zn #znD2 .znd-slot > .zn-readings2 .zn-rxtx b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ body.zn #znD2 .znd-slot > .zn-readings2 .zn-rxsub{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 }
 
 /* Nov 12: the empty side panel, Up next + Waiting on you */
@@ -3914,7 +3944,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function znD2Card(tone,title,right){ const c=el("section","znd-card znd-"+tone); c.setAttribute("aria-label",title); const h=el("div","znd-h"); const t=el("span","znd-ht",title); const r=el("span","znd-hr"); if(right!=null&&right!=="") r.append(typeof right==="string"?document.createTextNode(right):right); h.append(t,r); const b=el("div","znd-b"); c.append(h,b); return c; }
   var ZN_D2_LAYOUT={ day:{band:["band"],c1:["top3","add","week","planline","shelf"],c2:["track","needs","readings"],c3:["teams","listen","heads"]} };
   // which phone card fills which slot (taken fresh from #znToday after every render)
-  var ZN_D2_TAKE={ needs:":scope > .zn-needs", readings:":scope > .zn-readings2", shelf:":scope > .zn-readnow", track:":scope > .zn-wids2, :scope > .zn-bd2" };
+  var ZN_D2_TAKE={ needs:":scope > .zn-needs", readings:":scope > .zn-readings2" };
   function znD2Sync(full){ const v=$("#view-today"); if(!v) return; ZN_D2_WIDE=ZN_DESK(); const on=znD2Active(); v.classList.toggle("zn-d2",on); document.body.classList.toggle("zn-d2on",on&&!v.hidden);
     let root=$("#znD2"); const pn=$("#znDeskPanel");
     if(!on){ if(root) root.hidden=true; if(pn&&pn.parentElement!==v) v.append(pn); return; }
@@ -3933,8 +3963,10 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const els=box&&box.querySelector(":scope > .zn-else"); if(els){ znD2Else(els,S); els.remove(); } else if(full){ ["teams","listen","heads"].forEach(k=>{ const s=S(k); if(s) s.replaceChildren(); }); }
       // desktop-only cards, rebuilt on a full render
       if(full){ const mk=(k,fn)=>{ const s=S(k); if(!s) return; try{ const n=fn(); s.replaceChildren(); if(n) s.append(n); }catch(e){ console.error("desk "+k,e); } };
-        mk("band",znD2BandDay); mk("top3",znD2Top3); mk("week",znD2Week); mk("planline",znD2PlanLine);
+        mk("band",znD2BandDay); mk("top3",znD2Top3); mk("shelf",znD2Shelf); mk("week",znD2Week); mk("planline",znD2PlanLine);
         { const s=S("add"); if(s&&!s.firstChild){ try{ s.append(znAddTaskCard(()=>{ try{ znRender(); }catch(e){} })); }catch(e){ console.error("desk add",e); } } } }
+      { const s=S("track"); if(s){ try{ const n=znD2Track(); s.replaceChildren(n); }catch(e){ console.error("desk track",e); } } }
+      { const s=S("needs"); if(s&&s.firstChild) znD2NeedsTrim(s.firstChild); }
     }finally{ ZN_D2_BUSY=false; }
     // phone-only pieces that may be left in #znToday stay out of sight (the whole #znToday is hidden on desktop)
     znD2Watch(); }
@@ -4038,6 +4070,40 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const sw=el("div","znd-next"); const hd=el("div","znd-nexth"); hd.append(el("span","znd-nextt","Next 8 hours"),el("span","znd-nexts","the dial shows the whole day")); sw.append(hd);
     const h0=Math.floor(n); sw.append(znD2Strip(items,n,h0,{width:Math.max(380,Math.min(innerWidth,1412)-64-(innerWidth<1360?600:690)),gaps:gaps,isDone:isD,openPick:(nm,b)=>znOpenPick(nm,b),place:calOK()?(a,b,t)=>znPlace(a,b,t):null,eveLabel:items.some(x=>x.s>=18&&x.s<h0+8)?"Evening":"Evening · free"})); band.append(sw);
     return band; }
+  // ---- Nov 16 (A+B 2, stage 3): Today's tracking (water, Birdie, routines, the sit) and the bookshelf card ----
+  // Every tile logs with the writes the app already makes: water and Birdie press the phone widget's and the Birdie card's own buttons
+  // (still drawn, out of sight, in #znToday: same toast, undo and hold-to-fix), routines use rtSet, the sit opens openSit.
+  function znD2Track(){ const box=$("#znToday"); const c=znD2Card("rainbow","Today’s tracking","tap to log"); const g=el("div","znd-trk"); c.querySelector(".znd-b").append(g);
+    const tile=(cls,cap,big,extra,btn)=>{ const t=el("div","znd-tt "+cls); t.append(el("span","znd-ttc",cap),el("span","znd-ttb",big)); (extra||[]).forEach(x=>x&&t.append(x)); if(btn) t.append(btn); g.append(t); return t; };
+    const mkBtn=(label,fn,aria)=>{ const b=el("button","znd-ttgo",label); b.type="button"; b.disabled=!mcp; if(aria) b.setAttribute("aria-label",aria); b.addEventListener("click",()=>fn(b)); return b; };
+    // water (or the featured practice the widget shows)
+    { const wb=box&&box.querySelector(":scope > .zn-wids2 .zn-water"); const k=wb?(wb.querySelector(".zn-k")||{}).textContent||"Water":"Water"; const big=wb?(wb.querySelector(".zn-big")||{}).textContent||"":""; const m=big.match(/(\d+)\s*of\s*(\d+)/);
+      const pips=el("div","znd-pips"); pips.setAttribute("aria-hidden","true"); if(m){ const a=+m[1], b=Math.min(12,+m[2]); for(let i=0;i<b;i++) pips.append(el("i",i<a?"on":"")); }
+      const done=/done/i.test(big); const btn=wb&&!wb.disabled&&!done?mkBtn("+ One done",()=>wb.click(),`Log one more: ${k}`):null; const fix=wb?el("button","znd-ttfix","fix"):null; if(fix){ fix.type="button"; fix.setAttribute("aria-label",`Fix today's ${k.toLowerCase()}`); fix.addEventListener("click",()=>{ wb.dispatchEvent(new PointerEvent("pointerdown",{bubbles:true})); setTimeout(()=>wb.dispatchEvent(new PointerEvent("pointerup",{bubbles:true})),620); }); }
+      const t=tile("znd-tsky",k,done?"Done ✓":(m?`${m[1]} of ${m[2]}`:big||"—"),[m&&!done?pips:null,done?el("span","znd-tts","target met"):null],btn); if(fix) t.querySelector(".znd-ttc").append(fix); }
+    // Birdie: walks today, + Walk is the Birdie card's own button
+    { let walks=[]; try{ walks=walksTodayAll(); }catch(e){} const bd=box&&box.querySelector(":scope > .zn-bd2"); const lb=bd&&[...bd.querySelectorAll(".zn-hows button")].find(b=>/walk/i.test(b.textContent)); const care=bd&&bd.querySelector(".bd2-line");
+      const away=!bd; tile("znd-tmint","Birdie",away?"away":`${walks.length} walk${walks.length===1?"":"s"}`,[el("span","znd-tts",care?care.textContent.trim():away?"no walks to log":"today")],lb?mkBtn("+ Walk",()=>lb.click(),"Log a walk for Birdie"):null); }
+    // routines: done of total, the next one named, a rainbow ring when every one is done
+    { let defs=[]; try{ defs=routineDefs().filter(rtDays); }catch(e){} const ord={morning:0,day:1,evening:2}; const on=d=>{ try{ return rtDone(ROW,d); }catch(e){ return false; } };
+      const dn=defs.filter(on).length; const left=defs.filter(d=>!on(d)).sort((a,b)=>(ord[a.slot]??1)-(ord[b.slot]??1)); let hands=null; try{ const P=practiceDefs(); const h=P.find(d=>d.type==="streak"); if(h){ const v=pval(ROW,h); if(!v.night) hands=h; } }catch(e){}
+      const seg=el("div","znd-seg"); seg.setAttribute("aria-hidden","true"); defs.forEach(d=>seg.append(el("i",on(d)?"on":""))); const nx=left[0];
+      const sub=nx?`next · ${nx.name}`:hands?`${hands.name} · how was today?`:"all done today"; let btn=null;
+      if(nx&&nx.action!=="walk"&&nx.action!=="guided") btn=mkBtn(`✓ ${nx.name}`,async b=>{ b.disabled=true; try{ await rtSet(nx,true); toast(`${nx.name} · done`,async()=>{ try{ await rtSet(nx,false); znRender(); }catch(e){ toast(writeErr(e)); } }); znRender(); }catch(e){ toast(writeErr(e)); b.disabled=false; } },`Mark ${nx.name} done`);
+      else if(nx||hands) btn=mkBtn("Open",()=>show("you"),"Open routines on Me");
+      const t=tile("znd-tlil"+(defs.length&&dn===defs.length?" znd-allring":""),"Routines",`${dn} of ${defs.length}`,[defs.length?seg:null,el("span","znd-tts",sub)],btn); }
+    // the sit
+    { let P=null; try{ P=practiceDefs().find(d=>d.type==="sit"); }catch(e){} if(P){ const v=num(ROW.Meditated)||0; const len=(SIT&&SIT.min)||SIT_LEN||7;
+      tile("znd-tpeach",P.name||"The sit",v?`${v} min`:`${len} min`,[el("span","znd-tts",v?"done today":"not yet today")],v?null:mkBtn("Start",()=>openSit(),`Start the sit, ${len} minutes`)); } }
+    return c; }
+  // Reading now: the book you are in and its companion card (Another, Ask about it), from the shelf's own pieces
+  function znD2Shelf(){ let b=null; try{ const r=BOOKS.filter(bkMine).filter(bkGoing).sort((x,y)=>((y.who===bkMe())-(x.who===bkMe()))||(y.st||"").localeCompare(x.st||"")); b=r.find(x=>x.i&&x.i===BK_FOCUS)||r[0]; }catch(e){} if(!b) return null;
+    const c=znD2Card("plain znd-shelf","Reading now","from the shelf"); const body=c.querySelector(".znd-b"); const t=el("div","znd-bt"); t.innerHTML=`<b>${znEsc(b.t)}</b><span>${znEsc([b.a,b.fmt,b.who==="Both"?"together":""].filter(Boolean).join(" · "))}</span>`; body.append(t);
+    try{ body.append(bkCompEl(b)); }catch(e){ console.error("desk companion",e); } return c; }
+  // Needs you: three rows, then "N more" opens the rest in place
+  function znD2NeedsTrim(card){ if(!card||card.dataset.trim) return; card.dataset.trim="1"; const rows=[...card.querySelectorAll(".zn-list > .zn-mrow")]; if(rows.length<=3) return; const extra=rows.slice(3); extra.forEach(r=>r.hidden=true);
+    const more=card.querySelector(".zn-list > .zn-more"); const tot=Number((card.querySelector(".zn-h .zn-hr")||{}).textContent)||rows.length; const n=tot-3;
+    const b=el("button","znd-link znd-more",`${n} more`); b.type="button"; b.setAttribute("aria-expanded","false"); b.addEventListener("click",()=>{ extra.forEach(r=>r.hidden=false); b.remove(); if(more) more.hidden=false; }); if(more) more.hidden=true; card.querySelector(".zn-list").append(b); }
   // Nov 10 (phone pass, part 4): shorter pages.
   // Today (where the spine is): every card under the timeline folds into a small tile showing its title and status; tap a tile and that
   // card opens right under the tiles, tap again to close. The weather / water tiles and the Done-today strip stay as they are.
