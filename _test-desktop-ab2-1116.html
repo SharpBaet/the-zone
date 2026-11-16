@@ -788,7 +788,7 @@ body.zn.zn-night header .iconbtn{ background:rgba(255,255,255,.12) !important; c
 body.zn.zn-wk, body.zn.riso.zn-wk{ background: radial-gradient(110% 40% at 0% 0%, #FFD3BC 0%, transparent 60%), radial-gradient(90% 35% at 100% 12%, #FFC9DE 0%, transparent 60%), radial-gradient(80% 35% at 0% 60%, #E4F5A0 0%, transparent 60%), radial-gradient(80% 40% at 100% 95%, #D9CBFF 0%, transparent 60%), #FBF3F1 !important; }
 body.zn-wk .zn-hero{ background:linear-gradient(165deg,#FFE0CF 0%,#FFD3E3 50%,#E9DDFF 100%); box-shadow:0 12px 32px rgba(224,120,150,.16); }
 body.zn #view-today{ display:flex; flex-direction:column; } body.zn #view-today > #znToday{ order:0; }  body.zn #view-today > #znMid{ order:2; }  body.zn #view-today > #znEnd{ order:4; }
-body.zn #view-today > *:not(#znToday):not(#znMid):not(#znEnd):not(#tomCard):not(#gitaCheck):not(#coCard):not(#wkAdvCard):not(#znDeskPlan):not(#znDeskPanel):not(#wkQuests){ display:none !important; }
+body.zn #view-today > *:not(#znToday):not(#znMid):not(#znEnd):not(#tomCard):not(#gitaCheck):not(#coCard):not(#wkAdvCard):not(#znDeskPlan):not(#znDeskPanel):not(#wkQuests):not(#znD2){ display:none !important; }
 .zn-reading{ position:relative; overflow:hidden; background:linear-gradient(160deg,#B9A6F5 0%,#CDB8FF 45%,#FFC9B0 100%); box-shadow:0 14px 34px rgba(130,100,220,.22); }
 .zn-reading::before{ content:""; position:absolute; right:-30px; top:-30px; width:150px; height:150px; border-radius:75px; background:radial-gradient(circle,#FFF7CF 0%, rgba(255,226,122,.8) 45%, rgba(255,179,138,0) 100%); opacity:.55; }
 .zn-rdt{ position:relative; font:400 28px/1.1 'Fraunces',Georgia,serif; letter-spacing:-.02em; margin:8px 0 6px; } .zn-rdl{ position:relative; margin:0 0 12px; font:italic 400 16px/1.45 'Fraunces',Georgia,serif; opacity:.85; }
@@ -1653,6 +1653,7 @@ body.zn .zn-alsodue u{white-space:nowrap}
 #znD2[hidden]{display:none !important}
 @media (min-width:1200px){
  body.zn #view-today.zn-d3.zn-d3.zn-d2:not([hidden]){display:block !important}
+ body.zn #view-today.zn-d2 > #znD2:not([hidden]){display:block !important}
  body.zn #view-today.zn-d2 > #znToday,body.zn #view-today.zn-d2 > #znMid,body.zn #view-today.zn-d2 > #znEnd,body.zn #view-today.zn-d2 > #znDeskPlan{display:none !important}
  body.zn #znD2{--znd-card:rgba(255,255,255,.82);--znd-ink:#1F2340;--znd-muted:#55516E;--znd-line:rgba(31,35,64,.10);color:var(--znd-ink)}
  body.zn #znD2 .znd-band{margin:0 0 24px}
@@ -1693,16 +1694,15 @@ body.zn .zn-alsodue u{white-space:nowrap}
  body.zn #znD2 .znd-sm{height:34px;min-height:34px;padding:0 13px;font-size:13px}
  body.zn #znD2 .znd-empty{font-size:14px;opacity:.75;margin:8px 0 12px}
  /* add box: one line, Add always showing */
- body.zn #znD2 .zn-tadd{display:grid;grid-template-columns:minmax(0,1fr) auto auto;column-gap:12px;align-items:center;padding:12px;border-radius:22px;background:var(--znd-card)}
+ body.zn #znD2 .zn-tadd{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;align-items:center;padding:12px;border-radius:22px;background:var(--znd-card)}
  body.zn #znD2 .zn-tadd > .zn-cta{grid-column:1;grid-row:1;min-height:44px;height:auto;max-height:160px;padding:10px 14px;font-size:15.5px;field-sizing:content}
- body.zn #znD2 .zn-tadd > .zn-clinks{grid-column:2;grid-row:1;margin:0;padding:0;border:0}
- body.zn #znD2 .zn-tadd > .zn-cbar{grid-column:3;grid-row:1;margin:0}
+ body.zn #znD2 .zn-tadd > .zn-clinks{grid-column:1 / -1;grid-row:2;margin:6px 0 0;padding:0 4px;border:0;display:flex;justify-content:flex-end}
+ body.zn #znD2 .zn-tadd > .zn-cbar{grid-column:2;grid-row:1;margin:0}
  body.zn #znD2 .zn-tadd > .zn-cbar .zn-csp{display:none}
  body.zn #znD2 .zn-tadd > .zn-cbar .zn-pill:not(.zn-dark){display:none}
  body.zn #znD2 .zn-tadd > .zn-cread,body.zn #znD2 .zn-tadd > .zn-chint{grid-column:1 / -1}
  body.zn #znD2 .zn-tadd .zn-asklink{white-space:nowrap;font-size:12.5px}
  body.zn #znD2 .zn-tadd .zn-chtog{display:none}
- body.zn #znD2 .zn-tadd:has(.zn-cread:not([hidden])) > .zn-clinks{grid-column:1 / -1;grid-row:auto;margin-top:8px}
  body.zn #znD2 .zn-tadd:has(.zn-cread:not([hidden])) .zn-chtog{display:inline}
  body.zn #znD2 .zn-tadd:has(.zn-cread:not([hidden])) > .zn-cbar .zn-pill{display:inline-flex}
  /* this week · open hours */
@@ -1724,7 +1724,7 @@ body.zn .zn-alsodue u{white-space:nowrap}
  body.zn #znD2 .znd-sky .zn-rail .zn-tile{width:100%;min-width:0;max-width:none;flex:none;background:none;border:0;border-top:1px solid var(--znd-line);border-radius:0;padding:10px 0;box-shadow:none;text-align:left}
  body.zn #znD2 .znd-sky .zn-rail .zn-tile:first-child{border-top:0}
  /* the drawer: over column 3, sticks while the page scrolls, nothing else moves */
- body.zn #znD2 #znDeskPanel.znd-drawer{grid-column:3;grid-row:1;align-self:start;position:sticky;top:16px;z-index:30;max-height:calc(100vh - 32px);overflow:auto;border-radius:22px;box-shadow:0 24px 60px rgba(31,35,64,.24);animation:zndIn .22s ease-out}
+ body.zn #znD2 #znDeskPanel.znd-drawer{display:block;grid-column:3;grid-row:1;align-self:start;position:sticky;top:16px;z-index:30;max-height:calc(100vh - 32px);overflow:auto;border-radius:22px;box-shadow:0 24px 60px rgba(31,35,64,.24);animation:zndIn .22s ease-out}
  body.zn #znD2 #znDeskPanel.znd-drawer[hidden]{display:none !important}
  body.zn #znD2 #znDeskPanel.znd-drawer .zn-deskpanel{margin:0;background:rgba(255,255,255,.97) !important}
 }
@@ -3864,7 +3864,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   var ZN_D2_LAYOUT={ day:{band:["band"],c1:["top3","add","week","planline","shelf"],c2:["track","needs","readings"],c3:["teams","listen","heads"]} };
   // which phone card fills which slot (taken fresh from #znToday after every render)
   var ZN_D2_TAKE={ band:":scope > .zn-hero", needs:":scope > .zn-needs", readings:":scope > .zn-readings2", shelf:":scope > .zn-readnow", track:":scope > .zn-wids2, :scope > .zn-bd2" };
-  function znD2Sync(full){ const v=$("#view-today"); if(!v) return; const on=znD2Active(); v.classList.toggle("zn-d2",on); document.body.classList.toggle("zn-d2on",on&&!v.hidden);
+  function znD2Sync(full){ const v=$("#view-today"); if(!v) return; ZN_D2_WIDE=ZN_DESK(); const on=znD2Active(); v.classList.toggle("zn-d2",on); document.body.classList.toggle("zn-d2on",on&&!v.hidden);
     let root=$("#znD2"); const pn=$("#znDeskPanel");
     if(!on){ if(root) root.hidden=true; if(pn&&pn.parentElement!==v) v.append(pn); return; }
     const mode=znD2Mode(); const L=ZN_D2_LAYOUT[mode]||ZN_D2_LAYOUT.day;
@@ -3922,7 +3922,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     b.addEventListener("click",()=>{ ZN_PLAN.seg="list"; show("ahead"); }); return b; }
   // async redraws (readings, Birdie, prep) insert cards into #znToday after the render; pick them up
   function znD2Watch(){ const box=$("#znToday"); if(!box||ZN_D2_OBS) return; ZN_D2_OBS=new MutationObserver(()=>{ if(ZN_D2_BUSY||!znD2Active()) return; clearTimeout(ZN_D2_T); ZN_D2_T=setTimeout(()=>{ try{ znD2Sync(false); }catch(e){ console.error("desk sync",e); } },30); }); ZN_D2_OBS.observe(box,{childList:true}); }
-  window.addEventListener("resize",()=>{ const w=ZN_DESK(); if(ZN_D2_WIDE!==null&&w!==ZN_D2_WIDE){ ZN_D2_WIDE=w; try{ znRender(); }catch(e){} } else ZN_D2_WIDE=w; });
+  window.addEventListener("resize",()=>{ const w=ZN_DESK(); if(ZN_D2_WIDE!==null&&w!==ZN_D2_WIDE&&LIVE&&ROW){ ZN_D2_WIDE=w; try{ znRender(); }catch(e){} } });
   document.addEventListener("keydown",e=>{ if(e.key!=="Escape"||!znD2Active()) return; const pn=$("#znDeskPanel"); if(!pn||pn.hidden) return; if(document.getElementById("layer")&&document.getElementById("layer").children.length) return; const x=pn.querySelector(".zn-dpx"); if(x) x.click(); });
   // Nov 10 (phone pass, part 4): shorter pages.
   // Today (where the spine is): every card under the timeline folds into a small tile showing its title and status; tap a tile and that
@@ -5213,7 +5213,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function openSheet({kicker,title,body,color,from,onClose,foot,panel}){
     // Nov 12 (desktop pass): on the three-column Today, prep, capture, Ask Alice and plan-tomorrow (panel:true) open in the right-hand panel
     // instead of over the page, so the day and the Plan list stay usable. Anything stacked on another sheet, and every phone, keeps the sheet.
-    if(panel&&!window.__SHEETS){ try{ if(znDeskOn()){ const wrap=el("div","zn-dpsheet"); if(title) wrap.append(el("h2","zn-dpt",title)); wrap.append(...(Array.isArray(body)?body:[body]));
+    if((panel||(kicker==="Inbox"&&znD2Active()))&&!window.__SHEETS){ try{ if(znDeskOn()){ const wrap=el("div","zn-dpsheet"); if(title) wrap.append(el("h2","zn-dpt",title)); wrap.append(...(Array.isArray(body)?body:[body]));
       if(foot){ const f=el("div","zn-dpfoot"); f.append(...(Array.isArray(foot)?foot:[foot])); wrap.append(f); }
       const shut=znDeskPanelOpen(kicker,wrap); if(shut){ window.__znSel=""; let gone=false; const fin=()=>{ if(gone) return; gone=true; onClose&&onClose(); };
         const close=()=>{ if(!wrap.isConnected){ fin(); return; } shut(); fin(); }; const x=wrap.parentNode&&wrap.parentNode.querySelector(".zn-dpx"); if(x) x.addEventListener("click",fin);
