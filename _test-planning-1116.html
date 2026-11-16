@@ -5661,7 +5661,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   const LOCAL_KEY="zone-list-local";
   const loadLocal=()=>{ try{ return JSON.parse(localStorage.getItem(LOCAL_KEY)||"{}"); }catch(e){ return {}; } };
   const saveLocal=o=>{ try{ localStorage.setItem(LOCAL_KEY,JSON.stringify(o)); }catch(e){} };
-  function rememberLocal(it,patch,isNew){ if(!it.id||it.id.startsWith("tmp")) return; const o=loadLocal(); o.items=o.items||{};
+  function rememberLocal(it,patch,isNew){ return; if(!it.id||it.id.startsWith("tmp")) return; const o=loadLocal(); o.items=o.items||{};
     const prev=o.items[it.id]||{}; o.items[it.id]={at:Date.now(),isNew:prev.isNew||!!isNew,item:{...prev.item,...(isNew?it:{}),...patch}}; saveLocal(o); }
   function mergeLocal(list){ const o=loadLocal(); const items=o.items||{}; let changed=false;
     for(const [id,e] of Object.entries(items)){ if(e.at<=INDEX_AT){ delete items[id]; changed=true; continue; } // the index already has it
