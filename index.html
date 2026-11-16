@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-16.9"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
+<meta name="zone-build" content="2026-11-16.10"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1819,7 +1819,8 @@ body.zn .zn-alsodue u{white-space:nowrap}
  body.zn #znD2 .znd-slot > .zn-reading .zn-k{color:#5B4BB8;font:700 11.5px/1.3 'Plus Jakarta Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase}
  body.zn #znD2 .znd-slot > .zn-reading .zn-rdt{font:400 26px/1.2 'Fraunces',Georgia,serif;letter-spacing:-.01em;margin-top:10px}
  body.zn #znD2 .znd-slot > .zn-reading .zn-rdl{font:500 14.5px/1.55 'Plus Jakarta Sans',sans-serif;opacity:.78;margin:8px 0 0}
- body.zn #znD2 .znd-slot > .zn-reading .zn-rdrow{margin-top:14px}
+ body.zn #znD2 .znd-slot > .zn-reading .zn-rdrow{margin-top:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+ body.zn #znD2 .znd-slot > .zn-reading .znd-gplay{margin:0 0 0 auto}
  /* Recovery Dharma */
  body.zn #znD2 .znd-slot > .zn-recov{display:flex !important;gap:14px;align-items:center;padding:16px !important}
  body.zn #znD2 .znd-slot > .zn-recov > *{margin:0 !important}
@@ -1857,6 +1858,9 @@ body.zn .zn-alsodue u{white-space:nowrap}
  body.zn #znD2.znd-night .znd-link{color:#F3EEFF}
  body.zn #znD2.znd-night .zn-tadd .zn-cta{background:rgba(255,255,255,.10);color:#F3EEFF}
  body.zn #znD2.znd-night .znd-planline .znd-plm{opacity:.85}
+ /* the drawer at night: dark glass, light ink (it was white with the night's light text on it) */
+ body.zn #znD2.znd-night #znDeskPanel.znd-drawer{box-shadow:0 24px 60px rgba(0,0,0,.5)}
+ body.zn #znD2.znd-night #znDeskPanel.znd-drawer .zn-deskpanel{background:rgba(26,21,62,.97) !important;color:#F3EEFF !important;border:1px solid rgba(255,255,255,.16);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
 }
 @media (min-width:1200px){
  body.zn #znD2 .znd-tslot{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--znd-line)}
@@ -4005,7 +4009,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   var ZN_D2_OBS=null, ZN_D2_BUSY=false, ZN_D2_WIDE=null, ZN_D2_T=0;
   // a card with a tinted header strip (the planning polish B look, the mockup's tints)
   function znD2Card(tone,title,right){ const c=el("section","znd-card znd-"+tone); c.setAttribute("aria-label",title); const h=el("div","znd-h"); const t=el("span","znd-ht",title); const r=el("span","znd-hr"); if(right!=null&&right!=="") r.append(typeof right==="string"?document.createTextNode(right):right); h.append(t,r); const b=el("div","znd-b"); c.append(h,b); return c; }
-  var ZN_D2_LAYOUT={ night:{band:["nband"],c1:["closeout","tom3","add","lookback"],c2:["track","tonight","needsline","game"],c3:["prep","short","donen","tomwx"]}, wk:{band:["band"],c1:["gita","recov","pick","reads"],c2:["track","game","teams"],c3:["shelf","listen","heads","boundary"]}, day:{band:["band"],c1:["top3","add","week","planline","shelf"],c2:["track","needs","readings"],c3:["teams","listen","heads"]} };
+  var ZN_D2_LAYOUT={ night:{band:["nband"],c1:["closeout","tom3","add","lookback"],c2:["track","tonight","needsline","game"],c3:["prep","short","donen"]}, wk:{band:["band"],c1:["gita","recov","pick","reads"],c2:["track","game","teams"],c3:["shelf","listen","heads","boundary"]}, day:{band:["band"],c1:["top3","add","week","planline","shelf"],c2:["track","needs","readings"],c3:["teams","listen","heads"]} };
   // which phone card fills which slot (taken fresh from #znToday after every render)
   var ZN_D2_TAKE={ lookback:":scope > .zn-tonight2 > .zn-lookback", tonight:":scope > .zn-tonight2 > .zn-fortonight", short:":scope > .zn-tonight2 > .zn-short", prep:":scope > .zn-prep", gita:":scope > .zn-reading", recov:":scope > .zn-recov", game:":scope > .zn-game", needs:":scope > .zn-needs", readings:":scope > .zn-readings2" };
   function znD2Sync(full){ const v=$("#view-today"); if(!v) return; ZN_D2_WIDE=ZN_DESK(); const on=znD2Active(); v.classList.toggle("zn-d2",on); document.body.classList.toggle("zn-d2on",on&&!v.hidden);
@@ -4028,8 +4032,9 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       if(S("boundary")){ const bl=$("#znEnd")&&$("#znEnd").querySelector(":scope > .zn-boundary"); if(bl) put("boundary",[bl]); else if(full) put("boundary",[]); }
       // desktop-only cards, rebuilt on a full render
       if(full){ const mk=(k,fn)=>{ const s=S(k); if(!s) return; try{ const n=fn(); s.replaceChildren(); if(n) s.append(n); }catch(e){ console.error("desk "+k,e); } };
-        mk("band",znD2BandDay); mk("nband",znD2BandNight); mk("closeout",znD2CloseOut); mk("tom3",znD2Tom3); mk("needsline",znD2NeedsLine); mk("donen",znD2DoneNight); mk("tomwx",znD2TomWx); mk("top3",znD2Top3); mk("pick",znD2Pick); { const s=S("heads"); if(s&&!s.firstChild){ try{ const n=znD2Heads(); if(n) s.append(n); }catch(e){ console.error("desk heads",e); } } } mk("shelf",znD2Shelf); mk("week",znD2Week); mk("planline",znD2PlanLine);
+        mk("band",znD2BandDay); mk("nband",znD2BandNight); mk("closeout",znD2CloseOut); mk("tom3",znD2Tom3); mk("needsline",znD2NeedsLine); mk("donen",znD2DoneNight); mk("top3",znD2Top3); mk("pick",znD2Pick); { const s=S("heads"); if(s&&!s.firstChild){ try{ const n=znD2Heads(); if(n) s.append(n); }catch(e){ console.error("desk heads",e); } } } mk("shelf",znD2Shelf); mk("week",znD2Week); mk("planline",znD2PlanLine);
         { const s=S("add"); if(s&&!s.firstChild){ try{ s.append(znAddTaskCard(()=>{ try{ znRender(); }catch(e){} })); }catch(e){ console.error("desk add",e); } } } }
+      { const g=S("gita")&&S("gita").querySelector(".zn-reading"); if(g&&box&&!g.querySelector(".zn-rp")){ const rx=[...box.querySelectorAll(":scope > .zn-readings2 .zn-rx")].find(x=>/gita/i.test(x.textContent)); const rp=rx&&rx.querySelector(".zn-rp"); const row=g.querySelector(".zn-rdrow"); if(rp&&row){ rp.classList.add("znd-gplay"); row.insertBefore(rp,row.lastElementChild); } } }
       { const s=S("track"); if(s){ try{ const n=znD2Track(); s.replaceChildren(n); }catch(e){ console.error("desk track",e); } } }
       { const s=S("needs"); if(s&&s.firstChild) znD2NeedsTrim(s.firstChild); }
       { const s=S("prep"); if(s&&s.firstChild) znD2PrepTrim(s.firstChild); }
