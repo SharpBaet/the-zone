@@ -2208,6 +2208,14 @@ body.zn.zn-night .zn-bdlist .znb-chip{background:rgba(255,255,255,.10) !importan
 body.zn.zn-night .zn-bdlist .znb-chip.on{background:#F3EEFF !important;color:#1F2340 !important}
 body.zn #znPlan > .znb-tasks{margin-top:0}
 body.zn #znPlan .znb-tasks > .znb-ctl{margin-top:0}
+/* weekend parity: body.zn-wk also matches an older .zn-wk label rule (uppercase, wide tracking); the B pieces keep their own case */
+body.zn [class*="znb-"]{text-transform:none;letter-spacing:normal}
+body.zn .znb-cap{text-transform:uppercase;letter-spacing:.08em}
+body.zn .znb-ts textarea.znb-title{letter-spacing:-.01em}
+body.zn .znb-bdbadge{color:#fff !important}
+body.zn .zn-bdb.znb-bdm .znb-bdml{color:#2E2470 !important}
+body.zn.zn-night .sheet .znb-chk{border-color:rgba(31,35,64,.32)}
+body.zn.zn-night .sheet .znb-chk.on{background:#1F2340;border-color:#1F2340;color:#fff}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
