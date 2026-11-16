@@ -1811,6 +1811,28 @@ body.zn .zn-alsodue u{white-space:nowrap}
  body.zn #znD2 .znd-slot > .zn-readings2 .zn-rxtx b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
  body.zn #znD2 .znd-slot > .zn-readings2 .zn-rxsub{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 }
+/* Nov 16: A+B 2 stage 4 — the weekend board */
+@media (min-width:1200px){
+ /* the Gita as its own calm card */
+ body.zn #znD2 .znd-slot > .zn-reading{padding:22px !important;background:linear-gradient(170deg,rgba(255,252,244,.95),rgba(240,234,255,.92)) !important;box-shadow:0 8px 24px rgba(91,75,184,.10) !important;color:#1F2340}
+ body.zn #znD2 .znd-slot > .zn-reading > *{margin-left:0 !important;margin-right:0 !important}
+ body.zn #znD2 .znd-slot > .zn-reading .zn-k{color:#5B4BB8;font:700 11.5px/1.3 'Plus Jakarta Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase}
+ body.zn #znD2 .znd-slot > .zn-reading .zn-rdt{font:400 26px/1.2 'Fraunces',Georgia,serif;letter-spacing:-.01em;margin-top:10px}
+ body.zn #znD2 .znd-slot > .zn-reading .zn-rdl{font:500 14.5px/1.55 'Plus Jakarta Sans',sans-serif;opacity:.78;margin:8px 0 0}
+ body.zn #znD2 .znd-slot > .zn-reading .zn-rdrow{margin-top:14px}
+ /* Recovery Dharma */
+ body.zn #znD2 .znd-slot > .zn-recov{display:flex !important;gap:14px;align-items:center;padding:16px !important}
+ body.zn #znD2 .znd-slot > .zn-recov > *{margin:0 !important}
+ /* Game day, pink */
+ body.zn #znD2 .znd-slot > .zn-game{box-shadow:0 10px 28px rgba(220,90,140,.14) !important}
+ body.zn #znD2 .znd-slot > .zn-game > .zn-grow:first-child{margin:0 0 12px !important;padding:11px 16px;min-height:44px;background:#FFA3CB;color:#5E1438}
+ body.zn #znD2 .znd-slot > .zn-game > .zn-grow:first-child .zn-k{font:700 13.5px/1.25 'Plus Jakarta Sans',sans-serif;letter-spacing:0;text-transform:none;color:inherit;opacity:1}
+ /* weekend reads, and the "can wait until Monday" line */
+ body.zn #znD2 .znd-slot > .zn-reads > .zn-h{background:rgba(255,194,161,.45)}
+ body.zn #znD2 .znd-slot > .zn-boundary{width:100%;border-radius:22px}
+ body.zn #znD2 .znd-card .zn-hline{display:grid;grid-template-columns:26px minmax(0,1fr);gap:8px;width:100%;padding:9px 0;border:0;border-top:1px solid var(--znd-line);background:none;color:inherit;text-align:left;font:500 13.5px/1.4 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+ body.zn #znD2 .znd-card .zn-hline:first-child{border-top:0}
+}
 
 /* Nov 12: the empty side panel, Up next + Waiting on you */
 body.zn .zn-deskpanel .zn-dpsec{margin:0 0 14px}
@@ -3936,15 +3958,15 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // tap-to-open tile. znRenderInner still draws the phone Today into #znToday; znD2Sync then moves the cards it needs into the columns
   // (handlers stay attached) and builds the desktop-only cards. Anything that opens (task sheet, prep, capture, Ask Alice, plan-tomorrow)
   // opens in #znDeskPanel, which here is a drawer over column 3. The phone layout is untouched. Same code for both Zones.
-  var ZN_D2_MODES=new Set(["day"]); /* weekend and night are added in later stages */
+  var ZN_D2_MODES=new Set(["day","wk"]); /* weekend and night are added in later stages */
   function znD2Mode(){ const b=document.body.classList; return b.contains("zn-night")?"night":b.contains("zn-wk")?"wk":"day"; }
   function znD2Active(){ try{ const v=$("#view-today"); return !!(v&&ZN_D2_MODES&&ZN_DESK()&&znOn()&&ROW&&LIVE&&ZN_D2_MODES.has(znD2Mode())); }catch(e){ return false; } }
   var ZN_D2_OBS=null, ZN_D2_BUSY=false, ZN_D2_WIDE=null, ZN_D2_T=0;
   // a card with a tinted header strip (the planning polish B look, the mockup's tints)
   function znD2Card(tone,title,right){ const c=el("section","znd-card znd-"+tone); c.setAttribute("aria-label",title); const h=el("div","znd-h"); const t=el("span","znd-ht",title); const r=el("span","znd-hr"); if(right!=null&&right!=="") r.append(typeof right==="string"?document.createTextNode(right):right); h.append(t,r); const b=el("div","znd-b"); c.append(h,b); return c; }
-  var ZN_D2_LAYOUT={ day:{band:["band"],c1:["top3","add","week","planline","shelf"],c2:["track","needs","readings"],c3:["teams","listen","heads"]} };
+  var ZN_D2_LAYOUT={ wk:{band:["band"],c1:["gita","recov","pick","reads"],c2:["track","game","teams"],c3:["shelf","listen","heads","boundary"]}, day:{band:["band"],c1:["top3","add","week","planline","shelf"],c2:["track","needs","readings"],c3:["teams","listen","heads"]} };
   // which phone card fills which slot (taken fresh from #znToday after every render)
-  var ZN_D2_TAKE={ needs:":scope > .zn-needs", readings:":scope > .zn-readings2" };
+  var ZN_D2_TAKE={ gita:":scope > .zn-reading", recov:":scope > .zn-recov", game:":scope > .zn-game", needs:":scope > .zn-needs", readings:":scope > .zn-readings2" };
   function znD2Sync(full){ const v=$("#view-today"); if(!v) return; ZN_D2_WIDE=ZN_DESK(); const on=znD2Active(); v.classList.toggle("zn-d2",on); document.body.classList.toggle("zn-d2on",on&&!v.hidden);
     let root=$("#znD2"); const pn=$("#znDeskPanel");
     if(!on){ if(root) root.hidden=true; if(pn&&pn.parentElement!==v) v.append(pn); return; }
@@ -3960,10 +3982,12 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const put=(k,nodes)=>{ const s=S(k); if(!s) return; s.replaceChildren(); nodes.filter(Boolean).forEach(n=>{ n.classList.remove("zn-tfold-hide","zn-folded"); s.append(n); }); };
       // phone cards, moved
       Object.entries(ZN_D2_TAKE).forEach(([k,q])=>{ if(!S(k)) return; const got=box?[...box.querySelectorAll(q)]:[]; if(got.length) put(k,got); else if(full) put(k,[]); });
-      const els=box&&box.querySelector(":scope > .zn-else"); if(els){ znD2Else(els,S); els.remove(); } else if(full){ ["teams","listen","heads"].forEach(k=>{ const s=S(k); if(s) s.replaceChildren(); }); }
+      const els=(box&&box.querySelector(":scope > .zn-else"))||(mode==="wk"&&$("#znMid")?$("#znMid").querySelector(":scope > .zn-funwk"):null);
+      if(els){ const rd=els.querySelector(":scope > .zn-reads"); if(S("reads")) put("reads",rd?[rd]:[]); znD2Else(els,S); els.remove(); } else if(full){ ["teams","listen","heads","reads"].forEach(k=>{ const s=S(k); if(s) s.replaceChildren(); }); }
+      if(S("boundary")){ const bl=$("#znEnd")&&$("#znEnd").querySelector(":scope > .zn-boundary"); if(bl) put("boundary",[bl]); else if(full) put("boundary",[]); }
       // desktop-only cards, rebuilt on a full render
       if(full){ const mk=(k,fn)=>{ const s=S(k); if(!s) return; try{ const n=fn(); s.replaceChildren(); if(n) s.append(n); }catch(e){ console.error("desk "+k,e); } };
-        mk("band",znD2BandDay); mk("top3",znD2Top3); mk("shelf",znD2Shelf); mk("week",znD2Week); mk("planline",znD2PlanLine);
+        mk("band",znD2BandDay); mk("top3",znD2Top3); mk("pick",znD2Pick); { const s=S("heads"); if(s&&!s.firstChild){ try{ const n=znD2Heads(); if(n) s.append(n); }catch(e){ console.error("desk heads",e); } } } mk("shelf",znD2Shelf); mk("week",znD2Week); mk("planline",znD2PlanLine);
         { const s=S("add"); if(s&&!s.firstChild){ try{ s.append(znAddTaskCard(()=>{ try{ znRender(); }catch(e){} })); }catch(e){ console.error("desk add",e); } } } }
       { const s=S("track"); if(s){ try{ const n=znD2Track(); s.replaceChildren(n); }catch(e){ console.error("desk track",e); } } }
       { const s=S("needs"); if(s&&s.firstChild) znD2NeedsTrim(s.firstChild); }
@@ -4104,6 +4128,15 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function znD2NeedsTrim(card){ if(!card||card.dataset.trim) return; card.dataset.trim="1"; const rows=[...card.querySelectorAll(".zn-list > .zn-mrow")]; if(rows.length<=3) return; const extra=rows.slice(3); extra.forEach(r=>r.hidden=true);
     const more=card.querySelector(".zn-list > .zn-more"); const tot=Number((card.querySelector(".zn-h .zn-hr")||{}).textContent)||rows.length; const n=tot-3;
     const b=el("button","znd-link znd-more",`${n} more`); b.type="button"; b.setAttribute("aria-expanded","false"); b.addEventListener("click",()=>{ extra.forEach(r=>r.hidden=false); b.remove(); if(more) more.hidden=false; }); if(more) more.hidden=true; card.querySelector(".zn-list").append(b); }
+  // ---- Nov 16 (A+B 2, stage 4): the weekend board ----
+  // Today's pick: on a weekend nothing is scheduled unless she marks it. With picks it is the Top 3 card under this name.
+  function znD2Pick(){ const PK=window.__znPicks||{picks:[]}; if((PK.picks||[]).length){ const c=znD2Top3(); const h=c.querySelector(".znd-ht"); if(h) h.textContent="Today’s pick"; c.setAttribute("aria-label","Today’s pick"); return c; }
+    const c=znD2Card("plain","Today’s pick","rest day"); const b=c.querySelector(".znd-b"); b.append(el("p","znd-empty","Nothing is scheduled unless you mark it. Pick one if you want one.")); const pb=el("button","zn-pill","Pick from your list"); pb.type="button"; pb.disabled=!mcp; pb.addEventListener("click",()=>openPickToday(pb)); b.append(pb); return c; }
+  // Headlines from the brief's World section (the weekend page never drew them); the weekday takes them from the phone card
+  function znD2Heads(){ let heads=[]; try{ heads=split(ROW.World).rest.filter(l=>/^\d+\./.test(l)).slice(0,3); }catch(e){} if(!heads.length) return null; const c=znD2Card("plain","Headlines",String(heads.length)); const b=c.querySelector(".znd-b");
+    heads.forEach((l,i)=>{ const full=l.replace(/^\d+\.\s*/,""); const safe=full.replace(/\b(?:[A-Z]\.){2,}/g,x=>x.replace(/\./g,"․")).replace(/\b(Mr|Mrs|Ms|Dr|St|Jr|Sr|No|vs)\./g,"$1․"); const first=(safe.match(/^.*?[.!?](\s|$)/)||[safe])[0].trim().replace(/․/g,".");
+      const r=el("button","zn-hline"); r.type="button"; r.innerHTML=`<span class="zn-num">0${i+1}</span><span>${znEsc(first)}</span>`; r.addEventListener("click",()=>openSheet({kicker:"Headline",title:first,body:[el("p",null,full.slice(first.length).trim()||full)],from:r})); b.append(r); });
+    return c; }
   // Nov 10 (phone pass, part 4): shorter pages.
   // Today (where the spine is): every card under the timeline folds into a small tile showing its title and status; tap a tile and that
   // card opens right under the tiles, tap again to close. The weather / water tiles and the Done-today strip stay as they are.
