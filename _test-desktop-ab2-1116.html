@@ -4019,7 +4019,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function znD2BandDay(){ const T=TODAY(), dt=new Date(T+"T12:00:00Z"), n=nowH(); let items=[]; try{ items=risoItems(); }catch(e){} const PK=window.__znPicks||{picks:[],done3:new Set()}; const done3=PK.done3||new Set();
     const isD=t=>done3.has(String(t||"").toLowerCase()); items=items.map(x=>{ if(x.k!=="focus") return x; const it=znPickTask(x.name); const st=it&&!isD(x.name)?znState(it,{slot:{s:x.s,e:x.e}}):null; return {...x,over:!!(st&&st.k==="over")}; });
     const cur=items.filter(x=>x.s<=n&&x.e>n).sort((a,b)=>(a.k==="focus")-(b.k==="focus")||a.e-b.e)[0]; const nx=items.filter(x=>x.s>n).sort((a,b)=>a.s-b.s)[0];
-    const gaps=znD2Gaps(items,n,21);
+    const gaps=znD2Gaps(items,n,Math.max(18,Math.min(21,n+1))); /* open slots to place a task stop at 6pm; the evening shows as its own tint */
     const DN=DAYS_LONG[dt.getUTCDay()], ord=(d=>d+(d%10===1&&d!==11?"st":d%10===2&&d!==12?"nd":d%10===3&&d!==13?"rd":"th"))(dt.getUTCDate());
     const w=wxNow(), hi=num(ROW.High); const t=w&&w.t!=null?Math.round(w.t):hi!=null?Math.round(hi):null; const uv=w&&(w.uv!=null?w.uv:w.uvNow!=null?w.uvNow:null);
     const shortN=s=>String(s||"").replace(/^💼\s*/,""); let big="", small="";
@@ -5327,7 +5327,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function openSheet({kicker,title,body,color,from,onClose,foot,panel}){
     // Nov 12 (desktop pass): on the three-column Today, prep, capture, Ask Alice and plan-tomorrow (panel:true) open in the right-hand panel
     // instead of over the page, so the day and the Plan list stay usable. Anything stacked on another sheet, and every phone, keeps the sheet.
-    if((panel||(kicker==="Inbox"&&znD2Active()))&&!window.__SHEETS){ try{ if(znDeskOn()){ const wrap=el("div","zn-dpsheet"); if(title) wrap.append(el("h2","zn-dpt",title)); wrap.append(...(Array.isArray(body)?body:[body]));
+    if((panel||((kicker==="Inbox"||kicker==="Open time")&&znD2Active()))&&!window.__SHEETS){ try{ if(znDeskOn()){ const wrap=el("div","zn-dpsheet"); if(title) wrap.append(el("h2","zn-dpt",title)); wrap.append(...(Array.isArray(body)?body:[body]));
       if(foot){ const f=el("div","zn-dpfoot"); f.append(...(Array.isArray(foot)?foot:[foot])); wrap.append(f); }
       const shut=znDeskPanelOpen(kicker,wrap); if(shut){ window.__znSel=""; let gone=false; const fin=()=>{ if(gone) return; gone=true; onClose&&onClose(); };
         const close=()=>{ if(!wrap.isConnected){ fin(); return; } shut(); fin(); }; const x=wrap.parentNode&&wrap.parentNode.querySelector(".zn-dpx"); if(x) x.addEventListener("click",fin);
