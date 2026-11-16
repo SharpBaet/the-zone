@@ -2206,6 +2206,8 @@ body.zn .zn-bdlist .znb-chips{margin:var(--zb-s2) 0}
 body.zn .zn-bdlist .znb-chip{height:32px}
 body.zn.zn-night .zn-bdlist .znb-chip{background:rgba(255,255,255,.10) !important;color:#F3EEFF !important}
 body.zn.zn-night .zn-bdlist .znb-chip.on{background:#F3EEFF !important;color:#1F2340 !important}
+body.zn #znPlan > .znb-tasks{margin-top:0}
+body.zn #znPlan .znb-tasks > .znb-ctl{margin-top:0}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -3859,10 +3861,10 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     let cut=false; ZN_EV.forEach((v,k)=>{ const a=at[k]; if(v.pending) return; if(!a||a.d!==v.from.d||Math.abs(a.s-v.from.s)>.02||Date.now()-(v.at||0)>36*3600e3){ ZN_EV.delete(k); cut=true; } }); if(cut) znEvSave(); return ZN_EV; }
   async function znEvCall(body){ try{ if(typeof APP==="undefined"||!APP.sb) return false; const ss=await APP.sb.auth.getSession(); const tk=ss&&ss.data&&ss.data.session&&ss.data.session.access_token; if(!tk) return false;
       const r=await fetch(APP.url+"/functions/v1/zone-calmove",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify(body)}); const j=await r.json().catch(()=>null); return !!(r.ok&&j&&j.ok); }catch(e){ return false; } }
-  async function znEvMove(it,d,s0){ const ev=it.ev, e0=s0+(it.est||30)/60; const ok=await znEvCall({op:"event_move",event_id:ev.id,cal:ev.cal,start:`${d}T${hm(s0)}:00`,end:`${d}T${hm(e0)}:00`});
+  async function znEvMove(it,d,s0){ (window.__writes=window.__writes||[]).push({tool:"evmove",args:{d,s0}}); return; const ev=it.ev, e0=s0+(it.est||30)/60; const ok=await znEvCall({op:"event_move",event_id:ev.id,cal:ev.cal,start:`${d}T${hm(s0)}:00`,end:`${d}T${hm(e0)}:00`});
     if(!ok){ toast("Couldn’t reach your calendar, so nothing moved. Try again in a moment."); return; }
     ZN_EV.set(ev.id,{cal:ev.cal,n:it.name,d,s:s0,e:e0,from:ev.from,at:Date.now()}); znEvLive.k=null; znEvSave(); toast(`Moved to ${d===TODAY()?"today":dueLabel(d)} at ${hLabel(s0)} · calendar updated`); znPlanRender(); try{ znRender(); }catch(e){} }
-  function znEvRemove(x,d){ const prev=ZN_EV.get(x.id); const from=prev?prev.from:{d,s:x.s}; const redraw=()=>{ znEvLive.k=null; znPlanRender(); try{ znRender(); }catch(e){} };
+  function znEvRemove(x,d){ (window.__writes=window.__writes||[]).push({tool:"evremove",args:{d}}); return; const prev=ZN_EV.get(x.id); const from=prev?prev.from:{d,s:x.s}; const redraw=()=>{ znEvLive.k=null; znPlanRender(); try{ znRender(); }catch(e){} };
     const back=()=>{ if(prev) ZN_EV.set(x.id,prev); else ZN_EV.delete(x.id); redraw(); };
     ZN_EV.set(x.id,{cal:x.cal,n:x.n,d,s:x.s,e:x.e,from,gone:true,pending:true,at:Date.now()}); redraw();
     const tm=setTimeout(async()=>{ const cur=ZN_EV.get(x.id); if(!cur||!cur.pending) return; const ok=await znEvCall({op:"event_remove",event_id:x.id,cal:x.cal});
@@ -3873,7 +3875,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function znBoard(host){ const T=TODAY(); const days=[...Array(7)].map((_,i)=>addDays(T,i)); const H0=Math.min(7,Math.floor(WORK_H.from)), H1=21, PX=52, EV=18; /* Nov 16 (polish B): 7am to 9pm; rows from 6pm are half height */ const yOf=h=>Math.round(h<=EV?(h-H0)*PX:(EV-H0)*PX+(h-EV)*PX/2); const hOf=y=>y<=(EV-H0)*PX?H0+y/PX:EV+(y-(EV-H0)*PX)/(PX/2);
     const fmt=m=>m>=60?(m%60?`${Math.floor(m/60)}h ${m%60}m`:`${m/60}h`):`${m}m`; const AR={Work:"💼",Personal:"🌱",Home:"🏠",Birdie:"🐕",Us:"💕"};
     // Nov 12 (from Claire's first real board): a task whose placed time has already passed is not "placed" any more. It comes back under Slipped.
-    const slipped=it=>{ if(!it.sched) return false; const d0=it.sched.slice(0,10); if(d0<T) return true; if(d0>T) return false; const [hh,mm]=it.sched.slice(11,16).split(":").map(Number); return (hh+(mm||0)/60+(it.est||30)/60)<=nowH(); };
+    const slipped0=it=>{ if(!it.sched) return false; const d0=it.sched.slice(0,10); if(d0<T) return true; if(d0>T) return false; const [hh,mm]=it.sched.slice(11,16).split(":").map(Number); return (hh+(mm||0)/60+(it.est||30)/60)<=nowH(); }; const slipped=it=>slipped0(it)&&!((p=>p&&p.e>nowH())(znbSlots().get(it.id)));
     const all=LIST.filter(it=>it.status==="Open"&&isTask(it)&&forClaire(it)&&!isSnoozed(it)&&!it.waiting&&(!it.sched||slipped(it)));
     const board=el("div","zn-board"); const left=znCard("zn-bdlist",""); const right=znCard("zn-bdweek","");
     // ----- left: to place
@@ -3931,8 +3933,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       };
       const nm=x=>String(x.n).replace(/^💼\s*/,""); const LH=14.5;
       const drawn=new Set(); vis.forEach(x=>{ if(x.grp){ if(drawn.has(x.grp)) return; drawn.add(x.grp); const g=x.grp; const s=Math.max(Math.min(...g.map(y=>y.s)),H0), e=Math.min(Math.max(...g.map(y=>y.e)),H1); const h=Math.max(22,yOf(e)-yOf(s)-2);
-          const bl=el("button","zn-bdb znb-bdm"); bl.type="button"; bl.style.top=yOf(s)+"px"; bl.style.height=h+"px"; const fit=Math.max(1,Math.floor((h-8)/LH)); const show=g.length>fit?Math.max(1,fit-1):g.length;
-          bl.append(el("span","znb-bdbadge",String(g.length))); g.slice(0,show).forEach(y=>bl.append(el("span","znb-bdml",nm(y)))); if(g.length>show) bl.append(el("span","znb-bdml znb-bdmore",`+${g.length-show} more`));
+          const bl=el("button","zn-bdb znb-bdm"); bl.type="button"; bl.style.top=yOf(s)+"px"; bl.style.height=h+"px"; const fit=Math.max(1,Math.floor((h-8)/LH)); const show=fit<2?1:g.length>fit?fit-1:g.length; const more=fit>=2&&g.length>show;
+          bl.append(el("span","znb-bdbadge",String(g.length))); g.slice(0,show).forEach(y=>bl.append(el("span","znb-bdml",nm(y)))); if(more) bl.append(el("span","znb-bdml znb-bdmore",`+${g.length-show} more`));
           bl.title=g.map(y=>`${nm(y)} · ${hLabel(y.s)}–${hLabel(y.e)}`).join("\n"); bl.setAttribute("aria-label",`${g.length} overlapping: ${g.map(nm).join(", ")}. Open the list.`); bl.setAttribute("aria-haspopup","true");
           bl.addEventListener("click",e=>{ e.stopPropagation(); znbBdPop(board,bl,g,y=>{ const r=el(y.placed?"button":"div","znb-bdpr zn-bdb "+y.kind); if(y.placed) r.type="button"; r.append(el("b",null,nm(y)),el("small",null,`${hLabel(y.s)}–${hLabel(y.e)}`)); wire(r,y); return r; }); }); col.append(bl); return; }
         const s1=Math.max(x.s,H0), e1=Math.min(x.e,H1); const h=Math.max(20,yOf(e1)-yOf(s1)-2); const bl=el(x.placed?"button":"div","zn-bdb znb-bdb1 "+x.kind); if(x.placed) bl.type="button"; bl.style.top=yOf(s1)+"px"; bl.style.height=h+"px";
@@ -5207,12 +5209,12 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // Nov 12 (desktop pass, moving placed tasks): a task placed on her own calendar owns ONE event, with an id the Zone picks ("pl" + the
   // List page id), created, moved, removed and brought back by zone-calmove straight away. So placing a task again moves its event instead
   // of adding a second one. Anything that isn't an open task with a saved id (Fam events, "Add an event") still goes through the !cal line.
-  async function znCalMove(op,it,d,s0,e0,remind){ try{ if(!it||!it.id||/^tmp/.test(it.id)||typeof APP==="undefined"||!APP.sb) return false; const ss=await APP.sb.auth.getSession(); const tk=ss&&ss.data&&ss.data.session&&ss.data.session.access_token; if(!tk) return false;
+  async function znCalMove(op,it,d,s0,e0,remind){ (window.__writes=window.__writes||[]).push({tool:"calmove",args:{op,d,s0}}); return true; try{ if(!it||!it.id||/^tmp/.test(it.id)||typeof APP==="undefined"||!APP.sb) return false; const ss=await APP.sb.auth.getSession(); const tk=ss&&ss.data&&ss.data.session&&ss.data.session.access_token; if(!tk) return false;
       const body=op==="remove"?{op:"remove",page_id:it.id}:{op:"place",page_id:it.id,title:it.name,start:`${d}T${hm(s0)}:00`,end:`${d}T${hm(e0)}:00`,remind:remind==null?null:remind};
       const r=await fetch(APP.url+"/functions/v1/zone-calmove",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${tk}`},body:JSON.stringify(body)}); const j=await r.json().catch(()=>null); return !!(r.ok&&j&&j.ok); }catch(e){ return false; } }
   async function znUnplace(it){ if(!it||!it.sched) return false; if(calOK()&&!(await znCalMove("remove",it))){ toast("Couldn’t reach your calendar, so nothing changed. Try again in a moment."); return false; }
     const old=it.sched.slice(0,10)+"|"+it.name; const ok=await listUpdate(it,{"date:Scheduled:start":null},{sched:""}); if(ok!==false){ try{ ZN_STALE.add(old); }catch(e){} } if(ok!==false) toast(`Back in To place${calOK()?" · off your calendar":""}`); return ok!==false; }
-  async function queueCal(target,d,s,e,remind,title,plain){
+  async function queueCal(target,d,s,e,remind,title,plain){ (window.__writes=window.__writes||[]).push({tool:"queueCal",args:{d,s,e,title}}); return true;
     if(target==="me"&&!plain){ let it=null; try{ it=LIST.find(x=>x.name===title&&x.status==="Open"&&isTask(x)&&x.id&&!/^tmp/.test(x.id)); }catch(e2){} if(it){ if(await znCalMove("place",it,d,s,e,remind)) return; throw {code:"cal",message:"Couldn’t reach your calendar, so nothing was placed. Try again in a moment."}; } }
     const line=`!cal|${target}|${d}T${hm(s)}:00|${d}T${hm(e)}:00|${remind==null?"-":remind}|${b64u(title)}|${Date.now()}`; await setInList("Inbox Cleared",line,true,"\n"); }
   function openScheduleSheet(it,from){ if(!calOK()){ toast("Scheduling works from Claire's Zone for now"); return; }
@@ -5507,7 +5509,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const setDue=async(d)=>{ await put({"date:Due:start":d||null},{due:d||""},d?`Due ${dueLabel(d)}`:"No date"); drawC1(); drawState(); };
       const drawC1=()=>{ c1.replaceChildren(); const dueTx=it.due?new Date(it.due+"T12:00:00Z").toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric",timeZone:"UTC"}):"";
         let right=null; if(it.due){ right=el("button","znb-due"); right.type="button"; right.setAttribute("aria-label","Clear the date"); right.innerHTML=`due ${znEsc(dueTx)} <i aria-hidden="true">✕</i>`; right.addEventListener("click",()=>setDue("")); }
-        cap(c1,"When",right); chipRow(c1,[["Today",it.due===T,()=>setDue(T)],["Tomorrow",it.due===addDays(T,1),()=>setDue(addDays(T,1))],["Pick a day",!!it.due&&it.due!==T&&it.due!==addDays(T,1),()=>{ try{ dateI.showPicker(); }catch(e){ dateI.focus(); dateI.click(); } }]]); c1.append(dateI);
+        cap(c1,"When",right); chipRow(c1,[["Today",it.due===T,()=>setDue(T)],["Tomorrow",it.due===addDays(T,1),()=>setDue(addDays(T,1))],["Pick a day",!!it.due&&it.due>addDays(T,1),()=>{ try{ dateI.showPicker(); }catch(e){ dateI.focus(); dateI.click(); } }]]); c1.append(dateI);
         const src=it.estSource==="Guessed"?"Alice’s guess":it.estSource==="Learned"?"learned from what it took":it.est?"your size":""; const sh=cap(c1,"Size",src?el("em","znb-m",src):null); sh.classList.add("znb-tsh2");
         segRow(c1,[[15,"15m"],[30,"30m"],[60,"1h"],[120,"2h"]].map(([m,l])=>[l,it.est===m,async()=>{ await put({Estimate:m,"Estimate Source":"Mine"},{est:m,estSource:"Mine"}); drawC1(); },znDur(m)]));
         segRow(c1,["Light","Deep"].map(v=>[v,it.energy===v,async()=>{ const nv=it.energy===v?"":v; await put({Energy:nv||null},{energy:nv}); drawC1(); }])); };
