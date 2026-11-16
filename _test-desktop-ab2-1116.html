@@ -1843,6 +1843,7 @@ body.zn .zn-alsodue u{white-space:nowrap}
  body.zn #znD2.znd-night .znd-nowmeta{opacity:.75;justify-content:flex-start}
  body.zn #znD2.znd-night .znd-tick{border-left-color:rgba(255,255,255,.12)}
  body.zn #znD2.znd-night .znd-blk{color:#1F2340}
+ body.zn #znD2.znd-night .znd-blk.znd-work{background:rgba(255,255,255,.2) !important;color:#F3EEFF}
  body.zn #znD2.znd-night .znd-card,body.zn #znD2.znd-night .znd-slot > .zn-card:not(.zn-hero),body.zn #znD2.znd-night .zn-tadd{background:rgba(255,255,255,.07) !important;border:1px solid rgba(255,255,255,.13) !important;box-shadow:none !important;color:#F3EEFF;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
  body.zn #znD2.znd-night .znd-h,body.zn #znD2.znd-night .znd-slot > .zn-card:not(.zn-hero) > .zn-h{background:rgba(255,255,255,.07);color:#F3EEFF}
  body.zn #znD2.znd-night .znd-coral > .znd-h{background:rgba(255,142,112,.22);color:#FFD6CB}
@@ -4106,7 +4107,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       t.style.left=left+"%"; t.style.width=`calc(${wd}% - 3px)`; t.title=title||label; if(x.col) t.style.background=x.col; if(px>=50){ t.append(el("b",null,label)); if(sub) t.append(el("small",null,sub)); } else { t.classList.add("znd-tiny"); t.setAttribute("aria-label",title||label); } host.append(t); return t; };
     znD2Merge(items.filter(x=>x.k!=="focus")).forEach(m=>{ const one=m.all.length===1; const nm=String(m.name).replace(/^💼\s*/,""); const now=m.s<=n&&m.e>n;
       const sub=now?"now":one?znDur(Math.round((m.e-m.s)*60)):`+${m.all.length-1} more`; const title=m.all.map(x=>`${String(x.name).replace(/^💼\s*/,"")} · ${hToLabel(x.s)}–${hToLabel(x.e)}`).join("\n");
-      const b=blk(cal,{s:m.s,e:m.e,col:znD2Col(m)},(now?"znd-now":"")+(m.e<=n?" znd-past":""),nm,sub,title); });
+      const b=blk(cal,{s:m.s,e:m.e,col:znD2Col(m)},(now?"znd-now":"")+(m.e<=n?" znd-past":"")+(m.k==="work"?" znd-work":""),nm,sub,title); });
     items.filter(x=>x.k==="focus").forEach(x=>{ const now=x.s<=n&&x.e>n; const done=o.isDone&&o.isDone(x.name); const st=x.over?"overdue":done?"done":now?"now":`${znbT(x.s)} · ${znDur(Math.round((x.e-x.s)*60))}`;
       blk(tsk,{s:x.s,e:x.e,col:x.over?ZC.cor:ZC.lim},(now?"znd-now":"")+(done?" znd-done":"")+(x.e<=n?" znd-past":""),x.name,st,`${x.name} · ${hToLabel(x.s)}–${hToLabel(x.e)}`,o.openPick?(t=>o.openPick(x.name,t)):null); });
     (o.gaps||[]).forEach(g=>{ const m=Math.round((g.b-g.a)*60); blk(tsk,{s:g.a,e:g.b},"znd-open",`${znDur(m)} open`,"place one",`${znDur(m)} open · place a task here`,o.place?(t=>o.place(g.a,g.b,t)):null); });
@@ -4152,7 +4153,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       else { const t=tile("znd-tsky",k,done?"Done ✓":(m?`${m[1]} of ${m[2]}`:big||"—"),[m&&!done?pips:null,done?el("span","znd-tts","target met"):null],btn); if(fix) t.querySelector(".znd-ttc").append(fix); } }
     // Birdie: walks today, + Walk is the Birdie card's own button
     { let walks=[]; try{ walks=walksTodayAll(); }catch(e){} const bd=box&&box.querySelector(":scope > .zn-bd2"); const lb=bd&&[...bd.querySelectorAll(".zn-hows button")].find(b=>/walk/i.test(b.textContent)); const care=bd&&bd.querySelector(".bd2-line");
-      const away=!bd; tile("znd-tmint","Birdie",away?"away":`${walks.length} walk${walks.length===1?"":"s"}`,[el("span","znd-tts",care?care.textContent.trim():away?"no walks to log":"today")],lb?mkBtn("+ Walk",()=>lb.click(),"Log a walk for Birdie"):null); }
+      const away=!bd&&!document.body.classList.contains("zn-night"); /* the night page draws no Birdie card */ tile("znd-tmint","Birdie",away?"away":`${walks.length} walk${walks.length===1?"":"s"}`,[el("span","znd-tts",care?care.textContent.trim():away?"no walks to log":"today")],lb?mkBtn("+ Walk",()=>lb.click(),"Log a walk for Birdie"):null); }
     // routines: done of total, the next one named, a rainbow ring when every one is done
     { let defs=[]; try{ defs=routineDefs().filter(rtDays); }catch(e){} const ord={morning:0,day:1,evening:2}; const on=d=>{ try{ return rtDone(ROW,d); }catch(e){ return false; } };
       const dn=defs.filter(on).length; const left=defs.filter(d=>!on(d)).sort((a,b)=>(ord[a.slot]??1)-(ord[b.slot]??1)); let hands=null; try{ const P=practiceDefs(); const h=P.find(d=>d.type==="streak"); if(h){ const v=pval(ROW,h); if(!v.night) hands=h; } }catch(e){}
@@ -4192,9 +4193,9 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     band.innerHTML=znD2Dial(items,n,{night:true,big:P.picks.length?`${dn} of ${P.picks.length}`:"—",small:P.picks.length?"picks done":"nothing picked",label:`Today, finished. ${dn} of ${P.picks.length} picks done.`});
     const DN=DAYS_LONG[dt.getUTCDay()], D1=DAYS_LONG[d1.getUTCDay()]; const tw=clean(ROW["Tomorrow Weather"]||""); const th=(tw.match(/high\s*(\d+)/i)||[])[1], tl=(tw.match(/low\s*(\d+)/i)||[])[1];
     const nc=el("div","znd-now"); const top=el("div","znd-nowtop"); const dd=el("span","znd-date"); dd.innerHTML=`${DN} <i>night</i>`; top.append(dd); if(th){ const wb=el("span","znd-wx znd-wxs",`${D1.slice(0,3)} ${th}°${tl?` · low ${tl}`:""}`); top.append(wb); } nc.append(top);
-    nc.append(el("p","znd-k",`Tonight · ${hToLabel(n)}`)); const first=tomL[0]||tom[0]; nc.append(el("h2","znd-title",first?`${D1} starts at ${hToLabel(first.s)}`:`${D1} is open`));
-    const work=tom.filter(x=>x.k==="work"); const prep=work.filter(x=>{ try{ const p=znPrepFor(T1,String(x.name).replace(/^💼\s*/,"")); return p&&p.prep; }catch(e){ return false; } }).length;
-    const openH=znD2Gaps(tomL,8,17).reduce((a,g)=>a+(g.b-g.a),0); const fm=work[0]||first;
+    { const hl=hToLabel(n); nc.append(el("p","znd-k",`Tonight · ${hl}${/[ap]m$/i.test(hl)?"":(n>=12?"pm":"am")}`)); } const first=tomL[0]||tom[0]; nc.append(el("h2","znd-title",first?`${D1} starts at ${hToLabel(first.s)}`:`${D1} is open`));
+    const work=tom.filter(x=>x.k==="work"), workL=tomL.filter(x=>x.k==="work"); const prep=work.filter(x=>{ try{ const p=znPrepFor(T1,String(x.name).replace(/^💼\s*/,"")); return p&&p.prep; }catch(e){ return false; } }).length;
+    const openH=znD2Gaps(tomL,8,17).reduce((a,g)=>a+(g.b-g.a),0); const fm=workL[0]||first;
     if(fm) nc.append(el("p","znd-line",`First: ${String(fm.name).replace(/^💼\s*/,"")} at ${hToLabel(fm.s)}`));
     nc.append(el("p","znd-nowr znd-nowmeta",[`${work.length} meeting${work.length===1?"":"s"}`,openH>=.5?`${Math.round(openH*2)/2}h open`:"no open time",prep?`${prep} prep note${prep===1?"":"s"} ready`:""].filter(Boolean).join(" · ")));
     band.append(nc);
