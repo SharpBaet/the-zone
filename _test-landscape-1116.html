@@ -2466,6 +2466,7 @@ body.zn.zn-night .sheet .znb-chk.on{background:#1F2340;border-color:#1F2340;colo
    Measured on 852 × 393: rail 176 at the left safe edge, header 10–50, day heads 54–90, grid from 92, 46px an hour, three equal days. */
 #znLand{display:none}
 body.zn-land{overflow:hidden}
+html.zn-landh{overflow:hidden !important} /* the page keeps overflow-x:clip on html, so the body lock alone does not stop the page scrolling */
 body.zn-land #znLand{display:grid}
 body.zn-land nav.bottom, body.zn-land .zn-fab{display:none !important}
 #znLand[hidden]{display:none !important}
@@ -4577,9 +4578,9 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function znLandMQ(){ try{ return !!window.matchMedia("(orientation: landscape) and (max-height: 500px)").matches; }catch(e){ return false; } }
   function znLandWant(){ if(!znLandMQ()||ZN_DESK()) return false; if(document.body.classList.contains("loading")) return false; const si=document.getElementById("signin"); if(si&&si.offsetWidth>0) return false; return true; }
   function znLandSync(fromRender){ const want=znLandWant();
-    if(want&&!ZN_LAND.on){ ZN_LAND.on=true; ZN_LAND.pg=0; ZN_LAND.sy=null; ZN_LAND.tray=null; ZN_LAND.y=window.scrollY||0; document.body.classList.add("zn-land"); znLandDraw(true);
+    if(want&&!ZN_LAND.on){ ZN_LAND.on=true; ZN_LAND.pg=0; ZN_LAND.sy=null; ZN_LAND.tray=null; ZN_LAND.y=window.scrollY||0; document.body.classList.add("zn-land"); document.documentElement.classList.add("zn-landh"); znLandDraw(true);
       clearInterval(ZN_LAND.tm); ZN_LAND.tm=setInterval(()=>{ if(ZN_LAND.on&&!(ZN_LAND.root&&ZN_LAND.root.querySelector(".zl-pop"))) znLandDraw(); },60000); return; }
-    if(!want&&ZN_LAND.on){ ZN_LAND.on=false; clearInterval(ZN_LAND.tm); document.body.classList.remove("zn-land"); if(ZN_LAND.root){ ZN_LAND.root.hidden=true; ZN_LAND.root.replaceChildren(); } const y=ZN_LAND.y; requestAnimationFrame(()=>{ try{ window.scrollTo({top:y}); }catch(e){} }); return; }
+    if(!want&&ZN_LAND.on){ ZN_LAND.on=false; clearInterval(ZN_LAND.tm); document.body.classList.remove("zn-land"); document.documentElement.classList.remove("zn-landh"); if(ZN_LAND.root){ ZN_LAND.root.hidden=true; ZN_LAND.root.replaceChildren(); } const y=ZN_LAND.y; requestAnimationFrame(()=>{ try{ window.scrollTo({top:y}); }catch(e){} }); return; }
     if(want&&ZN_LAND.on&&fromRender&&!(ZN_LAND.root&&ZN_LAND.root.querySelector(".zl-pop"))) znLandDraw(); }
   const znlT=h=>{ const t=Math.round(h*60), hh=Math.floor(t/60)%24, mm=t%60; return `${((hh+11)%12)+1}:${String(mm).padStart(2,"0")}`; }; /* 1:50 */
   const znlS=h=>{ const t=Math.round(h*60), hh=Math.floor(t/60)%24, mm=t%60; return `${((hh+11)%12)+1}${mm?":"+String(mm).padStart(2,"0"):""}${hh<12?"a":"p"}`; }; /* 8a, 4:30p */
