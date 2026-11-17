@@ -1,6 +1,6 @@
 // The Zone app shell (Oct 29: served from Supabase Storage, so every path is relative to this file). Caches only the site's own files
 // (the page, manifest, icons) so the app opens offline. It never caches Zone data: Supabase, Notion and every other site go to the network.
-const SHELL_CACHE = "zone-shell-2026-10-30";
+const SHELL_CACHE = "zone-shell-2026-11-16"; // Nov 16: bumped so installed apps fetch the manifest that allows landscape
 const BASE = new URL("./", self.location).pathname;
 const PAGE = BASE + "index.html";
 const SHELL = [PAGE, BASE + "manifest.webmanifest", BASE + "icons/icon-192.png", BASE + "icons/icon-512.png", BASE + "icons/icon-maskable-512.png", BASE + "icons/apple-touch-icon.png"];
