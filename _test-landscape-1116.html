@@ -4546,7 +4546,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // line 2 of a day head: "Office 8a–4p · 3h open" (open time inside the office hours, or inside her work hours when there are none)
   function znLandOpenLine(d,D,T){ const back=D.backs[0]; let from=back?back.s:WORK_H.from, to=back?back.e:WORK_H.to; let t0=d===T?Math.max(from,nowH()):from; let open=0;
     if(t0<to){ D.taken.filter(x=>x.e>t0&&x.s<to).sort((p,q)=>p.s-q.s).forEach(x=>{ if(x.s>t0) open+=x.s-t0; t0=Math.max(t0,x.e); }); if(to>t0) open+=to-t0; }
-    const o=(d===T&&nowH()>=to)?"":open>=.25?`${Math.round(open*2)/2}h open`:"full"; return [back?`${znlNm(back)} ${znlS(back.s)}–${znlS(back.e)}`:"",o].filter(Boolean).join(" · "); }
+    const o=(d===T&&nowH()>=to)?"":open>=.25?`${Math.round(open*2)/2}h open`:"full"; return [back?`Office ${znlS(back.s)}–${znlS(back.e)}`:"",o].filter(Boolean).join(" · "); } /* "Office" as in the mockup; the event's own name is the tooltip */
   function znLandDraw(first){ let root=ZN_LAND.root;
     if(!root){ root=el("div"); root.id="znLand"; root.setAttribute("role","region"); root.setAttribute("aria-label","Planning board"); document.body.append(root); ZN_LAND.root=root; znLandSwipe(root); }
     const old=root.querySelector(".zl-scroll"); if(old&&!first) ZN_LAND.sy=old.scrollTop;
@@ -4565,7 +4565,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     // day heads
     const heads=el("div","zl-heads"); heads.append(el("span"));
     days.forEach(d=>{ const w=wdOf(d), wk=w===0||w===6; const h=el("div","zl-dh"); const lab=d===T?"Today":d===addDays(T,1)?"Tomorrow":""; h.innerHTML=`<b>${lab?`<em>${lab}</em> · `:""}${DS[w]} ${dd(d).getUTCDate()}</b>`;
-      const sm=el("small"); const ad=znLandAllDay(d); if(ad.length){ const c=el("span","zl-ad",ad[0]+(ad.length>1?` +${ad.length-1}`:"")); c.title=ad.join(" · "); sm.append(c); } else sm.textContent=wk?"weekend":znLandOpenLine(d,DAY[d],T); h.append(sm); heads.append(h); });
+      const sm=el("small"); const ad=znLandAllDay(d); if(ad.length){ const c=el("span","zl-ad",ad[0]+(ad.length>1?` +${ad.length-1}`:"")); c.title=ad.join(" · "); sm.append(c); } else { sm.textContent=wk?"weekend":znLandOpenLine(d,DAY[d],T); const bk=DAY[d].backs[0]; if(bk&&!wk) sm.title=`${znlNm(bk)} ${znlS(bk.s)}–${znlS(bk.e)}`; } h.append(sm); heads.append(h); });
     bd.append(heads);
     // the grid: still column backgrounds behind, hours that scroll in front
     const body=el("div","zl-body"); const bg=el("div","zl-bg"); bg.append(el("span")); days.forEach(d=>bg.append(el("div","zl-bgc"+(d===T?" today":"")))); body.append(bg);
