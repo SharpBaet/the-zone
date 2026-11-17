@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-16.15"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
+<meta name="zone-build" content="2026-11-16.16"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2596,6 +2596,42 @@ body.zn-land nav.bottom, body.zn-land .zn-fab{display:none !important}
 #znLand .zl-placed button{flex:none;height:32px;padding:0 10px;border-radius:999px;border:0;background:rgba(255,255,255,.16);color:#fff;font:700 12px 'Plus Jakarta Sans',sans-serif}
 #znLand .zl-placed button:disabled{opacity:.5}
 body.zn-land .toast{bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+/* stage 4: weekend (warm background) and night (after the app's own night switch) */
+#znLand.zl-wk{background:radial-gradient(70% 70% at 0% 0%,#FFD3BC 0%,transparent 60%),radial-gradient(60% 70% at 100% 10%,#FFC9DE 0%,transparent 60%),radial-gradient(60% 70% at 10% 100%,#E4F5A0 0%,transparent 60%),radial-gradient(60% 70% at 100% 100%,#D9CBFF 0%,transparent 60%),#FBF3F1}
+#znLand.zl-night{--zl-ink:#F3EEFF;--zl-muted:rgba(243,238,255,.76);--zl-faint:rgba(243,238,255,.56);--zl-line:rgba(255,255,255,.13);--zl-card:rgba(30,26,64,.92);--zl-card2:rgba(255,255,255,.08);--zl-tile:rgba(255,255,255,.10);--zl-lilD:#CFC2FF;
+ background:linear-gradient(118deg,transparent 30%,rgba(255,120,170,.16) 40%,rgba(255,200,120,.13) 46%,rgba(214,236,99,.11) 52%,rgba(120,200,255,.14) 58%,rgba(170,140,255,.16) 64%,transparent 74%),radial-gradient(90% 60% at 15% -10%,#2A1F5E 0%,transparent 55%),linear-gradient(180deg,#0A0A1F 0%,#141236 55%,#1B1640 100%)}
+#znLand .zl-stars{position:absolute;inset:0;pointer-events:none;opacity:.7;background-image:radial-gradient(1px 1px at 12% 18%,#fff,transparent),radial-gradient(1px 1px at 72% 9%,#fff,transparent),radial-gradient(1.4px 1.4px at 88% 31%,#fff,transparent),radial-gradient(1px 1px at 33% 44%,#fff,transparent),radial-gradient(1px 1px at 58% 66%,#fff,transparent),radial-gradient(1.4px 1.4px at 20% 80%,#fff,transparent),radial-gradient(1px 1px at 80% 88%,#fff,transparent),radial-gradient(1px 1px at 45% 12%,#fff,transparent)}
+#znLand.zl-night .zl-rail{background:rgba(255,255,255,.07);border:1px solid var(--zl-line);box-shadow:none}
+#znLand.zl-night .zl-rail.zl-hold{background:#D6EC63;color:#1F2340;border:0}
+#znLand.zl-night .zl-hold .zl-htitle,#znLand.zl-night .zl-hold .zl-hmeta{color:#1F2340}
+#znLand.zl-night .zl-hold .zl-st.time{background:rgba(31,35,64,.10);color:#1F2340}
+#znLand.zl-night .zl-dots span.v{background:rgba(255,255,255,.18);box-shadow:none}
+#znLand.zl-night .zl-ad{background:rgba(255,194,161,.25);color:#FFD9C4}
+#znLand.zl-night .zl-bgc{background:rgba(255,255,255,.04)}
+#znLand.zl-night .zl-bgc.today{background:rgba(255,255,255,.07)}
+#znLand.zl-night .zl-line{background:rgba(255,255,255,.08)}
+#znLand.zl-night .zl-b.mtg{background:rgba(175,214,242,.20);color:#F3EEFF}
+#znLand.zl-night .zl-b.own{background:rgba(255,194,161,.24);color:#F3EEFF}
+#znLand.zl-night .zl-b.merge{background:rgba(185,166,245,.24);color:#F3EEFF;box-shadow:inset 0 0 0 1px rgba(207,194,255,.7)}
+#znLand.zl-night .zl-b.merge .more{color:#CFC2FF}
+#znLand.zl-night .zl-b.task{background:rgba(214,236,99,.85);color:#1F2340}
+#znLand.zl-night .zl-b.done{background:rgba(166,222,197,.22);color:rgba(243,238,255,.75)}
+#znLand.zl-night .zl-b.tgt{background:rgba(214,236,99,.14);border-color:#D6EC63;color:#E4F5A0}
+#znLand.zl-night .zl-tile.over,#znLand.zl-night .zl-tile.left,#znLand.zl-night .zl-tile.slip,#znLand.zl-night .zl-tile.week{color:#F3EEFF}
+#znLand .zl-tile.left{background:rgba(255,142,112,.30)}
+#znLand.zl-night .zl-scrim{background:rgba(0,0,0,.4)}
+#znLand.zl-night .zl-tray{background:rgba(30,26,64,.94);border:1px solid var(--zl-line)}
+#znLand.zl-night .zl-trow{background:rgba(255,255,255,.07)}
+#znLand.zl-night .zl-st.over{color:#FFB4A1} #znLand.zl-night .zl-st.slip{color:#CFC2FF}
+#znLand.zl-night .zl-pop{background:rgba(30,26,64,.97);color:#F3EEFF;border:1px solid var(--zl-line)}
+#znLand.zl-night .zl-popk,#znLand.zl-night .zl-popr small{color:rgba(243,238,255,.76)}
+#znLand.zl-night .zl-popx{background:rgba(255,255,255,.10);color:#F3EEFF}
+#znLand.zl-night .zl-popr{background:rgba(255,255,255,.08);color:#F3EEFF}
+#znLand.zl-night .zl-popr.zl-k-mtg{background:rgba(175,214,242,.20)} #znLand.zl-night .zl-popr.zl-k-own{background:rgba(255,194,161,.24)} #znLand.zl-night .zl-popr.zl-k-task{background:rgba(214,236,99,.85);color:#1F2340}
+#znLand.zl-night .zl-placed{background:#F3EEFF;color:#1F2340}
+#znLand.zl-night .zl-placed button{background:rgba(31,35,64,.12);color:#1F2340}
+#znLand.zl-night .zl-today{background:rgba(255,255,255,.10)}
+#znLand.zl-night .zl-hold .zl-st.over{color:#A63A20;background:rgba(255,142,112,.30)} #znLand.zl-night .zl-hold .zl-st.slip{color:#5B4BB8;background:rgba(108,91,201,.18)} /* the lime holding card keeps day ink at night */
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -4593,11 +4629,14 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // swipe for the rest of the week. Same data as the desktop board (znbDayData, znbColEvents, the board B merge). No tab bar here.
   var ZN_LAND={on:false,pg:0,root:null,tm:null,rt:null,y:0,sy:null,tray:null,hold:null,placed:null};
   const ZN_LAND_PAGES=[0,3,4]; /* the first visible day, as days after today. The board's data runs seven days, so the last page ends on day 6. */
+  const ZN_LAND_PAGES_N=[0,1,4]; /* at night the board opens on tomorrow (page 1); Today goes back to page 0 */
+  const znLandMode=()=>document.body.classList.contains("zn-night")?"night":document.body.classList.contains("zn-wk")?"wk":"day";
+  const znLandPages=()=>znLandMode()==="night"?ZN_LAND_PAGES_N:ZN_LAND_PAGES;
   const ZN_LAND_DS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
   function znLandMQ(){ try{ return !!window.matchMedia("(orientation: landscape) and (max-height: 500px)").matches; }catch(e){ return false; } }
   function znLandWant(){ if(!znLandMQ()||ZN_DESK()) return false; if(document.body.classList.contains("loading")) return false; const si=document.getElementById("signin"); if(si&&si.offsetWidth>0) return false; return true; }
   function znLandSync(fromRender){ const want=znLandWant();
-    if(want&&!ZN_LAND.on){ ZN_LAND.on=true; ZN_LAND.pg=0; ZN_LAND.sy=null; ZN_LAND.tray=null; ZN_LAND.hold=null; ZN_LAND.y=window.scrollY||0; document.body.classList.add("zn-land"); document.documentElement.classList.add("zn-landh"); znLandDraw(true);
+    if(want&&!ZN_LAND.on){ ZN_LAND.on=true; ZN_LAND.mode=znLandMode(); ZN_LAND.pg=ZN_LAND.mode==="night"?1:0; ZN_LAND.sy=null; ZN_LAND.tray=null; ZN_LAND.hold=null; ZN_LAND.y=window.scrollY||0; document.body.classList.add("zn-land"); document.documentElement.classList.add("zn-landh"); znLandDraw(true);
       clearInterval(ZN_LAND.tm); ZN_LAND.tm=setInterval(()=>{ if(ZN_LAND.on&&!(ZN_LAND.root&&ZN_LAND.root.querySelector(".zl-pop"))) znLandDraw(); },60000); return; }
     if(!want&&ZN_LAND.on){ ZN_LAND.on=false; clearInterval(ZN_LAND.tm); document.body.classList.remove("zn-land"); document.documentElement.classList.remove("zn-landh"); if(ZN_LAND.root){ ZN_LAND.root.hidden=true; ZN_LAND.root.replaceChildren(); } const y=ZN_LAND.y; requestAnimationFrame(()=>{ try{ window.scrollTo({top:y}); }catch(e){} }); return; }
     if(want&&ZN_LAND.on&&fromRender&&!(ZN_LAND.root&&ZN_LAND.root.querySelector(".zl-pop"))) znLandDraw(); }
@@ -4616,7 +4655,9 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     if(!root){ root=el("div"); root.id="znLand"; root.setAttribute("role","region"); root.setAttribute("aria-label","Planning board"); document.body.append(root); ZN_LAND.root=root; znLandSwipe(root); }
     const old=root.querySelector(".zl-scroll"); if(old&&!first) ZN_LAND.sy=old.scrollTop;
     root.hidden=false; root.replaceChildren();
-    const T=TODAY(), n=nowH(); const off=ZN_LAND_PAGES[ZN_LAND.pg]||0; const days=[0,1,2].map(i=>addDays(T,off+i));
+    const T=TODAY(), n=nowH(); const mode=znLandMode(); if(mode!==ZN_LAND.mode){ ZN_LAND.mode=mode; ZN_LAND.pg=mode==="night"?1:0; ZN_LAND.sy=null; } /* the app's own night or weekend switch flipped while the board was open */
+    root.classList.toggle("zl-night",mode==="night"); root.classList.toggle("zl-wk",mode==="wk"); if(mode==="night") root.append(el("div","zl-stars"));
+    const off=znLandPages()[ZN_LAND.pg]||0; const days=[0,1,2].map(i=>addDays(T,off+i));
     const H0=Math.min(7,Math.floor(WORK_H.from)), H1=21, PX=46, EV=18, TOP=8; const yOf=h=>Math.round(h<=EV?(h-H0)*PX:(EV-H0)*PX+(h-EV)*PX/2);
     const dd=d=>new Date(d+"T12:00:00Z"), wdOf=d=>dd(d).getUTCDay(), DS=ZN_LAND_DS;
     let DAY={}; try{ DAY=znbDayData(days,T,znbSlippedFn(T)); }catch(e){ console.error("landscape data",e); days.forEach(d=>{ DAY[d]={backs:[],reg:[],placed:[],taken:[],open:0}; }); }
@@ -4648,7 +4689,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       g.append(col); });
     sc.append(g); body.append(sc); bd.append(body);
     const at0=Date.now(); sc.addEventListener("scroll",()=>{ if(Date.now()-at0<400) return; /* the redraw's own scroll reset */ const p=root.querySelector(".zl-pop"); if(p) znLandPopClose(); },{passive:true});
-    const top0=TOP+yOf(Math.max(H0,Math.min(H1-6,Math.floor(n)-1)))-9; /* the hour label sits fully in view */ sc.scrollTop=ZN_LAND.sy!=null?ZN_LAND.sy:top0;
+    const top0=TOP+yOf(Math.max(H0,Math.min(H1-6,Math.floor(n)-1)))-9; /* the hour label sits fully in view */ sc.scrollTop=ZN_LAND.sy!=null?ZN_LAND.sy:(mode==="night"&&off>0?TOP+yOf(8)-9:top0); /* night: tomorrow from 8am */
     try{ if(hold) znLandHoldCard(rail,hold,T); else znLandRail(rail,T,n); }catch(e){ console.error("landscape rail",e); } }
   // one block on the board: a single event or task, or overlapping events merged into one lilac block (the board B merge)
   function znLandBlock(g,d,ctx){ const {T,n,yOf,TOP,H0,H1}=ctx; const merged=g.length>1, x=g[0];
@@ -4678,7 +4719,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const close=()=>{ pop.remove(); document.removeEventListener("pointerdown",away,true); document.removeEventListener("keydown",esc,true); }; pop._close=close;
     xb.addEventListener("click",close); setTimeout(()=>{ document.addEventListener("pointerdown",away,true); document.addEventListener("keydown",esc,true); },0); }
   // swipe left or right moves three days (arrow keys do the same, for a keyboard)
-  function znLandPage(dir){ const pg=ZN_LAND.pg+dir; if(pg<0||pg>=ZN_LAND_PAGES.length) return false; ZN_LAND.pg=pg; znLandDraw(); return true; }
+  function znLandPage(dir){ const pg=ZN_LAND.pg+dir; if(pg<0||pg>=znLandPages().length) return false; ZN_LAND.pg=pg; znLandDraw(); return true; }
   function znLandSwipe(root){ let x0=null,y0=0;
     root.addEventListener("touchstart",e=>{ if(e.touches.length!==1||e.target.closest(".zl-rail,.zl-pop,.zl-tray,.zl-scrim")){ x0=null; return; } x0=e.touches[0].clientX; y0=e.touches[0].clientY; },{passive:true});
     root.addEventListener("touchend",e=>{ if(x0==null) return; const t=e.changedTouches[0]; const dx=t.clientX-x0, dy=t.clientY-y0; x0=null; if(Math.abs(dx)<45||Math.abs(dx)<Math.abs(dy)*1.3) return; znLandPage(dx<0?1:-1); },{passive:true});
@@ -4693,13 +4734,21 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     w.innerHTML=`<svg width="56" height="56" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="22" fill="none" stroke="${o.track||"rgba(31,35,64,.10)"}" stroke-width="6"/><circle cx="28" cy="28" r="22" fill="none" stroke="${o.col||"#6C5BC9"}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${(f*C).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 28 28)"/></svg><span>${znEsc(label)}</span>`; return w; }
   function znLandRail(rail,T,n){ rail.replaceChildren(); rail.classList.remove("zl-hold"); const sh=x=>String(x||"").replace(/^💼\s*/,""); const {cur,nx,prev}=znLandNow(n);
     const top=el("div","zl-nowtop"); const hd=el("div","zl-nowhd"); let title="", sub="";
-    if(cur){ top.append(znLandRing((n-cur.s)/Math.max(.01,cur.e-cur.s),znDur(Math.max(1,Math.round((cur.e-n)*60))))); hd.append(el("div","zl-cap","Now"),el("div","zl-meta",`until ${znlT(cur.e)}`)); title=sh(cur.name); sub=nx?`Next · ${sh(nx.name)} ${znlT(nx.s)}`:"Nothing else on the clock"; }
+    const mode=znLandMode(), dd0=new Date(T+"T12:00:00Z"), DAYN=DAYS_LONG[dd0.getUTCDay()];
+    if(mode==="night"){ const PK=window.__znPicks||{picks:[],done3:new Set()}; const pk=PK.picks||[]; const dn=pk.filter(p=>PK.done3&&PK.done3.has(String(p.title||"").toLowerCase())).length; const of=Math.max(3,pk.length);
+      top.append(znLandRing(dn/of,`${dn}/${of}`,{col:"#F3EEFF",track:"rgba(255,255,255,.16)"})); hd.append(el("div","zl-cap",`${DAYN} night`),el("div","zl-meta",`${dn} of ${of} picks done`));
+      const T1=addDays(T,1); let ev=[]; try{ ev=busyOn(T1).filter(x=>!x.back&&x.e>x.s&&!/work blocks?\b|work day/i.test(x.n||"")).sort((a,b)=>a.s-b.s); }catch(e){} const first=ev[0];
+      let prep=0; try{ const seen=new Set(); ev.forEach(x=>{ const k=sh(x.n); if(seen.has(k)) return; seen.add(k); if(znPrepFor(T1,k)) prep++; }); }catch(e){}
+      title=first?`Tomorrow starts at ${hLabel(first.s)}`:"Nothing on the calendar tomorrow"; sub=first?[`${sh(first.n)} first`,prep?`${prep} ${prep===1?"has":"have"} prep ready`:""].filter(Boolean).join(" · "):""; }
+    else if(mode==="wk"){ top.append(znLandRing((n-7)/14,znlT(n))); hd.append(el("div","zl-cap",DAYN),el("div","zl-meta",cur?`until ${znlT(cur.e)}`:"open day"));
+      if(cur){ title=sh(cur.name); sub=nx?`Next · ${sh(nx.name)} ${znlT(nx.s)}`:"Nothing is scheduled unless you mark it."; } else if(nx){ title=`${sh(nx.name)} at ${znlT(nx.s)}`; sub="Nothing is scheduled unless you mark it."; } else { title="Nothing else on today"; sub="Nothing is scheduled unless you mark it."; } }
+    else if(cur){ top.append(znLandRing((n-cur.s)/Math.max(.01,cur.e-cur.s),znDur(Math.max(1,Math.round((cur.e-n)*60))))); hd.append(el("div","zl-cap","Now"),el("div","zl-meta",`until ${znlT(cur.e)}`)); title=sh(cur.name); sub=nx?`Next · ${sh(nx.name)} ${znlT(nx.s)}`:"Nothing else on the clock"; }
     else { const part=n<12?"morning":n<17?"afternoon":"evening"; const from=prev>=0?prev:Math.min(n,7); top.append(znLandRing(nx?(n-from)/Math.max(.01,nx.s-from):1,nx?znDur(Math.max(1,Math.round((nx.s-n)*60))):znlT(n)));
       hd.append(el("div","zl-cap","Now"),el("div","zl-meta",`open ${part}`)); title=nx?`${sh(nx.name)} at ${znlT(nx.s)}`:"Nothing else on the clock"; sub=nx?`Next · ${sh(nx.name)} ${znlT(nx.s)}`:`the ${part} is yours`; if(nx) sub=`${znDur(Math.max(1,Math.round((nx.s-n)*60)))} until then`; }
     top.append(hd); rail.append(top); const pl=ZN_LAND.placed;
-    const tt=el(cur&&cur.k==="focus"?"button":"div","zl-ntitle",title); if(tt.tagName==="BUTTON"){ tt.type="button"; tt.addEventListener("click",()=>{ try{ znOpenPick(cur.name,tt); }catch(e){} }); } rail.append(tt,el("div","zl-meta zl-nx",sub)); if(pl) rail.append(znLandPlacedStrip(pl)); rail.append(el("div","zl-div"));
+    const tt=el(mode!=="night"&&cur&&cur.k==="focus"?"button":"div","zl-ntitle",title); if(tt.tagName==="BUTTON"){ tt.type="button"; tt.addEventListener("click",()=>{ try{ znOpenPick(cur.name,tt); }catch(e){} }); } rail.append(tt,el("div","zl-meta zl-nx",sub)); if(pl) rail.append(znLandPlacedStrip(pl)); rail.append(el("div","zl-div"));
     // To place
-    const slipped=znbSlippedFn(T); const all=znbToPlace(T,slipped); const groups=znbGroups(all,T,slipped); const nPlace=all.length-((groups.find(g=>g[2]==="nodate")||[0,[]])[1].length);
+    const slipped=znbSlippedFn(T); const all=znbToPlace(T,slipped); let groups=znbGroups(all,T,slipped); if(mode==="night"){ const ov=groups.find(g=>g[2]==="over"), sl=groups.find(g=>g[2]==="slip"); groups=[["Left from today",ov[1].concat(sl[1]),"left",[ov,sl]],...groups.filter(g=>g!==ov&&g!==sl)]; } const nPlace=all.length-((groups.find(g=>g[2]==="nodate")||[0,[]])[1].length);
     const tiles=el("div","zl-tiles"); rail.append(tiles); ZN_LAND.groups=groups;
     const draw=fold=>{ tiles.replaceChildren(); tiles.append(el("div","zl-cap",`To place · ${nPlace}`)); let gs=groups.filter(g=>g[1].length);
       if(fold&&gs.some(g=>g[2]==="later")){ const lat=gs.find(g=>g[2]==="later"); const wk=gs.find(g=>g[2]==="week"); if(wk){ wk._fold=lat; } else { gs.splice(gs.indexOf(lat),0,["This week",[],"week"]); gs[gs.indexOf(lat)-1]._fold=lat; } gs=gs.filter(g=>g!==lat); }
@@ -4716,7 +4765,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function znLandTrayClose(){ ZN_LAND.tray=null; const r=ZN_LAND.root; if(!r) return; r.querySelectorAll(".zl-tray,.zl-scrim").forEach(x=>x.remove()); r.querySelectorAll(".zl-tile.on").forEach(x=>x.classList.remove("on")); }
   function znLandTray(key,redraw){ const root=ZN_LAND.root; if(!root) return; if(!redraw&&ZN_LAND.tray===key){ znLandTrayClose(); return; } root.querySelectorAll(".zl-tray,.zl-scrim").forEach(x=>x.remove()); znLandPopClose();
     const groups=ZN_LAND.groups||[]; const T=TODAY(), slipped=znbSlippedFn(T); const g=groups.find(x=>x[2]===key);
-    let secs=g?[[g[0],g[1],g[2]]]:[]; const lat=groups.find(x=>x[2]==="later"); if(key==="week"&&lat&&lat[1].length&&!root.querySelector('.zl-tile[data-g="later"]')) secs.push([lat[0],lat[1],"later"]);
+    let secs=g?(g[3]?g[3].map(x=>[x[0],x[1],x[2]]):[[g[0],g[1],g[2]]]):[]; const lat=groups.find(x=>x[2]==="later"); if(key==="week"&&lat&&lat[1].length&&!root.querySelector('.zl-tile[data-g="later"]')) secs.push([lat[0],lat[1],"later"]);
     const items=secs.reduce((a,x)=>a.concat(x[1]),[]); if(!items.length){ znLandTrayClose(); return; } ZN_LAND.tray=key;
     root.querySelectorAll(".zl-tile").forEach(t=>t.classList.toggle("on",t.dataset.g===key));
     const rr=root.getBoundingClientRect(), rl=root.querySelector(".zl-rail").getBoundingClientRect();
