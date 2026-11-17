@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-16.10"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
+<meta name="zone-build" content="2026-11-16.11"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -1776,6 +1776,15 @@ body.zn .zn-alsodue u{white-space:nowrap}
  body.zn #znD2 .znd-sun{background:radial-gradient(circle at 40% 40%,#FFF6C8,#FFD84A 55%,#FFB23A);box-shadow:0 0 0 6px rgba(255,216,74,.35),0 0 24px 10px rgba(255,200,60,.55)}
  body.zn #znD2 .znd-moon{background:#F3EEFF;box-shadow:0 0 0 6px rgba(243,238,255,.16),0 0 22px 8px rgba(200,190,255,.45)}
 }
+@media (min-width:1200px){
+ body.zn #znD2 .znd-wxr{display:flex;align-items:center;flex-wrap:wrap;gap:8px;width:100%;margin-top:12px;padding:8px 12px;border:0;border-radius:14px;text-align:left;color:#1F2340;font:inherit;background:linear-gradient(90deg,rgba(175,214,242,.9),rgba(255,226,122,.8) 55%,rgba(255,194,161,.85));box-shadow:0 6px 16px rgba(240,170,60,.18)}
+ body.zn #znD2 button.znd-wxr{cursor:pointer} body.zn #znD2 button.znd-wxr:hover{filter:brightness(1.03)}
+ body.zn #znD2 .znd-wxr b{font:400 22px/1 'Fraunces',Georgia,serif;margin-right:2px}
+ body.zn #znD2 .znd-wxr em{font:600 12.5px 'Plus Jakarta Sans',sans-serif;font-style:normal;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.62);white-space:nowrap}
+ body.zn #znD2.znd-night .znd-wxr{color:#F3EEFF;background:linear-gradient(90deg,rgba(120,170,255,.30),rgba(190,160,255,.30));box-shadow:none}
+ body.zn #znD2.znd-night .znd-wxr em{background:rgba(255,255,255,.12)}
+ body.zn #znD2 .znd-wxr + .znd-k{margin-top:16px}
+}
 @media (min-width:1200px) and (max-width:1359px){
  body.zn #znD2 .znd-bandcard{grid-template-columns:220px minmax(240px,300px) minmax(0,1fr);gap:22px}
  body.zn #znD2 .znd-dial{transform:scale(.873);transform-origin:top left;width:220px;height:220px}
@@ -1810,6 +1819,12 @@ body.zn .zn-alsodue u{white-space:nowrap}
 @media (min-width:1200px){
  body.zn #znD2 .znd-slot > .zn-readings2 .zn-rxtx b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
  body.zn #znD2 .znd-slot > .zn-readings2 .zn-rxsub{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+}
+@media (min-width:1200px){
+ body.zn #znD2 .znd-shacts{display:flex;gap:8px;margin-top:10px}
+ body.zn #znD2 .znd-also{display:flex;align-items:baseline;gap:8px;width:100%;margin-top:12px;padding:10px 0 0;border:0;border-top:1px solid var(--znd-line);background:none;color:inherit;text-align:left;font:500 13px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+ body.zn #znD2 .znd-also span{opacity:.7} body.zn #znD2 .znd-also b{font-weight:600} body.zn #znD2 .znd-also em{font-style:normal;opacity:.6}
+ body.zn #znD2 .znd-also:hover b{text-decoration:underline;text-underline-offset:3px}
 }
 /* Nov 16: A+B 2 stage 4 — the weekend board */
 @media (min-width:1200px){
@@ -4009,7 +4024,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   var ZN_D2_OBS=null, ZN_D2_BUSY=false, ZN_D2_WIDE=null, ZN_D2_T=0;
   // a card with a tinted header strip (the planning polish B look, the mockup's tints)
   function znD2Card(tone,title,right){ const c=el("section","znd-card znd-"+tone); c.setAttribute("aria-label",title); const h=el("div","znd-h"); const t=el("span","znd-ht",title); const r=el("span","znd-hr"); if(right!=null&&right!=="") r.append(typeof right==="string"?document.createTextNode(right):right); h.append(t,r); const b=el("div","znd-b"); c.append(h,b); return c; }
-  var ZN_D2_LAYOUT={ night:{band:["nband"],c1:["closeout","tom3","add","lookback"],c2:["track","tonight","needsline","game"],c3:["prep","short","donen"]}, wk:{band:["band"],c1:["gita","recov","pick","reads"],c2:["track","game","teams"],c3:["shelf","listen","heads","boundary"]}, day:{band:["band"],c1:["top3","add","week","planline","shelf"],c2:["track","needs","readings"],c3:["teams","listen","heads"]} };
+  var ZN_D2_LAYOUT={ night:{band:["nband"],c1:["closeout","tom3","add","game"],c2:["track","tonight","needsline","short","donen"],c3:["prep","lookback"]}, wk:{band:["band"],c1:["gita","recov","pick","reads"],c2:["track","game","teams"],c3:["shelf","listen","heads","boundary"]}, day:{band:["band"],c1:["top3","add","week","planline","shelf"],c2:["track","needs","readings"],c3:["teams","listen","heads"]} };
   // which phone card fills which slot (taken fresh from #znToday after every render)
   var ZN_D2_TAKE={ lookback:":scope > .zn-tonight2 > .zn-lookback", tonight:":scope > .zn-tonight2 > .zn-fortonight", short:":scope > .zn-tonight2 > .zn-short", prep:":scope > .zn-prep", gita:":scope > .zn-reading", recov:":scope > .zn-recov", game:":scope > .zn-game", needs:":scope > .zn-needs", readings:":scope > .zn-readings2" };
   function znD2Sync(full){ const v=$("#view-today"); if(!v) return; ZN_D2_WIDE=ZN_DESK(); const on=znD2Active(); v.classList.toggle("zn-d2",on); document.body.classList.toggle("zn-d2on",on&&!v.hidden);
@@ -4130,8 +4145,10 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const band=el("section","znd-bandcard"); band.setAttribute("aria-label","Now and your day");
     band.innerHTML=znD2Dial(items,n,{big,small,gaps:gaps.filter(g=>g.b>n),label:`Today as a 24-hour dial. Now ${hToLabel(n)}. ${items.filter(x=>x.e>n).map(x=>shortN(x.name)+" at "+hToLabel(x.s)).slice(0,6).join(", ")}`});
     const nc=el("div","znd-now"); const top=el("div","znd-nowtop"); top.append(el("span","znd-date")); top.firstChild.innerHTML=`${DN} <i>the ${ord}</i>`;
-    if(t!=null){ const wb=el("button","znd-wx",`${t}°${uv!=null?` · UV ${Math.round(uv)}`:hi!=null?` · high ${Math.round(hi)}`:""}`); wb.type="button"; wb.setAttribute("aria-label","Weather"); wb.addEventListener("click",()=>{ let body; try{ body=znWxBody(); }catch(e){ body=el("div","rs-wxsheet"); } openSheet({kicker:"Weather",title:`${t}°`,body,from:wb}); }); top.append(wb); }
-    nc.append(top); const pk=PK.picks||[]; const dn=pk.filter(p=>isD(p.title)).length; const tally=pk.length?`${pk.length} picked · ${dn} done`:"nothing picked";
+    nc.append(top);
+    if(t!=null){ const lo=num(ROW.Low); const rn=w&&String(w.rain||"").trim(); const uvx=w&&(w.uvMax!=null?w.uvMax:w.uvNow);
+      nc.append(znD2WxRibbon(`${t}°`,[hi!=null?`high ${Math.round(hi)}`:"",lo!=null?`low ${Math.round(lo)}`:"",uvx!=null?`UV ${Math.round(uvx)}`:"",rn?(rn.length>18?rn.slice(0,17)+"…":rn):""],!!rn,b=>{ let body; try{ body=znWxBody(); }catch(e){ body=el("div","rs-wxsheet"); } openSheet({kicker:"Weather",title:`${t}°`,body,from:b}); })); }
+    const pk=PK.picks||[]; const dn=pk.filter(p=>isD(p.title)).length; const tally=pk.length?`${pk.length} picked · ${dn} done`:"nothing picked";
     if(cur){ const p=Math.round((n-cur.s)/Math.max(.01,cur.e-cur.s)*100); nc.append(el("p","znd-k",`Now · until ${hToLabel(cur.e)}`)); const h=el(cur.k==="focus"?"button":"h2","znd-title",shortN(cur.name)); if(cur.k==="focus"){ h.type="button"; h.addEventListener("click",()=>znOpenPick(cur.name,h)); } nc.append(h);
       const bar=el("div","znd-bar"); bar.setAttribute("role","progressbar"); bar.setAttribute("aria-valuenow",String(p)); bar.setAttribute("aria-valuemin","0"); bar.setAttribute("aria-valuemax","100"); bar.setAttribute("aria-label","Time through this block"); const fi=el("i"); fi.style.width=Math.max(2,Math.min(100,p))+"%"; bar.append(fi); nc.append(bar);
       const r=el("div","znd-nowr"); r.append(el("b",null,`${znDur(Math.max(1,Math.round((cur.e-n)*60)))} left`),el("span",null,tally)); nc.append(r); }
@@ -4141,6 +4158,10 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const sw=el("div","znd-next"); const hd=el("div","znd-nexth"); hd.append(el("span","znd-nextt","Next 8 hours"),el("span","znd-nexts","the dial shows the whole day")); sw.append(hd);
     const h0=Math.floor(n); sw.append(znD2Strip(items,n,h0,{width:Math.max(380,Math.min(innerWidth,1412)-64-(innerWidth<1360?600:690)),gaps:gaps,isDone:isD,openPick:(nm,b)=>znOpenPick(nm,b),place:calOK()?(a,b,t)=>znPlace(a,b,t):null,eveLabel:items.some(x=>x.s>=18&&x.s<h0+8)?"Evening":"Evening · free"})); band.append(sw);
     return band; }
+  // Nov 16 (follow-ups, W3): the weather as a sky ribbon under the date, by day today's and at night tomorrow's
+  function znD2WxRibbon(big,chips,rainy,onClick){ const r=el(onClick?"button":"div","znd-wxr"); if(onClick){ r.type="button"; r.setAttribute("aria-label",`Weather: ${big}, ${chips.filter(Boolean).join(", ")}`); r.addEventListener("click",()=>onClick(r)); }
+    r.innerHTML=(rainy?'<svg width="24" height="22" viewBox="0 0 26 22" aria-hidden="true"><path d="M7 15h13a5 5 0 0 0 0-10 7 7 0 0 0-13 2 4 4 0 0 0 0 8z" fill="#fff"/><path d="M9 18l-1 3M14 18l-1 3M19 18l-1 3" stroke="#3B7DD8" stroke-width="2" stroke-linecap="round"/></svg>':'<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6" fill="#FFC93C"/><path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8" stroke="#F2A900" stroke-width="1.8" stroke-linecap="round"/></svg>')+`<b>${znEsc(big)}</b>`+chips.filter(Boolean).map(c=>`<em>${znEsc(c)}</em>`).join("");
+    return r; }
   // ---- Nov 16 (A+B 2, stage 3): Today's tracking (water, Birdie, routines, the sit) and the bookshelf card ----
   // Every tile logs with the writes the app already makes: water and Birdie press the phone widget's and the Birdie card's own buttons
   // (still drawn, out of sight, in #znToday: same toast, undo and hold-to-fix), routines use rtSet, the sit opens openSit.
@@ -4172,9 +4193,16 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       tile("znd-tpeach",P.name||"The sit",v?`${v} min`:`${len} min`,[el("span","znd-tts",v?"done today":"not yet today")],v?null:mkBtn("Start",()=>openSit(),`Start the sit, ${len} minutes`)); } }
     return c; }
   // Reading now: the book you are in and its companion card (Another, Ask about it), from the shelf's own pieces
-  function znD2Shelf(){ let b=null; try{ const r=BOOKS.filter(bkMine).filter(bkGoing).sort((x,y)=>((y.who===bkMe())-(x.who===bkMe()))||(y.st||"").localeCompare(x.st||"")); b=r.find(x=>x.i&&x.i===BK_FOCUS)||r[0]; }catch(e){} if(!b) return null;
-    const c=znD2Card("plain znd-shelf","Reading now","from the shelf"); const body=c.querySelector(".znd-b"); const t=el("div","znd-bt"); t.innerHTML=`<b>${znEsc(b.t)}</b><span>${znEsc([b.a,b.fmt,b.who==="Both"?"together":""].filter(Boolean).join(" · "))}</span>`; body.append(t);
-    try{ body.append(bkCompEl(b)); }catch(e){ console.error("desk companion",e); } return c; }
+  // Nov 16 (follow-ups, S2): lead with a book that has companion cards; the other book you are in is one "Also reading" line (click it to swap)
+  var ZN_D2_BOOK=null;
+  function znD2Shelf(){ let r=[]; try{ r=BOOKS.filter(bkMine).filter(bkGoing).sort((x,y)=>((y.who===bkMe())-(x.who===bkMe()))||(y.st||"").localeCompare(x.st||"")); }catch(e){} if(!r.length) return null;
+    const noCards=bk=>{ try{ const st=BK_COMP[bkCompKey(bk)]; return !!(st&&!st.card&&(st.status==="empty"||st.status==="failed")); }catch(e){ return false; } };
+    let b=r.find(x=>x.i&&x.i===ZN_D2_BOOK)||r.find(x=>!noCards(x))||r[0]; const others=r.filter(x=>x!==b);
+    const c=znD2Card("plain znd-shelf","Reading now",r.length>1?`${r.length} going`:"from the shelf"); const body=c.querySelector(".znd-b"); const t=el("div","znd-bt"); t.innerHTML=`<b>${znEsc(b.t)}</b><span>${znEsc([b.a,b.fmt,b.who==="Both"?"together":""].filter(Boolean).join(" · "))}</span>`; body.append(t);
+    try{ body.append(bkCompEl(b)); }catch(e){ console.error("desk companion",e); }
+    const acts=el("div","znd-shacts"); const ask=el("button","zn-pill znd-sm","Ask about it"); ask.type="button"; ask.addEventListener("click",()=>bkAskSheet(b,ask)); acts.append(ask); body.append(acts);
+    others.slice(0,2).forEach(o=>{ const m=el("button","znd-also"); m.type="button"; m.setAttribute("aria-label",`Show ${o.t} here instead`); m.innerHTML=`<span>Also reading</span><b>${znEsc(o.t)}</b>${noCards(o)?'<em>no cards yet</em>':(o.a?`<em>${znEsc(o.a)}</em>`:"")}`; m.addEventListener("click",()=>{ ZN_D2_BOOK=o.i; const s=c.parentElement; try{ const n=znD2Shelf(); if(s&&n) s.replaceChildren(n); }catch(e){} }); body.append(m); });
+    return c; }
   // Needs you: three rows, then "N more" opens the rest in place
   function znD2NeedsTrim(card){ if(!card||card.dataset.trim) return; card.dataset.trim="1"; const rows=[...card.querySelectorAll(".zn-list > .zn-mrow")]; if(rows.length<=3) return; const extra=rows.slice(3); extra.forEach(r=>r.hidden=true);
     const more=card.querySelector(".zn-list > .zn-more"); const tot=Number((card.querySelector(".zn-h .zn-hr")||{}).textContent)||rows.length; const n=tot-3;
@@ -4197,7 +4225,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const band=el("section","znd-bandcard znd-bandnight"); band.setAttribute("aria-label","Tonight and tomorrow");
     band.innerHTML=znD2Dial(items,n,{night:true,big:P.picks.length?`${dn} of ${P.picks.length}`:"—",small:P.picks.length?"picks done":"nothing picked",label:`Today, finished. ${dn} of ${P.picks.length} picks done.`});
     const DN=DAYS_LONG[dt.getUTCDay()], D1=DAYS_LONG[d1.getUTCDay()]; const tw=clean(ROW["Tomorrow Weather"]||""); const th=(tw.match(/high\s*(\d+)/i)||[])[1], tl=(tw.match(/low\s*(\d+)/i)||[])[1];
-    const nc=el("div","znd-now"); const top=el("div","znd-nowtop"); const dd=el("span","znd-date"); dd.innerHTML=`${DN} <i>night</i>`; top.append(dd); if(th){ const wb=el("span","znd-wx znd-wxs",`${D1.slice(0,3)} ${th}°${tl?` · low ${tl}`:""}`); top.append(wb); } nc.append(top);
+    const nc=el("div","znd-now"); const top=el("div","znd-nowtop"); const dd=el("span","znd-date"); dd.innerHTML=`${DN} <i>night</i>`; top.append(dd); nc.append(top); if(th){ const tr=(tw.match(/(\d+)%/)||[])[1]; nc.append(znD2WxRibbon(`${th}°`,[D1,tl?`low ${tl}`:"",tr?`${tr}% rain`:""],!!(tr&&+tr>=30),null)); }
     { const hl=hToLabel(n); nc.append(el("p","znd-k",`Tonight · ${hl}${/[ap]m$/i.test(hl)?"":(n>=12?"pm":"am")}`)); } const first=tomL[0]||tom[0]; nc.append(el("h2","znd-title",first?`${D1} starts at ${hToLabel(first.s)}`:`${D1} is open`));
     const work=tom.filter(x=>x.k==="work"), workL=tomL.filter(x=>x.k==="work"); const prep=work.filter(x=>{ try{ const p=znPrepFor(T1,String(x.name).replace(/^💼\s*/,"")); return p&&p.prep; }catch(e){ return false; } }).length;
     const openH=znD2Gaps(tomL,8,17).reduce((a,g)=>a+(g.b-g.a),0); const fm=workL[0]||first;
@@ -4229,8 +4257,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const c=znD2Card("mint","Done today",String(chips.length)); const w=el("div","znd-chips"); chips.forEach(t=>w.append(el("span","znd-chip",t))); c.querySelector(".znd-b").append(w); return c; }
   function znD2TomWx(){ const tw=clean(ROW["Tomorrow Weather"]||"").trim(); if(!tw) return null; const T1=addDays(TODAY(),1); const D1=DAYS_LONG[new Date(T1+"T12:00:00Z").getUTCDay()]; const th=(tw.match(/high\s*(\d+)/i)||[])[1], tl=(tw.match(/low\s*(\d+)/i)||[])[1], tr=(tw.match(/(\d+)%/)||[])[1];
     const c=znD2Card("sky",`${D1}’s weather`,""); const b=c.querySelector(".znd-b"); const r=el("div","znd-wxrow"); r.innerHTML=`<b>${th?th+"°":"—"}</b><span>${znEsc([tl?`low ${tl}`:"",tr?`${tr}% rain`:""].filter(Boolean).join(" · "))}</span>`; b.append(r); b.append(el("p","znd-note",tw)); return c; }
-  // prep for tomorrow: the night Tomorrow card, trimmed to six rows then "N more"
-  function znD2PrepTrim(card){ if(!card||card.dataset.trim) return; card.dataset.trim="1"; const rows=[...card.querySelectorAll(":scope > .zn-prow2")]; if(rows.length<=6) return; const extra=rows.slice(6); extra.forEach(r=>r.hidden=true); const b=el("button","znd-link znd-more",`${extra.length} more`); b.type="button"; b.addEventListener("click",()=>{ extra.forEach(r=>r.hidden=false); b.remove(); }); extra[extra.length-1].after(b); }
+  // prep for tomorrow: the night Tomorrow card, trimmed to four rows then "N more"
+  function znD2PrepTrim(card){ if(!card||card.dataset.trim) return; card.dataset.trim="1"; const rows=[...card.querySelectorAll(":scope > .zn-prow2")]; if(rows.length<=4) return; const extra=rows.slice(4); extra.forEach(r=>r.hidden=true); const b=el("button","znd-link znd-more",`${extra.length} more`); b.type="button"; b.addEventListener("click",()=>{ extra.forEach(r=>r.hidden=false); b.remove(); }); extra[extra.length-1].after(b); }
   // Nov 10 (phone pass, part 4): shorter pages.
   // Today (where the spine is): every card under the timeline folds into a small tile showing its title and status; tap a tile and that
   // card opens right under the tiles, tap again to close. The weather / water tiles and the Done-today strip stay as they are.
