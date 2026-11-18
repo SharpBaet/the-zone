@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-16.16"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
+<meta name="zone-build" content="2026-11-18.1"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -3013,11 +3013,19 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   const RISO=true; // the module is always loaded; risoOn() decides per render
   const RC={ink:"#0F3B44",card:"#FAF8FF",paper:"#EFEBF6",blue:"#2A7FA8",red:"#E2583E",green:"#2FA27A",sun:"#C6E24A",pink:"#FF6FA5",violet:"#8C7AE6",night:"#1C4F5A",tile:"#E6E1F0",grey:"#9DB4BA"};
    
-  const hToLabel=h=>{ const hh=Math.floor(h)%24, mm=Math.round((h-Math.floor(h))*60); const ap=hh<12?"am":"pm"; const h12=((hh+11)%12)+1; return mm?`${h12}:${String(mm).padStart(2,"0")}`:`${h12}${ap}`; };
+  const hToLabel=h=>{ let hh=Math.floor(h), mm=Math.round((h-Math.floor(h))*60); if(mm===60){ hh++; mm=0; } hh=((hh%24)+24)%24; const ap=hh<12?"am":"pm"; const h12=((hh+11)%12)+1; return `${h12}${mm?":"+String(mm).padStart(2,"0"):""}${ap}`; }; /* Nov 18: always am or pm ("12:30pm"; it used to drop it whenever there were minutes) */
+  const hRange=(s,e)=>{ const a=hToLabel(s), b=hToLabel(e); return a.slice(-2)===b.slice(-2)?`${a.slice(0,-2)}–${b}`:`${a}–${b}`; }; /* "2–2:25pm", "11:30am–12:15pm" */
 
   // Nov 2: a work block with a generic name that sits on top of a personal event is that event (she blocks work time for personal appointments)
   const ZN_GENERIC=/^(busy|block\b.*|hold\b.*|appt|appointment|personal|ooo|out of office|do not book|dnb|private|meeting)$/i;
   function znMergeBusy(out,isWork,name){ for(let i=out.length-1;i>=0;i--){ const w=out[i]; if(!isWork(w)||!ZN_GENERIC.test(String(name(w)||"").trim())) continue; const twin=out.find(o=>o!==w&&!isWork(o)&&Math.min(o.e,w.e)-Math.max(o.s,w.s)>=0.5*Math.min(o.e-o.s,w.e-w.s)); if(twin) out.splice(i,1); } return out; }
+  // Nov 18: the same event on two calendars under two names (Laura's invite "Claire sessions" and "Joint Session w/ Laura") is one row.
+  // Two events that aren't work or tasks merge when they start within 5 minutes of each other, overlap, and either end within 5 minutes
+  // of each other or share a word (a trailing s dropped). The longer title and the wider time are kept, and a calendar id if either has one.
+  function znMergeTwins(out,isEv,name,setName){ const W=s=>new Set(String(s||"").toLowerCase().replace(/[^a-z0-9 ]+/g," ").split(/\s+/).filter(w=>w.length>=4).map(w=>w.length>4?w.replace(/s$/,""):w));
+    for(let i=out.length-1;i>=0;i--){ const a=out[i]; if(!isEv(a)) continue; const wa=W(name(a));
+      const j=out.findIndex((o,jx)=>jx!==i&&jx<i&&isEv(o)&&Math.abs(o.s-a.s)<=5/60+1e-6&&o.s<a.e&&a.s<o.e&&(Math.abs(o.e-a.e)<=5/60+1e-6||[...W(name(o))].some(w=>wa.has(w)))); if(j<0) continue;
+      const o=out[j]; o.s=Math.min(o.s,a.s); o.e=Math.max(o.e,a.e); if(String(name(a)||"").length>String(name(o)||"").length) setName(o,name(a)); if(!o.id&&a.id){ o.id=a.id; o.cal=a.cal; } out.splice(i,1); } return out; }
   function risoItems(){ // everything on today's dial, as {s,e,name,c,tag}
     const D=parseDay(); const out=[];
     const fmt=iso=>{ const p=new Intl.DateTimeFormat("en-US",{timeZone:TZ,hour:"numeric",minute:"numeric",hourCycle:"h23"}).formatToParts(new Date(iso)); const g=k=>Number((p.find(x=>x.type===k)||{}).value||0); return g("hour")+g("minute")/60; };
@@ -3033,6 +3041,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       for(let i=out.length-1;i>=0;i--){ const a=out[i]; if(!/\bvs\.?\b/i.test(a.name)) continue; const ta=toks(a.name);
         const j=out.findIndex((o,jx)=>jx<i&&/\bvs\.?\b/i.test(o.name)&&o.s<a.e&&a.s<o.e&&[...toks(o.name)].some(w=>ta.has(w)));
         if(j>=0){ const o=out[j]; o.s=Math.min(o.s,a.s); o.e=Math.max(o.e,a.e); if(a.name.length>o.name.length) o.name=a.name; out.splice(i,1); } } }
+    znMergeTwins(out,x=>x.k==="you"||x.k==="us"||x.k==="birdie",x=>x.name,(x,v)=>{ x.name=v; });
     D.tasks.forEach(t=>{ if(t.r) out.push({s:t.r.start,e:Math.max(t.r.end,t.r.start+.25),name:t.title,c:RC.red,k:"focus"}); });
     znMergeBusy(out,x=>x.k==="work",x=>x.name); out.sort((a,b)=>a.s-b.s); ZN_BACKS=out.filter(znIsBack); return out.filter(x=>!znIsBack(x));
   }
@@ -3046,7 +3055,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       if(isWork){ if(out.some(x=>x.k==="work")||/work blocks?/i.test(name)) return; /* Oct 29: the day's work summary line never stands in for the named meetings */ out.push({s:r.start,e:Math.max(r.end,r.start+.25),name,c:RC.blue,k:"work"}); return; }
       const rec=typeof famFind==="function"?famFind(name,T1):null; const own=rec?famOwnerNow(rec):""; if(own===OTHER()) return; const us=own==="both"||/\b(dinner|date|tiny|papi|victoria|movie)\b/i.test(name);
       out.push({s:r.start,e:Math.max(r.end,r.start+.25),name,c:/birdie|walk/i.test(name)?RC.green:us?RC.pink:RC.violet,k:us?"us":"you"}); });
-    znMergeBusy(out,x=>x.k==="work",x=>x.name); return out.sort((a,b)=>a.s-b.s); }
+    znMergeTwins(out,x=>x.k!=="work",x=>x.name,(x,v)=>{ x.name=v; }); znMergeBusy(out,x=>x.k==="work",x=>x.name); return out.sort((a,b)=>a.s-b.s); }
   
   // ---------- Oct 22: Ahead in the riso style: the week's hill, free evenings, and a 7-day strip ----------
   
@@ -3412,11 +3421,11 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     queueMicrotask(()=>{ const eve=n>=18.5||n<3; const order=eve?["zn-mast","zn-hero","zn-uspod","zn-usfeed","zn-herday","zn-usplans","zn-ideas","zn-usgames"]:["zn-mast","zn-hero","zn-herday","zn-usfeed","zn-usplans","zn-ideas","zn-usgames","zn-uspod"]; order.forEach(cl=>{ const x=host.querySelector(":scope > ."+cl); if(x) host.append(x); }); }); // Oct 31: by day, her day and your messages first; after 6:30pm, tonight's episode
     { // Oct 31: one "Game night" card instead of three (this card, plus the old #usTonight and #usGames sections): your teams' games tonight first,
       // then what's coming up for your teams (Us Week storylines), and the rest of your leagues behind a toggle. Spoiler-hidden scores stay hidden.
-      const all=(W&&W.today===T&&Array.isArray(W.tonight))?W.tonight.filter(g=>g.state!=="post"||n*60-g.s<240):[]; const mine=all.filter(g=>g.mine), rest=all.filter(g=>!g.mine);
+      const all=(W&&W.today===T&&Array.isArray(W.tonight))?W.tonight.filter(g=>g.state!=="post"||n*60-g.s<240):[]; const mine=all.filter(g=>znGMine(g)), rest=all.filter(g=>!znGMine(g)); const asOfU=znGAsOf(W);
       const upcoming=(W&&Array.isArray(W.games)?W.games:[]).filter(l=>!/\btonight\b/i.test(l));
       if(mine.length||upcoming.length||rest.length){ const gc=znCard("zn-usgames","",mine.length?"Game night":"Your teams"); gc.innerHTML=znH(mine.length?"Game night":"Your teams",mine.length?`${mine.length} of yours today`:"what’s coming up");
         const gRow=g=>{ const hid=typeof znHide==="function"&&znHide(`${T}:${g.name}`); const st=g.state==="in"?"LIVE":g.state==="post"?"Final":znMins(g.s); const r=el("div","zn-gnrow"+(g.state==="in"?" live":""));
-          r.innerHTML=`<span class="zn-gne" aria-hidden="true">${g.e||"🏟️"}</span><span class="zn-gnt"><b>${znEsc(String(g.name||"").trim())}</b><small>${znEsc([g.state==="pre"?"":(hid?"score hidden":g.score),g.tv].filter(Boolean).join(" · "))}</small></span><span class="zn-gns">${znEsc(st)}</span>`; return r; };
+          r.innerHTML=`<span class="zn-gne" aria-hidden="true">${g.e||"🏟️"}</span><span class="zn-gnt"><b>${znEsc(String(g.name||"").trim())}</b><small>${znEsc([g.state==="pre"?"":(hid?"score hidden":g.score),g.tv,g.state==="in"&&!hid?asOfU:""].filter(Boolean).join(" · "))}</small></span><span class="zn-gns">${znEsc(st)}</span>`; return r; };
         mine.forEach(g=>gc.append(gRow(g)));
         if(upcoming.length){ if(mine.length) gc.append(el("div","zn-rslot","Coming up")); upcoming.forEach(l=>{ const m=String(l).match(/^(\S+)\s+(.*)$/); const r=el("div","zn-gnrow up"); r.innerHTML=`<span class="zn-gne" aria-hidden="true">${znEsc(m?m[1]:"🏟️")}</span><span class="zn-gnt"><small class="zn-gnline">${znEsc(m?m[2]:l)}</small></span>`; gc.append(r); }); }
         if(rest.length){ const tg=el("button","zn-chip",`${rest.length} more in your leagues`); tg.type="button"; const more=el("div","zn-gnmore"); more.hidden=true; rest.forEach(g=>more.append(gRow(g))); tg.addEventListener("click",()=>{ more.hidden=!more.hidden; tg.textContent=more.hidden?`${rest.length} more in your leagues`:"Hide the rest"; }); const w=el("div","zn-hows"); w.append(tg); gc.append(w,more); }
@@ -3745,12 +3754,13 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     // ---------- the chosen day ----------
     const d=ZN_PLAN.open, L=loads.find(x=>x.d===d)||dayLoad(d), dd=new Date(d+"T12:00:00Z"); const n=d===T?nowH():null;
     const dc=znCard("zn-planday","",`${DAYS_LONG[dd.getUTCDay()]}`); dc.innerHTML=znH(d===T?"Today":`${DAYS_LONG[dd.getUTCDay()]} ${dd.getUTCDate()}`,`${Math.round(L.openH*2)/2}h open`);
-    const riv=el("div","zn-riv"); if(L.backs&&L.backs.length){ const ap=el("p","zn-allday"); ap.innerHTML=`<b>All day</b> ${L.backs.map(x=>`${znEsc(String(x.n).replace(/^💼\s*/,""))} · ${hToLabel(x.s)}–${hToLabel(x.e)}`).join(" · ")}<span> · planned around, not counted as busy</span>`; riv.append(ap); } const items=[...L.busy.filter(b=>!/work blocks?\b|work day/i.test(b.n||"")).map(b=>({s:b.s,e:b.e,name:b.n,k:b.work?"work":"you"}))];
+    const riv=el("div","zn-riv"); if(L.backs&&L.backs.length){ const ap=el("p","zn-allday"); ap.innerHTML=`<b>All day</b> ${L.backs.map(x=>`${znEsc(String(x.n).replace(/^💼\s*/,""))} · ${hRange(x.s,x.e)}`).join(" · ")}<span> · planned around, not counted as busy</span>`; riv.append(ap); } const items=[...L.busy.filter(b=>!/work blocks?\b|work day/i.test(b.n||"")).map(b=>({s:b.s,e:b.e,name:b.n,k:b.work?"work":"you",cal:!!(b.work||b.ev)}))];
     LIST.filter(it=>it.status==="Open"&&isTask(it)&&forClaire(it)&&it.sched&&String(it.sched).slice(0,10)===d).forEach(it=>{ const hh=String(it.sched).slice(11,16).split(":").map(Number); const s0=hh[0]+(hh[1]||0)/60; items.push({s:s0,e:s0+(it.est||30)/60,name:it.name,k:"task",it}); });
     items.sort((a,b)=>a.s-b.s); const wd=dd.getUTCDay(); const from=(wd===0||wd===6)?9:8, to=(wd===0||wd===6)?20.5:21; let prev=d===T?Math.max(from,n):from;
     const gapRow=(a,b)=>{ const m=Math.round((b-a)*60); if(m<45) return; const g=el("button","zn-gap",`${znDur(m)} open · place a task here`); g.type="button"; g.disabled=!calOK(); g.addEventListener("click",()=>znPlaceOn(d,a,b,g)); const rw=el("div","zn-rr zn-rgap"); rw.append(el("span","zn-rt",""),el("span","zn-rl"),g); riv.append(rw); };
+    const lapOf=x=>x.k!=="work"?null:items.find(o=>o!==x&&o.k==="work"&&o.name!==x.name&&o.e-o.s<4&&x.e-x.s<4&&o.s<x.e-0.01&&x.s<o.e-0.01)||null; /* two meetings only, never a task, a personal event or a four-hour backdrop */ /* Nov 18: double-booked rows say so */
     items.filter(x=>d!==T||x.e>n).forEach(x=>{ if(x.s>prev) gapRow(Math.max(prev,from),x.s); const isNow=d===T&&x.s<=n&&x.e>n; const rw=el("div","zn-rr"+(isNow?" now":"")); const ln=el("span","zn-rl"); const di=el("i"); di.style.background=x.k==="task"?ZC.lim:znCol(x.k); ln.append(di);
-      const cd=el(x.it?"button":"div","zn-rc"); if(x.it){ cd.type="button"; cd.addEventListener("click",()=>openListItem(x.it,cd)); } cd.style.background=x.k==="task"?ZC.lim:znCol(x.k); cd.style.color=x.k==="task"?ZC.navy:znFg(x.k); cd.append(el("b",null,x.name)); if(x.k==="work"){ try{ const ch=znPrepChip(d,String(x.name).replace(/^💼\s*/,""),`${DAYS_LONG[dd.getUTCDay()]} ${hToLabel(x.s)}`); if(ch) cd.append(ch); }catch(e){} } if(x.e-x.s>=1.5||x.it) cd.append(el("span",null,x.it?`${x.it.est||30} min · placed`:`until ${hToLabel(x.e)}`)); rw.append(el("span","zn-rt",isNow?"now":fmtH(x.s)),ln,cd); riv.append(rw); prev=Math.max(prev,x.e); });
+      const cd=el(x.it?"button":"div","zn-rc"); if(x.it){ cd.type="button"; cd.addEventListener("click",()=>openListItem(x.it,cd)); } cd.style.background=x.k==="task"?ZC.lim:znCol(x.k); cd.style.color=x.k==="task"?ZC.navy:znFg(x.k); cd.append(el("b",null,x.name)); if(x.k==="work"){ try{ const ch=znPrepChip(d,String(x.name).replace(/^💼\s*/,""),`${DAYS_LONG[dd.getUTCDay()]} ${hToLabel(x.s)}`); if(ch) cd.append(ch); }catch(e){} } if(x.e-x.s>=1.5||x.it) cd.append(el("span",null,x.it?`${x.it.est||30} min · placed`:`until ${hToLabel(x.e)}`)); { const lp=lapOf(x); if(lp){ const nm2=String(lp.name).replace(/^💼\s*/,""); cd.append(el("span",null,`overlaps ${nm2.length>30?nm2.slice(0,28).trim()+"…":nm2}`)); } } rw.append(el("span","zn-rt",isNow?"now":fmtH(x.s)),ln,cd); riv.append(rw); prev=Math.max(prev,x.e); });
     if(prev<to-0.75) gapRow(prev,to);
     L.due.forEach(it=>{ const rw=el("div","zn-rr"); const ln=el("span","zn-rl"); const di=el("i"); di.style.background=ZC.cor; ln.append(di); const cd=el("button","zn-rc zn-duec"); cd.type="button"; cd.style.background="rgba(255,142,112,.25)"; cd.append(el("b",null,it.name),el("span",null,`due · ${it.est||30} min · not placed`)); cd.addEventListener("click",()=>openScheduleSheet(it,cd)); rw.append(el("span","zn-rt","due"),ln,cd); riv.append(rw); });
     znSharedPlans().filter(x=>x.due===d).forEach(x=>{ const rw=el("div","zn-rr"); const ln=el("span","zn-rl"); const di=el("i"); di.style.background="#FFA3CB"; ln.append(di); const cd=el("button","zn-rc"); cd.type="button"; cd.style.background="rgba(255,163,203,.3)"; cd.append(el("b",null,x.n),el("span",null,"together · a shared plan")); cd.addEventListener("click",()=>znEditPlan(x,cd)); rw.append(el("span","zn-rt","♡"),ln,cd); riv.append(rw); });
@@ -3876,27 +3886,30 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   const znMask=t=>String(t).replace(/\b\d{1,3}\s*[-–]\s*\d{1,3}\b/g,"··").replace(/\b(won|lost|beat|fell to|win|loss|eliminated)\b/gi,"played");
   // Oct 25: Game day, rebuilt. Only Claire's own teams get featured; with none of hers playing, the card is a short "On today" list of the
   // leagues she follows (no random headliner). Compact matchup line instead of big blocks. Scores stay hidden until she asks (Show score).
+  // Nov 18: zone-us marks each game for each person (mc = Claire follows a team in it, mv = Victoria does); mine = either, the fallback.
+  const znGMine=x=>{ if(!x) return false; const f=(typeof PERSON!=="undefined"&&PERSON&&PERSON.person==="victoria")?x.mv:x.mc; return typeof f==="boolean"?f:!!x.mine; };
+  const znGAsOf=W=>{ try{ const at=Date.parse(W&&W.tonight_at); if(!at||Date.now()-at<=20*60000) return ""; return "as of "+new Intl.DateTimeFormat("en-US",{timeZone:TZ,hour:"numeric",minute:"2-digit"}).format(new Date(at)).replace(/\s+/g,"").toLowerCase(); }catch(e){ return ""; } }; /* scores are read every 15 minutes in the evening; say so when the read is older than 20 */
   function znGameDay(box,n){ const W=typeof usWeek==="function"?usWeek():null; const T=TODAY(); const nowMin=n*60;
     const all=((W&&W.today===T&&Array.isArray(W.tonight))?W.tonight:[]).filter(x=>x.state!=="post"||nowMin-x.s<240); // finals linger 4 hours
-    let g=all.find(x=>x.mine)||null;
+    let g=all.find(znGMine)||null; const asOf=znGAsOf(W);
     if(!g&&!all.length){ // nothing today in her leagues: the next game of the first team line in Sports
       const sp=split(ROW.Sports); const cand=sp.rest.filter(l=>/^(🏀|🏈|⚽|⚾|🏒)/u.test(l)).map(l=>{ const parts2=l.replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,"").split(/\s+·\s+/); const name=parts2[0]||""; const nx=parts2.find(x=>/^next\b/i.test(x)); if(!nx) return null; const m=nx.replace(/^next\s*/i,"");
         const om=m.match(/\b(at|vs\.?|v)\s+([A-Z][^,·]*)/); const opp=om?om[2].replace(/\s+(?:today|tonight|tomorrow|sun|mon|tue|wed|thu|fri|sat)\b.*$/i,"").trim():""; /* Nov 1: the opponent can follow the time */ const when=(om?m.replace(om[1]+" "+opp,""):m).replace(/\s{2,}/g," ").replace(/^[\s,]+|[\s,]+$/g,"").trim();
         if(!opp) return null; return {name:`${name} ${om&&/^at/i.test(om[1])?"at":"vs"} ${opp}`,mine:true,state:"pre",s:-1,tv:"",when:when,lg:"",up:true}; }).filter(Boolean);
       g=cand[0]; if(!g) return; }
     const c=znCard("zn-game","","Game day"); const others=all.filter(x=>x!==g).slice(0,g?3:5);
-    const row=(x,hid)=>{ const st=x.state==="in"?(hid?"live · score hidden":`live · ${x.score||""}`):x.state==="post"?(hid?"final · score hidden":`final · ${x.score||""}`):[znMins(x.s),x.tv].filter(Boolean).join(" · "); return `<div class="zn-grow zn-grow2"><span>${znEsc((x.e||"")+" "+x.name).trim()}${x.mine?" ★":""}</span><span>${znEsc(st)}</span></div>`; };
+    const row=(x,hid)=>{ const st=x.state==="in"?(hid?"live · score hidden":`live · ${x.score||""}`):x.state==="post"?(hid?"final · score hidden":`final · ${x.score||""}`):[znMins(x.s),x.tv].filter(Boolean).join(" · "); return `<div class="zn-grow zn-grow2"><span>${znEsc((x.e||"")+" "+x.name).trim()}${znGMine(x)?" ★":""}</span><span>${znEsc(st)}</span></div>`; };
     if(g){ const [a,b]=String(g.name).split(/\s+(?:at|vs\.?|v)\s+/i); const home=/\bat\b/i.test(g.name); const t1=a||g.name, t2=b||""; const c1=(znTeamCol(t1)||[ZC.navy])[0], c2=(znTeamCol(t2)||["#7A8FE0"])[0];
       const key=`${T}:${g.name}`; const hidden=znHide(key); const started=!g.up&&g.state!=="pre";
       c.style.background=`linear-gradient(115deg,${znPastel(c1)} 0%,#FFF3EA 50%,${znPastel(c2)} 100%)`;
       const k=g.up?`Next game · ${znEsc(g.when||"upcoming")}`:g.state==="in"?"Live now":g.state==="post"?"Final":`Game day · ${znEsc(znMins(g.s))}${g.tv?" · "+znEsc(g.tv):""}`;
-      const status=started?(hidden?"Score hidden":znEsc(g.score||"")+(g.state==="in"&&g.detail?" · "+znEsc(g.detail):"")):(g.lg?znEsc(g.lg):"");
+      const status=started?(hidden?"Score hidden":znEsc(g.score||"")+(g.state==="in"&&g.detail?" · "+znEsc(g.detail):"")+(g.state==="in"&&asOf&&!hidden?" · "+znEsc(asOf):"")):(g.lg?znEsc(g.lg):"");
       c.innerHTML=`<div class="zn-grow"><span class="zn-k">${k}</span>${started?`<button type="button" class="zn-pill zn-later" aria-pressed="${!hidden}">${hidden?"Show score":"Hide score"}</button>`:""}</div>
         <div class="zn-match"><span class="zn-team"><i style="background:${c1}"></i>${znEsc(t1)}</span><em>${home?"at":"vs"}</em><span class="zn-team"><i style="background:${c2}"></i>${znEsc(t2||"—")}</span></div>
         ${status?`<div class="zn-gstat${started&&!hidden?" zn-gscore":""}">${status}</div>`:""}
         ${others.length?`<div class="zn-also"><span class="zn-k">Also today</span>${others.map(x=>row(x,znHide(`${T}:${x.name}`))).join("")}</div>`:""}`;
       const bt=c.querySelector(".zn-later"); if(bt) bt.addEventListener("click",()=>{ try{ localStorage.setItem("zone:hide:"+key,hidden?"0":"1"); }catch(e){} znSpoilSave(key,!hidden); znRender(); }); }
-    else { c.innerHTML=`<div class="zn-grow"><span class="zn-k">On today · ${others.length} game${others.length===1?"":"s"} in your leagues</span></div><div class="zn-also zn-also0">${others.map(x=>row(x,znHide(`${T}:${x.name}`))).join("")}</div>`; }
+    else { c.innerHTML=`<div class="zn-grow"><span class="zn-k">On today · ${others.length} game${others.length===1?"":"s"} in your leagues${asOf&&others.some(x=>x.state==="in")?" · "+znEsc(asOf):""}</span></div><div class="zn-also zn-also0">${others.map(x=>row(x,znHide(`${T}:${x.name}`))).join("")}</div>`; }
     box.append(c); }
   // the writers (brief, radio) read this row: one game per line, date|name; "date|all" keeps every score quiet that day
   async function znSpoilSave(key,on){ if(!mcp) return; try{ const T=TODAY(); const lines=String(SET.Spoilers&&SET.Spoilers.value||"").split(/\n+/).map(x=>x.trim()).filter(l=>l&&l.slice(0,10)>=addDays(T,-7)); const i=lines.indexOf(key); if(on&&i<0) lines.push(key); if(!on&&i>=0) lines.splice(i,1); await saveSetting("Spoilers",lines); }catch(e){ console.warn("spoilers",e); } }
@@ -4004,17 +4017,18 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const T1=addDays(T,1), wd1=new Date(T1+"T12:00:00Z").getUTCDay(); const tp=clean(ROW.Tomorrow).split(/\n+/).map(l=>l.replace(/^\s*(\d+[.)]|[-•*])\s*/,"").trim()).filter(l=>l&&!/^none$/i.test(l));
     const WK="zone:wind:"+T; const flags=(()=>{ try{ return JSON.parse(localStorage.getItem(WK)||"{}")||{}; }catch(e){ return {}; } })(); const setFlag=(k,v)=>{ flags[k]=v; try{ localStorage.setItem(WK,JSON.stringify(flags)); }catch(e){} };
     // 1. Today, in short
-    { const sofar=clean(ROW.Evening).split(/\n+/).map(x=>x.trim()).find(x=>x.startsWith("🌗")); const story=(sofar?sofar.replace(/^🌗\s*(Today so far:?\s*)?/i,""):"").replace(/^./,ch=>ch.toUpperCase());
-      const wins=[]; try{ const D3=parseDay(); const picks=[...D3.tasks.map(t=>t.title),...D3.untimed.map(u=>u.title),...(typeof extraPicks==="function"?extraPicks(D3):[])]; const done3=znDone3(); const all3=new Set([...picks.map(x=>String(x).toLowerCase()),...done3]); const dn=done3.size; if(dn) wins.push([`✓ ${dn} of ${all3.size} picked`,1]); }catch(e){}
+    { const sofar=clean(ROW.Evening).split(/\n+/).map(x=>x.trim()).find(x=>x.startsWith("🌗")); const story=(sofar?sofar.replace(/^🌗\s*(Today so far:?\s*)?/i,"").replace(/^[\s·•]+/,""):"").replace(/^./,ch=>ch.toUpperCase()); /* Nov 18: no stray leading dot */
+      const wins=[]; try{ const D3=parseDay(); const picks=[...D3.tasks.map(t=>t.title),...D3.untimed.map(u=>u.title),...(typeof extraPicks==="function"?extraPicks(D3):[])]; const done3=znDone3(true); const all3=new Set([...picks.map(x=>String(x).toLowerCase()),...done3]); const dn=done3.size; /* Nov 18: only what was done today */ if(dn) wins.push([`✓ ${dn} of ${all3.size} picked`,1]); }catch(e){}
       try{ const w=walksOf(ROW).length; if(w) wins.push([`✓ Birdie walked${w>1?" ×"+w:""}`,1]); }catch(e){}
       try{ const defs=routineDefs().filter(rtDays).filter(d=>d.action!=="walk"); const dn=defs.filter(d=>rtDone(ROW,d)); if(defs.length&&dn.length===defs.length) wins.push(["✓ Routines",1]); else dn.slice(0,2).forEach(d=>wins.push([`✓ ${d.name}`,1])); }catch(e){}
       if(g>0) wins.push([`${g>=tg?"✓ ":""}${g} of ${tg} glasses`,g>=tg?1:0]);
       if(story||wins.length){ const sc=znCard("zn-short",""); sc.append(el("p","zn-n3k","Today, in short")); if(story) sc.append(el("p","zn-n3story",story)); if(wins.length){ const wr=el("div","zn-n3wins"); wins.forEach(([t,ok])=>wr.append(el("span",ok?"ok":"",t))); sc.append(wr); } wrap.append(sc); } }
     // 2. Wind down
+    let windCur=""; /* Nov 18: the step showing now, so For tonight doesn't repeat it */
     { const steps=[]; if(wd1>=1&&wd1<=5&&mcp) steps.push({k:"plan",done:tp.length>0,title:`Set ${DAYS_LONG[wd1]}`,sub:"Two minutes. Three are lined up for you to accept or swap.",act:`Plan ${DAYS_LONG[wd1]}`,go:bb=>znPlanTomorrow(bb),stay:true});
       try{ const ep=(typeof US_POD!=="undefined"&&US_POD&&US_POD.data&&US_POD.data.episodes&&US_POD.data.episodes[0])||null; if(ep&&ep.date===T) steps.push({k:"radio",title:"Tonight’s episode",sub:`Zone Radio · ${Math.max(1,Math.round((ep.seconds||0)/60))} min`,act:"Listen",go:()=>show("us")}); else if(typeof znUsFeedLoad==="function"&&window.__znPodNight!==T){ window.__znPodNight=T; znUsFeedLoad().then(ok=>{ try{ if(ok&&US_POD.data&&US_POD.data.episodes&&US_POD.data.episodes[0]&&US_POD.data.episodes[0].date===T) znRender(); }catch(e){} }).catch(()=>{}); } }catch(e){}
       try{ const pr=znReadingsList({prophet:true}).find(x=>x.k==="prophet"); if(pr) steps.push({k:"read",title:pr.title||"Tonight’s reading",sub:`${pr.book||"The Prophet"} · night ${pr.day}${pr.of?" of "+pr.of:""}`,act:"Read",go:()=>{ try{ znReadingRow(pr).click(); }catch(e){} }}); }catch(e){}
-      steps.forEach(st=>{ if(!st.done&&flags[st.k]) st.done=true; }); const idx=steps.findIndex(st=>!st.done);
+      steps.forEach(st=>{ if(!st.done&&flags[st.k]) st.done=true; }); const idx=steps.findIndex(st=>!st.done); windCur=idx>=0?steps[idx].k:"";
       if(steps.length){ const wc=znCard("zn-wind3"+(idx<0?" zn-wind3-done":""),""); if(idx<0){ wc.append(el("p","zn-n3k","Wind down · done"),el("h2","zn-n3t","That’s the day."),el("p","zn-n3s","Nothing else is asking for you tonight.")); }
         else { const st=steps[idx]; wc.append(el("p","zn-n3k",`Wind down · ${idx+1} of ${steps.length}`),el("h2","zn-n3t",st.title),el("p","zn-n3s",st.sub)); const acts=el("div","zn-n3acts"); const go=el("button","zn-pill zn-dark",st.act); go.type="button"; go.addEventListener("click",()=>{ try{ st.go(go); }catch(e){} if(!st.stay){ setFlag(st.k,"done"); setTimeout(()=>{ try{ znRender(); }catch(e){} },400); } }); const sk=el("button","zn-pill","Skip tonight"); sk.type="button"; sk.addEventListener("click",()=>{ setFlag(st.k,"skip"); znRender(); }); acts.append(go,sk); wc.append(acts); }
         const pg=el("div","zn-n3steps"); steps.forEach((st,i2)=>pg.append(el("i",st.done?"on":(i2===idx?"cur":"")))); wc.append(pg); wrap.append(wc); } }
@@ -4027,7 +4041,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     try{ const lb=znLookBack(); if(lb) wrap.append(lb); }catch(e){ console.error("look back",e); } /* Nov 13: one-tap look-back */
     // 4. For tonight, if you like
     { const cards=[]; try{ const ep=(typeof US_POD!=="undefined"&&US_POD&&US_POD.data&&US_POD.data.episodes&&US_POD.data.episodes[0])||null; if(ep&&ep.date===T) cards.push({k:"Zone Radio",ic:"📻",t:"Tonight’s episode",s:`${Math.max(1,Math.round((ep.seconds||0)/60))} min · play`,go:()=>show("us")}); }catch(e){}
-      try{ const pr=znReadingsList({prophet:true}).find(x=>x.k==="prophet"); if(pr) cards.push({k:`Bedtime · night ${pr.day}`,ic:"🕊️",t:pr.title||pr.book||"Tonight’s reading",s:pr.min?`${pr.min} min`:"",go:()=>{ try{ znReadingRow(pr).click(); }catch(e){} }}); }catch(e){}
+      try{ const pr=znReadingsList({prophet:true}).find(x=>x.k==="prophet"); if(pr&&windCur!=="read") cards.push({k:`Bedtime · night ${pr.day}`,ic:"🕊️",t:pr.title||pr.book||"Tonight’s reading",s:pr.min?`${pr.min} min`:"",go:()=>{ try{ znReadingRow(pr).click(); }catch(e){} }}); }catch(e){}
       invs.filter(r=>!((r.ic==="🪷"||r.ic==="📘")&&(r.st==="look back"||r.st==="✓")&&!/review/.test(String(r.tx)))).forEach(r=>{ const parts=String(r.tx).split(" · "); const isBook=r.ic==="📖", isJ=r.ic==="📓"; cards.push({k:isBook?"Reading now":parts[0],ic:r.ic,t:isBook?(parts.slice(1).join(" · ")||"Your book"):isJ?(parts[1]||"A few lines"):(parts.slice(1).join(" · ")||parts[0]),s:r.done?"done":isBook?"log pages":isJ?"free write":r.st,done:r.done,go:bb=>r.go(bb)}); });
       if(cards.length){ const fc=znCard("zn-fortonight",""); fc.append(el("p","zn-n3k","For tonight, if you like")); const rail=el("div","zn-invrail"); cards.forEach((cd,i2)=>{ const bt=el("button","zn-inv zn-inv"+(i2%4)+(cd.done?" done":"")); bt.type="button"; bt.append(el("small",null,cd.k),el("em",null,cd.done?"✓":cd.ic),el("b",null,cd.t),el("span",null,cd.s||"")); if(!LIVE) bt.disabled=true; bt.addEventListener("click",()=>{ try{ cd.go(bt); }catch(e){} }); rail.append(bt); }); fc.append(rail); wrap.append(fc); } }
     return wrap; }
@@ -4119,7 +4133,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     if(cur){ k.textContent=`Now · until ${hToLabel(cur.e)}`; h.textContent=cur.name; const it=twin(cur.name); sub.textContent=[`${znDur(Math.max(1,Math.round((cur.e-n)*60)))} left`,it&&it.energy==="Deep"?"Deep work":"",it&&it.project?it.project:""].filter(Boolean).join(" · "); btn("Done",true,b=>done(cur.name,b)); btn("Open",false,b=>znOpenPick(cur.name,b)); return c; }
     if(nxt){ const mins=Math.round((nxt.s-n)*60); k.textContent=`Next up · in ${znDur(mins)}`; const nm=String(nxt.name).replace(/^💼\s*/,""); h.textContent=nm;
       if(nxt.k==="work"){ const p=znPrepFor(T,nm); sub.textContent=[hToLabel(nxt.s),znDur(Math.round((nxt.e-nxt.s)*60)),p&&p.prep&&p.prep.summary?"Alice’s prep: "+p.prep.summary.split(/(?<=\.)\s/)[0]:""].filter(Boolean).join(" · "); if(p) btn("Open the prep",true,b=>znPrepSheet(p,b,`Today ${hToLabel(nxt.s)}`)); }
-      else if(nxt.k==="focus"){ const it=twin(nxt.name); sub.textContent=[`${hToLabel(nxt.s)}–${hToLabel(nxt.e)}`,it&&it.est?znDur(it.est):"",it&&it.energy==="Deep"?"Deep":""].filter(Boolean).join(" · "); btn("Open",true,b=>znOpenPick(nxt.name,b)); btn("Done already",false,b=>done(nxt.name,b)); }
+      else if(nxt.k==="focus"){ const it=twin(nxt.name); sub.textContent=[`${hRange(nxt.s,nxt.e)}`,it&&it.est?znDur(it.est):"",it&&it.energy==="Deep"?"Deep":""].filter(Boolean).join(" · "); btn("Open",true,b=>znOpenPick(nxt.name,b)); btn("Done already",false,b=>done(nxt.name,b)); }
       else sub.textContent=[hToLabel(nxt.s),nxt.e-nxt.s>=0.5?`until ${hToLabel(nxt.e)}`:""].filter(Boolean).join(" · ");
       if(loose&&mins>=30){ const it=twin(loose.title); const m=el("p","zn-numore"); m.textContent=`Until then: ${loose.title}${it&&it.est?" · "+znDur(it.est):""}`; c.insertBefore(m,acts); if(it&&calOK()) btn("Place it",false,b=>openScheduleSheet(it,b)); }
       return c; }
@@ -4297,10 +4311,10 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const blk=(host,x,cls,label,sub,title,onClick)=>{ const a=Math.max(x.s,h0), b=Math.min(x.e,h0+H); if(b<=a) return null; const left=X(a), wd=X(b)-X(a); const px=wd/100*W0; const t=el(onClick?"button":"div","znd-blk "+(cls||"")); if(onClick){ t.type="button"; t.addEventListener("click",()=>onClick(t)); }
       t.style.left=left+"%"; t.style.width=`calc(${wd}% - 3px)`; t.title=title||label; if(x.col) t.style.background=x.col; if(px>=50){ t.append(el("b",null,label)); if(sub) t.append(el("small",null,sub)); } else { t.classList.add("znd-tiny"); t.setAttribute("aria-label",title||label); } host.append(t); return t; };
     znD2Merge(items.filter(x=>x.k!=="focus")).forEach(m=>{ const one=m.all.length===1; const nm=String(m.name).replace(/^💼\s*/,""); const now=m.s<=n&&m.e>n;
-      const sub=now?"now":one?znDur(Math.round((m.e-m.s)*60)):`+${m.all.length-1} more`; const title=m.all.map(x=>`${String(x.name).replace(/^💼\s*/,"")} · ${hToLabel(x.s)}–${hToLabel(x.e)}`).join("\n");
+      const sub=now?"now":one?znDur(Math.round((m.e-m.s)*60)):`+${m.all.length-1} more`; const title=m.all.map(x=>`${String(x.name).replace(/^💼\s*/,"")} · ${hRange(x.s,x.e)}`).join("\n");
       const b=blk(cal,{s:m.s,e:m.e,col:znD2Col(m)},(now?"znd-now":"")+(m.e<=n?" znd-past":"")+(m.k==="work"?" znd-work":""),nm,sub,title); });
     items.filter(x=>x.k==="focus").forEach(x=>{ const now=x.s<=n&&x.e>n; const done=o.isDone&&o.isDone(x.name); const st=x.over?"overdue":done?"done":now?"now":`${znbT(x.s)} · ${znDur(Math.round((x.e-x.s)*60))}`;
-      blk(tsk,{s:x.s,e:x.e,col:x.over?ZC.cor:ZC.lim},(now?"znd-now":"")+(done?" znd-done":"")+(x.e<=n?" znd-past":""),x.name,st,`${x.name} · ${hToLabel(x.s)}–${hToLabel(x.e)}`,o.openPick?(t=>o.openPick(x.name,t)):null); });
+      blk(tsk,{s:x.s,e:x.e,col:x.over?ZC.cor:ZC.lim},(now?"znd-now":"")+(done?" znd-done":"")+(x.e<=n?" znd-past":""),x.name,st,`${x.name} · ${hRange(x.s,x.e)}`,o.openPick?(t=>o.openPick(x.name,t)):null); });
     (o.gaps||[]).forEach(g=>{ const m=Math.round((g.b-g.a)*60); blk(tsk,{s:g.a,e:g.b},"znd-open",`${znDur(m)} open`,"place one",`${znDur(m)} open · place a task here`,o.place?(t=>o.place(g.a,g.b,t)):null); });
     if(n!=null&&n>=h0&&n<=h0+H){ const nl=el("div","znd-nowl"); nl.style.left=X(n)+"%"; nl.append(el("i",o.night?"znd-moon":"znd-sun")); wrap.append(nl); }
     return wrap; }
@@ -4488,8 +4502,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       return {kind:"open",frac,big:fmt(gap),small:"open",k:`Open until ${hToLabel(end)}`,title,sub,chip:"",acts}; }
     return {kind:"clear",frac:1,big:znClock(n),small:"all clear",k:"All clear",title:"Nothing else on the clock today",sub:loose?`Still picked: ${loose.title}`:"",chip:"",acts:loose&&twin(loose.title)?[{t:"Open",fn:b=>openListItem(twin(loose.title),b)}]:[]}; }
   function znNightTimerState(tom,n){ const set=SUN.set??19.2, endH=znWindH(); const fmt=m=>{ m=Math.max(0,Math.round(m)); return m>=60?`${Math.floor(m/60)}:${String(m%60).padStart(2,"0")}`:String(m); }; const late=n>=endH||n<12; const left=late?0:(endH-n)*60; const frac=late?0:Math.max(0,Math.min(1,(endH-n)/Math.max(.5,endH-Math.min(set,endH-.5))));
-    const first=tom[0]; const meets=tom.filter(x=>x.k==="work").length; const d1=new Date(addDays(TODAY(),1)+"T12:00:00Z");
-    return {kind:"night",frac,big:late?"✦":fmt(left),small:late?"day’s done":"of evening",k:"Tonight",title:first?`${DAYS_LONG[d1.getUTCDay()]} starts with ${shortName(String(first.name).replace(/^💼\s*/,""))} at ${hToLabel(first.s)}`:`Nothing on ${DAYS_LONG[d1.getUTCDay()]}’s clock yet`,sub:meets?`${meets} meeting${meets===1?"":"s"} tomorrow`:"",chip:"",acts:[]}; }
+    const first=tom[0]; const fm=tom.find(x=>x.k==="work"&&x.e-x.s<4); const d1=new Date(addDays(TODAY(),1)+"T12:00:00Z");
+    return {kind:"night",frac,big:late?"✦":fmt(left),small:late?"day’s done":(left>=60?"to wind-down":"min to wind-down"),k:"Tonight",title:first?`${DAYS_LONG[d1.getUTCDay()]} starts with ${shortName(String(first.name).replace(/^💼\s*/,""))} at ${hToLabel(first.s)}`:`Nothing on ${DAYS_LONG[d1.getUTCDay()]}’s clock yet`,sub:fm&&fm!==first?`First meeting at ${hToLabel(fm.s)}`:"",chip:"",acts:[]}; } /* Nov 18: the ring says what it counts (minutes to the wind-down hour); the meeting count lives on the Tomorrow card only */
   function znTimerMount(hero,st,sheetK,sheetT){ const grid=hero.querySelector(".zn-hgrid"); if(!grid) return; const dial=grid.querySelector(".zn-dial");
     const wrap=el("div","zn-timer zn-tk-"+st.kind); const ring=el("button","zn-tring"); ring.type="button"; ring.style.setProperty("--deg",Math.round(st.frac*360)+"deg"); ring.setAttribute("aria-label",`${st.big} ${st.small}. ${st.k}: ${st.title}. Tap for the whole day as a dial.`);
     ring.innerHTML=`<span class="zn-ttrack"></span><span class="zn-tarc"></span>${st.frac>.01?'<span class="zn-tcap"></span>':""}<span class="zn-tknob"></span><span class="zn-tc"><b>${znEsc(st.big)}</b><small>${znEsc(st.small)}</small></span>`;
@@ -4809,14 +4823,18 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const meets=tom.filter(x=>x.k==="work").sort((a,b)=>a.s-b.s); const evs=tom.filter(x=>x.k!=="work").sort((a,b)=>a.s-b.s);
     const due=LIST.filter(it=>it.status!=="Done"&&forClaire(it)&&isTask(it)&&(it.due===T1||it.focus===T1));
     const top=clean(ROW.Tomorrow).split(/\n+/).map(l=>l.replace(/^\s*(\d+[.)]|[-•*])\s*/,"").trim()).filter(l=>l&&!/^none$/i.test(l));
-    let hours=0; meets.forEach(m=>hours+=Math.max(0,m.e-m.s)); const b2b=[]; for(let i=1;i<meets.length;i++) if(meets[i].s<=meets[i-1].e+0.01) b2b.push(i);
-    c.innerHTML=znH(`${DAYS_LONG[d1.getUTCDay()]}`,meets.length?`${meets.length} meeting${meets.length===1?"":"s"} · ${Math.round(hours*2)/2} h${b2b.length?" · back-to-backs":""}`:"no meetings");
+    // Nov 18: an overlap is not a back-to-back. Overlap = starts before an earlier meeting ends; back-to-back = starts when it ends (within a minute). Busy time is wall-clock, not the sum.
+    const mn=m=>String(m.name).replace(/^💼\s*/,""); const lap={}, b2b=[]; let busyH=0, laps=0; const isBk=m=>m.e-m.s>=4; /* a work block of four hours or more is a backdrop: planned around, never an overlap */ { let end=-1, endI=-1; meets.forEach((m,i)=>{ if(isBk(m)) return; if(endI>=0&&m.s<end-0.01){ lap[i]=endI; if(lap[endI]==null) lap[endI]=i; laps++; } else if(endI>=0&&Math.abs(m.s-end)<=1/60+1e-6) b2b.push(i); busyH+=Math.max(0,m.e-Math.max(m.s,end)); if(m.e>end){ end=m.e; endI=i; } }); }
+    const busyM=Math.round(busyH*60); const nMeet=meets.filter(m=>!isBk(m)).length, firstI=meets.findIndex(m=>!isBk(m)); const cut=s=>s.length>30?s.slice(0,28).trim()+"…":s;
+    const slotOf=it=>{ try{ if(it&&it.sched&&it.status!=="Done"&&String(it.sched).slice(0,10)===T1){ const hh=String(it.sched).slice(11,16).split(":").map(Number); if(!isNaN(hh[0])) return hToLabel(hh[0]+(hh[1]||0)/60); } }catch(e){} return ""; }; /* Scheduled is read the way Plan reads it */
+    const topIts=top.slice(0,3).map(x=>{ try{ return znPickTask(x,T1); }catch(e){ return null; } }); const picked=it=>topIts.some(p=>p&&(p===it||(p.id&&p.id===it.id)))||top.slice(0,3).some(x=>bareTitle(x).toLowerCase()===String(it.name||"").toLowerCase()); const dueRest=due.filter(it=>!picked(it));
+    c.innerHTML=znH(`${DAYS_LONG[d1.getUTCDay()]}`,meets.length?`${nMeet} meeting${nMeet===1?"":"s"}${nMeet?` · ${busyM<60?busyM+" min":(Math.round(busyH*2)/2)+" h"}`:""}${laps?` · ${laps} overlap${laps===1?"":"s"}`:""}${b2b.length?" · back-to-backs":""}`:"no meetings");
     const sec=(label)=>{ const h=el("div","zn-rslot"); h.textContent=label; c.append(h); };
     const line=(ic,name,sub,right,go)=>{ const r=el(opts.rowsAsButtons?"button":"div","zn-prow2"); if(opts.rowsAsButtons) r.type="button"; r.innerHTML=`<span class="zn-pic2">${ic}</span><span class="zn-rtx"><b>${znEsc(name)}</b>${sub?`<span>${znEsc(sub)}</span>`:""}</span>${right?`<span class="zn-ptime">${znEsc(right)}</span>`:""}`; if(go) r.addEventListener("click",go); c.append(r); return r; };
-    if(meets.length){ sec("Meetings"); meets.forEach((m,i)=>{ const nm=String(m.name).replace(/^💼\s*/,""); const r=line("💼",nm,i===0?"first of the day":b2b.includes(i)?"straight after the last one":"",`${hToLabel(m.s)}–${hToLabel(m.e)}`); try{ const ch=znPrepChip(T1,nm,`${DAYS_LONG[d1.getUTCDay()]} ${hToLabel(m.s)}`); if(ch){ if(r.tagName==="BUTTON"){ const sp=el("span","zn-prepchip","✨ Prep"); r.querySelector(".zn-rtx").append(sp); r.addEventListener("click",()=>znPrepSheet(znPrepFor(T1,nm),r,`${DAYS_LONG[d1.getUTCDay()]} ${hToLabel(m.s)}`)); } else r.querySelector(".zn-rtx").append(ch); } }catch(e){} }); } /* Nov 2: prep chips */
+    if(meets.length){ sec("Meetings"); meets.forEach((m,i)=>{ const nm=String(m.name).replace(/^💼\s*/,""); const r=line("💼",nm,[isBk(m)?"all day · planned around":i===firstI?"first meeting":"",lap[i]!=null?`overlaps ${cut(mn(meets[lap[i]]))}`:b2b.includes(i)?"straight after the last one":""].filter(Boolean).join(" · "),`${hRange(m.s,m.e)}`); try{ const ch=znPrepChip(T1,nm,`${DAYS_LONG[d1.getUTCDay()]} ${hToLabel(m.s)}`); if(ch){ if(r.tagName==="BUTTON"){ const sp=el("span","zn-prepchip","✨ Prep"); r.querySelector(".zn-rtx").append(sp); r.addEventListener("click",()=>znPrepSheet(znPrepFor(T1,nm),r,`${DAYS_LONG[d1.getUTCDay()]} ${hToLabel(m.s)}`)); } else r.querySelector(".zn-rtx").append(ch); } }catch(e){} }); } /* Nov 2: prep chips */
     if(evs.length){ sec("Also"); evs.forEach(e=>line("📅",String(e.name).replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,""),"",e.s!=null?hToLabel(e.s):"")); }
-    if(due.length){ sec("Due tomorrow"); due.slice(0,5).forEach(it=>{ const r=line(AREA_IC[it.area]||"✓",it.name,it.area||"",it.star?"★":""); r.classList.add("zn-prowgo"); r.addEventListener("click",()=>openListItem(it,r)); }); }
-    sec("Tomorrow’s Top 3"); if(top.length){ top.slice(0,3).forEach((x,i)=>{ const r=line(String(i+1),znPickName(x,T1),"",""); r.classList.add("zn-prowgo"); r.addEventListener("click",()=>znOpenPick(x,r,T1)); }); } else c.append(el("p","zn-empty","Nothing picked yet."));
+    if(dueRest.length){ sec("Due tomorrow"); dueRest.slice(0,5).forEach(it=>{ const r=line(AREA_IC[it.area]||"✓",it.name,it.area||"",[slotOf(it),it.star?"★":""].filter(Boolean).join(" ")); r.classList.add("zn-prowgo"); r.addEventListener("click",()=>openListItem(it,r)); }); }
+    sec("Tomorrow’s Top 3"); if(top.length){ top.slice(0,3).forEach((x,i)=>{ const it=topIts[i]; const r=line(String(i+1),znPickName(x,T1),it&&it.due===T1?"due":"",slotOf(it)); /* Nov 18: a pick that is due says so here (Due tomorrow lists only what isn't picked), and a placed one shows its slot */ r.classList.add("zn-prowgo"); r.addEventListener("click",()=>znOpenPick(x,r,T1)); }); } else c.append(el("p","zn-empty","Nothing picked yet."));
     const pk=el("button","zn-pill zn-dark",top.length?"Change the Top 3":"Pick the Top 3"); pk.type="button"; pk.disabled=!mcp||!LIVE; pk.addEventListener("click",()=>znPickTop3(T1,due,pk)); c.append(pk);
     if(!meets.length&&!evs.length&&!due.length) c.append(el("p","zn-empty",`A clear ${DAYS_LONG[d1.getUTCDay()]}. The brief lands at ${PERSON&&PERSON.person==="victoria"?"4:15am":"4:30am"}.`));
     return c; }
@@ -5202,7 +5220,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       znSky(true); try{ znDaySky(false); }catch(e){}
       const bed=znBeforeBed(open,tom,wk); const left=[...bed.querySelectorAll(".zn-bedrow:not(.zn-done)")].map(b=>(b.querySelector(".zn-rtx b")||b.querySelector("span")||{}).textContent||"");
       const tw=clean(ROW["Tomorrow Weather"]); const th=(tw.match(/high\s*(\d+)/i)||[])[1], tl=(tw.match(/low\s*(\d+)/i)||[])[1];
-      const heroN=znCard("zn-hero zn-hero-night",`<div class="zn-hrow"><span class="zn-date">${DN} <i>night</i></span>${th?`<button type="button" class="zn-pill" id="znWxN">${th}°${tl?` · low ${tl}`:""}</button>`:""}</div>
+      const heroN=znCard("zn-hero zn-hero-night",`<div class="zn-hrow"><span class="zn-date">${DN} <i>night</i></span>${th?`<button type="button" class="zn-pill" id="znWxN">${DAYS_LONG[d1.getUTCDay()].slice(0,3)} ${th}°${tl?` / ${tl}°`:""}</button>`:""}</div>
         <div class="zn-hgrid"><div class="zn-dial">${znDial(tom,n,220,true,[DAYS_LONG[d1.getUTCDay()],first?`first · ${hToLabel(first.s)} ${shortName(first.name)}`:"nothing on the clock",""],`Tomorrow as a dial: ${tom.map(x=>x.name+" at "+hToLabel(x.s)).join(", ")||"nothing scheduled"}`)}</div>
         </div>
 `,"Tonight at a glance"); /* Oct 29: the Day Wrap's headline */
@@ -5272,7 +5290,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     if(!night){
     // ---------- top three ----------
     const D3=parseDay(); const done3=znDone3();
-    const picks=[...D3.tasks.map(t3=>({title:t3.title,sub:`${fmtH(t3.r.start)}–${fmtH(t3.r.end)}`})),...D3.untimed.map(u=>({title:u.title,sub:u.note||""})),...D3.unplaced.map(u=>({title:u.replace(/\s*\(it comes after a step that didn't fit\)$/i,""),sub:"no clean window today"})),...(typeof extraPicks==="function"?extraPicks(D3):[]).map(x=>({title:x,sub:""}))].slice(0,5);
+    const picks=[...D3.tasks.map(t3=>({title:t3.title,sub:hRange(t3.r.start,t3.r.end)})),...D3.untimed.map(u=>({title:u.title,sub:u.note||""})),...D3.unplaced.map(u=>({title:u.replace(/\s*\(it comes after a step that didn't fit\)$/i,""),sub:"no clean window today"})),...(typeof extraPicks==="function"?extraPicks(D3):[]).map(x=>({title:x,sub:""}))].slice(0,5);
     if(picks.length&&!wk||!wk){ const dn=picks.filter(x=>done3.has(x.title.toLowerCase())).length; const top=znCard("zn-top","","Top three");
       top.innerHTML=znH("Top 3",picks.length?`${dn} of ${picks.length}`:"nothing picked yet");
       if(!picks.length){ const b=el("button","zn-btn","Pick today’s Top 3"); b.type="button"; b.disabled=!mcp; b.addEventListener("click",()=>openPickToday(b)); top.append(b); }
@@ -5288,7 +5306,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const ahead=items.filter(x=>x.e>n).sort((a,b)=>a.s-b.s); let openMin=0; { let cur2=Math.max(n,8); ahead.forEach(x=>{ if(x.s>cur2) openMin+=Math.round((Math.min(x.s,21)-cur2)*60); cur2=Math.max(cur2,x.e); }); if(cur2<21) openMin+=Math.round((21-cur2)*60); }
     const SP=true; /* Nov 11: weekend parity */ const PK=(window.__znPicks||{picks:[],done3:new Set()}); const isDone3=t=>PK.done3.has(String(t||"").toLowerCase());
     const nMeet=items.filter(x=>x.k==="work").length; const openTxt=openMin>=60?`${Math.round(openMin/30)/2}h open`:openMin?`${openMin}m open`:"no open time";
-    const day=znCard("zn-day"+(SP?" zn-spine":""),"",SP?"Your day":"The day"); day.innerHTML=znH(SP?"Your day":"The day",SP?[PK.picks.length?`${PK.picks.length} picked`:"nothing picked",nMeet?`${nMeet} meeting${nMeet===1?"":"s"}`:"",openTxt].filter(Boolean).join(" · "):(openMin>=60?`${Math.round(openMin/30)/2} open hours`:openMin?`${openMin} min open`:"no open time"))+`<div class="zn-strip">${strip}</div>`+(ZN_BACKS.length?`<p class="zn-allday"><b>All day</b> ${ZN_BACKS.map(x=>`${znEsc(String(x.name).replace(/^💼\s*/,""))} · ${hToLabel(x.s)}–${hToLabel(x.e)}`).join(" · ")}<span> · planned around, not counted as busy</span></p>`:"");
+    const day=znCard("zn-day"+(SP?" zn-spine":""),"",SP?"Your day":"The day"); day.innerHTML=znH(SP?"Your day":"The day",SP?[PK.picks.length?`${PK.picks.length} picked`:"nothing picked",nMeet?`${nMeet} meeting${nMeet===1?"":"s"}`:"",openTxt].filter(Boolean).join(" · "):(openMin>=60?`${Math.round(openMin/30)/2} open hours`:openMin?`${openMin} min open`:"no open time"))+`<div class="zn-strip">${strip}</div>`+(ZN_BACKS.length?`<p class="zn-allday"><b>All day</b> ${ZN_BACKS.map(x=>`${znEsc(String(x.name).replace(/^💼\s*/,""))} · ${hRange(x.s,x.e)}`).join(" · ")}<span> · planned around, not counted as busy</span></p>`:"");
     const toggle3=async(title,isD,cb)=>{ cb.disabled=true; if(!isD) cb.textContent="✓"; try{ await setInList("Top 3 Done",title,!isD,"\n"); syncListDone(title,!isD); renderWeekday(); znRender(); }catch(e){ toast(writeErr(e)); cb.disabled=false; } };
     const taskBits=(title)=>{ const isD=isDone3(title); const cb=el("button","zn-cb",isD?"✓":""); cb.type="button"; cb.disabled=!mcp; cb.setAttribute("aria-pressed",String(isD)); cb.setAttribute("aria-label",(isD?"Undo: ":"Done: ")+title); cb.addEventListener("click",e=>{ e.stopPropagation(); toggle3(title,isD,cb); }); const it=znPickTask(title); return {isD,cb,it}; };
     const riv=el("div","zn-riv"); const eveCut=n<15?17:99; let prev=n;
@@ -6045,13 +6063,13 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const md=d.slice(5).replace(/^0/,"").replace("-0","-").replace("-","/");
     const EV=znEvLive(); const strip=t=>String(t).replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,"").trim();
     clean(ROW["Week Events"]).split(/\n+/).forEach(l=>{ let f=null; let m=l.trim().match(/^\w{3} (\d{1,2}\/\d{1,2}) · ([^·]+) · (.+)$/); if(!m){ f=l.trim().split("|"); if(f.length>=6&&f[5]&&EV.has(f[5])) return; /* moved or removed on this device; drawn from ZN_EV below */ if(f.length>=3&&f[0]===d) m=[null,md,f[1],f[2]]; }
-      if(!m||m[1]!==md) return; const r=parseRange(m[2]); if(r){ const o={s:r.start,e:Math.max(r.end,r.start+.25),n:strip(m[3])}; if(f&&f.length>=6&&f[5]&&(f[4]==="me"||f[4]==="fam")){ o.cal=f[4]; o.id=f[5]; } out.push(o); } });
-    EV.forEach((v,k)=>{ if(!v.gone&&v.d===d) out.push({s:v.s,e:Math.max(v.e,v.s+.25),n:strip(v.n),cal:v.cal,id:k}); });
+      if(!m||m[1]!==md) return; const r=parseRange(m[2]); if(r){ const o={s:r.start,e:Math.max(r.end,r.start+.25),n:strip(m[3]),ev:!(f&&f[3]==="work")}; if(f&&f.length>=6&&f[5]&&(f[4]==="me"||f[4]==="fam")){ o.cal=f[4]; o.id=f[5]; } out.push(o); } });
+    EV.forEach((v,k)=>{ if(!v.gone&&v.d===d) out.push({s:v.s,e:Math.max(v.e,v.s+.25),n:strip(v.n),cal:v.cal,id:k,ev:true}); });
     const evWas=(nm,st)=>{ let hit=false; EV.forEach(v=>{ if(v.from.d===d&&Math.abs(v.from.s-st)<.02&&strip(v.n)===nm) hit=true; }); return hit; };
-    if(d===TODAY()){ try{ const D=parseDay(); D.items.forEach(x=>{ if(/mindful moment|skincare/i.test(x.text)) return; const nm=x.text.replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,""); if(/^💼/.test(x.text)&&out.some(o=>o.work&&Math.abs(o.s-x.start)<.02)) return; if(!/^💼/.test(x.text)&&(evWas(nm,x.start)||out.some(o=>o.id&&!o.work&&o.n===nm&&Math.abs(o.s-x.start)<.02))) return; /* Nov 13: the same event is already here from Week Events with its id, or was moved or removed on this device */ out.push({s:x.start,e:Math.max(x.end,x.start+.25),n:nm,work:/^💼/.test(x.text)}); }); D.tasks.forEach(t=>{ if(t.r) out.push({s:t.r.start,e:t.r.end,n:t.title}); }); }catch(e){} }
+    if(d===TODAY()){ try{ const D=parseDay(); D.items.forEach(x=>{ if(/mindful moment|skincare/i.test(x.text)) return; const nm=x.text.replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,""); if(/^💼/.test(x.text)&&out.some(o=>o.work&&Math.abs(o.s-x.start)<.02)) return; if(!/^💼/.test(x.text)&&(evWas(nm,x.start)||out.some(o=>o.id&&!o.work&&o.n===nm&&Math.abs(o.s-x.start)<.02))) return; /* Nov 13: the same event is already here from Week Events with its id, or was moved or removed on this device */ out.push({s:x.start,e:Math.max(x.end,x.start+.25),n:nm,work:/^💼/.test(x.text),ev:!/^💼/.test(x.text)}); }); D.tasks.forEach(t=>{ if(t.r) out.push({s:t.r.start,e:t.r.end,n:t.title}); }); }catch(e){} }
     LIST.forEach(it=>{ if(it.sched&&it.status==="Open"){ const a=ctOf(it.sched); if(a.d===d) out.push({s:a.h,e:a.h+Math.max(.25,(it.est||30)/60),n:it.name}); } });
     // Nov 2: a work block with a generic name (busy, Block: Appt, hold, personal, OOO) that overlaps a personal event is that event, not a second thing
-    znMergeBusy(out,o=>!!o.work,o=>o.n); out.forEach(o=>{ if(znIsBack(o)) o.back=true; });
+    znMergeTwins(out,o=>!!o.ev&&!o.work,o=>o.n,(o,v)=>{ o.n=v; }); /* Nov 18 */ znMergeBusy(out,o=>!!o.work,o=>o.n); out.forEach(o=>{ if(znIsBack(o)) o.back=true; });
     return out.sort((a,b)=>a.s-b.s); }
   function suggestSlots(est,due){ const T=TODAY(), need=Math.max(15,est||30)/60, buf=10/60; const last=due&&due>=T?(dayDiff(T,due)>6?addDays(T,6):due):addDays(T,6); const out=[];
     for(let d=T; d<=last&&out.length<3; d=addDays(d,1)){ const wd=new Date(d+"T12:00:00Z").getUTCDay(); const wk=wd===0||wd===6;
@@ -6269,7 +6287,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       return spare.length===1?spare[0]:null; }catch(e){ return null; } }
   const znPickIsDone=it=>!!it&&(it.status==="Done"||it.lastDone===TODAY());
   // the Top 3 Done list, plus every pick whose task is done (checked off in Plan, the task sheet, a swipe or Up next)
-  function znDone3(){ const s=new Set(listOf("Top 3 Done").map(x=>String(x).toLowerCase())); for(const t of znPickTitles()){ if(znPickIsDone(znPickTask(t))){ s.add(String(t).toLowerCase()); s.add(bareTitle(t).toLowerCase()); } } return s; }
+  function znDone3(todayOnly){ const s=new Set(listOf("Top 3 Done").map(x=>String(x).toLowerCase())); const T0=TODAY(); const ok=it=>todayOnly?(!!it&&(it.lastDone===T0||(it.status==="Done"&&(!it.doneOn||String(it.doneOn).slice(0,10)===T0)))):znPickIsDone(it); /* Nov 18: the night card's "N of M picked" counts a task finished today, not one marked Done on an earlier day */ for(const t of znPickTitles()){ if(ok(znPickTask(t))){ s.add(String(t).toLowerCase()); s.add(bareTitle(t).toLowerCase()); } } return s; }
   function znPickName(title,day){ const it=znPickTask(title,day); return it&&it.name?it.name:bareTitle(title)||title; } /* the task's own name, so a rename shows straight away */
   async function znPickSync(it,on){ try{ if(!ROW||!LIVE||!it||!it.id) return; const t=znPickTitles().find(x=>{ const p=znPickTask(x); return p&&p.id===it.id; }); if(!t) return;
     const have=listOf("Top 3 Done").some(x=>x.toLowerCase()===String(t).toLowerCase()); if(!!on===have) return; await setInList("Top 3 Done",t,!!on,"\n"); }catch(e){} }
@@ -6433,8 +6451,10 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
 
   // ---------- health strip ----------
   
-  function showAlert(t,b){ const a=$("#alert"); a.replaceChildren(); if(!t) return; document.body.classList.remove("loading"); const x=el("div","alert"); x.setAttribute("role","status"); x.append(el("h3",null,t),el("p",null,b)); a.append(x); }
-  function handleError(err){ document.body.classList.remove("loading");
+  function showAlert(t,b,o){ const a=$("#alert"); a.replaceChildren(); ALERT_PART=(t&&o&&o.part)||""; if(!t) return; document.body.classList.remove("loading"); const x=el("div","alert"); x.setAttribute("role","status"); x.append(el("h3",null,t),el("p",null,b));
+    if(o&&o.retry){ const rb=el("button","zn-pill","Retry"); rb.type="button"; rb.style.marginTop="8px"; rb.addEventListener("click",()=>{ rb.disabled=true; rb.textContent="Trying…"; try{ Promise.resolve(o.retry()).catch(()=>{}); }catch(e){} }); x.append(rb); } a.append(x); } /* Nov 18: Retry reloads the read that failed */
+  var ALERT_PART="";
+  function handleError(err,ctx){ document.body.classList.remove("loading"); ctx=ctx||{};
     const code=(err&&err.code)||"upstream_error";
     const map={needs_reauth:["Notion needs reconnecting","Reconnect Notion in your claude.ai connector settings, then refresh."],
       server_not_connected:["Notion isn't connected","Add the Notion connector in claude.ai, then refresh."],
@@ -6445,7 +6465,10 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       not_granted:["Open this in Claude","This dashboard reads your Notion through Claude. Open it from claude.ai or the Claude app."]};
     const msg=String((err&&err.message)||"");
     if(/usage[_ ]limit|usage limit/i.test(msg+code)){ showAlert("Notion's limit for this kind of request was reached","The dashboard doesn't need it anymore, so a refresh should fix this. If it keeps showing, tell Claude."); return; }
-    const [t,b]=map[code]||["Couldn't load from Notion",msg.length>180?"Notion sent back an error. Refresh in a minute, and tell Claude if it keeps happening.":(msg||"Refresh to try again.")]; showAlert(t,b);
+    // Nov 18: a slow or failed read names the part that didn't refresh and the age of the copy on screen, and offers Retry (the app has already tried twice)
+    if(!map[code]&&ctx.part&&(ctx.retry||ctx.storedAt)){ let at=""; try{ if(ctx.storedAt){ const d0=new Date(ctx.storedAt); const tm=new Intl.DateTimeFormat("en-US",{timeZone:TZ,hour:"numeric",minute:"2-digit"}).format(d0).replace(/\s+/g,"").toLowerCase(); const day=new Intl.DateTimeFormat("en-CA",{timeZone:TZ,year:"numeric",month:"2-digit",day:"2-digit"}).format(d0); at=day===TODAY()?tm:`${new Intl.DateTimeFormat("en-US",{timeZone:TZ,weekday:"short"}).format(d0)} ${tm}`; } }catch(e){}
+      const why=code==="timeout"?"Notion was slow to answer.":code==="offline"?"You’re offline.":(msg&&msg.length<=120?msg:"Notion sent back an error."); showAlert(`${ctx.part} didn’t refresh`,`${why} ${at?`Showing the copy from ${at}.`:"Nothing saved to show yet."}`,{retry:ctx.retry,part:ctx.part}); return; }
+    const [t,b]=map[code]||["Couldn't load from Notion",msg.length>180?"Notion sent back an error. Refresh in a minute, and tell Claude if it keeps happening.":(msg||"Refresh to try again.")]; showAlert(t,b,{retry:ctx.retry,part:ctx.part});
   }
 
   // ---------- week ----------
@@ -6796,10 +6819,10 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     for(const id of Object.keys(ROW_UNSUB)) if(!want.has(id)){ try{ ROW_UNSUB[id](); }catch(e){} delete ROW_UNSUB[id]; delete ROW_DATA[id]; }
     list.forEach((r,i)=>{ if(ROW_UNSUB[r.id]) return;
       ROW_UNSUB[r.id]=mcp.watchTool(SERVER,"notion-fetch",{id:r.id},ev=>{
-        if(ev.type!=="data"){ if(i===0) handleError(ev.error); return; }
+        if(ev.type!=="data"){ if(i===0) handleError(ev.error,{part:"Today",retry:ev.retry,storedAt:ev.storedAt}); return; }
         const row=rowFrom(ev.result.payload,"https://www.notion.so/"+r.id); if(!row) return; ROW_DATA[r.id]=row;
         ROWS=list.map(x=>ROW_DATA[x.id]).filter(Boolean); if(!ROW_DATA[list[0].id]) return; // wait for the newest day before drawing
-        showAlert(); renderAll(ev.result.cache&&ev.result.cache.storedAt); },{cache:{staleTime:i===0?60000:3600000},refetchInterval:i===0?300000:0}); });
+        if(ALERT_PART!=="Tasks") showAlert(); renderAll(ev.result.cache&&ev.result.cache.storedAt); },{cache:{staleTime:i===0?60000:3600000},refetchInterval:i===0?300000:0}); });
     if(!list.length) showAlert("No briefs yet","The Daily Log is empty. The next brief lands at 4:30am."); }
   // List changes made here show right away and survive a reload until the next hourly index catches up
   const LOCAL_KEY="zone-list-local";
@@ -6816,7 +6839,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     // the Zone Index (kept current by Make every hour) says which pages are today and the last few days, and snapshots the List;
     // the dashboard opens those pages directly, because database searches are capped on her Notion plan
     unsub.push(mcp.watchTool(SERVER,"notion-fetch",{id:INDEX_ID},ev=>{
-      if(ev.type!=="data"){ handleError(ev.error); return; } const pr=parseProps(ev.result.payload); let idx=null; try{ idx=JSON.parse(clean(pr&&pr.Value)); }catch(e){}
+      if(ev.type!=="data"){ handleError(ev.error,{part:"Tasks",retry:ev.retry,storedAt:ev.storedAt}); return; } if(ALERT_PART==="Tasks") showAlert(); const pr=parseProps(ev.result.payload); let idx=null; try{ idx=JSON.parse(clean(pr&&pr.Value)); }catch(e){}
       if(!idx||!Array.isArray(idx.rows)){ if(PERSON.person!=="claire"){ showAlert(`Welcome, ${PERSON.name}`,"Your Zone is being built. Your first morning brief will show up here soon."); } else showAlert("Setting things up","The dashboard index is being built. Refresh in a minute."); return; }
       INDEX_AT=Date.parse(idx.at)||0; INDEX_ROWS=idx.rows||[]; BOOKS=Array.isArray(idx.books)?bkOverlay(idx.books,INDEX_AT):BOOKS; INDEX_REC=Array.isArray(idx.rec)?idx.rec:[];  try{ primeSettings(); }catch(e){} LIST=mergeLocal(idx.list.map(x=>listItem({url:"https://www.notion.so/"+x.id,Name:x.n,Kind:x.k,Area:x.a,Status:x.s,Star:x.star?"__YES__":"__NO__","date:Due:start":x.due||null,Created:x.c,"date:Done On:start":x.done||null,"date:Focus:start":x.f||null,Source:x.src,Owner:x.own||"","Alice Status":x.as||"","Alice Notes":Array.isArray(x.an)?x.an.join("\n"):(x.an||""),"date:Alice Updated:start":x.au||null,"Job Type":x.jt||"","Alice Options":Array.isArray(x.ao)?x.ao.join("\n"):"","Claire Reply":Array.isArray(x.cr)?x.cr.join("\n"):"",Outcome:x.out||"",Repeat:x.rp||"","date:Snooze Until:start":x.sz||null,"Waiting On":x.wo||"","date:Waiting Since:start":x.ws||null,Project:x.pj||"",Estimate:x.est||null,Energy:x.en||"","Estimate Source":x.es||"",Private:x.pv?"__YES__":"__NO__",Actual:x.ac||null,Steps:Array.isArray(x.st)?x.st.join("\n"):"","date:Last Done:start":x.ld||null,"date:Scheduled:start":x.sc||null}))).filter(it=>it.id&&it.name); LIST=LIST.filter(x=>!znIsGone(x.id)); LIST_LOADED=true;
       watchRows(idx.rows.slice(0,7)); 
@@ -6881,9 +6904,11 @@ function zoneMcp(sb){
     callTool:async(_server,tool,args)=>{ const res=await call(tool,args,_server==="Google Calendar"?APP.api.replace(/zone-api$/,"zone-cal"):undefined); if(tool==="notion-fetch") writeLS(keyOf(tool,args),{at:Date.now(),payload:res.payload}); return res; },
     watchTool:(_server,tool,args,cb,opts)=>{ if(tool==="notion-fetch"&&!(args&&args.id)) return ()=>{}; opts=opts||{}; const k=keyOf(tool,args); let stop=false, timer=null;
       const stored=readLS(k); if(stored) setTimeout(()=>{ if(!stop) cb({type:"data",result:{payload:stored.payload,cache:{storedAt:stored.at}}}); },0);
-      const run=async(force)=>{ if(stop) return; const c=readLS(k), stale=(opts.cache&&opts.cache.staleTime)||60000; if(!force&&c&&Date.now()-c.at<stale) return;
+      const run=async(force,again)=>{ if(stop) return; const c=readLS(k), stale=(opts.cache&&opts.cache.staleTime)||60000; if(!force&&c&&Date.now()-c.at<stale) return;
         try{ const res=await call(tool,args); const at=Date.now(); writeLS(k,{at,payload:res.payload}); if(!stop) cb({type:"data",result:{payload:res.payload,cache:{storedAt:at}}}); }
-        catch(e){ if(stop) return; if(e&&e.code==="not_signed_in") showSignin(); if(!(stored&&e&&e.code==="offline")) cb({type:"error",error:e}); } };
+        catch(e){ if(stop) return; if(e&&e.code==="not_signed_in") showSignin();
+          if(!again&&e&&e.code!=="not_signed_in"&&e.code!=="offline"){ await new Promise(r=>setTimeout(r,1500)); return run(true,true); } /* Nov 18: one quiet retry before saying anything */
+          if(!(stored&&e&&e.code==="offline")){ const c2=readLS(k); cb({type:"error",error:e,retry:()=>run(true,true),storedAt:c2&&c2.at||0}); } } };
       run(false); if(opts.refetchInterval) timer=setInterval(()=>run(true),opts.refetchInterval);
       const w={run}; watchers.add(w); return ()=>{ stop=true; if(timer) clearInterval(timer); watchers.delete(w); }; },
     invalidate:async()=>{ for(const k of Object.keys(localStorage)) if(k.startsWith(PFX)){ try{ const v=JSON.parse(localStorage.getItem(k)); v.at=0; localStorage.setItem(k,JSON.stringify(v)); }catch(e){} } },
