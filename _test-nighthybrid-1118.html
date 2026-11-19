@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><script>/* TEST COPY: saves blocked */(function(){ window.__writes=[]; window.__calls=[]; var of=window.fetch;
+<head><script>/* TEST COPY: saves blocked */(function(){ window.__writes=[]; window.__calls=[]; window.__allow=/^zone-(prep|prefs|usfeed)$/; var of=window.fetch;
 window.fetch=function(u,o){ try{ var url=String(u&&u.url||u), m=((o&&o.method)||"GET").toUpperCase(); if(/supabase\.co\/(functions|rest)\/v1\//.test(url)&&m!=="GET"){ var b=null; try{ b=JSON.parse(o.body); }catch(e){} var fn=(url.match(/v1\/([a-z-]+)/)||[])[1]; var read=(/zone-(api|cal)$/.test(fn)&&b&&/fetch|search|query|get|list/i.test(String(b.tool||"")))||window.__allow&&window.__allow.test(fn);
   if(!read){ window.__writes.push({fn:fn,body:b||String(o.body).slice(0,300)}); console.warn("BLOCKED WRITE",fn,JSON.stringify(b).slice(0,300)); return Promise.resolve(new Response(JSON.stringify({ok:true,payload:{},blocked:true}),{status:200,headers:{"Content-Type":"application/json"}})); } window.__calls.push(fn+":"+(b&&b.tool||"")); } }catch(e){} return of.apply(this,arguments); };
 try{ window.__znNow=sessionStorage.getItem("t:now")!=null?Number(sessionStorage.getItem("t:now")):null; window.__znWk=sessionStorage.getItem("t:wk")||null; window.__znWho=sessionStorage.getItem("t:who")||null; }catch(e){} })();</script>
@@ -2649,7 +2649,7 @@ body.zn.zn-pn .zn-tk-night .zn-tknob{width:20px;height:20px;margin:-10px;backgro
 body.zn.zn-pn .zn-tk-night .zn-tknob::after{content:"";position:absolute;left:6px;top:-2px;width:17px;height:17px;border-radius:50%;background:#2B3C8A}
 body.zn.zn-pn .zn-tk-night .zn-tc b{font:600 40px/1 Fraunces,Georgia,serif}
 body.zn.zn-pn .zn-tk-night .zn-tc small{font:600 11px/1.25 'Plus Jakarta Sans',sans-serif;opacity:.85;max-width:74px;margin:3px auto 0}
-body.zn.zn-pn .zn-hero-night .zn-ttext .zn-tk{font:700 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:.14em;opacity:1;color:rgba(247,243,255,.82)}
+body.zn.zn-pn .zn-hero-night .zn-ttext .zn-tk{font:700 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:.1em;opacity:1;color:rgba(247,243,255,.82)}
 body.zn.zn-pn .zn-hero-night .zn-ttext .zn-tt{font:500 21px/1.22 Fraunces,Georgia,serif;margin:0 0 6px}
 body.zn.zn-pn .zn-hero-night .zn-ttext .zn-ts{font-size:13px;line-height:1.4;opacity:.85}
 body.zn.zn-pn .zn-pchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.18)}
@@ -2681,7 +2681,7 @@ body.zn.zn-pn .zn-wind3.zn-pc .zn-n3acts{margin-top:14px}
 body.zn.zn-pn .zn-wind3.zn-pc .zn-n3steps{gap:6px;margin-top:14px}
 body.zn.zn-pn .zn-wind3.zn-pc .zn-n3steps i{background:rgba(247,243,255,.3)}
 body.zn.zn-pn .zn-wind3.zn-pc .zn-n3steps i.on, body.zn.zn-pn .zn-wind3.zn-pc .zn-n3steps i.cur{background:#F7F3FF}
-body.zn.zn-pn .zn-ptom .zn-pback{margin:0 6px 12px 0}
+body.zn.zn-pn .zn-ptom .zn-pback{margin:0 6px 12px 0;white-space:normal;overflow:visible;padding:6px 12px;line-height:1.3;border-radius:14px}
 body.zn.zn-pn .zn-ptl{position:relative;margin:8px 0 6px}
 body.zn.zn-pn .zn-ptlh{position:absolute;left:0;width:46px;font:600 11px/1 'Plus Jakarta Sans',sans-serif;opacity:.7;white-space:nowrap}
 body.zn.zn-pn .zn-ptll{position:absolute;left:56px;right:0;top:0;bottom:0}
@@ -2702,16 +2702,16 @@ body.zn.zn-pn .zn-pgap:disabled{cursor:default}
 body.zn.zn-pn .zn-pclashln{display:flex;align-items:center;gap:10px;margin-top:8px;font:600 12.5px/1.3 'Plus Jakarta Sans',sans-serif}
 body.zn.zn-pn .zn-pclashln > span{flex:1;min-width:0;color:#FFC4B8 !important}
 body.zn.zn-pn .zn-pempty{margin:0 0 4px;font-size:13.5px;opacity:.85}
-body.zn.zn-pn .zn-pk{margin:16px 0 0;font:700 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(247,243,255,.82) !important}
-body.zn.zn-pn .zn-pk + .zn-prow{margin-top:8px}
-body.zn.zn-pn .zn-prow{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid rgba(255,255,255,.14)}
-body.zn.zn-pn .zn-pnum{width:28px;height:28px;flex:none;border-radius:50%;background:#D6EC63;color:#2B3307 !important;display:flex;align-items:center;justify-content:center;font:700 13px 'Plus Jakarta Sans',sans-serif}
-body.zn.zn-pn .zn-pnum.open{background:transparent;border:1px dashed rgba(255,255,255,.5);color:#F7F3FF !important;opacity:.7;box-sizing:border-box}
+body.zn.zn-pn .zn-p3k{margin:16px 0 0;font:700 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(247,243,255,.82) !important}
+body.zn.zn-pn .zn-p3k + .zn-p3row{margin-top:8px}
+body.zn.zn-pn .zn-p3row{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid rgba(255,255,255,.14)}
+body.zn.zn-pn .zn-p3n{width:28px;height:28px;flex:none;border-radius:50%;background:#D6EC63;color:#2B3307 !important;display:flex;align-items:center;justify-content:center;font:700 13px 'Plus Jakarta Sans',sans-serif}
+body.zn.zn-pn .zn-p3n.open{background:transparent;border:1px dashed rgba(255,255,255,.5);color:#F7F3FF !important;opacity:.7;box-sizing:border-box}
 body.zn.zn-pn .zn-ptx{flex:1;min-width:0;min-height:36px;display:flex;flex-direction:column;justify-content:center;background:none;border:0;padding:0;margin:0;text-align:left;color:inherit;font:inherit}
 body.zn.zn-pn button.zn-ptx{cursor:pointer}
 body.zn.zn-pn .zn-ptx b{display:block;font:600 15px/1.3 'Plus Jakarta Sans',sans-serif}
 body.zn.zn-pn .zn-ptx span{font-size:12px;opacity:.8}
-body.zn.zn-pn .zn-prow.open .zn-ptx b{font-weight:500;opacity:.7}
+body.zn.zn-pn .zn-p3row.open .zn-ptx b{font-weight:500;opacity:.7}
 body.zn.zn-pn .zn-ppick{margin-top:12px}
 body.zn.zn-pn .zn-prail{display:flex;gap:10px;align-items:stretch;overflow-x:auto;scrollbar-width:none;margin:0 -18px;padding:0 18px 2px;scroll-snap-type:x proximity}
 body.zn.zn-pn .zn-prail::-webkit-scrollbar{display:none}
@@ -2729,7 +2729,7 @@ body.zn.zn-pn .zn-psb b{font:600 22px/1 Fraunces,Georgia,serif;text-align:right}
 body.zn.zn-pn .zn-psb .dim{opacity:.8} body.zn.zn-pn .zn-psb b.hid{opacity:.45}
 body.zn.zn-pn .zn-pgs{margin:10px 0 0;font-size:12.5px;opacity:.8}
 body.zn.zn-pn .zn-plist{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;row-gap:10px;font-size:13.5px}
-body.zn.zn-pn .zn-pk + .zn-plist{margin-top:10px}
+body.zn.zn-pn .zn-p3k + .zn-plist{margin-top:10px}
 body.zn.zn-pn .zn-plist span:nth-child(odd){min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 body.zn.zn-pn .zn-plist span:nth-child(even){text-align:right;white-space:nowrap;opacity:.72}
 body.zn.zn-pn .zn-plist .zn-pnx{opacity:.72}
@@ -4128,7 +4128,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   const znHM=m=>{ m=Math.max(0,Math.round(m)); return m<60?`${m}m`:`${Math.floor(m/60)}h${m%60?` ${m%60}m`:""}`; };
   const znHShort=h=>hToLabel(h).replace(/(am|pm)$/,"");
   const znBareEv=t=>String(t||"").replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,"").trim();
-  const znTopic=t=>{ const p=znBareEv(t).split(/\s+·\s+/); let x=p.length>1?p.slice(1).join(" · "):p[0]; return x.length>40?x.slice(0,38).trim()+"…":x; }; /* "PS Revamp · EMEA Seller Training" reads as its topic */
+  const znTopic=t=>{ const p=znBareEv(t).split(/\s+[·\-–|:]\s+/); let x=p.length>1&&p[0].length<=14?p.slice(1).join(" · "):p.join(" · "); return x.length>34?x.slice(0,32).trim()+"…":x; }; /* "PS Revamp · EMEA Seller Training" reads as its topic */
   function znPStrip(card,tone,left,right){ card.classList.add("zn-pc","zn-pc-"+tone); const h=el("div","zn-phd"); h.append(el("span","zn-phk",left)); const r=el("span","zn-phr"); if(right!=null&&right!=="") r.append(typeof right==="string"?document.createTextNode(right):right); h.append(r); card.prepend(h); return h; }
   // tomorrow's meetings: wall-clock time (an overlap is not counted twice); a work block of four hours or more is a backdrop, named but never counted
   function znTomStats(tom){ const meets=tom.filter(x=>x.k==="work").sort((a,b)=>a.s-b.s); const backs=meets.filter(znIsBack), real=meets.filter(m=>!znIsBack(m)); let end=-1, busyH=0; real.forEach(m=>{ busyH+=Math.max(0,m.e-Math.max(m.s,end)); if(m.e>end) end=m.e; });
@@ -4186,7 +4186,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       { let cur=H0; const gaps=[]; items.forEach(x=>{ if(x.s-cur>=0.5-1e-6) gaps.push([cur,x.s]); cur=Math.max(cur,x.e); }); if(H1-cur>=0.5-1e-6) gaps.push([cur,H1]);
         gaps.forEach(([a,z])=>{ const m=Math.round((z-a)*60); const g=el("button","zn-pgap",`${znHM(m)} open${m>=60?" · place one":""}`); g.type="button"; g.style.top=(y(a)+1)+"px"; g.style.height=Math.max(20,y(z)-y(a)-3)+"px"; g.setAttribute("aria-label",`${znHM(m)} open from ${hToLabel(a)}. Place a task here.`); g.disabled=!calOK()||!LIVE; g.addEventListener("click",()=>znPlaceOn(T1,a,z,g)); lane.append(g); }); }
       c.append(tl);
-      clashes.forEach(({p,m})=>{ const ln=el("div","zn-pclashln"); ln.append(el("span",null,`${p.name} runs into ${shortName(m.name)}`));
+      clashes.forEach(({p,m})=>{ const ln=el("div","zn-pclashln"); ln.append(el("span",null,`${p.name} runs into ${znTopic(m.name)}`));
         if(p.ref&&calOK()&&LIVE){ const dur=p.e-p.s, wd=d1.getUTCDay(), wk=wd===0||wd===6, D0=wk?9:8, D9=wk?20.5:21; let cur=D0, at=null; for(const o of items){ if(o.s-cur>=dur-1e-6){ at=cur; break; } cur=Math.max(cur,o.e); } if(at==null&&D9-cur>=dur-1e-6) at=cur; /* the first open stretch on the day long enough for it (the stretches as drawn, so never its own slot) */
           if(at!=null){ const w=p.name.trim().split(/\s+/); const bt=el("button","zn-pill zn-psm",`Move ${w.length<=3?w[w.length-1].toLowerCase():"it"} to ${hToLabel(at)}`); bt.type="button"; bt.setAttribute("aria-label",`Move ${p.name} to ${hToLabel(at)} on ${DAY}`);
             bt.addEventListener("click",async()=>{ bt.disabled=true; try{ await znEvMove({ev:{id:p.ref.id,cal:p.ref.cal,from:p.from},est:Math.round(dur*60),name:p.name},T1,at); }catch(e){} bt.disabled=false; }); ln.append(bt); } }
@@ -4195,15 +4195,15 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     // tomorrow's Top 3
     const top=clean(ROW.Tomorrow).split(/\n+/).map(l=>l.replace(/^\s*(\d+[.)]|[-•*])\s*/,"").trim()).filter(l=>l&&!/^none$/i.test(l)).slice(0,3);
     const slotOf=it=>{ try{ if(it&&it.sched&&it.status!=="Done"&&String(it.sched).slice(0,10)===T1){ const hh=String(it.sched).slice(11,16).split(":").map(Number); if(!isNaN(hh[0])) return hToLabel(hh[0]+(hh[1]||0)/60); } }catch(e){} return ""; };
-    const row=(n,name,sub,right,go,open)=>{ const r=el("div","zn-prow"+(open?" open":"")); const tx=el(go?"button":"span","zn-ptx"); if(go){ tx.type="button"; tx.addEventListener("click",()=>go(tx)); } tx.append(el("b",null,name)); if(sub) tx.append(el("span",null,sub)); r.append(el("span","zn-pnum"+(open?" open":""),String(n)),tx); if(right) r.append(right); c.append(r); return r; };
-    c.append(el("p","zn-pk",`Top 3 for ${DAY}${top.length?"":" · not picked yet"}`)); const shown=[];
+    const row=(n,name,sub,right,go,open)=>{ const r=el("div","zn-p3row"+(open?" open":"")); const tx=el(go?"button":"span","zn-ptx"); if(go){ tx.type="button"; tx.addEventListener("click",()=>go(tx)); } tx.append(el("b",null,name)); if(sub) tx.append(el("span",null,sub)); r.append(el("span","zn-p3n"+(open?" open":""),String(n)),tx); if(right) r.append(right); c.append(r); return r; };
+    c.append(el("p","zn-p3k",`Top 3 for ${DAY}${top.length?"":" · not picked yet"}`)); const shown=[];
     if(top.length) top.forEach((x,i)=>{ let it=null; try{ it=znPickTask(x,T1); }catch(e){} if(it) shown.push(it); const sl=slotOf(it); row(i+1,znPickName(x,T1),[it&&it.due===T1?"due":"",sl?`placed ${sl}`:""].filter(Boolean).join(" · "),null,tx=>znOpenPick(x,tx,T1)); });
     else { let sug=[]; try{ sug=unfinishedTasks().slice(0,3); }catch(e){}
       sug.forEach((t,i)=>{ let it=null; try{ it=znPickTask(t)||twinOf(t); }catch(e){} if(it) shown.push(it); const sl=slotOf(it); let pb=null; if(it&&!sl){ pb=el("button","zn-pill zn-psm","Place it"); pb.type="button"; pb.disabled=!calOK()||!LIVE; pb.addEventListener("click",()=>openScheduleSheet(it,pb)); }
         row(i+1,it&&it.name?it.name:bareTitle(t),`From today · ${sl?`placed ${sl}`:"not placed"}`,pb,it?tx=>openListItem(it,tx):null); });
       if(sug.length<3){ const ch=el("button","zn-pill zn-psm","Choose"); ch.type="button"; ch.disabled=!mcp||!LIVE; ch.addEventListener("click",()=>znPlanTomorrow(ch)); row(sug.length+1,"Open slot","",ch,null,true); } }
     const due=LIST.filter(it=>it.status!=="Done"&&forClaire(it)&&isTask(it)&&(it.due===T1||it.focus===T1)); const rest=due.filter(it=>!shown.some(p=>p===it||(p.id&&p.id===it.id))&&!top.some(x=>bareTitle(x).toLowerCase()===String(it.name||"").toLowerCase()));
-    if(rest.length){ c.append(el("p","zn-pk","Due tomorrow")); rest.slice(0,5).forEach(it=>{ const sl=slotOf(it); row("·",it.name,[it.area||"",sl?`placed ${sl}`:"",it.star?"★":""].filter(Boolean).join(" · "),null,tx=>openListItem(it,tx),true); }); }
+    if(rest.length){ c.append(el("p","zn-p3k","Due tomorrow")); rest.slice(0,5).forEach(it=>{ const sl=slotOf(it); row("·",it.name,[it.area||"",sl?`placed ${sl}`:"",it.star?"★":""].filter(Boolean).join(" · "),null,tx=>openListItem(it,tx),true); }); }
     const pk=el("button","zn-pill zn-dark zn-ppick",top.length?"Change the Top 3":`Pick ${DAY}’s 3`); pk.type="button"; pk.disabled=!mcp||!LIVE; pk.addEventListener("click",()=>znPlanTomorrow(pk)); c.append(pk);
     return c; }
   // The game card as a scoreboard: one row per team, the score in the serif, one status line. Never the big score sentence.
@@ -4218,7 +4218,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
       const lead=p&&!hidden?Math.sign(Number(p[0])-Number(p[1])):0; tr(t1,c1,p?p[0]:"–",lead<0); tr(t2,c2,p?p[1]:"–",lead>0); c.append(sb);
       const status=started?(hidden?"Watching later":[g.state==="post"?"Final":(g.detail||"Live"),!p&&g.score?g.score:"",g.state==="in"?asOf:"",g.tv].filter(Boolean).join(" · ")):[g.up?(g.when||"upcoming"):znMins(g.s),g.tv,g.lg].filter(Boolean).join(" · ");
       if(status) c.append(el("p","zn-pgs",status));
-      if(others.length){ c.append(el("p","zn-pk","Also tonight"),list(others)); } }
+      if(others.length){ c.append(el("p","zn-p3k","Also tonight"),list(others)); } }
     else { znPStrip(c,"amber","On tonight in your leagues",asOf&&others.some(x=>x.state==="in")?asOf:""); let nx=null; try{ nx=znNextGames()[0]||null; }catch(e){} c.append(list(others,nx?[["Next for your teams",[nx.name,nx.when].filter(Boolean).join(" · ")]]:[])); } }
   function znBeforeBed(open,tom,wk){ const T=TODAY(); const c=znCard("zn-glass zn-wind","","Before bed");
     const g=num(ROW.Water)||0, tg=Number(prGet("target","water"))||8, bs=Math.max(1,Number(prGet("bottle","water"))||4);
@@ -4733,7 +4733,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     return {kind:"clear",frac:1,big:znClock(n),small:"all clear",k:"All clear",title:"Nothing else on the clock today",sub:loose?`Still picked: ${loose.title}`:"",chip:"",acts:loose&&twin(loose.title)?[{t:"Open",fn:b=>openListItem(twin(loose.title),b)}]:[]}; }
   function znNightTimerState(tom,n){ const set=SUN.set??19.2, endH=znWindH(); const fmt=m=>{ m=Math.max(0,Math.round(m)); return m>=60?`${Math.floor(m/60)}:${String(m%60).padStart(2,"0")}`:String(m); }; const late=n>=endH||n<12; const left=late?0:(endH-n)*60; const frac=late?0:Math.max(0,Math.min(1,(endH-n)/Math.max(.5,endH-Math.min(set,endH-.5))));
     const first=tom[0]; const fm=tom.find(x=>x.k==="work"&&x.e-x.s<4); const d1=new Date(addDays(TODAY(),1)+"T12:00:00Z");
-    if(znPN()){ const S=znTomStats(tom), f1=tom.find(x=>!znIsBack(x)), bk=S.backs[0], DAY=DAYS_LONG[d1.getUTCDay()]; const bn=bk?znBareEv(String(bk.name).replace(/^💼\s*/,"")):""; const bkT=bk?`${bn.length>24?"a work block":bn} ${znHShort(bk.s)}–${znHShort(bk.e)}`:""; /* Nov 18 (night hybrid): tomorrow's first timed thing, then the meetings in wall-clock time with any backdrop block named, never counted */
+    if(znPN()){ const S=znTomStats(tom), f1=tom.find(x=>!znIsBack(x)), bk=S.backs[0], DAY=DAYS_LONG[d1.getUTCDay()]; const bn=bk?znBareEv(String(bk.name).replace(/^💼\s*/,"")):""; const bkT=bk?`${bn.length>32?"a work block":bn} ${znHShort(bk.s)}–${znHShort(bk.e)}`:""; /* Nov 18 (night hybrid): tomorrow's first timed thing, then the meetings in wall-clock time with any backdrop block named, never counted */
       return {kind:"night",frac,big:late?"✦":fmt(left),small:late?"day’s done":(left>=60?"to wind-down":"min to wind-down"),k:`Tomorrow · ${DAY}`,title:f1?`Starts ${hToLabel(f1.s)} with ${znTopic(String(f1.name).replace(/^💼\s*/,""))}`:`Nothing on ${DAY}’s clock yet`,sub:S.n?`${S.head}${bkT?` · ${bkT} behind them`:""}`:(bkT?`No meetings · ${bkT}`:(f1?"No meetings":"")),chip:"",acts:[]}; }
     return {kind:"night",frac,big:late?"✦":fmt(left),small:late?"day’s done":(left>=60?"to wind-down":"min to wind-down"),k:"Tonight",title:first?`${DAYS_LONG[d1.getUTCDay()]} starts with ${shortName(String(first.name).replace(/^💼\s*/,""))} at ${hToLabel(first.s)}`:`Nothing on ${DAYS_LONG[d1.getUTCDay()]}’s clock yet`,sub:fm&&fm!==first?`First meeting at ${hToLabel(fm.s)}`:"",chip:"",acts:[]}; } /* Nov 18: the ring says what it counts (minutes to the wind-down hour); the meeting count lives on the Tomorrow card only */
   function znTimerMount(hero,st,sheetK,sheetT){ const grid=hero.querySelector(".zn-hgrid"); if(!grid) return; const dial=grid.querySelector(".zn-dial");
