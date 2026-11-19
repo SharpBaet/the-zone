@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Zone</title>
-<meta name="zone-build" content="2026-11-18.2"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
+<meta name="zone-build" content="2026-11-18.3"><script>window.ZONE_FROM_LINK=/type=(magiclink|recovery)/.test(location.hash||"");/* Nov 12: focus outlines are for the keyboard. A focus the app sets itself (closing a sheet hands focus back to the button that opened it) only shows its outline after Tab or an arrow key. */(function(){ var h=document.documentElement; window.addEventListener("keydown",function(e){ if(e.key==="Tab"||/^Arrow/.test(e.key)) h.classList.add("kbd"); },true); window.addEventListener("pointerdown",function(){ h.classList.remove("kbd"); },true); })();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&display=swap" rel="stylesheet">
@@ -2632,6 +2632,119 @@ body.zn-land .toast{bottom:calc(12px + env(safe-area-inset-bottom,0px))}
 #znLand.zl-night .zl-placed button{background:rgba(31,35,64,.12);color:#1F2340}
 #znLand.zl-night .zl-today{background:rgba(255,255,255,.10)}
 #znLand.zl-night .zl-hold .zl-st.over{color:#A63A20;background:rgba(255,142,112,.30)} #znLand.zl-night .zl-hold .zl-st.slip{color:#5B4BB8;background:rgba(108,91,201,.18)} /* the lime holding card keeps day ink at night */
+/* Nov 18: night hybrid, phone (layout A, hybrid colour; Claire's pick). body.zn-pn = night and not the desktop board.
+   Cards: a solid header strip in the band's order down the page over a soft wash of the same hue. No pastel cards at night. */
+body.zn.zn-pn #znToday > .zn-mast{display:none !important}
+body.zn.zn-night.zn-pn #znToday .zn-card.zn-hero.zn-hero-night{background:linear-gradient(150deg,rgba(34,214,255,.55),rgba(110,96,255,.58)),#0A0A1C !important;border:1px solid rgba(255,255,255,.18) !important;border-radius:22px !important;color:#F7F3FF !important;box-shadow:none !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important}
+body.zn.zn-pn .zn-hero-night .zn-hrow{align-items:center}
+body.zn.zn-pn .zn-hero-night .zn-date{font:500 26px/1.1 Fraunces,Georgia,serif;color:#F7F3FF}
+body.zn.zn-pn .zn-hero-night .zn-hrow .zn-pill{min-height:30px;background:rgba(255,255,255,.16) !important;color:#F7F3FF !important;font:600 12px 'Plus Jakarta Sans',sans-serif}
+body.zn.zn-pn .zn-tk-night{--ring:linear-gradient(#7FE6FF,#7FE6FF);--c0:#7FE6FF}
+body.zn.zn-pn .zn-tk-night .zn-tarc{filter:none}
+body.zn.zn-pn .zn-tk-night .zn-ttrack{background:transparent;box-shadow:inset 0 0 0 11px rgba(255,255,255,.18)}
+body.zn.zn-pn .zn-tk-night .zn-tknob{width:20px;height:20px;margin:-10px;background:#FFF6CF;box-shadow:none;overflow:hidden;transform:rotate(var(--deg)) translateY(-62.5px) rotate(calc(-1 * var(--deg)))}
+body.zn.zn-pn .zn-tk-night .zn-tknob::after{content:"";position:absolute;left:6px;top:-2px;width:17px;height:17px;border-radius:50%;background:#2B3C8A}
+body.zn.zn-pn .zn-tk-night .zn-tc b{font:600 40px/1 Fraunces,Georgia,serif}
+body.zn.zn-pn .zn-tk-night .zn-tc small{font:600 11px/1.25 'Plus Jakarta Sans',sans-serif;opacity:.85;max-width:74px;margin:3px auto 0}
+body.zn.zn-pn .zn-hero-night .zn-ttext .zn-tk{font:700 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:.1em;opacity:1;color:rgba(247,243,255,.82)}
+body.zn.zn-pn .zn-hero-night .zn-ttext .zn-tt{font:500 21px/1.22 Fraunces,Georgia,serif;margin:0 0 6px}
+body.zn.zn-pn .zn-hero-night .zn-ttext .zn-ts{font-size:13px;line-height:1.4;opacity:.85}
+body.zn.zn-pn .zn-pchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.18)}
+body.zn.zn-pn .zn-pck{width:100%;font-size:12px;opacity:.8;margin-bottom:2px}
+body.zn.zn-pn .zn-pchip{display:inline-flex;align-items:center;min-height:36px;max-width:100%;box-sizing:border-box;padding:0 12px;border-radius:999px;border:0;background:rgba(255,255,255,.16);color:#F7F3FF !important;font:600 12px 'Plus Jakarta Sans',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+body.zn.zn-pn .zn-pchip.zn-pstatic{cursor:default;min-height:28px;align-self:center}
+body.zn.zn-pn .zn-pchip.on{background:rgba(214,236,99,.24);color:#E4F59A !important}
+body.zn.zn-pn .zn-pchip:disabled{opacity:.6;cursor:default}
+body.zn.zn-pn .zn-hero-night .zn-co{margin-top:12px}
+body.zn.zn-night.zn-pn #znToday .zn-card.zn-pc.zn-pc{border-radius:22px !important;padding:18px !important;color:#F7F3FF !important;box-shadow:none !important;overflow:hidden;-webkit-backdrop-filter:none !important;backdrop-filter:none !important}
+body.zn.zn-night.zn-pn #znToday .zn-card.zn-pc.zn-pc.zn-pc-violet{background:linear-gradient(170deg,rgba(120,106,255,.26),rgba(120,106,255,.08)),#0A0A1C !important;border:1px solid rgba(120,106,255,.4) !important}
+body.zn.zn-night.zn-pn #znToday .zn-card.zn-pc.zn-pc.zn-pc-magenta{background:linear-gradient(170deg,rgba(214,74,255,.28),rgba(214,74,255,.09)),#0A0A1C !important;border:1px solid rgba(214,74,255,.42) !important}
+body.zn.zn-night.zn-pn #znToday .zn-card.zn-pc.zn-pc.zn-pc-pink{background:linear-gradient(170deg,rgba(255,84,150,.24),rgba(255,84,150,.08)),#0A0A1C !important;border:1px solid rgba(255,84,150,.4) !important}
+body.zn.zn-night.zn-pn #znToday .zn-card.zn-pc.zn-pc.zn-pc-amber{background:linear-gradient(170deg,rgba(255,176,66,.26),rgba(255,176,66,.08)),#0A0A1C !important;border:1px solid rgba(255,176,66,.42) !important}
+body.zn.zn-pn .zn-pc > .zn-phd{margin:-18px -18px 14px;padding:11px 18px;min-height:20px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+body.zn.zn-pn .zn-pc .zn-phk{font:700 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:.14em;text-transform:uppercase}
+body.zn.zn-pn .zn-pc .zn-phr{font:600 12.5px/1.2 'Plus Jakarta Sans',sans-serif;text-align:right}
+body.zn.zn-pn .zn-pc-violet > .zn-phd{background:#A99BFF} body.zn.zn-pn .zn-pc-violet > .zn-phd, body.zn.zn-pn .zn-pc-violet > .zn-phd *{color:#1D1650 !important}
+body.zn.zn-pn .zn-pc-magenta > .zn-phd{background:#E59BFF} body.zn.zn-pn .zn-pc-magenta > .zn-phd, body.zn.zn-pn .zn-pc-magenta > .zn-phd *{color:#3A0F4A !important}
+body.zn.zn-pn .zn-pc-pink > .zn-phd{background:#FF9FC6} body.zn.zn-pn .zn-pc-pink > .zn-phd, body.zn.zn-pn .zn-pc-pink > .zn-phd *{color:#4A0F28 !important}
+body.zn.zn-pn .zn-pc-amber > .zn-phd{background:#FFC27A} body.zn.zn-pn .zn-pc-amber > .zn-phd, body.zn.zn-pn .zn-pc-amber > .zn-phd *{color:#3D2304 !important}
+body.zn.zn-night.zn-pn #znToday .zn-pc.zn-pc .zn-pill{min-height:40px;padding:0 16px;background:rgba(255,255,255,.16) !important;color:#F7F3FF !important;font:600 14px 'Plus Jakarta Sans',sans-serif}
+body.zn.zn-night.zn-pn #znToday .zn-pc.zn-pc .zn-pill.zn-dark{background:#F7F3FF !important;color:#1F2340 !important}
+body.zn.zn-night.zn-pn #znToday .zn-pc.zn-pc .zn-pill.zn-psm, body.zn.zn-pn .zn-pill.zn-psm{min-height:36px;padding:0 12px;font-size:12.5px;flex:none}
+body.zn.zn-pn .zn-pc .zn-pill:disabled{opacity:.5}
+body.zn.zn-pn .zn-wind3.zn-pc .zn-n3t{font:500 22px/1.2 Fraunces,Georgia,serif;margin:0 0 4px}
+body.zn.zn-pn .zn-wind3.zn-pc .zn-n3s{font-size:13.5px;opacity:.85}
+body.zn.zn-pn .zn-wind3.zn-pc .zn-n3acts{margin-top:14px}
+body.zn.zn-pn .zn-wind3.zn-pc .zn-n3steps{gap:6px;margin-top:14px}
+body.zn.zn-pn .zn-wind3.zn-pc .zn-n3steps i{background:rgba(247,243,255,.3)}
+body.zn.zn-pn .zn-wind3.zn-pc .zn-n3steps i.on, body.zn.zn-pn .zn-wind3.zn-pc .zn-n3steps i.cur{background:#F7F3FF}
+body.zn.zn-pn .zn-ptom .zn-pback{margin:0 6px 12px 0;white-space:normal;overflow:visible;padding:6px 12px;line-height:1.3;border-radius:14px}
+body.zn.zn-pn .zn-ptl{position:relative;margin:8px 0 6px}
+body.zn.zn-pn .zn-ptlh{position:absolute;left:0;width:46px;font:600 11px/1 'Plus Jakarta Sans',sans-serif;opacity:.7;white-space:nowrap}
+body.zn.zn-pn .zn-ptll{position:absolute;left:56px;right:0;top:0;bottom:0}
+body.zn.zn-pn .zn-ptll::before{content:"";position:absolute;left:-6px;top:0;bottom:8px;border-left:1px solid rgba(255,255,255,.18)}
+body.zn.zn-pn .zn-pev{position:absolute;box-sizing:border-box;margin:0;border:0;border-radius:9px;padding:0 9px;display:flex;flex-direction:column;justify-content:center;min-width:0;overflow:hidden;text-align:left;font:600 11.5px/1.25 'Plus Jakarta Sans',sans-serif;color:#F7F3FF}
+body.zn.zn-pn button.zn-pev{cursor:pointer}
+body.zn.zn-pn .zn-pev b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.zn.zn-pn .zn-pev.two b{font-size:12.5px}
+body.zn.zn-pn .zn-pev span{font-weight:500;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.9}
+body.zn.zn-pn .zn-pev-work{background:rgba(175,214,242,.28)}
+body.zn.zn-pn .zn-pev-birdie{background:rgba(140,230,190,.36)}
+body.zn.zn-pn .zn-pev-us{background:rgba(255,163,203,.32)}
+body.zn.zn-pn .zn-pev-you{background:rgba(185,166,245,.34)}
+body.zn.zn-pn .zn-pev-task{background:#D6EC63} body.zn.zn-pn .zn-pev-task, body.zn.zn-pn .zn-pev-task *{color:#2B3307 !important}
+body.zn.zn-pn .zn-pev.zn-pclash{border:1.5px solid #FFB09E}
+body.zn.zn-pn .zn-pgap{position:absolute;left:0;right:0;box-sizing:border-box;margin:0;border-radius:9px;border:1px dashed rgba(228,245,154,.6);background:transparent;color:rgba(247,243,255,.85) !important;font:600 11.5px 'Plus Jakarta Sans',sans-serif;text-align:left;padding:0 10px;cursor:pointer}
+body.zn.zn-pn .zn-pgap:disabled{cursor:default}
+body.zn.zn-pn .zn-pclashln{display:flex;align-items:center;gap:10px;margin-top:8px;font:600 12.5px/1.3 'Plus Jakarta Sans',sans-serif}
+body.zn.zn-pn .zn-pclashln > span{flex:1;min-width:0;color:#FFC4B8 !important}
+body.zn.zn-pn .zn-pempty{margin:0 0 4px;font-size:13.5px;opacity:.85}
+body.zn.zn-pn .zn-p3k{margin:16px 0 0;font:700 11px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(247,243,255,.82) !important}
+body.zn.zn-pn .zn-p3k + .zn-p3row{margin-top:8px}
+body.zn.zn-pn .zn-p3row{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid rgba(255,255,255,.14)}
+body.zn.zn-pn .zn-p3n{width:28px;height:28px;flex:none;border-radius:50%;background:#D6EC63;color:#2B3307 !important;display:flex;align-items:center;justify-content:center;font:700 13px 'Plus Jakarta Sans',sans-serif}
+body.zn.zn-pn .zn-p3n.open{background:transparent;border:1px dashed rgba(255,255,255,.5);color:#F7F3FF !important;opacity:.7;box-sizing:border-box}
+body.zn.zn-pn .zn-ptx{flex:1;min-width:0;min-height:36px;display:flex;flex-direction:column;justify-content:center;background:none;border:0;padding:0;margin:0;text-align:left;color:inherit;font:inherit}
+body.zn.zn-pn button.zn-ptx{cursor:pointer}
+body.zn.zn-pn .zn-ptx b{display:block;font:600 15px/1.3 'Plus Jakarta Sans',sans-serif}
+body.zn.zn-pn .zn-ptx span{font-size:12px;opacity:.8}
+body.zn.zn-pn .zn-p3row.open .zn-ptx b{font-weight:500;opacity:.7}
+body.zn.zn-pn .zn-ppick{margin-top:12px}
+body.zn.zn-pn .zn-prail{display:flex;gap:10px;align-items:stretch;overflow-x:auto;scrollbar-width:none;margin:0 -18px;padding:0 18px 2px;scroll-snap-type:x proximity}
+body.zn.zn-pn .zn-prail::-webkit-scrollbar{display:none}
+body.zn.zn-pn .zn-pinv{flex:none;width:150px;min-height:164px;box-sizing:border-box;border:0;border-radius:18px;padding:14px;background:rgba(255,255,255,.12);color:#F7F3FF !important;display:flex;flex-direction:column;justify-content:space-between;gap:8px;text-align:left;font:inherit;cursor:pointer;scroll-snap-align:start}
+body.zn.zn-pn .zn-pinv small{font:700 11px/1.25 'Plus Jakarta Sans',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#FFD3E6 !important}
+body.zn.zn-pn .zn-pinv b{font:500 17px/1.25 Fraunces,Georgia,serif;color:#F7F3FF !important}
+body.zn.zn-pn .zn-pinv span{font-size:12px;opacity:.85;color:#F7F3FF !important}
+body.zn.zn-pn .zn-pinv.done{opacity:.55}
+.zn-plbstory{font:italic 500 17px/1.4 Fraunces,Georgia,serif;margin:0 0 14px}
+body.zn.zn-pn .zn-phbtn{min-height:30px;padding:0 12px;border-radius:999px;border:0;background:rgba(61,35,4,.16);font:600 12.5px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+body.zn.zn-pn .zn-psb{display:grid;grid-template-columns:minmax(0,1fr) auto;row-gap:8px;align-items:center;font:600 16px 'Plus Jakarta Sans',sans-serif}
+body.zn.zn-pn .zn-psbt{display:flex;align-items:center;gap:8px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.zn.zn-pn .zn-psbt i{width:10px;height:10px;flex:none;border-radius:3px;box-shadow:0 0 0 1px rgba(255,255,255,.35)}
+body.zn.zn-pn .zn-psb b{font:600 22px/1 Fraunces,Georgia,serif;text-align:right}
+body.zn.zn-pn .zn-psb .dim{opacity:.8} body.zn.zn-pn .zn-psb b.hid{opacity:.45}
+body.zn.zn-pn .zn-pgs{margin:10px 0 0;font-size:12.5px;opacity:.8}
+body.zn.zn-pn .zn-plist{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;row-gap:10px;font-size:13.5px}
+body.zn.zn-pn .zn-p3k + .zn-plist{margin-top:10px}
+body.zn.zn-pn .zn-plist span:nth-child(odd){min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.zn.zn-pn .zn-plist span:nth-child(even){text-align:right;white-space:nowrap;opacity:.72}
+body.zn.zn-pn .zn-plist .zn-pnx{opacity:.72}
+/* Nov 18: the tab bar's selected pill and the + use the nav colours from the night mockups, in every mode, so the phone bar and the desktop nav match */
+body.zn .bottom .tab[aria-selected="true"]{background:linear-gradient(135deg,#FFE27A,#FFA3CB 45%,#B9A6F5 75%,#AFD6F2) !important;color:#1F2340 !important}
+body.zn .zn-fab, body.zn .bottom .zn-fab.zn-fab-mid{background:conic-gradient(from 200deg,#FFE27A,#FFA3CB,#B9A6F5,#AFD6F2,#A6DEC5,#FFE27A) !important;color:#1F2340 !important}
+body.zn .bottom .zn-fab.zn-fab-mid, body.zn.zn-night .bottom .zn-fab.zn-fab-mid{border-color:#1F2340 !important}
+body.zn.zn-night .bottom{background:rgba(18,16,40,.9) !important}
+/* Nov 18: Plan's day, things that share time sit side by side in one row */
+body.zn .zn-rlapb{display:flex;flex-direction:column;gap:5px;min-width:0;margin-bottom:8px}
+body.zn .zn-rcols{display:flex;gap:5px;min-width:0}
+body.zn .zn-rcols .zn-rcc{flex:1 1 0;min-width:0;margin:0;padding:8px 9px;border:0;border-radius:12px;text-align:left;font:inherit}
+body.zn .zn-rcols .zn-rcc.lap{box-shadow:inset 0 0 0 1.5px #FF9C8A}
+body.zn .zn-rcols .zn-rcc b{display:block;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.zn .zn-rcols .zn-rcc span{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.zn .zn-rcols .zn-rcc .zn-prepchip{margin-top:4px}
+body.zn .zn-rlapn{font:700 10.5px/1.2 'Plus Jakarta Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#B5452A}
+body.zn.zn-night .zn-rlapn{color:#FFB4A6 !important}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icons/icon-192.png">
@@ -3759,9 +3872,16 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const items=[...L.busy.filter(b=>!/work blocks?\b|work day/i.test(b.n||"")&&!isPlacedT(b)).map(b=>({s:b.s,e:b.e,name:b.n,k:b.work?"work":"you",cal:!!(b.work||b.ev)})),...placedT];
     items.sort((a,b)=>a.s-b.s); const wd=dd.getUTCDay(); const from=(wd===0||wd===6)?9:8, to=(wd===0||wd===6)?20.5:21; let prev=d===T?Math.max(from,n):from;
     const gapRow=(a,b)=>{ const m=Math.round((b-a)*60); if(m<45) return; const g=el("button","zn-gap",`${znDur(m)} open · place a task here`); g.type="button"; g.disabled=!calOK(); g.addEventListener("click",()=>znPlaceOn(d,a,b,g)); const rw=el("div","zn-rr zn-rgap"); rw.append(el("span","zn-rt",""),el("span","zn-rl"),g); riv.append(rw); };
-    const lapOf=x=>x.k!=="work"?null:items.find(o=>o!==x&&o.k==="work"&&o.name!==x.name&&o.e-o.s<4&&x.e-x.s<4&&o.s<x.e-0.01&&x.s<o.e-0.01)||null; /* two meetings only, never a task, a personal event or a four-hour backdrop */ /* Nov 18: double-booked rows say so */
-    items.filter(x=>d!==T||x.e>n).forEach(x=>{ if(x.s>prev) gapRow(Math.max(prev,from),x.s); const isNow=d===T&&x.s<=n&&x.e>n; const rw=el("div","zn-rr"+(isNow?" now":"")); const ln=el("span","zn-rl"); const di=el("i"); di.style.background=x.k==="task"?ZC.lim:znCol(x.k); ln.append(di);
-      const cd=el(x.it?"button":"div","zn-rc"); if(x.it){ cd.type="button"; cd.addEventListener("click",()=>openListItem(x.it,cd)); } cd.style.background=x.k==="task"?ZC.lim:znCol(x.k); cd.style.color=x.k==="task"?ZC.navy:znFg(x.k); cd.append(el("b",null,x.name)); if(x.k==="work"){ try{ const ch=znPrepChip(d,String(x.name).replace(/^💼\s*/,""),`${DAYS_LONG[dd.getUTCDay()]} ${hToLabel(x.s)}`); if(ch) cd.append(ch); }catch(e){} } if(x.e-x.s>=1.5||x.it) cd.append(el("span",null,x.it?`${x.it.est||30} min · placed`:`until ${hToLabel(x.e)}`)); { const lp=lapOf(x); if(lp){ const nm2=String(lp.name).replace(/^💼\s*/,""); cd.append(el("span",null,`overlaps ${nm2.length>30?nm2.slice(0,28).trim()+"…":nm2}`)); } } rw.append(el("span","zn-rt",isNow?"now":fmtH(x.s)),ln,cd); riv.append(rw); prev=Math.max(prev,x.e); });
+    const drawOne=x=>{ const isNow=d===T&&x.s<=n&&x.e>n; const rw=el("div","zn-rr"+(isNow?" now":"")); const ln=el("span","zn-rl"); const di=el("i"); di.style.background=x.k==="task"?ZC.lim:znCol(x.k); ln.append(di);
+      const cd=el(x.it?"button":"div","zn-rc"); if(x.it){ cd.type="button"; cd.addEventListener("click",()=>openListItem(x.it,cd)); } cd.style.background=x.k==="task"?ZC.lim:znCol(x.k); cd.style.color=x.k==="task"?ZC.navy:znFg(x.k); cd.append(el("b",null,x.name)); if(x.k==="work"){ try{ const ch=znPrepChip(d,String(x.name).replace(/^💼\s*/,""),`${DAYS_LONG[dd.getUTCDay()]} ${hToLabel(x.s)}`); if(ch) cd.append(ch); }catch(e){} } if(x.e-x.s>=1.5||x.it) cd.append(el("span",null,x.it?`${x.it.est||30} min · placed`:`until ${hToLabel(x.e)}`)); rw.append(el("span","zn-rt",isNow?"now":fmtH(x.s)),ln,cd); riv.append(rw); };
+    // Nov 18 (night hybrid): things that share time sit side by side in one row, with a small note saying how many (this replaces the "overlaps <name>" label)
+    { const vis=items.filter(x=>d!==T||x.e>n); const runs=[]; let g=null, end=-1; vis.forEach(x=>{ if(!g||x.s>=end-0.01){ g=[x]; runs.push(g); end=x.e; } else { g.push(x); end=Math.max(end,x.e); } });
+      runs.forEach(g2=>{ if(g2[0].s>prev) gapRow(Math.max(prev,from),g2[0].s); prev=Math.max(prev,...g2.map(x=>x.e)); if(g2.length===1){ drawOne(g2[0]); return; }
+        const isNow=d===T&&g2.some(x=>x.s<=n&&x.e>n); const rw=el("div","zn-rr zn-rlap"+(isNow?" now":"")); const ln=el("span","zn-rl"); const di=el("i"); di.style.background=ZC.cor; ln.append(di); const bx=el("div","zn-rlapb"), cols=el("div","zn-rcols");
+        let at=g2[0].s, mx=0; g2.forEach(x=>{ const k=g2.filter(o=>o.s<=x.s+0.01&&o.e>x.s+0.01).length; if(k>mx){ mx=k; at=x.s; } }); /* when the most things are on at once */
+        g2.forEach((x,i)=>{ const nm=String(x.name).replace(/^💼\s*/,""); const lap=g2.some((o,j)=>o!==x&&o.e>x.s+0.01&&(o.s<x.s-0.01||(Math.abs(o.s-x.s)<=0.01&&j<i))); const cd=el(x.it?"button":"div","zn-rc zn-rcc"+(lap?" lap":"")); if(x.it){ cd.type="button"; cd.addEventListener("click",()=>openListItem(x.it,cd)); } cd.style.background=x.k==="task"?ZC.lim:znCol(x.k); cd.style.color=x.k==="task"?ZC.navy:znFg(x.k); cd.title=`${nm} · ${hRange(x.s,x.e)}`; cd.append(el("b",null,nm),el("span",null,x.it?`${hRange(x.s,x.e)} · placed`:hRange(x.s,x.e)));
+          if(x.k==="work"){ try{ const ch=znPrepChip(d,nm,`${DAYS_LONG[dd.getUTCDay()]} ${hToLabel(x.s)}`); if(ch) cd.append(ch); }catch(e){} } cols.append(cd); });
+        bx.append(cols,el("span","zn-rlapn",`${g2.length} things at ${hToLabel(at)}`)); rw.append(el("span","zn-rt",isNow?"now":fmtH(g2[0].s)),ln,bx); riv.append(rw); }); }
     if(prev<to-0.75) gapRow(prev,to);
     L.due.forEach(it=>{ const rw=el("div","zn-rr"); const ln=el("span","zn-rl"); const di=el("i"); di.style.background=ZC.cor; ln.append(di); const cd=el("button","zn-rc zn-duec"); cd.type="button"; cd.style.background="rgba(255,142,112,.25)"; cd.append(el("b",null,it.name),el("span",null,`due · ${it.est||30} min · not placed`)); cd.addEventListener("click",()=>openScheduleSheet(it,cd)); rw.append(el("span","zn-rt","due"),ln,cd); riv.append(rw); });
     znSharedPlans().filter(x=>x.due===d).forEach(x=>{ const rw=el("div","zn-rr"); const ln=el("span","zn-rl"); const di=el("i"); di.style.background="#FFA3CB"; ln.append(di); const cd=el("button","zn-rc"); cd.type="button"; cd.style.background="rgba(255,163,203,.3)"; cd.append(el("b",null,x.n),el("span",null,"together · a shared plan")); cd.addEventListener("click",()=>znEditPlan(x,cd)); rw.append(el("span","zn-rt","♡"),ln,cd); riv.append(rw); });
@@ -3890,15 +4010,18 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // Nov 18: zone-us marks each game for each person (mc = Claire follows a team in it, mv = Victoria does); mine = either, the fallback.
   const znGMine=x=>{ if(!x) return false; const f=(typeof PERSON!=="undefined"&&PERSON&&PERSON.person==="victoria")?x.mv:x.mc; return typeof f==="boolean"?f:!!x.mine; };
   const znGAsOf=W=>{ try{ const at=Date.parse(W&&W.tonight_at); if(!at||Date.now()-at<=20*60000) return ""; return "as of "+new Intl.DateTimeFormat("en-US",{timeZone:TZ,hour:"numeric",minute:"2-digit"}).format(new Date(at)).replace(/\s+/g,"").toLowerCase(); }catch(e){ return ""; } }; /* scores are read every 15 minutes in the evening; say so when the read is older than 20 */
+  function znNextGames(){ // the next game of each team line in Sports
+      const sp=split(ROW.Sports); const cand=sp.rest.filter(l=>/^(🏀|🏈|⚽|⚾|🏒)/u.test(l)).map(l=>{ const parts2=l.replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,"").split(/\s+·\s+/); const name=parts2[0]||""; const nx=parts2.find(x=>/^next\b/i.test(x)); if(!nx) return null; const m=nx.replace(/^next\s*/i,"");
+        const om=m.match(/\b(at|vs\.?|v)\s+([A-Z][^,·]*)/); const opp=om?om[2].replace(/\s+(?:today|tonight|tomorrow|sun|mon|tue|wed|thu|fri|sat)\b.*$/i,"").trim():""; /* Nov 1: the opponent can follow the time */ const when=(om?m.replace(om[1]+" "+opp,""):m).replace(/\s{2,}/g," ").replace(/^[\s,]+|[\s,]+$/g,"").trim();
+        if(!opp) return null; return {name:`${name} ${om&&/^at/i.test(om[1])?"at":"vs"} ${opp}`,mine:true,state:"pre",s:-1,tv:"",when:when,lg:"",up:true}; }).filter(Boolean);
+      return cand; }
   function znGameDay(box,n){ const W=typeof usWeek==="function"?usWeek():null; const T=TODAY(); const nowMin=n*60;
     const all=((W&&W.today===T&&Array.isArray(W.tonight))?W.tonight:[]).filter(x=>x.state!=="post"||nowMin-x.s<240); // finals linger 4 hours
     let g=all.find(znGMine)||null; const asOf=znGAsOf(W);
     if(!g&&!all.length){ // nothing today in her leagues: the next game of the first team line in Sports
-      const sp=split(ROW.Sports); const cand=sp.rest.filter(l=>/^(🏀|🏈|⚽|⚾|🏒)/u.test(l)).map(l=>{ const parts2=l.replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,"").split(/\s+·\s+/); const name=parts2[0]||""; const nx=parts2.find(x=>/^next\b/i.test(x)); if(!nx) return null; const m=nx.replace(/^next\s*/i,"");
-        const om=m.match(/\b(at|vs\.?|v)\s+([A-Z][^,·]*)/); const opp=om?om[2].replace(/\s+(?:today|tonight|tomorrow|sun|mon|tue|wed|thu|fri|sat)\b.*$/i,"").trim():""; /* Nov 1: the opponent can follow the time */ const when=(om?m.replace(om[1]+" "+opp,""):m).replace(/\s{2,}/g," ").replace(/^[\s,]+|[\s,]+$/g,"").trim();
-        if(!opp) return null; return {name:`${name} ${om&&/^at/i.test(om[1])?"at":"vs"} ${opp}`,mine:true,state:"pre",s:-1,tv:"",when:when,lg:"",up:true}; }).filter(Boolean);
-      g=cand[0]; if(!g) return; }
+      g=znNextGames()[0]; if(!g) return; }
     const c=znCard("zn-game","","Game day"); const others=all.filter(x=>x!==g).slice(0,g?3:5);
+    if(znPN()){ znGamePN(c,g,others,asOf,T); box.append(c); return; } /* Nov 18 (night hybrid): the phone scoreboard */
     const row=(x,hid)=>{ const st=x.state==="in"?(hid?"live · score hidden":`live · ${x.score||""}`):x.state==="post"?(hid?"final · score hidden":`final · ${x.score||""}`):[znMins(x.s),x.tv].filter(Boolean).join(" · "); return `<div class="zn-grow zn-grow2"><span>${znEsc((x.e||"")+" "+x.name).trim()}${znGMine(x)?" ★":""}</span><span>${znEsc(st)}</span></div>`; };
     if(g){ const [a,b]=String(g.name).split(/\s+(?:at|vs\.?|v)\s+/i); const home=/\bat\b/i.test(g.name); const t1=a||g.name, t2=b||""; const c1=(znTeamCol(t1)||[ZC.navy])[0], c2=(znTeamCol(t2)||["#7A8FE0"])[0];
       const key=`${T}:${g.name}`; const hidden=znHide(key); const started=!g.up&&g.state!=="pre";
@@ -3960,7 +4083,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
 
   // Oct 25: between midnight and the 4:30am brief, the newest row is yesterday's. Show a calm placeholder with what today already holds
   // (yesterday's Week Events lines for today's date) instead of yesterday's schedule as if it were today's.
-  function znBetween(box){ box.hidden=false; box.replaceChildren(); document.body.classList.add("zn-night"); document.body.classList.remove("zn-wk");
+  function znBetween(box){ box.hidden=false; box.replaceChildren(); document.body.classList.add("zn-night"); document.body.classList.remove("zn-pn"); document.body.classList.remove("zn-wk");
     const T=TODAY(), dt=new Date(T+"T12:00:00Z"), n=nowH(), DN=DAYS_LONG[dt.getUTCDay()];
     box.append(znCard("zn-mast",`<span class="zn-mt">${n<5?"Tonight":"Today"}</span><span class="zn-md">${DN.slice(0,3)} ${dt.getUTCDate()} ${WD_MONTHS[dt.getUTCMonth()].slice(0,3)}</span>`));
     const early=n<6; const who=PERSON&&PERSON.person==="victoria"?"4:15am":"4:30am";
@@ -3993,12 +4116,113 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
         mk("↩ Back to List","Back to the List: "+t,"zn-coghost",async()=>{ await setInList("Top 3 Moved",t,true,"\n"); toast("Back on your List"); }));
       it.append(bs); box.append(it); }
     return [box,el("p","zn-cohint","Anything you leave stays on your List.")]; }
+  // Nov 18 (night hybrid, phone): layout A in hybrid colour, picked by Claire from the night view mockups. The phone Today page at
+  // night is: Tonight (the one loud card: ring with a moon, tomorrow's first thing, today's chips), Tomorrow (a proportional timeline
+  // with overlaps side by side, the clash line, the Top 3), Wind down, For tonight, the game scoreboard. Cards carry solid header
+  // strips in the band's order (violet, magenta, pink, amber) over a soft wash of the same hue. Phone only: the desktop night board
+  // keeps its own cards until its build, so everything here sits behind znPN(). Both Zones; weekend night is the same path.
+  const znPN=()=>!ZN_DESK()&&document.body.classList.contains("zn-night");
+  const znHM=m=>{ m=Math.max(0,Math.round(m)); return m<60?`${m}m`:`${Math.floor(m/60)}h${m%60?` ${m%60}m`:""}`; };
+  const znHShort=h=>hToLabel(h).replace(/(am|pm)$/,"");
+  const znBareEv=t=>String(t||"").replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u,"").trim();
+  const znTopic=t=>{ const p=znBareEv(t).split(/\s+[·\-–|:]\s+/); let x=p.length>1&&p[0].length<=14?p.slice(1).join(" · "):p.join(" · "); return x.length>34?x.slice(0,32).trim()+"…":x; }; /* "PS Revamp · EMEA Seller Training" reads as its topic */
+  function znPStrip(card,tone,left,right){ card.classList.add("zn-pc","zn-pc-"+tone); const h=el("div","zn-phd"); h.append(el("span","zn-phk",left)); const r=el("span","zn-phr"); if(right!=null&&right!=="") r.append(typeof right==="string"?document.createTextNode(right):right); h.append(r); card.prepend(h); return h; }
+  // tomorrow's meetings: wall-clock time (an overlap is not counted twice); a work block of four hours or more is a backdrop, named but never counted
+  function znTomStats(tom){ const meets=tom.filter(x=>x.k==="work").sort((a,b)=>a.s-b.s); const backs=meets.filter(znIsBack), real=meets.filter(m=>!znIsBack(m)); let end=-1, busyH=0; real.forEach(m=>{ busyH+=Math.max(0,m.e-Math.max(m.s,end)); if(m.e>end) end=m.e; });
+    return {real,backs,n:real.length,head:real.length?`${real.length} meeting${real.length===1?"":"s"} · ${znHM(busyH*60)}`:"no meetings"}; }
+  function znCarrySub(){ let k=0; try{ k=unfinishedTasks().length; }catch(e){} const w=["","one","two","three","four","five"][k]||String(k); return k?`Two minutes. Today’s ${w} pick${k===1?" is":"s are"} carried over for you to keep or swap.`:"Two minutes. Three are lined up for you to accept or swap."; }
+  // Today's chips on the Tonight card: the picks count, the walks, then the loose ends as chips that do what the Loose ends card did
+  function znPNChips(open,ends){ const box=el("div","zn-pchips"); box.append(el("span","zn-pck","Today"));
+    try{ const D3=parseDay(); const picks=[...D3.tasks.map(t=>t.title),...D3.untimed.map(u=>u.title),...(typeof extraPicks==="function"?extraPicks(D3):[])]; const done3=znDone3(true); const all3=new Set([...picks.map(x=>String(x).toLowerCase()),...done3]); if(all3.size) box.append(el("span","zn-pchip zn-pstatic"+(done3.size>=all3.size?" on":""),`${done3.size} of ${all3.size} pick${all3.size===1?"":"s"} done`)); }catch(e){}
+    try{ const w=walksOf(ROW).length; if(w) box.append(el("span","zn-pchip zn-pstatic on",`✓ Birdie walked${w>1?" ×"+w:""}`)); }catch(e){}
+    ends.forEach(r=>{ const parts=String(r.tx).split(" · "); let label=parts[0], small=parts.slice(1).join(" · "); if(r.co){ label=open?`${open} open`:"All landed"; small=open?(ZN_CO_OPEN?"hide":"close out"):""; } else if(/dinner/i.test(label)){ small=r.done?"":"log it"; } else { small=small.replace(/\s*glasses$/,"").replace(/\s*left:.*$/," left").replace(/^all done$/,""); }
+      const bt=el("button","zn-pchip"+(r.done?" on":""),r.done?`✓ ${label}`:`${label}${small?" · "+small:""}`); bt.type="button"; bt.setAttribute("aria-label",`${label}${r.done?": done":small?": "+small:""}`); if(!mcp||!LIVE) bt.disabled=true;
+      if(r.co){ bt.setAttribute("aria-expanded",String(ZN_CO_OPEN)); bt.setAttribute("aria-controls","znCloseOut"); }
+      let busy=false; bt.addEventListener("click",async()=>{ if((r.done&&!r.co)||busy) return; busy=true; try{ await r.go(bt); }catch(e){} busy=false; }); box.append(bt); });
+    return box; }
+  // For tonight: the same invitations as cards on the pink wash; the look-back (and the day's line, which no longer sits on Today) is the last card
+  function znPNTonight(invs,windCur,story){ const cards=[]; const cap=s=>String(s||"").replace(/^./,ch=>ch.toUpperCase());
+    try{ const ep=(typeof US_POD!=="undefined"&&US_POD&&US_POD.data&&US_POD.data.episodes&&US_POD.data.episodes[0])||null; if(ep&&ep.date===TODAY()) cards.push({k:"Zone Radio",t:"Tonight’s episode",s:`${Math.max(1,Math.round((ep.seconds||0)/60))} min`,go:()=>show("us")}); }catch(e){}
+    try{ const pr=znReadingsList({prophet:true}).find(x=>x.k==="prophet"); if(pr&&windCur!=="read") cards.push({k:`Bedtime · night ${pr.day}`,t:pr.title||pr.book||"Tonight’s reading",s:pr.min?`${pr.min} min`:"Read",go:()=>{ try{ znReadingRow(pr).click(); }catch(e){} }}); }catch(e){}
+    invs.forEach(r=>{ const rd=r.ic==="🪷"||r.ic==="📘"; if(rd&&r.st==="✓"&&!/review/.test(String(r.tx))) return; const parts=String(r.tx).split(" · "); const st=r.done?"Done":r.st==="look back"?"Look back":"";
+      if(r.ic==="🪷"){ let g=null; try{ g=gita(); }catch(e){} cards.push({k:g&&g.review?"Gita · the week":`Gita · day ${g&&g.n?g.n:""}`.trim(),t:g?(g.review?"The week in the Gita":cap(g.title||g.ref||"Today’s reading")):"Today’s reading",s:st||(g&&g.review?"4 min":"6 min"),done:r.done,go:b=>r.go(b)}); return; }
+      if(r.ic==="📘"){ let R=null; try{ R=znRecovNow(); }catch(e){} cards.push({k:`${(R&&R.book_title)||"Reading"} · day ${R&&R.n?R.n:""}`.trim(),t:cap((R&&R.title)||"Today’s reading"),s:st||"5 min",done:r.done,go:b=>r.go(b)}); return; }
+      const isBook=r.ic==="📖", isJ=r.ic==="📓"; cards.push({k:isBook?"Reading now":isJ?"Journal":parts[0],t:isBook?(parts.slice(1).join(" · ")||"Your book"):isJ?(parts[1]?cap(parts[1]):"A few lines"):(parts.slice(1).join(" · ")||parts[0]),s:r.done?"Done":isBook?"Log pages":isJ?"Free write":cap(r.st),done:r.done,go:b=>r.go(b)}); });
+    { let lb=null; try{ lb=znLookBack(); }catch(e){ console.error("look back",e); } if(lb||story) cards.push({k:"Look back",t:story?"Today, in short":"How today landed",s:lb?"Write a line":"Read",go:b=>{ const body=[]; if(story) body.push(el("p","zn-plbstory",story)); let n=null; try{ n=znLookBack(); }catch(e){} if(n) body.push(n); openSheet({kicker:"Look back",title:`${DAYS_LONG[new Date(TODAY()+"T12:00:00Z").getUTCDay()]}, in short`,body,from:b}); }}); }
+    if(!cards.length) return null; const fc=znCard("zn-fortonight","","For tonight, if you like"); znPStrip(fc,"pink","For tonight, if you like"); const rail=el("div","zn-prail");
+    cards.forEach(cd=>{ const bt=el("button","zn-pinv"+(cd.done?" done":"")); bt.type="button"; bt.append(el("small",null,cd.k),el("b",null,cd.t),el("span",null,cd.s||"")); if(!LIVE) bt.disabled=true; bt.addEventListener("click",()=>{ try{ cd.go(bt); }catch(e){} }); rail.append(bt); }); fc.append(rail); return fc; }
+  // Tomorrow: a proportional timeline (48px an hour), things that share time side by side, open time as dashed buttons into the
+  // place-a-task flow, a clash line with one button that moves the personal block (zone-calmove event_move; personal and Fam
+  // calendars only, the work calendar is never written to), then tomorrow's Top 3 (today's unfinished picks suggested when none are picked).
+  function znTomorrowPN(tom,T1){ const d1=new Date(T1+"T12:00:00Z"), DAY=DAYS_LONG[d1.getUTCDay()]; const c=znCard("zn-ptom","",`${DAY}`); const S=znTomStats(tom);
+    znPStrip(c,"violet",DAY,S.head);
+    S.backs.forEach(b=>c.append(el("span","zn-pchip zn-pstatic zn-pback",`${znBareEv(String(b.name).replace(/^💼\s*/,""))} ${hRange(b.s,b.e)} · planned around`)));
+    // ids of personal and Fam events (Week Events lines end cal|id), and moves made on this device that Week Events hasn't caught up with
+    const ids={}; clean(ROW["Week Events"]).split(/\n+/).forEach(l=>{ const f=l.trim().split("|"); if(f.length>=6&&f[0]===T1&&f[5]&&(f[4]==="me"||f[4]==="fam")){ const r=parseRange(f[1]); if(r) ids[znBareEv(f[2]).toLowerCase()+"@"+r.start.toFixed(2)]={id:f[5],cal:f[4]}; } });
+    const EV=znEvLive();
+    const placed=LIST.filter(it=>it.status==="Open"&&isTask(it)&&forClaire(it)&&it.sched&&String(it.sched).slice(0,10)===T1&&/T\d\d:\d\d/.test(String(it.sched))).map(it=>{ const hh=String(it.sched).slice(11,16).split(":").map(Number); const s0=hh[0]+(hh[1]||0)/60; return {s:s0,e:s0+Math.max(.25,(it.est||30)/60),name:it.name,kind:"task",it}; });
+    const items=[];
+    tom.forEach(x=>{ if(znIsBack(x)) return; const nm=znBareEv(String(x.name).replace(/^💼\s*/,"")); if(x.k==="work"){ items.push({s:x.s,e:x.e,name:nm,kind:"work"}); return; }
+      if(placed.some(p=>Math.abs(p.s-x.s)<.02&&znBareEv(p.name).toLowerCase()===nm.toLowerCase())) return; /* a placed task's own calendar event */
+      const ref=ids[nm.toLowerCase()+"@"+x.s.toFixed(2)]||null; let s=x.s, e=x.e; if(ref&&EV.has(ref.id)){ const v=EV.get(ref.id); if(v.gone||v.d!==T1) return; s=v.s; e=Math.max(v.e,v.s+.25); }
+      items.push({s,e,name:nm,kind:/birdie|walk/i.test(nm)?"birdie":x.k==="us"?"us":"you",ref,from:{d:T1,s:x.s}}); });
+    placed.forEach(p=>items.push(p)); items.sort((a,b)=>a.s-b.s||a.e-b.e);
+    if(items.length){ const H0=Math.min(8,Math.floor(items[0].s)), H1=Math.max(17,Math.ceil(Math.max(...items.map(x=>x.e)))); const PX=48, y=h=>Math.round((h-H0)*PX);
+      const tl=el("div","zn-ptl"); tl.style.height=((H1-H0)*PX+8)+"px"; for(let h=H0;h<=H1;h+=2){ const lb=el("span","zn-ptlh",hToLabel(h)); lb.style.top=(y(h)-6)+"px"; tl.append(lb); }
+      const lane=el("div","zn-ptll"); tl.append(lane);
+      // each run of overlapping items shares the row in columns
+      { let g=null, end=-1; const runs=[]; items.forEach(x=>{ if(!g||x.s>=end-0.01){ g=[x]; runs.push(g); end=x.e; } else { g.push(x); end=Math.max(end,x.e); } });
+        runs.forEach(g2=>{ const cols=[]; g2.forEach(x=>{ let ci=cols.findIndex(e=>x.s>=e-0.01); if(ci<0){ ci=cols.length; cols.push(0); } cols[ci]=x.e; x.col=ci; }); g2.forEach(x=>{ x.ncol=cols.length; }); }); }
+      const clashes=[]; items.forEach(p=>{ if(p.kind==="work"||p.kind==="task") return; const ms=items.filter(o=>o.kind==="work"&&o.s<p.e-0.01&&p.s<o.e-0.01); if(ms.length){ ms.forEach(m=>{ m.clash=true; }); clashes.push({p,m:ms[0]}); } });
+      items.forEach(x=>{ const top=y(x.s), h=Math.max(20,y(x.e)-top-1), two=h>=40; let prep=null; if(x.kind==="work"){ try{ prep=znPrepFor(T1,x.name); }catch(e){} }
+        const b=el(x.it||prep?"button":"div","zn-pev zn-pev-"+x.kind+(x.clash?" zn-pclash":"")+(two?" two":"")); if(x.it||prep) b.type="button"; b.style.top=top+"px"; b.style.height=h+"px"; b.style.left=`calc(${x.col} * (100% + 4px) / ${x.ncol})`; b.style.width=`calc((100% + 4px) / ${x.ncol} - 4px)`;
+        const when=x.kind==="task"?`${hRange(x.s,x.e)} · placed`:hRange(x.s,x.e); b.title=`${x.name} · ${when}`; b.setAttribute("aria-label",`${x.name}, ${when}${prep?", prep ready":""}${x.clash?", clashes with a personal block":""}`);
+        b.append(el("b",null,(prep?"✨ ":"")+x.name)); if(two) b.append(el("span",null,when));
+        if(x.it) b.addEventListener("click",()=>openListItem(x.it,b)); else if(prep) b.addEventListener("click",()=>znPrepSheet(prep,b,`${DAY} ${hToLabel(x.s)}`)); lane.append(b); });
+      // open time of 30 minutes or more
+      { let cur=H0; const gaps=[]; items.forEach(x=>{ if(x.s-cur>=0.5-1e-6) gaps.push([cur,x.s]); cur=Math.max(cur,x.e); }); if(H1-cur>=0.5-1e-6) gaps.push([cur,H1]);
+        gaps.forEach(([a,z])=>{ const m=Math.round((z-a)*60); const g=el("button","zn-pgap",`${znHM(m)} open${m>=60?" · place one":""}`); g.type="button"; g.style.top=(y(a)+1)+"px"; g.style.height=Math.max(20,y(z)-y(a)-3)+"px"; g.setAttribute("aria-label",`${znHM(m)} open from ${hToLabel(a)}. Place a task here.`); g.disabled=!calOK()||!LIVE; g.addEventListener("click",()=>znPlaceOn(T1,a,z,g)); lane.append(g); }); }
+      c.append(tl);
+      clashes.forEach(({p,m})=>{ const ln=el("div","zn-pclashln"); ln.append(el("span",null,`${p.name} runs into ${znTopic(m.name)}`));
+        if(p.ref&&calOK()&&LIVE){ const dur=p.e-p.s, wd=d1.getUTCDay(), wk=wd===0||wd===6, D0=wk?9:8, D9=wk?20.5:21; let cur=D0, at=null; for(const o of items){ if(o.s-cur>=dur-1e-6){ at=cur; break; } cur=Math.max(cur,o.e); } if(at==null&&D9-cur>=dur-1e-6) at=cur; /* the first open stretch on the day long enough for it (the stretches as drawn, so never its own slot) */
+          if(at!=null){ const w=p.name.trim().split(/\s+/); const bt=el("button","zn-pill zn-psm",`Move ${w.length<=3?w[w.length-1].toLowerCase():"it"} to ${hToLabel(at)}`); bt.type="button"; bt.setAttribute("aria-label",`Move ${p.name} to ${hToLabel(at)} on ${DAY}`);
+            bt.addEventListener("click",async()=>{ bt.disabled=true; try{ await znEvMove({ev:{id:p.ref.id,cal:p.ref.cal,from:p.from},est:Math.round(dur*60),name:p.name},T1,at); }catch(e){} bt.disabled=false; }); ln.append(bt); } }
+        c.append(ln); }); }
+    else if(!S.backs.length) c.append(el("p","zn-pempty",`A clear ${DAY}. The brief lands at ${PERSON&&PERSON.person==="victoria"?"4:15am":"4:30am"}.`));
+    // tomorrow's Top 3
+    const top=clean(ROW.Tomorrow).split(/\n+/).map(l=>l.replace(/^\s*(\d+[.)]|[-•*])\s*/,"").trim()).filter(l=>l&&!/^none$/i.test(l)).slice(0,3);
+    const slotOf=it=>{ try{ if(it&&it.sched&&it.status!=="Done"&&String(it.sched).slice(0,10)===T1){ const hh=String(it.sched).slice(11,16).split(":").map(Number); if(!isNaN(hh[0])) return hToLabel(hh[0]+(hh[1]||0)/60); } }catch(e){} return ""; };
+    const row=(n,name,sub,right,go,open)=>{ const r=el("div","zn-p3row"+(open?" open":"")); const tx=el(go?"button":"span","zn-ptx"); if(go){ tx.type="button"; tx.addEventListener("click",()=>go(tx)); } tx.append(el("b",null,name)); if(sub) tx.append(el("span",null,sub)); r.append(el("span","zn-p3n"+(open?" open":""),String(n)),tx); if(right) r.append(right); c.append(r); return r; };
+    c.append(el("p","zn-p3k",`Top 3 for ${DAY}${top.length?"":" · not picked yet"}`)); const shown=[];
+    if(top.length) top.forEach((x,i)=>{ let it=null; try{ it=znPickTask(x,T1); }catch(e){} if(it) shown.push(it); const sl=slotOf(it); row(i+1,znPickName(x,T1),[it&&it.due===T1?"due":"",sl?`placed ${sl}`:""].filter(Boolean).join(" · "),null,tx=>znOpenPick(x,tx,T1)); });
+    else { let sug=[]; try{ sug=unfinishedTasks().slice(0,3); }catch(e){}
+      sug.forEach((t,i)=>{ let it=null; try{ it=znPickTask(t)||twinOf(t); }catch(e){} if(it) shown.push(it); const sl=slotOf(it); let pb=null; if(it&&!sl){ pb=el("button","zn-pill zn-psm","Place it"); pb.type="button"; pb.disabled=!calOK()||!LIVE; pb.addEventListener("click",()=>openScheduleSheet(it,pb)); }
+        row(i+1,it&&it.name?it.name:bareTitle(t),`From today · ${sl?`placed ${sl}`:"not placed"}`,pb,it?tx=>openListItem(it,tx):null); });
+      if(sug.length<3){ const ch=el("button","zn-pill zn-psm","Choose"); ch.type="button"; ch.disabled=!mcp||!LIVE; ch.addEventListener("click",()=>znPlanTomorrow(ch)); row(sug.length+1,"Open slot","",ch,null,true); } }
+    const due=LIST.filter(it=>it.status!=="Done"&&forClaire(it)&&isTask(it)&&(it.due===T1||it.focus===T1)); const rest=due.filter(it=>!shown.some(p=>p===it||(p.id&&p.id===it.id))&&!top.some(x=>bareTitle(x).toLowerCase()===String(it.name||"").toLowerCase()));
+    if(rest.length){ c.append(el("p","zn-p3k","Due tomorrow")); rest.slice(0,5).forEach(it=>{ const sl=slotOf(it); row("·",it.name,[it.area||"",sl?`placed ${sl}`:"",it.star?"★":""].filter(Boolean).join(" · "),null,tx=>openListItem(it,tx),true); }); }
+    const pk=el("button","zn-pill zn-dark zn-ppick",top.length?"Change the Top 3":`Pick ${DAY}’s 3`); pk.type="button"; pk.disabled=!mcp||!LIVE; pk.addEventListener("click",()=>znPlanTomorrow(pk)); c.append(pk);
+    return c; }
+  // The game card as a scoreboard: one row per team, the score in the serif, one status line. Never the big score sentence.
+  function znGamePN(c,g,others,asOf,T){ c.classList.add("zn-pgame"); const pts=x=>{ const sc=String((x&&x.score)||""); const m=sc.split(/,\s*/).map(p=>(p.match(/(\d+)\s*$/)||[])[1]); if(m.length===2&&m[0]!=null&&m[1]!=null) return [m[0],m[1]]; const d=sc.match(/^\s*(\d+)\s*[-–]\s*(\d+)\s*$/); return d?[d[1],d[2]]:null; }; /* zone-us writes "Away 64, Home 51" */
+    const line=(x)=>{ const hid=znHide(`${T}:${x.name}`), p=pts(x); return x.state==="in"?(hid||!p?"live":`live · ${p[0]}–${p[1]}`):x.state==="post"?(hid||!p?"final":`final · ${p[0]}–${p[1]}`):[znMins(x.s),x.tv].filter(Boolean).join(" · "); };
+    const list=(xs,extra)=>{ const ls=el("div","zn-plist"); xs.forEach(x=>ls.append(el("span",null,String(x.name)+(znGMine(x)?" ★":"")),el("span",null,line(x)))); (extra||[]).forEach(([a,b])=>ls.append(el("span","zn-pnx",a),el("span",null,b))); return ls; };
+    if(g){ const [a,b]=String(g.name).split(/\s+(?:at|vs\.?|v)\s+/i); const t1=a||g.name, t2=b||""; const c1=(znTeamCol(t1)||["#C9C2E6"])[0], c2=(znTeamCol(t2)||["#8FA0EA"])[0];
+      const key=`${T}:${g.name}`, hidden=znHide(key), started=!g.up&&g.state!=="pre"; let bt=null;
+      if(started){ bt=el("button","zn-phbtn",hidden?"Show score":"Hide score"); bt.type="button"; bt.setAttribute("aria-pressed",String(!hidden)); bt.addEventListener("click",()=>{ try{ localStorage.setItem("zone:hide:"+key,hidden?"0":"1"); }catch(e){} znSpoilSave(key,!hidden); znRender(); }); }
+      znPStrip(c,"amber",`Your teams · ${g.up?"next":g.state==="in"?"live":g.state==="post"?"final":"tonight"}`,bt);
+      const p=started?pts(g):null; const sb=el("div","zn-psb"); const tr=(nm,col,v,dim)=>{ const n=el("span","zn-psbt"+(dim?" dim":"")); const sw=el("i"); sw.style.background=col; n.append(sw,document.createTextNode(nm||"—")); sb.append(n,el("b",(hidden?"hid":"")+(dim?" dim":""),started?(hidden?"··":v):"")); };
+      const lead=p&&!hidden?Math.sign(Number(p[0])-Number(p[1])):0; tr(t1,c1,p?p[0]:"–",lead<0); tr(t2,c2,p?p[1]:"–",lead>0); c.append(sb);
+      const status=started?(hidden?"Watching later":[g.state==="post"?"Final":(g.detail||"Live"),!p&&g.score?g.score:"",g.state==="in"?asOf:"",g.tv].filter(Boolean).join(" · ")):[g.up?(g.when||"upcoming"):znMins(g.s),g.tv,g.lg].filter(Boolean).join(" · ");
+      if(status) c.append(el("p","zn-pgs",status));
+      if(others.length){ c.append(el("p","zn-p3k","Also tonight"),list(others)); } }
+    else { znPStrip(c,"amber","On tonight in your leagues",asOf&&others.some(x=>x.state==="in")?asOf:""); let nx=null; try{ nx=znNextGames()[0]||null; }catch(e){} c.append(list(others,nx?[["Next for your teams",[nx.name,nx.when].filter(Boolean).join(" · ")]]:[])); } }
   function znBeforeBed(open,tom,wk){ const T=TODAY(); const c=znCard("zn-glass zn-wind","","Before bed");
     const g=num(ROW.Water)||0, tg=Number(prGet("target","water"))||8, bs=Math.max(1,Number(prGet("bottle","water"))||4);
     const medsOn=num(ROW.Meds)===1, suppOn=num(ROW.Supplements)===1; const gg=(()=>{ try{ return gita(); }catch(e){ return null; } })(); const gitaRead=!!(gg&&(gg.review||gitaReadN()>=gg.n));
     const rcv=clean(ROW.Recovery).trim(); let R=null, rcvRead=false; try{ R=rcv?znJSON((ROW.__raw&&ROW.__raw.Recovery)||ROW.Recovery):null; rcvRead=!!R&&(parseInt(clean(ROW["Recovery Read"]).trim())||0)>=R.n; }catch(e){ R=null; }
     const rows=[];
-    if(!open) ZN_CO_OPEN=false; rows.push({ic:"📥",tx:open?`${open} thing${open===1?"":"s"} still open`:"Nothing left to land",st:open?(ZN_CO_OPEN?"hide ▴":"close out ↓"):"✓",done:!open,co:true,go:()=>{ ZN_CO_OPEN=!ZN_CO_OPEN; znRender(); setTimeout(()=>{ const r=document.querySelector(".zn-bedrow[aria-expanded], .zn-end[aria-expanded]"); if(r) try{ r.focus({preventScroll:true}); }catch(e){} },0); }}); /* Nov 1: close-out opens in place (option A) */
+    if(!open) ZN_CO_OPEN=false; rows.push({ic:"📥",tx:open?`${open} thing${open===1?"":"s"} still open`:"Nothing left to land",st:open?(ZN_CO_OPEN?"hide ▴":"close out ↓"):"✓",done:!open,co:true,go:()=>{ ZN_CO_OPEN=!ZN_CO_OPEN; znRender(); setTimeout(()=>{ const r=document.querySelector(".zn-bedrow[aria-expanded], .zn-end[aria-expanded], .zn-pchip[aria-expanded]"); if(r) try{ r.focus({preventScroll:true}); }catch(e){} },0); }}); /* Nov 1: close-out opens in place (option A) */
     { const P=practiceDefs(); const F=(()=>{ const k=prGet("feature"); return P.find(x=>x.k===k&&x.type==="count")||P.find(x=>x.k==="water")||P.find(x=>x.type==="count")||null; })();
       if(F){ const v=pval(ROW,F)||0, t2=pTarget(F)||1, step=F.k==="water"?bs:1; const put=x=>F.k==="water"?writeToday({Water:Math.max(0,x)},{silent:true}):plogSet(F.k,Math.max(0,x)); rows.push({ic:F.icon,tx:`${F.name} · ${v} of ${t2} ${F.unit}`,st:v>=t2?"✓":(F.k==="water"?"+ a bottle":"+1"),done:v>=t2,go:async()=>{ try{ await put(v+step); toast(`${F.name} · ${v+step} ${F.unit}`,async()=>{ try{ await put(v); znRender(); }catch(e){ toast(writeErr(e)); } });  znRender(); }catch(e){ toast(writeErr(e)); } }}); }
       const left=routineDefs().filter(rtDays).filter(d=>d.action!=="walk"&&!rtDone(ROW,d)); // Oct 29: routines from the person's row
@@ -4013,27 +4237,29 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     // (1) Today, in short: the day's line and what actually happened; (2) Wind down: the one next thing, at most three steps, each skippable;
     // (3) Loose ends: the small trackers as round icons, tap to tick, no count and no nagging; (4) For tonight, if you like: the readings,
     // the radio episode, the book and the journal as cards to swipe through. Tomorrow's own card follows as before.
-    void c; const wrap=el("div","zn-tonight2 zn-night3"); const kindOf=r=>r.co?"end":r.ic==="🎯"?"plan":["📖","🪷","📘","📓"].includes(r.ic)?"inv":"end";
+    void c; const PN=znPN(); const wrap=el("div","zn-tonight2 zn-night3"); const kindOf=r=>r.co?"end":r.ic==="🎯"?"plan":["📖","🪷","📘","📓"].includes(r.ic)?"inv":"end";
     const ends=rows.filter(r=>kindOf(r)==="end"), invs=rows.filter(r=>kindOf(r)==="inv");
     const T1=addDays(T,1), wd1=new Date(T1+"T12:00:00Z").getUTCDay(); const tp=clean(ROW.Tomorrow).split(/\n+/).map(l=>l.replace(/^\s*(\d+[.)]|[-•*])\s*/,"").trim()).filter(l=>l&&!/^none$/i.test(l));
     const WK="zone:wind:"+T; const flags=(()=>{ try{ return JSON.parse(localStorage.getItem(WK)||"{}")||{}; }catch(e){ return {}; } })(); const setFlag=(k,v)=>{ flags[k]=v; try{ localStorage.setItem(WK,JSON.stringify(flags)); }catch(e){} };
     // 1. Today, in short
+    let storyPN=""; /* Nov 18: on the phone the line moves to the look-back sheet and the chips sit on the Tonight card */
     { const sofar=clean(ROW.Evening).split(/\n+/).map(x=>x.trim()).find(x=>x.startsWith("🌗")); const story=(sofar?sofar.replace(/^🌗\s*(Today so far:?\s*)?/i,"").replace(/^[\s·•]+/,""):"").replace(/^./,ch=>ch.toUpperCase()); /* Nov 18: no stray leading dot */
       const wins=[]; try{ const D3=parseDay(); const picks=[...D3.tasks.map(t=>t.title),...D3.untimed.map(u=>u.title),...(typeof extraPicks==="function"?extraPicks(D3):[])]; const done3=znDone3(true); const all3=new Set([...picks.map(x=>String(x).toLowerCase()),...done3]); const dn=done3.size; /* Nov 18: only what was done today */ if(dn) wins.push([`✓ ${dn} of ${all3.size} picked`,1]); }catch(e){}
       try{ const w=walksOf(ROW).length; if(w) wins.push([`✓ Birdie walked${w>1?" ×"+w:""}`,1]); }catch(e){}
       try{ const defs=routineDefs().filter(rtDays).filter(d=>d.action!=="walk"); const dn=defs.filter(d=>rtDone(ROW,d)); if(defs.length&&dn.length===defs.length) wins.push(["✓ Routines",1]); else dn.slice(0,2).forEach(d=>wins.push([`✓ ${d.name}`,1])); }catch(e){}
       if(g>0) wins.push([`${g>=tg?"✓ ":""}${g} of ${tg} glasses`,g>=tg?1:0]);
-      if(story||wins.length){ const sc=znCard("zn-short",""); sc.append(el("p","zn-n3k","Today, in short")); if(story) sc.append(el("p","zn-n3story",story)); if(wins.length){ const wr=el("div","zn-n3wins"); wins.forEach(([t,ok])=>wr.append(el("span",ok?"ok":"",t))); sc.append(wr); } wrap.append(sc); } }
+      storyPN=story; if(!PN&&(story||wins.length)){ const sc=znCard("zn-short",""); sc.append(el("p","zn-n3k","Today, in short")); if(story) sc.append(el("p","zn-n3story",story)); if(wins.length){ const wr=el("div","zn-n3wins"); wins.forEach(([t,ok])=>wr.append(el("span",ok?"ok":"",t))); sc.append(wr); } wrap.append(sc); } }
     // 2. Wind down
     let windCur=""; /* Nov 18: the step showing now, so For tonight doesn't repeat it */
-    { const steps=[]; if(wd1>=1&&wd1<=5&&mcp) steps.push({k:"plan",done:tp.length>0,title:`Set ${DAYS_LONG[wd1]}`,sub:"Two minutes. Three are lined up for you to accept or swap.",act:`Plan ${DAYS_LONG[wd1]}`,go:bb=>znPlanTomorrow(bb),stay:true});
+    { const steps=[]; if(wd1>=1&&wd1<=5&&mcp) steps.push({k:"plan",done:tp.length>0,title:`Set ${DAYS_LONG[wd1]}`,sub:znCarrySub(),act:`Plan ${DAYS_LONG[wd1]}`,go:bb=>znPlanTomorrow(bb),stay:true});
       try{ const ep=(typeof US_POD!=="undefined"&&US_POD&&US_POD.data&&US_POD.data.episodes&&US_POD.data.episodes[0])||null; if(ep&&ep.date===T) steps.push({k:"radio",title:"Tonight’s episode",sub:`Zone Radio · ${Math.max(1,Math.round((ep.seconds||0)/60))} min`,act:"Listen",go:()=>show("us")}); else if(typeof znUsFeedLoad==="function"&&window.__znPodNight!==T){ window.__znPodNight=T; znUsFeedLoad().then(ok=>{ try{ if(ok&&US_POD.data&&US_POD.data.episodes&&US_POD.data.episodes[0]&&US_POD.data.episodes[0].date===T) znRender(); }catch(e){} }).catch(()=>{}); } }catch(e){}
       try{ const pr=znReadingsList({prophet:true}).find(x=>x.k==="prophet"); if(pr) steps.push({k:"read",title:pr.title||"Tonight’s reading",sub:`${pr.book||"The Prophet"} · night ${pr.day}${pr.of?" of "+pr.of:""}`,act:"Read",go:()=>{ try{ znReadingRow(pr).click(); }catch(e){} }}); }catch(e){}
       steps.forEach(st=>{ if(!st.done&&flags[st.k]) st.done=true; }); const idx=steps.findIndex(st=>!st.done); windCur=idx>=0?steps[idx].k:"";
       if(steps.length){ const wc=znCard("zn-wind3"+(idx<0?" zn-wind3-done":""),""); if(idx<0){ wc.append(el("p","zn-n3k","Wind down · done"),el("h2","zn-n3t","That’s the day."),el("p","zn-n3s","Nothing else is asking for you tonight.")); }
         else { const st=steps[idx]; wc.append(el("p","zn-n3k",`Wind down · ${idx+1} of ${steps.length}`),el("h2","zn-n3t",st.title),el("p","zn-n3s",st.sub)); const acts=el("div","zn-n3acts"); const go=el("button","zn-pill zn-dark",st.act); go.type="button"; go.addEventListener("click",()=>{ try{ st.go(go); }catch(e){} if(!st.stay){ setFlag(st.k,"done"); setTimeout(()=>{ try{ znRender(); }catch(e){} },400); } }); const sk=el("button","zn-pill","Skip tonight"); sk.type="button"; sk.addEventListener("click",()=>{ setFlag(st.k,"skip"); znRender(); }); acts.append(go,sk); wc.append(acts); }
-        const pg=el("div","zn-n3steps"); steps.forEach((st,i2)=>pg.append(el("i",st.done?"on":(i2===idx?"cur":"")))); wc.append(pg); wrap.append(wc); } }
+        const pg=el("div","zn-n3steps"); steps.forEach((st,i2)=>pg.append(el("i",st.done?"on":(i2===idx?"cur":"")))); wc.append(pg); if(PN){ const k=wc.querySelector(":scope > .zn-n3k"); if(k){ znPStrip(wc,"magenta",k.textContent); k.remove(); } } wrap.append(wc); } }
     // 3. Loose ends
+    if(PN){ try{ wrap.__chips=znPNChips(open,ends); if(ZN_CO_OPEN&&open) wrap.__co=znCloseOut(); }catch(e){ console.error("chips",e); } try{ const fc=znPNTonight(invs,windCur,storyPN); if(fc) wrap.append(fc); }catch(e){ console.error("for tonight",e); } return wrap; } /* Nov 18 (night hybrid): no Loose ends or look-back cards on the phone */
     if(ends.length){ const ec=znCard("zn-ends",""); ec.append(el("p","zn-n3k","Loose ends · tick what’s true")); const er=el("div","zn-endrow"); let coBtn=null;
       ends.forEach(r=>{ const parts=String(r.tx).split(" · "); let label=parts[0], small=parts.slice(1).join(" · "); if(r.co){ label=open?`${open} open`:"All landed"; small=open?(ZN_CO_OPEN?"hide":"close out"):"done"; } else if(/dinner/i.test(label)){ label="Dinner"; small=r.done?"done":"log it"; } else { small=small.replace(/\s*glasses$/,"").replace(/\s*left:.*$/," left").replace(/^all done$/,"done"); if(r.done&&!small) small="done"; }
         const bt=el("button","zn-end"+(r.done?" on":"")); bt.type="button"; bt.setAttribute("aria-label",`${label}${small?": "+small:""}`); bt.append(el("i",null,r.done?"✓":(r.ic==="✓"?"✦":r.ic)),el("b",null,label),el("small",null,small||"")); if(!mcp||!LIVE) bt.disabled=true; if(r.co){ coBtn=bt; bt.setAttribute("aria-expanded",String(ZN_CO_OPEN)); bt.setAttribute("aria-controls","znCloseOut"); }
@@ -4504,6 +4730,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     return {kind:"clear",frac:1,big:znClock(n),small:"all clear",k:"All clear",title:"Nothing else on the clock today",sub:loose?`Still picked: ${loose.title}`:"",chip:"",acts:loose&&twin(loose.title)?[{t:"Open",fn:b=>openListItem(twin(loose.title),b)}]:[]}; }
   function znNightTimerState(tom,n){ const set=SUN.set??19.2, endH=znWindH(); const fmt=m=>{ m=Math.max(0,Math.round(m)); return m>=60?`${Math.floor(m/60)}:${String(m%60).padStart(2,"0")}`:String(m); }; const late=n>=endH||n<12; const left=late?0:(endH-n)*60; const frac=late?0:Math.max(0,Math.min(1,(endH-n)/Math.max(.5,endH-Math.min(set,endH-.5))));
     const first=tom[0]; const fm=tom.find(x=>x.k==="work"&&x.e-x.s<4); const d1=new Date(addDays(TODAY(),1)+"T12:00:00Z");
+    if(znPN()){ const S=znTomStats(tom), f1=tom.find(x=>!znIsBack(x)), bk=S.backs[0], DAY=DAYS_LONG[d1.getUTCDay()]; const bn=bk?znBareEv(String(bk.name).replace(/^💼\s*/,"")):""; const bkT=bk?`${bn.length>32?"a work block":bn} ${znHShort(bk.s)}–${znHShort(bk.e)}`:""; /* Nov 18 (night hybrid): tomorrow's first timed thing, then the meetings in wall-clock time with any backdrop block named, never counted */
+      return {kind:"night",frac,big:late?"✦":fmt(left),small:late?"day’s done":(left>=60?"to wind-down":"min to wind-down"),k:`Tomorrow · ${DAY}`,title:f1?`Starts ${hToLabel(f1.s)} with ${znTopic(String(f1.name).replace(/^💼\s*/,""))}`:`Nothing on ${DAY}’s clock yet`,sub:S.n?`${S.head}${bkT?` · ${bkT} behind them`:""}`:(bkT?`No meetings · ${bkT}`:(f1?"No meetings":"")),chip:"",acts:[]}; }
     return {kind:"night",frac,big:late?"✦":fmt(left),small:late?"day’s done":(left>=60?"to wind-down":"min to wind-down"),k:"Tonight",title:first?`${DAYS_LONG[d1.getUTCDay()]} starts with ${shortName(String(first.name).replace(/^💼\s*/,""))} at ${hToLabel(first.s)}`:`Nothing on ${DAYS_LONG[d1.getUTCDay()]}’s clock yet`,sub:fm&&fm!==first?`First meeting at ${hToLabel(fm.s)}`:"",chip:"",acts:[]}; } /* Nov 18: the ring says what it counts (minutes to the wind-down hour); the meeting count lives on the Tomorrow card only */
   function znTimerMount(hero,st,sheetK,sheetT){ const grid=hero.querySelector(".zn-hgrid"); if(!grid) return; const dial=grid.querySelector(".zn-dial");
     const wrap=el("div","zn-timer zn-tk-"+st.kind); const ring=el("button","zn-tring"); ring.type="button"; ring.style.setProperty("--deg",Math.round(st.frac*360)+"deg"); ring.setAttribute("aria-label",`${st.big} ${st.small}. ${st.k}: ${st.title}. Tap for the whole day as a dial.`);
@@ -5205,7 +5433,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function znMindTrad(){ return (SIT&&SIT.trad)||"Today's teaching"; }
   function znRenderInner(){ try{ znLegacyClasses(); }catch(e){} const box=$("#znToday"); if(!box) return; const on=znOn()&&ROW; document.body.classList.toggle("zn",!!on); if(!on){ box.hidden=true; return; }
     if(!LIVE){ znBetween(box); return; } /* Oct 25: before the brief lands (or if it failed), never fall back to the old, empty layout */ box.hidden=false; box.replaceChildren();
-    const T=TODAY(), dt=new Date(T+"T12:00:00Z"), n=nowH(), wk=wkDay(); const night=wk?(NIGHT||wk==="fri"):(MODE==="wrap"||MODE==="evening"); document.body.classList.toggle("zn-night",!!night); document.body.classList.toggle("zn-wk",!!wk&&!night);
+    const T=TODAY(), dt=new Date(T+"T12:00:00Z"), n=nowH(), wk=wkDay(); const night=wk?(NIGHT||wk==="fri"):(MODE==="wrap"||MODE==="evening"); document.body.classList.toggle("zn-night",!!night); document.body.classList.toggle("zn-wk",!!wk&&!night); document.body.classList.toggle("zn-pn",!!night&&!ZN_DESK()); /* Nov 18: the phone night page (night hybrid) */
     let items=[]; try{ items=risoItems(); }catch(e){} const w=wxNow(), hi=num(ROW.High), lo=num(ROW.Low);
     const DN=DAYS_LONG[dt.getUTCDay()], ord=(d=>d+(d%10===1&&d!==11?"st":d%10===2&&d!==12?"nd":d%10===3&&d!==13?"rd":"th"))(dt.getUTCDate());
     // masthead
@@ -5227,7 +5455,8 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
 `,"Tonight at a glance"); /* Oct 29: the Day Wrap's headline */
       heroN.querySelectorAll(".zn-qgo").forEach(q=>q.addEventListener("click",()=>bed.scrollIntoView({behavior:"smooth",block:"start"})));
       try{ znTimerMount(heroN,znNightTimerState(tom,n),"Tomorrow as a dial",DAYS_LONG[d1.getUTCDay()]); }catch(e){ console.error("night timer",e); } /* Nov 11 */
-      box.append(heroN,bed); try{ box.append(znTomorrowPrep(tom,T1,{glass:true})); }catch(e){ console.error("prep",e); }
+      if(znPN()){ if(bed.__chips) heroN.append(bed.__chips); if(bed.__co) heroN.append(...bed.__co); box.append(heroN); try{ box.append(znTomorrowPN(tom,T1)); }catch(e){ console.error("tomorrow",e); } box.append(bed); } /* Nov 18 (night hybrid): Tonight, Tomorrow, Wind down, For tonight */
+      else { box.append(heroN,bed); try{ box.append(znTomorrowPrep(tom,T1,{glass:true})); }catch(e){ console.error("prep",e); } }
       NIGHT_TC=null; }
     else { NIGHT_TC=null; znSky(false); try{ znDaySky(true); }catch(e){} }
     // ---------- hero: the dial with now and next ----------
