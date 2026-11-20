@@ -4676,7 +4676,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   function zmSync(light){ zmBarSync(); if(ZM.ui){ if(light&&ZM.ui.light) ZM.ui.light(); else ZM.ui.draw(); } }
 
   // ----- the event sheet: Record, the recording itself, and the review (layout 4A) -----
-  function zmOpen(ev,from,o){ o=o||{}; if(ZM.ui){ if(ZM.ui.key===zmKey(ev.d,ev.n)) return; try{ ZM.ui.close(); }catch(e){} }
+  function zmOpen(ev,from,o){ o=o||{}; if(ev&&ev.work){ try{ const it=LIST.find(q=>isTask(q)&&q.status==="Open"&&q.name===ev.n); if(it) openListItem(it,from); }catch(e){} return; } /* a work meeting, or a placed task's own calendar event: never a Record card */ if(ZM.ui){ if(ZM.ui.key===zmKey(ev.d,ev.n)) return; try{ ZM.ui.close(); }catch(e){} }
     zmLoad(); const key=zmKey(ev.d,ev.n); const box=el("div","zm"); let msg="", poll=null, busy=false, openTr=false, shown="";
     const ui={key,ev,box,draw:()=>draw(),light:()=>light(),close:null}; const mNow=()=>o.id?(ZM.list.find(x=>x.id===o.id)||ZM.full[o.id]||null):zmFor(ev.d,ev.n);
     const kick=zmDayLbl(ev.d)+(ev.s!=null&&ev.e!=null?` · ${zmRange(ev.s,ev.e)}`:"");
@@ -5285,7 +5285,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const groups=znbGroups(shown,T,slipped);
     const stOf=it=>znbStOf(it,T,slipped);
     groups.forEach(([lab,items,gk])=>{ if(!items.length) return; const nd=gk==="nodate"; const gh=el(nd?"button":"p","zn-bdg znb-bdg znb-bdg-"+gk); gh.innerHTML=`<span>${lab}</span><span>${znbTotal(items)}${nd?` <i aria-hidden="true">${ZN_BOARD.nodate?"▾":"▸"}</i>`:""}</span>`; if(nd){ gh.type="button"; gh.setAttribute("aria-expanded",String(!!ZN_BOARD.nodate)); gh.addEventListener("click",()=>{ ZN_BOARD.nodate=!ZN_BOARD.nodate; znPlanRender(); }); } left.append(gh); if(nd&&!ZN_BOARD.nodate) return; items.sort((a,b)=>(b.star-a.star)||((a.due||"9999").localeCompare(b.due||"9999"))).forEach(it=>{ const r=el("div","zn-bdrow"); r.draggable=true; r.tabIndex=0; r.setAttribute("role","button"); r.setAttribute("aria-label",`${it.name}, ${fmt(it.est||30)}. Drag onto a day to place it, or press Enter to open.`);
-        const tx=el("span","zn-bdtx znb-bdtx"); tx.innerHTML=`<strong class="znb-tn">${it.star?"★ ":""}${znEsc(it.name)}${it.priv?" 🔒":""}</strong><span class="znb-meta">${znbAreaHTML(it.area)}${znbStHTML(stOf(it))}</span>`; r.append(el("span","zn-bdgrip","⠿"),tx,el("span","zn-bdsz znb-size",znbSize(it)));
+        const tx=el("span","zn-bdtx znb-bdtx"); tx.innerHTML=`<strong class="znb-tn">${it.star?"★ ":""}${znEsc(it.name)}${it.priv?" 🔒":""}</strong><span class="znb-meta">${znbAreaHTML(it.area)}${znbStHTML(stOf(it))}</span>`; try{ const zf=zmFromTag(it); if(zf) tx.querySelector(".znb-meta").append(zf); }catch(e){} r.append(el("span","zn-bdgrip","⠿"),tx,el("span","zn-bdsz znb-size",znbSize(it)));
         r.addEventListener("dragstart",e=>{ ZN_DRAG=it; ZN_MOVE=false; r.classList.add("drag"); try{ e.dataTransfer.effectAllowed="move"; e.dataTransfer.setData("text/plain",it.id||it.name); }catch(e2){} board.classList.add("dragging"); });
         r.addEventListener("dragend",()=>{ ZN_DRAG=null; r.classList.remove("drag"); board.classList.remove("dragging"); board.querySelectorAll(".zn-bdghost").forEach(x=>x.remove()); board.querySelectorAll(".zn-bdday.over").forEach(x=>x.classList.remove("over")); });
         r.addEventListener("click",()=>openListItem(it,r)); r.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); openListItem(it,r); } }); left.append(r); }); });
