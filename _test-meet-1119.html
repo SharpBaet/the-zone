@@ -2862,7 +2862,7 @@ body.zn #znD2 .zn-pgame .zn-plist span:nth-child(even){text-align:right;white-sp
 .zm-go:disabled{opacity:.55;cursor:default}.zm-godot{width:12px;height:12px;border-radius:6px;background:#FF8E70;flex:none}
 .zm-go:focus-visible,.zm-ghost:focus-visible,.zm-row:focus-visible,.zm-atext:focus-visible,.zm-mini:focus-visible,.zm-link:focus-visible,.zm-spk:focus-visible,.zm-task:focus-visible,.zm-bmain:focus-visible,.zm-bstop:focus-visible{outline:3px solid #7B63E0;outline-offset:2px}
 .zm .zm-fine,.zm-tr .zm-fine,.zm-fine{margin:0;color:#5F5B78 !important;font:500 12.5px/1.45 'Plus Jakarta Sans',system-ui,sans-serif;color:#5F5B78}
-.zm-warn{margin:0;padding:10px 12px;border-radius:14px;background:#FFE9E2;color:#7A2410;font:600 13.5px/1.45 'Plus Jakarta Sans',system-ui,sans-serif}
+.zm .zm-warn{color:#7A2410 !important}.zm .zm-unsure{color:#4A3A05 !important}.zm-warn{margin:0;padding:10px 12px;border-radius:14px;background:#FFE9E2;color:#7A2410;font:600 13.5px/1.45 'Plus Jakarta Sans',system-ui,sans-serif}
 .zm-rows{padding:0 16px;border-radius:22px;background:#fff;box-shadow:0 2px 10px rgba(31,35,64,.06)}
 .zm-row{display:flex;align-items:center;gap:8px;width:100%;min-height:50px;border:0;border-top:1px solid rgba(31,35,64,.10);background:none;padding:0;text-align:left;color:#1F2340;font-family:inherit}
 .zm-rows>.zm-row:first-child{border-top:0}button.zm-row{cursor:pointer}
@@ -2885,7 +2885,7 @@ body.zn #znD2 .zn-pgame .zn-plist span:nth-child(even){text-align:right;white-sp
 .zm-prog.zm-run i{width:35%;animation:zmRun 1.6s ease-in-out infinite}@keyframes zmRun{0%{margin-left:-35%}100%{margin-left:100%}}
 .zm-progt{margin:0;font:700 13px 'Plus Jakarta Sans',system-ui,sans-serif}
 /* review */
-.zm-short{background:#EFE9FF}.zm-short p{margin:0;font:400 19px/1.4 'Fraunces',Georgia,serif}
+.zm-short{background:#EFE9FF}.zm .zm-short p{margin:0;font:400 19px/1.4 'Fraunces',Georgia,serif !important;color:#1F2340 !important}
 .zm-notes ul{margin:0;padding-left:18px;font:500 14.5px/1.5 'Plus Jakarta Sans',system-ui,sans-serif}.zm-notes li{margin:0 0 6px}
 .zm-pair{display:flex;flex-direction:column;gap:14px}
 .zm-ahd{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}.zm-acount{font:600 12.5px 'Plus Jakarta Sans',system-ui,sans-serif;color:#5F5B78}
@@ -2901,7 +2901,7 @@ body.zn #znD2 .zn-pgame .zn-plist span:nth-child(even){text-align:right;white-sp
 .zm-ack{width:22px;height:22px;border-radius:11px;background:#CFEEDF;color:#1D5C43;display:flex;align-items:center;justify-content:center;flex:none}.zm-ack.zm-no{background:rgba(31,35,64,.08)}
 .zm-not .zm-atext{color:#5F5B78}.zm-notl{font:600 12px 'Plus Jakarta Sans',system-ui,sans-serif;color:#5F5B78;white-space:nowrap}
 .zm-tasks{display:flex;flex-direction:column;gap:8px}.zm-task{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:48px;padding:8px 14px;border:0;border-radius:16px;background:#D6EC63;color:#2F3808;text-align:left;cursor:pointer}.zm-task b{font:700 14.5px/1.25 'Plus Jakarta Sans',system-ui,sans-serif}.zm-task span{font:700 12px 'Plus Jakarta Sans',system-ui,sans-serif;white-space:nowrap}.zm-task:disabled{opacity:.7;cursor:default}
-.zm-foot{margin:0;display:flex;gap:8px;align-items:flex-start;font:500 12.5px/1.45 'Plus Jakarta Sans',system-ui,sans-serif;color:#5F5B78}.zm-foot span:first-child{display:flex;flex:none}.zm-foot svg{width:16px;height:16px}
+.zm .zm-foot{color:#5F5B78 !important}.zm-foot{margin:0;display:flex;gap:8px;align-items:flex-start;font:500 12.5px/1.45 'Plus Jakarta Sans',system-ui,sans-serif;color:#5F5B78}.zm-foot span:first-child{display:flex;flex:none}.zm-foot svg{width:16px;height:16px}
 /* transcript */
 .zm-tr{display:flex;flex-direction:column;gap:10px;color:#1F2340;font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-width:0}
 .zm-trh{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.zm-trt{font:400 22px 'Fraunces',Georgia,serif}.zm-trn{font:600 12px 'Plus Jakarta Sans',system-ui,sans-serif;color:#5F5B78}
@@ -2921,7 +2921,7 @@ body.zn #znD2 .zn-pgame .zn-plist span:nth-child(even){text-align:right;white-sp
   .zm-wide .zm-cols{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.4fr);gap:18px;align-items:start}
   .zm-wide .zm-colL{display:flex;flex-direction:column;gap:14px;min-width:0}
   .zm-wide .zm-pair{flex-direction:row;flex-wrap:wrap;align-items:flex-start}.zm-wide .zm-pair>.zm-notes{flex:1 1 240px;min-width:0}.zm-wide .zm-pair>.zm-acts{flex:1.2 1 280px;min-width:0}
-  .zm-wide .zm-short p{font-size:20px}.zm-wide .zm-add{width:auto;align-self:flex-start}
+  .zm.zm-wide .zm-short p{font-size:20px !important}.zm-wide .zm-add{width:auto;align-self:flex-start}
   .zm-wide .zm-tr{border-radius:24px;padding:18px;background:rgba(255,255,255,.82);box-shadow:0 2px 10px rgba(31,35,64,.06);max-height:calc(90vh - 150px);overflow-y:auto}
 }
 /* on the day: chips and tags on an event that has notes */
