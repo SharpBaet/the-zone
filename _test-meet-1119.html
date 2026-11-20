@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
-<head><script>/* TEST COPY: saves blocked */(function(){ window.__writes=[]; window.__calls=[]; window.__allow=/^zone-(prep|prefs|usfeed)$/; window.__meetOK=sessionStorage.getItem('t:meet')==='1'; var of=window.fetch;
-window.fetch=function(u,o){ try{ var url=String(u&&u.url||u), m=((o&&o.method)||"GET").toUpperCase(); if(/supabase\.co\/(functions|rest)\/v1\//.test(url)&&m!=="GET"){ var b=null; try{ b=JSON.parse(o.body); }catch(e){} var fn=(url.match(/v1\/([a-z-]+)/)||[])[1]; var read=(fn==="zone-meet"&&(/part=(get|list)/.test(url)||window.__meetOK))||(/zone-(api|cal)$/.test(fn)&&b&&/fetch|search|query|get|list/i.test(String(b.tool||"")))||(window.__allow&&window.__allow.test(fn)&&!(fn==="zone-prep"&&/part=(one|note)/.test(url)));
+<head><script>/* TEST COPY: saves blocked */(function(){ window.__writes=[]; window.__calls=[]; window.__allow=/^zone-(prep|prefs|usfeed)$/; if(/[?&]real=1/.test(location.search)){ sessionStorage.setItem('t:meet','1'); sessionStorage.setItem('t:tasks','1'); } window.__tasksOK=sessionStorage.getItem('t:tasks')==='1'; window.__meetOK=sessionStorage.getItem('t:meet')==='1'; var of=window.fetch;
+window.fetch=function(u,o){ try{ var url=String(u&&u.url||u), m=((o&&o.method)||"GET").toUpperCase(); if(/supabase\.co\/(functions|rest)\/v1\//.test(url)&&m!=="GET"){ var b=null; try{ b=JSON.parse(o.body); }catch(e){} var fn=(url.match(/v1\/([a-z-]+)/)||[])[1]; var read=(fn==="zone-api"&&window.__tasksOK&&b&&/^notion-create-pages$/.test(String(b.tool||"")))||(fn==="zone-meet"&&(/part=(get|list)/.test(url)||window.__meetOK))||(/zone-(api|cal)$/.test(fn)&&b&&/fetch|search|query|get|list/i.test(String(b.tool||"")))||(window.__allow&&window.__allow.test(fn)&&!(fn==="zone-prep"&&/part=(one|note)/.test(url)));
   if(!read){ window.__writes.push({fn:fn,url:url.split("/v1/")[1],body:b||String(o.body).slice(0,300)}); console.warn("BLOCKED WRITE",fn,JSON.stringify(b).slice(0,300)); return Promise.resolve(new Response(JSON.stringify({ok:true,payload:{},blocked:true}),{status:200,headers:{"Content-Type":"application/json"}})); } window.__calls.push(fn+":"+(b&&b.tool||"")); } }catch(e){} return of.apply(this,arguments); };
 try{ window.__znNow=sessionStorage.getItem("t:now")!=null?Number(sessionStorage.getItem("t:now")):null; window.__znWk=sessionStorage.getItem("t:wk")||null; window.__znWho=sessionStorage.getItem("t:who")||null; }catch(e){} })();</script>
 <meta charset="utf-8">
@@ -2843,7 +2843,7 @@ body.zn #znD2 .zn-pgame .zn-plist span:nth-child(even){text-align:right;white-sp
 .zm-go{width:100%;min-height:52px;padding:0 20px;border:0;border-radius:999px;background:#1F2340;color:#FFE27A;font:700 15px 'Plus Jakarta Sans',system-ui,sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer}
 .zm-go:disabled{opacity:.55;cursor:default}.zm-godot{width:12px;height:12px;border-radius:6px;background:#FF8E70;flex:none}
 .zm-go:focus-visible,.zm-ghost:focus-visible,.zm-row:focus-visible,.zm-atext:focus-visible,.zm-mini:focus-visible,.zm-link:focus-visible,.zm-spk:focus-visible,.zm-task:focus-visible,.zm-bmain:focus-visible,.zm-bstop:focus-visible{outline:3px solid #7B63E0;outline-offset:2px}
-.zm-fine{margin:0;font:500 12.5px/1.45 'Plus Jakarta Sans',system-ui,sans-serif;color:#5F5B78}
+.zm .zm-fine,.zm-tr .zm-fine,.zm-fine{margin:0;color:#5F5B78 !important;font:500 12.5px/1.45 'Plus Jakarta Sans',system-ui,sans-serif;color:#5F5B78}
 .zm-warn{margin:0;padding:10px 12px;border-radius:14px;background:#FFE9E2;color:#7A2410;font:600 13.5px/1.45 'Plus Jakarta Sans',system-ui,sans-serif}
 .zm-rows{padding:0 16px;border-radius:22px;background:#fff;box-shadow:0 2px 10px rgba(31,35,64,.06)}
 .zm-row{display:flex;align-items:center;gap:8px;width:100%;min-height:50px;border:0;border-top:1px solid rgba(31,35,64,.10);background:none;padding:0;text-align:left;color:#1F2340;font-family:inherit}
@@ -4576,6 +4576,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
   // ----- an event, and where it can be opened from -----
   function zmEvOf(d,name,s,e,k){ const n=zmBare(String(name||"").replace(/^💼\s*/,"")); let cal="", id="", work=k==="work"||k==="m"||/^💼/.test(String(name||""));
     try{ const b=busyOn(d).find(x=>zmBare(x.n).toLowerCase()===n.toLowerCase()&&Math.abs(x.s-s)<.02); if(b){ if(b.work||b.ev===false) work=true; cal=b.cal||""; id=b.id||""; } }catch(e2){}
+    try{ if(/^pl[0-9a-f]{32}$/.test(id)||LIST.some(q=>isTask(q)&&(q.name===n||q.name===String(name)))) work=true; }catch(e3){} /* a placed task's own calendar event is a task, not a meeting: it keeps its task sheet */
     return {d,n,s,e,cal,id,work}; }
   function zmChip(ev,short){ const m=zmFor(ev.d,ev.n); if(!m) return null; const c=el("span","zm-chip"+(short?" zm-tag":""));
     const t=short?"Notes":m.status==="ready"?(m.actions?`Notes · ${m.actions} action item${m.actions===1?"":"s"}`:"Notes"):m.status==="failed"?"Notes · didn’t finish":"Notes · writing…";
