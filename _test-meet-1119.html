@@ -2942,7 +2942,7 @@ body.zn-night .znb-row .zm-from{color:#D9CBFF}
 body.zn-night .zm-bar{background:#F3EEFF;color:#1F2340;box-shadow:0 10px 30px rgba(0,0,0,.45)}body.zn-night .zm-bsub{color:#4A4762}body.zn-night .zm-bstop{background:#1F2340;color:#F3EEFF}
 @media (min-width:700px){ .zm-bar{bottom:calc(120px + env(safe-area-inset-bottom,0px));left:50%;right:auto;width:min(560px,calc(100% - 24px));transform:translateX(-50%)} }
 @media (min-width:1200px){ .zm-bar{left:auto;right:24px;bottom:24px;width:380px;transform:none} }
-@media (orientation:landscape) and (max-height:500px){ .zm-bar{left:calc(10px + env(safe-area-inset-left,0px));right:auto;bottom:calc(8px + env(safe-area-inset-bottom,0px));width:auto;max-width:300px;min-height:48px;padding:2px 4px 2px 12px;border-radius:18px;transform:none;z-index:45} .zm-bar .zm-bsub{display:none} }
+@media (orientation:landscape) and (max-height:500px){ .zm-bar{left:auto;right:calc(296px + env(safe-area-inset-right,0px));top:calc(4px + env(safe-area-inset-top,0px));bottom:auto;width:auto;max-width:230px;min-height:40px;padding:0 3px 0 10px;border-radius:999px;gap:8px;transform:none;z-index:45} .zm-bar .zm-btx b,.zm-bar .zm-bhint{display:none} .zm-bar .zm-bsub{color:inherit;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .zm-bar .zm-bmain{min-height:40px;gap:8px} .zm-bar .zm-bstop{min-height:34px;padding:0 12px} } /* the phone landscape board: a small pill in the empty part of its header, clear of the rail and the day buttons */
 @media (prefers-reduced-motion: reduce){ .zm-recp.on i,.zm-prog.zm-run i{animation:none} .zm-prog.zm-run i{width:100%;opacity:.5} .zm-meter span{transition:none} }
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
@@ -4380,7 +4380,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
         const b=el(x.it||prep?"button":"div","zn-pev zn-pev-"+x.kind+(x.clash?" zn-pclash":"")+(two?" two":"")); if(x.it||prep) b.type="button"; b.style.top=top+"px"; b.style.height=h+"px"; b.style.left=`calc(${x.col} * (100% + 4px) / ${x.ncol})`; b.style.width=`calc((100% + 4px) / ${x.ncol} - 4px)`;
         const when=x.kind==="task"?`${hRange(x.s,x.e)} · placed`:hRange(x.s,x.e); b.title=`${x.name} · ${when}`; b.setAttribute("aria-label",`${x.name}, ${when}${prep?", prep ready":""}${x.clash?", clashes with a personal block":""}`);
         b.append(el("b",null,(prep?"✨ ":"")+x.name)); if(two) b.append(el("span",null,when));
-        if(x.it) b.addEventListener("click",()=>openListItem(x.it,b)); else if(prep) b.addEventListener("click",()=>znPrepSheet(prep,b,`${DAY} ${hToLabel(x.s)}`)); lane.append(b); });
+        if(x.it) b.addEventListener("click",()=>openListItem(x.it,b)); else if(prep) b.addEventListener("click",()=>znPrepSheet(prep,b,`${DAY} ${hToLabel(x.s)}`)); else if(x.kind!=="work"&&x.kind!=="task"){ try{ zmWire(b,zmEvOf(T1,x.name,x.s,x.e,""),{}); }catch(e){} } lane.append(b); });
       // open time of 30 minutes or more
       { let cur=H0; const gaps=[]; items.forEach(x=>{ if(x.s-cur>=0.5-1e-6) gaps.push([cur,x.s]); cur=Math.max(cur,x.e); }); if(H1-cur>=0.5-1e-6) gaps.push([cur,H1]);
         gaps.forEach(([a,z])=>{ const m=Math.round((z-a)*60); const g=el("button","zn-pgap",`${znHM(m)} open${m>=60?" · place one":""}`); g.type="button"; g.style.top=(y(a)+1)+"px"; g.style.height=Math.max(20,y(z)-y(a)-3)+"px"; g.setAttribute("aria-label",`${znHM(m)} open from ${hToLabel(a)}. Place a task here.`); g.disabled=!calOK()||!LIVE; g.addEventListener("click",()=>znPlaceOn(T1,a,z,g)); lane.append(g); }); }
@@ -4633,7 +4633,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     if(!j||!j.ok||!j.id||!j.upload){ off(); say(j&&j.refused==="work"?"That is a work meeting. The Zone records personal meetings only.":(j&&j.error)||"Couldn’t start the recording. Try again."); return false; }
     let rec; try{ rec=new MediaRecorder(stream,mime?{mimeType:mime,audioBitsPerSecond:32000}:{audioBitsPerSecond:32000}); }catch(e){ off(); zmCall("remove",{id:j.id}); say("This browser couldn’t start a recorder."); return false; }
     const R=ZM.rec={id:j.id,key:zmKey(ev.d,ev.n),ev,upload:j.upload,mime:rec.mimeType||mime||"audio/webm",ext,rec,stream,startedAt:Date.now(),ms:0,runAt:Date.now(),state:"recording",n:0,mem:[],bars:[],saved:true};
-    rec.ondataavailable=e=>{ if(e.data&&e.data.size){ const i=R.n++; R.mem.push(e.data); zmDbPut(R.id,i,e.data).then(ok=>{ if(!ok) R.saved=false; }); zmMeta(R); } };
+    rec.ondataavailable=e=>{ if(R.gone) return; if(e.data&&e.data.size){ const i=R.n++; R.mem.push(e.data); zmDbPut(R.id,i,e.data).then(ok=>{ if(!ok) R.saved=false; }); zmMeta(R); } };
     rec.onstop=()=>{ if(R.onstop) R.onstop(); else if(ZM.rec===R&&!R.stopping){ R.dead=true; if(R.state==="recording"){ R.ms+=Date.now()-R.runAt; R.state="held"; } zmSync(); } };
     rec.onerror=()=>{ if(ZM.rec===R&&!R.stopping){ R.dead=true; if(R.state==="recording"){ R.ms+=Date.now()-R.runAt; R.state="held"; } zmSync(); } };
     const tr=stream.getAudioTracks()[0]; if(tr){ tr.addEventListener("mute",()=>{ if(ZM.rec===R) zmHold("phone"); }); tr.addEventListener("unmute",()=>{ if(ZM.rec===R&&R.state==="held") zmGo(); }); tr.addEventListener("ended",()=>{ if(ZM.rec===R&&!R.stopping){ R.dead=true; if(R.state==="recording"){ R.ms+=Date.now()-R.runAt; R.state="held"; } zmSync(); } }); }
@@ -4653,7 +4653,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const d=await zmCall("done",{id:P.id,seconds:Math.round(P.ms/1000)}); if(!d||!d.ok){ P.upload=null; U.state="upfail"; U.err=(d&&d.error)||"The recording was sent, but the Zone didn’t take it. Try again."; zmSync(); return; }
     await zmDbClear(P.id); zmMetaClear(); ZM.up=null; ZM.at=0; delete ZM.full[P.id]; await zmLoad(true); zmSync(); }
   async function zmDiscard(){ const R=ZM.rec, U=ZM.up, Lo=ZM.lost; const id=(R&&R.id)||(U&&U.id)||(Lo&&Lo.id); if(!id) return;
-    if(R){ R.stopping=true; try{ if(R.rec.state!=="inactive") R.rec.stop(); }catch(e){} zmRelease(R); clearInterval(ZM.tick); ZM.rec=null; } ZM.up=null; ZM.lost=null; zmMetaClear(); await zmDbClear(id); await zmCall("remove",{id}); ZM.at=0; zmLoad(true); zmSync(); }
+    if(R){ R.stopping=true; R.gone=true; try{ if(R.rec.state!=="inactive") R.rec.stop(); }catch(e){} zmRelease(R); clearInterval(ZM.tick); ZM.rec=null; } ZM.up=null; ZM.lost=null; zmMetaClear(); await zmDbClear(id); await zmCall("remove",{id}); zmMetaClear(); zmDbClear(id); ZM.at=0; zmLoad(true); zmSync(); }
   function zmTick(){ const R=ZM.rec; if(!R){ clearInterval(ZM.tick); return; } const t=zmClock(zmMs(R)); document.querySelectorAll(".zm-time").forEach(n=>{ if(n.textContent!==t) n.textContent=t; });
     const host=document.querySelector(".zm-meter"); if(host&&!zmQuiet()&&R.state==="recording"){ R.bars.push(zmLevel(R)); if(R.bars.length>25) R.bars.shift(); const kids=host.children, off=25-R.bars.length; for(let i=0;i<kids.length;i++){ const v=i>=off?R.bars[i-off]:0; kids[i].style.height=Math.round(10+v*60)+"px"; } } }
   // after a reload or crash: is there an unfinished recording on this device?
@@ -4669,7 +4669,7 @@ function clean(s){return decode(String(s??"").replace(/<br\s*\/?>/gi,"\n").repla
     const sig=[R?R.state+(R.dead?"d":""):U?U.state:"lost",cur.key].join("|"); if(bar.dataset.sig===sig&&!bar.hidden){ if(U&&U.state==="uploading"){ const s=bar.querySelector(".zm-bsub"); if(s) s.textContent=`${U.pct}% sent`; } return; }
     bar.dataset.sig=sig; bar.hidden=false; bar.replaceChildren(); const ev=cur.ev||{}; const title=ev.n||"Recording";
     const main=zmBtn("zm-bmain","",()=>zmOpen(ev,main)); const dot=el("i","zm-bdot"+(R&&R.state==="recording"?" on":"")); const tx=el("span","zm-btx"); const b1=el("b"), b2=el("span","zm-bsub");
-    if(R){ b1.textContent=`${R.dead?"Recording stopped":R.state==="recording"?"Recording":"Paused"} · ${title}`; b2.innerHTML=`<span class="zm-time">${zmClock(zmMs(R))}</span> · tap to open`; }
+    if(R){ b1.textContent=`${R.dead?"Recording stopped":R.state==="recording"?"Recording":"Paused"} · ${title}`; b2.innerHTML=`<span class="zm-time">${zmClock(zmMs(R))}</span><span class="zm-bhint"> · tap to open</span>`; }
     else if(U){ b1.textContent=`${U.state==="uploading"?"Sending":"Not sent yet"} · ${title}`; b2.textContent=U.state==="uploading"?`${U.pct}% sent`:"tap to try again"; }
     else { b1.textContent=`Finish the recording from ${zmAt(Lo.startedAt)}`; b2.textContent=`${title} · tap to open`; }
     tx.append(b1,b2); main.append(dot,tx); bar.append(main); if(R){ bar.append(zmBtn("zm-bstop","Stop",()=>{ zmOpen(ev,main); zmStop(); })); } }
